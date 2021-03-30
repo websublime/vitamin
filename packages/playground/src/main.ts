@@ -1,3 +1,5 @@
+import '@vitamin/ui/dist/theme.css';
+
 import Vitamin from '@vitamin/ui';
 import { createApp } from 'vue';
 

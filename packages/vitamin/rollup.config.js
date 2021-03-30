@@ -57,11 +57,13 @@ export default () => {
         dir: 'dist/esm',
         format: 'esm'
       },
-      plugins: [node({
-        extensions: ['.vue', '.ts']
-      }), typescript({
-        typescript: require('typescript')
-      }), vue(vuePluginConfig), babel(babelOptions), cjs()]
+      plugins: [
+        node({ extensions: ['.vue', '.ts']}),
+        typescript({ typescript: require('typescript')}),
+        vue(vuePluginConfig),
+        babel(babelOptions),
+        cjs()
+      ]
     },
     {
       external: ['vue'],
@@ -71,11 +73,13 @@ export default () => {
         exports: 'named',
         format: 'cjs'
       },
-      plugins: [node({
-        extensions: ['.vue', '.ts']
-      }), typescript({
-        typescript: require('typescript')
-      }), vue(vuePluginConfig), babel(babelOptions), cjs()]
+      plugins: [
+        node({ extensions: ['.vue', '.ts']}),
+        typescript({ typescript: require('typescript')}),
+        vue(vuePluginConfig),
+        babel(babelOptions),
+        cjs()
+      ]
     },
     {
       external: ['vue'],
@@ -90,11 +94,13 @@ export default () => {
         },
         name: capitalize('vitamin')
       },
-      plugins: [node({
-        extensions: ['.vue', '.ts']
-      }), typescript({
-        typescript: require('typescript')
-      }), vue(vuePluginConfig), babel(babelOptions), cjs()]
+      plugins: [
+        node({ extensions: ['.vue', '.ts']}),
+        typescript({ typescript: require('typescript')}),
+        vue(vuePluginConfig),
+        babel(babelOptions),
+        cjs()
+      ]
     },
     {
       external: ['vue'],
@@ -104,11 +110,13 @@ export default () => {
         file: 'dist/vitamin.esm.js',
         format: 'esm'
       },
-      plugins: [node({
-        extensions: ['.vue', '.ts']
-      }), typescript({
-        typescript: require('typescript')
-      }), vue(vuePluginConfig), babel(babelOptions), cjs()]
+      plugins: [
+        node({extensions: ['.vue', '.ts']}),
+        typescript({ typescript: require('typescript')}),
+        vue(vuePluginConfig),
+        babel(babelOptions),
+        cjs()
+      ]
     }
   ];
 
