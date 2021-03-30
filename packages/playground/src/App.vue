@@ -1,27 +1,36 @@
 <template>
-  <img
-    alt="Vue logo"
-    src="./assets/logo.png"
+  <div
+    class="bg-white transition-colors duration-500 dark:bg-gray-800 text-gray-900 dark:text-gray-200"
   >
-
-  <vui-alert />
+    <doc-header />
+    <main class="w-full max-w-screen-xl mx-auto px-6">
+      <div class="lg:flex -mx-6">
+        <!-- sidebar -->
+        <doc-siderbar />
+        <!-- content -->
+        <div class="flex min-h-screen w-full lg:w-3/4 xl:w-4/5">
+          <router-view />
+        </div>
+      </div>
+    </main>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import DocHeader from './components/DocHeader.vue';
+import DocSiderbar from './components/DocSiderbar.vue';
 
-export default defineComponent({
+export default {
+  components: {
+    DocHeader,
+    DocSiderbar
+  },
   name: 'App'
-});
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.dark .vuedoc-demo__preview {
+  background-color:rgba(31, 41, 55, var(--tw-bg-opacity));
 }
 </style>

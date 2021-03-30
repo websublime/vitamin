@@ -12,7 +12,13 @@ module.exports = {
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     'comma-dangle': ['error', 'never'],
-    'comma-spacing': [1, { after: true, before: false }],
+    'comma-spacing': [1, {
+      after: true,
+      before: false
+    }],
+    'import/extensions': ['error', {
+      'json': 'ignorePackages'
+    }],
     'vue/no-multiple-template-root': 'off'
   }
 };

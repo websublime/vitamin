@@ -1,16 +1,29 @@
+import { addCollection, IconifyJSON } from '@iconify/vue';
 import { App } from 'vue';
 
 import { merge } from './helpers';
 
-let config = {
-  iconPack: 'mdi',
-  statusIcon: true,
+type VitaminConfig = {
+  iconifyPack?: IconifyJSON,
+  iconifyPrefix?: string,
+  useHtml5Validation?: boolean
+};
+
+let config: VitaminConfig = {
   useHtml5Validation: true
 };
 
-export const setOptions = (options: any): void => { config = options; };
+export const setOptions = (options: VitaminConfig): void => {
+  const { iconifyPack } = options;
 
-export const getOptions = () => config;
+  config = options;
+
+  if (iconifyPack) {
+    addCollection(iconifyPack);
+  }
+};
+
+export const getOptions = (): VitaminConfig => config;
 
 export let VueInstance: App;
 

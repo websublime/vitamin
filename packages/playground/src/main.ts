@@ -1,10 +1,19 @@
 import '@vitamin/ui/dist/theme.css';
+import 'vite-plugin-vuedoc/style.css';
 
-import Vitamin from '@vitamin/ui';
 import { createApp } from 'vue';
 
 import App from './App.vue';
+import { setup } from './provision';
 
-createApp(App)
-  .use(Vitamin)
-  .mount('#app');
+async function boot() {
+  const app = createApp(App);
+
+  setup(app);
+
+  app.mount('#app');
+
+  return app;
+}
+
+boot();

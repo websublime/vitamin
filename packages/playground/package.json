@@ -4,16 +4,21 @@
     "vue": "^3.0.5"
   },
   "devDependencies": {
+    "@iconify/json": "^1.1.323",
+    "@iconify/vue": "^2.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.5",
     "@vue/eslint-config-typescript": "^7.0.0",
+    "@vueuse/core": "^4.6.2",
     "@websublime/eslint-config": "^1.2.1",
     "eslint": "^7.23.0",
     "eslint-plugin-vue": "^7.8.0",
     "typescript": "^4.1.3",
     "vite": "^2.1.3",
+    "vite-plugin-vuedoc": "^3.1.3",
+    "vue-router": "^4.0.5",
     "vue-tsc": "^0.0.8"
   },
   "name": "@vitamin/playground",

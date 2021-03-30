@@ -1,0 +1,73 @@
+@layer components {
+  .vui-alert {
+    @apply flex p-1 relative;
+  }
+
+  .vui-alert__close {
+    @apply absolute top-1 right-1 cursor-pointer dark:text-gray-200 text-gray-600 hover:text-gray-900 dark:hover:text-gray-100;
+  }
+
+  .vui-alert__title {
+    @apply text-gray-900 dark:text-white;
+  }
+
+  .vui-alert--border {
+    @apply border border-solid border-gray-200 dark:border-gray-100;
+  }
+
+  .vui-alert--shadow-sm {
+    @apply shadow-sm;
+  }
+
+  .vui-alert--shadow-md {
+    @apply shadow-md;
+  }
+
+  .vui-alert--shadow-lg {
+    @apply shadow-lg;
+  }
+
+  .vui-alert--shadow-xl {
+    @apply shadow-xl;
+  }
+
+  .vui-alert--shadow-2xl {
+    @apply shadow-2xl;
+  }
+
+  .vui-alert--shadow-none {
+    @apply shadow-none;
+  }
+
+  .vui-alert--round-none {
+    @apply rounded-none;
+  }
+
+  .vui-alert--round-sm {
+    @apply rounded-sm;
+  }
+
+  .vui-alert--round-md {
+    @apply rounded-md;
+  }
+
+  .vui-alert--round-lg {
+    @apply rounded-lg;
+  }
+
+  .vui-alert--round-xl {
+    @apply rounded-xl;
+  }
+
+  .vui-alert--round-2xl {
+    @apply rounded-2xl;
+  }
+
+  .vui-alert--round-3xl {
+    @apply rounded-3xl;
+  }
+
+  .vui-alert--round-full {
+    @apply rounded-full;
+  }
+}
