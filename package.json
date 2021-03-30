@@ -1,20 +1,32 @@
 {
-  "author": "Miguel Ramos",
+  "author": {
+    "name": "Miguel Ramos",
+    "url": "https://miguelramos.dev",
+    "email": "miguel.marques.ramos@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/websublime/vitamin/issues"
+  },
   "description": "Vitamin components",
   "devDependencies": {
-    "lerna": "^4.0.0",
-    "@websublime/eslint-config": "^1.2.1"
+    "lerna": "^4.0.0"
   },
   "keywords": ["components", "vue", "ui", "lib"],
   "license": "MIT",
   "name": "@vitamin/sdk",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/websublime/vitamin"
+  },
   "scripts": {
-    "bootstrap": "lerna bootstrap",
-    "start": "yarn build:watch",
+    "bootstrap": "yarn --frozen-lockfile && lerna bootstrap",
     "build:lib": "lerna run build --parallel --scope @vitamin/ui",
     "build:lib:watch": "lerna run build:watch --parallel --scope @vitamin/ui",
-    "build:watch": "lerna run build:watch --parallel --scope=@vitamin/{ui,playground}"
+    "build:watch": "lerna run build:watch --parallel --scope=@vitamin/{ui,playground}",
+    "lint:vitamin": "lerna run lint --parallel --scope=@vitamin/{ui,playground}",
+    "postinstall": "yarn build:lib",
+    "start": "yarn build:watch"
   },
   "version": "1.0.0",
   "workspaces": ["packages/*"]
