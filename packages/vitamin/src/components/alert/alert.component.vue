@@ -1,19 +1,44 @@
 <template>
-  <div v-if="visibility" :class="['vui-alert', typeClass, borderRef ? 'vui-alert--border' : '', shadowRef, roundRef]">
-    <Icon
-      v-if="closableRef"
-      :icon="closeIconRef"
-      class="vui-alert__close"
-      height="12"
-      @click.prevent="handleClose"
-    />
-
-    <span
-      v-if="titleRef || $slots.title"
-      class="vui-alert__title"
+  <div
+    v-if="visibility"
+    :class="['vui-alert', borderRef ? 'vui-alert--border' : '', shadowRef, roundRef, typeClass]"
+  >
+    <div
+      v-if="withMedia || $slots.media"
+      :class="[typeMedia]"
     >
-      <slot name="title">{{ titleRef }}</slot>
-    </span>
+      <slot name="media">
+        <Icon
+          :icon="mediaIconRef"
+          class="vui-alert__media-icon"
+          height="32"
+        />
+      </slot>
+    </div>
+
+    <div :class="['vui-alert__content']">
+      <span
+        v-if="titleRef || $slots.title"
+        class="vui-alert__title"
+      >
+        <slot name="title">{{ titleRef }}</slot>
+      </span>
+
+      <p
+        v-if="$slots.default || !!description"
+        class="vui-alert__description"
+      >
+        <slot>{{ description }}</slot>
+      </p>
+
+      <Icon
+        v-if="closableRef"
+        :icon="closeIconRef"
+        class="vui-alert__close"
+        height="12"
+        @click.prevent="handleClose"
+      />
+    </div>
   </div>
 </template>
 

@@ -44,10 +44,14 @@ const vuePluginConfig = {
 };
 
 const capitalize = (string) => {
-  if (typeof string !== 'string') {return '';}
+  if (typeof string !== 'string') {
+    return '';
+  }
+
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default () => {
   let config = [
     {

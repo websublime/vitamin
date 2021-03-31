@@ -1,12 +1,23 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "./variables.css";
 
 @layer base {
   h1 {
-    @apply text-2xl;
+    font-size: var(--vui-h1-size);
+    line-height: var(--vui-h1-heigth);
   }
+
   h2 {
     @apply text-xl;
+  }
+
+  h3 {
+    @apply text-lg;
+  }
+
+  h4, h5, h6 {
+    @apply text-sm;
   }
 }
