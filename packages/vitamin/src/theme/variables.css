@@ -1,4 +1,20 @@
 :root {
   --vui-h1-size: theme('fontSize.2xl');
-  --vui-h1-heigth: theme('lineHeight.8');
+  --vui-h1-height: theme('lineHeight.8');
+
+  --vui-color-transparent: theme('backgroundColor.transparent');
+  --vui-color-primary: theme('colors.blue.500');
+  --vui-color-secondary: theme('colors.purple.400');
+  --vui-color-tertiary: theme('colors.green.500');
+
+  --vui-color-success: theme('colors.green.400');
+  --vui-color-error: theme('colors.red.400');
+  --vui-color-danger: theme('colors.red.400');
+  --vui-color-warning: theme('colors.yellow.400');
+  --vui-color-info: theme('colors.blue.400');
+
+  --vui-color-white: theme('colors.white');
+  --vui-color-black: theme('colors.gray.800');
+  --vui-color-gray: theme('colors.gray.400');
+  --vui-color-default: theme('colors.gray.200');
 }

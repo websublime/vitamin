@@ -2,6 +2,7 @@ import { Component } from 'vue';
 
 import introDoc from '../../vitamin/Readme.md';
 import alertDoc from '../../vitamin/src/components/alert/examples/Alert.md';
+import buttonDoc from '../../vitamin/src/components/button/examples/Button.md';
 
 declare type Menu = {
   name: string;
@@ -24,11 +25,18 @@ const routeConfig: Array<SubMenu> = [
     name: 'get-start'
   },
   {
-    children: [{
-      filePath: alertDoc,
-      name: 'alert',
-      path: 'alert'
-    }],
+    children: [
+      {
+        filePath: alertDoc,
+        name: 'alert',
+        path: 'alert'
+      },
+      {
+        filePath: buttonDoc,
+        name: 'button',
+        path: 'button'
+      }
+    ],
     name: 'components'
   }
 ];

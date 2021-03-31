@@ -29,33 +29,33 @@ wrapperClass: alert-wrap
 
 ```vue demo
 <template>
-  <vui-alert :title="title" :description="description" rounded="md" border class="mb-4" />
-  <vui-alert :title="title" :description="description" rounded="md" type="success" class="mb-4" border />
-  <vui-alert :title="title" :description="description" rounded="md" type="warning" class="mb-4" border />
-  <vui-alert :title="title" :description="description" rounded="md" type="error" class="mb-4" border />
-  <vui-alert :closable="false" shadow="md" class="mb-4">
+  <vui-alert :title="title" :description="description" rounded="md" hasBorder isClosable class="mb-4" />
+  <vui-alert :title="title" :description="description" rounded="md" type="success" class="mb-4" hasBorder />
+  <vui-alert :title="title" :description="description" rounded="md" type="warning" class="mb-4" hasBorder />
+  <vui-alert :title="title" :description="description" rounded="md" type="error" class="mb-4" hasBorder />
+  <vui-alert :isClosable="false" shadow="md" class="mb-4">
     <template #title>
       World United
     </template>
 
     {{ long }}
   </vui-alert>
-  <vui-alert :closable="false" :withMedia="false" shadow="md" class="mb-4" rounded="md">
+  <vui-alert :isClosable="false" :withMedia="false" shadow="md" class="mb-4" rounded="md">
     <template #title>
       World Media
     </template>
 
     {{ long }}
   </vui-alert>
-  <vui-alert :closable="false" :withMedia="false" shadow="lg" class="mb-4" rounded="md">
+  <vui-alert :isClosable="false" :withMedia="false" shadow="lg" class="mb-4" rounded="md">
     {{ long }}
   </vui-alert>
-  <vui-alert :closable="false" type="error" shadow="lg" class="mb-4" rounded="md">
+  <vui-alert :isClosable="false" type="error" shadow="lg" class="mb-4" rounded="md">
     <template #title>
       World Alert
     </template>
   </vui-alert>
-  <vui-alert :closable="false" :withMedia="false" type="error" border class="mb-4" rounded="md">
+  <vui-alert :isClosable="false" :withMedia="false" type="error" hasBorder class="mb-4" rounded="md">
     <template #title>
       World Alert
     </template>
@@ -90,14 +90,14 @@ export default {
     </thead>
     <tbody class="dark:text-gray-300 text-gray-600 text-sm font-light">
       <tr class="border-b border-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100">
-        <td class="py-3 px-6 text-left whitespace-nowrap">border</td>
+        <td class="py-3 px-6 text-left whitespace-nowrap">hasBorder</td>
         <td class="py-3 px-6 text-left whitespace-nowrap">Box light border</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">boolean</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">true or false</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">false</td>
       </tr>
       <tr class="border-b border-gray-200 dark:bg-gray-600 dark:hover:bg-gray-800 bg-gray-50 hover:bg-gray-100">
-        <td class="py-3 px-6 text-left whitespace-nowrap">closable</td>
+        <td class="py-3 px-6 text-left whitespace-nowrap">isClosable</td>
         <td class="py-3 px-6 text-left whitespace-nowrap">Enable close button</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">boolean</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">true or false</td>

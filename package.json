@@ -35,6 +35,7 @@
     "clean": "lerna run clean",
     "evalbundle": "bundlesize",
     "lint": "lerna run lint --parallel --scope=@websublime/{vitamin-ui,vitamin-play}",
+    "prepare": "husky install",
     "postinstall": "lerna link && yarn build:lib",
     "publish-ci": "lerna publish from-package -y --no-verify-access",
     "release": "yarn changeset publish",

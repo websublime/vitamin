@@ -10,7 +10,10 @@
           class="block mr-4 text-2xl text-black dark:text-gray-200"
           to="/"
         >
-          Vitamin UI
+          <img
+            :src="logo"
+            class="inline h-12"
+          > Vitamin
         </router-link>
       </div>
       <div class="w-1/2" />
@@ -36,15 +39,11 @@
 </template>
 
 <script lang="ts">
-import carbon from '@iconify/json/json/carbon.json';
-import codicon from '@iconify/json/json/codicon.json';
-import { addCollection, Icon } from '@iconify/vue';
+import { Icon } from '@iconify/vue';
 import { defineComponent } from 'vue';
 
+import logo from '../assets/vitamin-mini.svg';
 import { isDark } from '../utils/store';
-
-addCollection(codicon);
-addCollection(carbon);
 
 export default defineComponent({
   components: {
@@ -53,7 +52,8 @@ export default defineComponent({
   },
   setup() {
     return {
-      isDark
+      isDark,
+      logo
     };
   }
 });
