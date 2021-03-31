@@ -1,4 +1,3 @@
 packages/vitamin/dist/*
 packages/vitamin/types/*
-packages/vitamin/coverage/*
 **/*.d.ts

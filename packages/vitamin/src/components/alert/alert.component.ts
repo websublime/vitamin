@@ -1,13 +1,18 @@
-import { useOptions } from '../../utils/use';
-import { computed, defineComponent, PropType, ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import { computed, defineComponent, PropType, ref } from 'vue';
+
+import { useOptions } from '../../utils/use';
 
 const TYPE_CLASSES_MAP = {
   'error': 'error',
+  'info': 'info',
   'success': 'check',
-  'warning': 'warning',
-  'info': 'info'
+  'warning': 'warning'
 };
+
+type Rounded = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
+type Shadown = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
+type Type = 'success'|'info'|'error'|'warning';
 
 const AlertComponent = defineComponent({
   components: {
@@ -30,11 +35,11 @@ const AlertComponent = defineComponent({
     },
     rounded: {
       default: 'none',
-      type: String as PropType<'sm'|'md'|'lg'|'xl'|'2xl'|'none'>
+      type: String as PropType<Rounded>
     },
     shadow: {
       default: 'none',
-      type: String as PropType<'sm'|'md'|'lg'|'xl'|'2xl'|'none'>
+      type: String as PropType<Shadown>
     },
     title: {
       default: '',
@@ -42,7 +47,11 @@ const AlertComponent = defineComponent({
     },
     type: {
       default: 'info',
-      type: String as PropType<'success' | 'info' | 'error' | 'warning'>
+      type: String as PropType<Type>
+    },
+    withMedia: {
+      default: true,
+      type: Boolean
     }
   },
   setup(props, { emit }) {
@@ -50,11 +59,13 @@ const AlertComponent = defineComponent({
     const visibility = ref(true);
 
     const typeClass = computed(() => `vui-alert--${props.type}`);
-    const titleRef = computed(() => props.title)
+    const typeMedia = computed(() => `vui-alert--media-${props.type}`);
+    const titleRef = computed(() => props.title);
     const borderRef = computed(() => props.border);
     const shadowRef = computed(() => `vui-alert--shadow-${props.shadow}`);
     const roundRef = computed(() => `vui-alert--round-${props.rounded}`);
     const closeIconRef = computed(() => iconifyPrefix ? `${iconifyPrefix}:close` : 'close');
+    const mediaIconRef = computed(() => iconifyPrefix ? `${iconifyPrefix}:${TYPE_CLASSES_MAP[props.type]}` : `${TYPE_CLASSES_MAP[props.type]}`);
     const closableRef = computed(() => props.closable);
     const descriptionRef = computed(() => props.description);
 
@@ -69,12 +80,14 @@ const AlertComponent = defineComponent({
       closeIconRef,
       descriptionRef,
       handleClose,
-      titleRef,
-      typeClass,
+      mediaIconRef,
       roundRef,
       shadowRef,
+      titleRef,
+      typeClass,
+      typeMedia,
       visibility
-    }
+    };
   }
 });
 

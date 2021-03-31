@@ -1,0 +1,4 @@
+:root {
+  --vui-h1-size: theme('fontSize.2xl');
+  --vui-h1-heigth: theme('lineHeight.8');
+}

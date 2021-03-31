@@ -27,7 +27,7 @@ export const getOptions = (): VitaminConfig => config;
 
 export let VueInstance: App;
 
-export const setVueInstance = (Vue: App) => { VueInstance = Vue; };
+export const setVueInstance = (Vue: App): void => { VueInstance = Vue; };
 
 export const Programmatic = {
   getOptions,

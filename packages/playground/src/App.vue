@@ -31,6 +31,10 @@ export default {
 
 <style>
 .dark .vuedoc-demo__preview {
-  background-color:rgba(31, 41, 55, var(--tw-bg-opacity));
+  background-color: rgba(31, 41, 55, var(--tw-bg-opacity));
+}
+.dark .vuedoc-demo__footer {
+  background-color: transparent;
+  border-radius: none;
 }
 </style>

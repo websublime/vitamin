@@ -1,6 +1,8 @@
+/* eslint-disable */
+
 declare module '*.md' {
-  import { Component } from 'vue';
-  var component: Component;
+  import type { Component } from 'vue';
+  const component: Component;
   export default component;
 }
 
