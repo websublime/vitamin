@@ -18,9 +18,9 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
-        # This makes Actions fetch all Git history
-        # so that Changesets can generate changelogs with the correct commits
-        fetch-depth: 0
+          # This makes Actions fetch all Git history
+          # so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v2
