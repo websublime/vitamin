@@ -1,5 +1,9 @@
 {
   "author": "Miguel Ramos",
+  "bundle-phobia": {
+    "max-size": "85KB",
+    "max-overall-size": "85KB"
+  },
   "description": "Vue UI components",
   "devDependencies": {
     "@babel/core": "^7.13.14",
