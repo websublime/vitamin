@@ -2,6 +2,8 @@ name: Publish Packages
 
 on:
   push:
+    paths:
+      - "packages/**"
     branches:
       - master
       - main
@@ -9,11 +11,16 @@ env:
   CI: true
 
 jobs:
-  build:
+  release:
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+        with:
+        # This makes Actions fetch all Git history
+        # so that Changesets can generate changelogs with the correct commits
+        fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v2
@@ -21,84 +28,105 @@ jobs:
           node-version: '12'
 
       - name: Install dependencies
-        run: yarn bootstrap
+        run: yarn install --frozen-lockfile && yarn bootstrap
+
+      - name: Building packages
+        run: yarn build
 
       - name: Test
         run: yarn test
 
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-
-      - name: Install Dependencies
-        run: yarn bootstrap
-
-      - name: Create Release Pull Request
-        uses: changesets/action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
-
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Setup node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '12'
-          registry-url: https://registry.npmjs.org/
-          scope: "@websublime"
-
-      - name: Install Dependencies
-        run: yarn bootstrap
-
-      - name: Publish NPM
+      - name: Setup CI Git User
         run: |
-          echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
+          git config --global user.name "miguelramos"
+          git config --global user.email "miguel.marques.ramos@gmail.com"
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           echo '@websublime:registry=https://registry.npmjs.org' >> .npmrc
-          cat .npmrc
-          yarn publish-ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-  publish-gpr:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - name: Publish packages
+        uses: changesets/action@master
         with:
-          node-version: '12'
-          registry-url: https://npm.pkg.github.com/
-          scope: "@websublime"
-
-      - name: Install Dependencies
-        run: yarn bootstrap
-
-      - name: Publish Github
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
-          echo '@websublime:registry=https://npm.pkg.github.com' >> .npmrc
-          cat .npmrc
-          yarn publish-ci
+          publish: yarn release
+          title: "chore(release): version packages"
+          commit: "chore(release): version packages"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#
+#  release:
+#    name: Release
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Setup Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '12'
+#
+#      - name: Install Dependencies
+#        run: yarn bootstrap
+#
+#      - name: Create Release Pull Request
+#        uses: changesets/action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+#
+#  publish-npm:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Setup node
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '12'
+#          registry-url: https://registry.npmjs.org/
+#          scope: "@websublime"
+#
+#      - name: Install Dependencies
+#        run: yarn bootstrap
+#
+#      - name: Publish NPM
+#        run: |
+#          echo "//registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
+#          echo '@websublime:registry=https://registry.npmjs.org' >> .npmrc
+#          cat .npmrc
+#          yarn publish-ci
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#
+#  publish-gpr:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Setup node
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: '12'
+#          registry-url: https://npm.pkg.github.com/
+#          scope: "@websublime"
+#
+#      - name: Install Dependencies
+#        run: yarn bootstrap
+#
+#      - name: Publish Github
+#        run: |
+#          echo "//npm.pkg.github.com/:_authToken=$NODE_AUTH_TOKEN" > .npmrc
+#          echo '@websublime:registry=https://npm.pkg.github.com' >> .npmrc
+#          cat .npmrc
+#          yarn publish-ci
+#        env:
+#          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+#          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#
