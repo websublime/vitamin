@@ -1,5 +1,11 @@
 # @websublime/vitamin-ui
 
+## 1.2.1
+
+### Patch Changes
+
+- 4d66485: Attempt to fix lerna deploy
+
 ## 1.2.0
 
 ### Minor Changes
