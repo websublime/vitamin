@@ -1,6 +1,18 @@
 # @websublime/vitamin-play
 
+## 1.2.0
+
+### Minor Changes
+
+- e951dcc: Atempt to fix deploys
+
+### Patch Changes
+
+- Updated dependencies [e951dcc]
+  - @websublime/vitamin-ui@1.2.0
+
 ## 1.1.0
+
 ### Minor Changes
 
 - 2384136: Automating and refinement of github actions and deploys
