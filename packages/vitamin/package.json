@@ -59,7 +59,10 @@
     "vue": "^3.0.0",
     "vue-jest": "^5.0.0-alpha.8"
   },
-  "files": ["dist", "types/*.d.ts"],
+  "files": [
+    "dist",
+    "types/*.d.ts"
+  ],
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -81,5 +84,5 @@
   },
   "typings": "types/index.d.ts",
   "unpkg": "dist/vitamin.min.js",
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
