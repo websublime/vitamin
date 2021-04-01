@@ -5,7 +5,6 @@ module.exports = {
     node: true
   },
   extends: ['plugin:vue/recommended', '@vue/typescript/recommended'],
-  ignorePatterns: ['**/**/*.d.ts'],
   parserOptions: {
     ecmaVersion: 2020
   },

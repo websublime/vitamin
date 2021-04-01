@@ -1,6 +1,6 @@
 import codicon from '@iconify/json/json/codicon.json';
-import Vitamin from '@vitamin/ui';
 import { App } from '@vue/runtime-core';
+import Vitamin from '@websublime/vitamin-ui';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import DocMain from './components/DocMain.vue';

@@ -1,1 +1,1 @@
-declare module '@vitamin/ui';
+declare module '@websublime/vitamin-ui';

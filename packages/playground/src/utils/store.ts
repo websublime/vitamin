@@ -2,7 +2,7 @@ import { usePreferredDark, useStorage } from '@vueuse/core';
 import { computed, Ref, watch } from 'vue';
 
 const preferredDark = usePreferredDark();
-const schema: Ref<'auto' | 'dark' | 'light'> = useStorage('icones-schema', 'auto');
+const schema: Ref<string> = useStorage('icones-schema', 'auto'); // 'auto' | 'dark' | 'light'
 
 export const isDark = computed({
   get() {
