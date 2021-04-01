@@ -43,6 +43,7 @@ jobs:
         uses: changesets/action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-npm:
     needs: build
@@ -63,7 +64,7 @@ jobs:
       - name: Publish NPM
         run: yarn publish-ci
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-gpr:
     needs: build
@@ -85,4 +86,4 @@ jobs:
       - name: Publish Github
         run: yarn publish-ci
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GH_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}

@@ -4,10 +4,11 @@ import { defineConfig } from 'vite';
 import vitePluginVuedoc, { vueDocFiles } from 'vite-plugin-vuedoc';
 
 const root = resolve(__dirname);
+const { CI = false } = process.env;
 
 // https://vitejs.dev/config/
-
 export default defineConfig({
+  base: CI ? 'vitamin/' : '/',
   plugins: [vitePluginVuedoc({
     highlight: {
       theme: 'one-dark'
