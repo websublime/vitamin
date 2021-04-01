@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@vitamin/ui": "1.0.0",
+    "@websublime/vitamin-ui": "1.0.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
@@ -30,12 +30,13 @@
     "vue-router": "^4.0.5",
     "vue-tsc": "^0.0.8"
   },
-  "name": "@vitamin/playground",
+  "name": "@websublime/vitamin-play",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "build:watch": "vite",
     "lint": "eslint . --ext .vue,.js,.ts",
     "serve": "vite preview"
   },
-  "version": "0.0.0"
+  "version": "1.0.0",
+  "private": true
 }

@@ -9,11 +9,17 @@
   },
   "description": "Vitamin components",
   "devDependencies": {
+    "@changesets/cli": "^2.14.1",
     "lerna": "^4.0.0"
   },
-  "keywords": ["components", "vue", "ui", "lib"],
+  "keywords": [
+    "components",
+    "vue",
+    "ui",
+    "lib"
+  ],
   "license": "MIT",
-  "name": "@vitamin/sdk",
+  "name": "@websublime/vitamin",
   "private": true,
   "repository": {
     "type": "git",
@@ -21,14 +27,19 @@
   },
   "scripts": {
     "bootstrap": "yarn --frozen-lockfile && lerna bootstrap",
-    "build:lib": "lerna run build --parallel --scope @vitamin/ui",
-    "build:lib:watch": "lerna run build:watch --parallel --scope @vitamin/ui",
-    "build:watch": "lerna run build:watch --parallel --scope=@vitamin/{ui,playground}",
-    "lint:vitamin": "lerna run lint --parallel --scope=@vitamin/{ui,playground}",
+    "build": "lerna run build --scope=@websublime/{vitamin-ui,vitamin-play} --include-dependencies",
+    "build:play": "lerna run build --parallel --scope @websublime/vitamin-play",
+    "build:lib": "lerna run build --parallel --scope @websublime/vitamin-ui",
+    "build:lib:watch": "lerna run build:watch --parallel --scope @websublime/vitamin-ui",
+    "build:watch": "lerna run build:watch --parallel --scope=@websublime/{vitamin-ui,vitamin-play}",
+    "lint": "lerna run lint --parallel --scope=@websublime/{vitamin-ui,vitamin-play}",
     "postinstall": "yarn build:lib",
     "start": "yarn build:watch",
-    "test": "lerna run test --parallel --scope @vitamin/ui"
+    "test": "lerna run test --parallel --scope @websublime/vitamin-ui",
+    "publish-ci": "lerna publish from-package -y --no-verify-access --ignore=@websublime/vitamin-play"
   },
   "version": "1.0.0",
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ]
 }

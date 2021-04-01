@@ -1,10 +1,10 @@
-name: Unit Test
+name: Lint Test
 
 on: pull_request
 
 jobs:
   build:
-    name: Unit Test
+    name: Lint Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -14,8 +14,8 @@ jobs:
           node-version: '12'
       - name: Install dependencies
         run: yarn bootstrap
-      - name: Test
-        run: yarn test
+      - name: Lint
+        run: yarn lint
 
   dependabot:
     needs:

@@ -1,4 +1,5 @@
-import '@vitamin/ui/dist/theme.css';
+// eslint-disable-next-line import/extensions
+import '@websublime/vitamin-ui/dist/theme.css';
 import 'vite-plugin-vuedoc/style.css';
 
 import { createApp } from 'vue';

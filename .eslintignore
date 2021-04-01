@@ -1,4 +1,8 @@
-packages/vitamin/dist/*
-packages/vitamin/types/*
-packages/vitamin/coverage/*
+packages/vitamin/dist
+packages/playground/dist
+packages/vitamin/types
+packages/vitamin/coverage
 **/*.d.ts
+node_modules/
+temp/*
+coverage/*
