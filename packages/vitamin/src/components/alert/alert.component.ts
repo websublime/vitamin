@@ -1,3 +1,10 @@
+/**
+ * Copyright Vitamin All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://websublime.dev/license
+ */
+
 import { Icon } from '@iconify/vue';
 import { computed, defineComponent, PropType, ref } from 'vue';
 
@@ -11,7 +18,7 @@ const TYPE_CLASSES_MAP = {
 };
 
 type Rounded = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
-type Shadown = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
+type Shadow = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
 type Type = 'success'|'info'|'error'|'warning';
 
 const AlertComponent = defineComponent({
@@ -47,7 +54,7 @@ const AlertComponent = defineComponent({
     },
     shadow: {
       default: 'none',
-      type: String as PropType<Shadown>,
+      type: String as PropType<Shadow>,
       validator: (value: string) => [
         'none',
         'sm',
