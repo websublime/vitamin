@@ -35,11 +35,27 @@ const AlertComponent = defineComponent({
     },
     rounded: {
       default: 'none',
-      type: String as PropType<Rounded>
+      type: String as PropType<Rounded>,
+      validator: (value: string) => [
+        'none',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl'
+      ].includes(value)
     },
     shadow: {
       default: 'none',
-      type: String as PropType<Shadown>
+      type: String as PropType<Shadown>,
+      validator: (value: string) => [
+        'none',
+        'sm',
+        'md',
+        'lg',
+        'xl',
+        '2xl'
+      ].includes(value)
     },
     title: {
       default: '',
@@ -47,7 +63,13 @@ const AlertComponent = defineComponent({
     },
     type: {
       default: 'info',
-      type: String as PropType<Type>
+      type: String as PropType<Type>,
+      validator: (value: string) => [
+        'error',
+        'info',
+        'warning',
+        'success'
+      ].includes(value)
     },
     withMedia: {
       default: true,
