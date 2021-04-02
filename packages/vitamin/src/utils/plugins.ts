@@ -1,4 +1,11 @@
 /* eslint-disable id-match */
+/**
+ * Copyright Vitamin All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://websublime.dev/license
+ */
+
 import { App, DefineComponent, Plugin } from 'vue';
 
 export const registerPlugin = (app: App, plugin: Plugin): void => {

@@ -1,4 +1,11 @@
 /**
+ * Copyright Vitamin All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://websublime.dev/license
+ */
+
+/**
  * Mobile detection
  * https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
  */
