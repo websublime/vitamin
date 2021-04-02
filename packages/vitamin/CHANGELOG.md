@@ -1,5 +1,11 @@
 # @websublime/vitamin-ui
 
+## 1.3.1
+
+### Patch Changes
+
+- [#15](https://github.com/websublime/vitamin/pull/15) [`af403eb`](https://github.com/websublime/vitamin/commit/af403ebe7c6eef572417892ea909d92ca3fec976) Thanks [@miguelramos](https://github.com/miguelramos)! - Fix invalid npm config file
+
 ## 1.3.0
 
 ### Minor Changes
