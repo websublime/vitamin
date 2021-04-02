@@ -40,8 +40,10 @@ jobs:
         run: |
           git config --global user.name "miguelramos"
           git config --global user.email "miguel.marques.ramos@gmail.com"
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-          echo '@websublime:registry=https://registry.npmjs.org' >> .npmrc
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+            @websublime:registry=https://registry.npmjs.org
+          EOF
 
       - name: Publish packages
         uses: changesets/action@master
@@ -49,6 +51,8 @@ jobs:
           publish: yarn release
           title: "chore(release): version packages"
           commit: "chore(release): version packages"
+          registry-url: https://registry.npmjs.org/
+          scope: "@websublime"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
