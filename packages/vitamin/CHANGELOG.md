@@ -1,5 +1,15 @@
 # @websublime/vitamin-ui
 
+## 1.3.0
+
+### Minor Changes
+
+- [#13](https://github.com/websublime/vitamin/pull/13) [`a926d87`](https://github.com/websublime/vitamin/commit/a926d875fceb10f215c20c760e6ec0cde2b5b338) Thanks [@miguelramos](https://github.com/miguelramos)! - Alert prop validators
+
+### Patch Changes
+
+- [#11](https://github.com/websublime/vitamin/pull/11) [`9867ea5`](https://github.com/websublime/vitamin/commit/9867ea59e3bf54ca1573bd6a64c962c25e7447d7) Thanks [@miguelramos](https://github.com/miguelramos)! - Changeset publish test
+
 ## 1.2.1
 
 ### Patch Changes

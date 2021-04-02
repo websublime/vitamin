@@ -1,5 +1,12 @@
 # @websublime/vitamin-play
 
+## 1.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`a926d87`](https://github.com/websublime/vitamin/commit/a926d875fceb10f215c20c760e6ec0cde2b5b338), [`9867ea5`](https://github.com/websublime/vitamin/commit/9867ea59e3bf54ca1573bd6a64c962c25e7447d7)]:
+  - @websublime/vitamin-ui@1.3.0
+
 ## 1.2.1
 
 ### Patch Changes
