@@ -1,5 +1,11 @@
 # @websublime/vitamin-ui
 
+## 1.3.2
+
+### Patch Changes
+
+- [#17](https://github.com/websublime/vitamin/pull/17) [`71caa91`](https://github.com/websublime/vitamin/commit/71caa91e8156cc0060e3f3d86b806bef645954fe) Thanks [@miguelramos](https://github.com/miguelramos)! - Fix deploy action
+
 ## 1.3.1
 
 ### Patch Changes
