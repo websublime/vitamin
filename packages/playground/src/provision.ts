@@ -1,10 +1,15 @@
+import carbon from '@iconify/json/json/carbon.json';
 import codicon from '@iconify/json/json/codicon.json';
+import { addCollection } from '@iconify/vue';
 import { App } from '@vue/runtime-core';
 import Vitamin from '@websublime/vitamin-ui';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import DocMain from './components/DocMain.vue';
 import demos from './routing';
+
+addCollection(codicon);
+addCollection(carbon);
 
 const routes: any = [
   { path: '/', redirect: '/doc/intro' },

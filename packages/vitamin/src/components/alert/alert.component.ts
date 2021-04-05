@@ -8,7 +8,8 @@
 import { Icon } from '@iconify/vue';
 import { computed, defineComponent, PropType, ref } from 'vue';
 
-import { useOptions } from '../../utils/use';
+import { useOptions } from '../../utils/hooks';
+import { eventProps, shapeProps } from '../../utils/props';
 
 const TYPE_CLASSES_MAP = {
   'error': 'error',
@@ -17,9 +18,9 @@ const TYPE_CLASSES_MAP = {
   'warning': 'warning'
 };
 
-type Rounded = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
-type Shadow = 'sm'|'md'|'lg'|'xl'|'2xl'|'none';
 type Type = 'success'|'info'|'error'|'warning';
+
+const { isClosable } = eventProps;
 
 const AlertComponent = defineComponent({
   components: {
@@ -28,42 +29,11 @@ const AlertComponent = defineComponent({
   emits: ['close'],
   name: 'VuiAlert',
   props: {
-    border: {
-      default: false,
-      type: Boolean
-    },
-    closable: {
-      default: true,
-      type: Boolean
-    },
     description: {
       default: '',
       type: String
     },
-    rounded: {
-      default: 'none',
-      type: String as PropType<Rounded>,
-      validator: (value: string) => [
-        'none',
-        'sm',
-        'md',
-        'lg',
-        'xl',
-        '2xl'
-      ].includes(value)
-    },
-    shadow: {
-      default: 'none',
-      type: String as PropType<Shadow>,
-      validator: (value: string) => [
-        'none',
-        'sm',
-        'md',
-        'lg',
-        'xl',
-        '2xl'
-      ].includes(value)
-    },
+    isClosable,
     title: {
       default: '',
       type: String
@@ -81,7 +51,8 @@ const AlertComponent = defineComponent({
     withMedia: {
       default: true,
       type: Boolean
-    }
+    },
+    ...shapeProps
   },
   setup(props, { emit }) {
     const { iconifyPrefix } = useOptions();
@@ -90,12 +61,12 @@ const AlertComponent = defineComponent({
     const typeClass = computed(() => `vui-alert--${props.type}`);
     const typeMedia = computed(() => `vui-alert--media-${props.type}`);
     const titleRef = computed(() => props.title);
-    const borderRef = computed(() => props.border);
+    const borderRef = computed(() => props.hasBorder);
     const shadowRef = computed(() => `vui-alert--shadow-${props.shadow}`);
     const roundRef = computed(() => `vui-alert--round-${props.rounded}`);
     const closeIconRef = computed(() => iconifyPrefix ? `${iconifyPrefix}:close` : 'close');
     const mediaIconRef = computed(() => iconifyPrefix ? `${iconifyPrefix}:${TYPE_CLASSES_MAP[props.type]}` : `${TYPE_CLASSES_MAP[props.type]}`);
-    const closableRef = computed(() => props.closable);
+    const closableRef = computed(() => props.isClosable);
     const descriptionRef = computed(() => props.description);
 
     const handleClose = (event: UIEvent) => {

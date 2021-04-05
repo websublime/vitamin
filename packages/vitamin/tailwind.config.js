@@ -9,5 +9,11 @@ module.exports = {
   theme: {
     extend: {}
   },
-  variants: {}
+  variants: {
+    extend: {
+      cursor: ['disabled'],
+      opacity: ['disabled'],
+      textColor: ['visited', 'disabled']
+    }
+  }
 };

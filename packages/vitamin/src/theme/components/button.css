@@ -1,0 +1,216 @@
+@layer components {
+  .vui-button {
+    --vui-button-color-default: var(--vui-color-default);
+    --vui-button-color-default-hover: theme('colors.gray.300');
+    --vui-button-color-default-border: theme('colors.gray.400');
+    --vui-button-color-default-text: var(--vui-color-black);
+
+    --vui-button-color-info: var(--vui-color-info);
+    --vui-button-color-info-hover: theme('colors.blue.300');
+    --vui-button-color-info-border: theme('colors.blue.400');
+    --vui-button-color-info-text: var(--vui-color-white);
+
+    --vui-button-color-danger: var(--vui-color-danger);
+    --vui-button-color-danger-hover: theme('colors.red.300');
+    --vui-button-color-danger-border: theme('colors.red.400');
+    --vui-button-color-danger-text: var(--vui-color-white);
+
+    --vui-button-color-success: var(--vui-color-success);
+    --vui-button-color-success-hover: theme('colors.green.300');
+    --vui-button-color-success-border: theme('colors.green.400');
+    --vui-button-color-success-text: var(--vui-color-white);
+
+    --vui-button-color-warning: var(--vui-color-warning);
+    --vui-button-color-warning-hover: theme('colors.yellow.300');
+    --vui-button-color-warning-border: theme('colors.yellow.400');
+    --vui-button-color-warning-text: var(--vui-color-white);
+
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+
+    &--default {
+      background-color: var(--vui-button-color-default);
+      color: var(--vui-button-color-default-text);
+
+      &:not(.vui-button__disabled):hover {
+        background-color: var(--vui-button-color-default-hover);
+      }
+
+      &:is(.vui-button--border) {
+        border-color: var(--vui-button-color-default-border);
+        @apply border-solid border;
+      }
+
+      @apply focus:outline-none;
+    }
+
+    &--info {
+      background-color: var(--vui-button-color-info);
+      color: var(--vui-button-color-info-text);
+
+      &:not(.vui-button__disabled):hover {
+        background-color: var(--vui-button-color-info-hover);
+      }
+
+      &:is(.vui-button--border) {
+        border-color: var(--vui-button-color-info-border);
+        @apply border-solid border;
+      }
+
+      @apply focus:outline-none;
+    }
+
+    &--danger {
+      background-color: var(--vui-button-color-danger);
+      color: var(--vui-button-color-danger-text);
+
+      &:not(.vui-button__disabled):hover {
+        background-color: var(--vui-button-color-danger-hover);
+      }
+
+      &:is(.vui-button--border) {
+        border-color: var(--vui-button-color-danger-border);
+        @apply border-solid border;
+      }
+
+      @apply focus:outline-none;
+    }
+
+    &--success {
+      background-color: var(--vui-button-color-success);
+      color: var(--vui-button-color-success-text);
+
+      &:not(.vui-button__disabled):hover {
+        background-color: var(--vui-button-color-success-hover);
+      }
+
+      &:is(.vui-button--border) {
+        border-color: var(--vui-button-color-success-border);
+        @apply border-solid border;
+      }
+
+      @apply focus:outline-none;
+    }
+
+    &--warning {
+      background-color: var(--vui-button-color-warning);
+      color: var(--vui-button-color-warning-text);
+
+      &:not(.vui-button__disabled):hover {
+        background-color: var(--vui-button-color-warning-hover);
+      }
+
+      &:is(.vui-button--border) {
+        border-color: var(--vui-button-color-warning-border);
+        @apply border-solid border;
+      }
+
+      @apply focus:outline-none;
+    }
+
+    &--sm {
+      &:is(.vui-button--round-full) {
+        @apply p-1;
+      }
+
+      @apply py-1 px-2;
+    }
+
+    &--md {
+      &:is(.vui-button--round-full) {
+        @apply p-2;
+      }
+
+      @apply py-2 px-3;
+    }
+
+    &--md {
+      &:is(.vui-button--round-full) {
+        @apply p-3;
+      }
+
+      @apply py-3 px-4;
+    }
+
+    &--lg {
+      &:is(.vui-button--round-full) {
+        @apply p-4;
+      }
+
+      @apply py-4 px-5;
+    }
+
+    &--xl {
+      &:is(.vui-button--round-full) {
+        @apply p-6;
+      }
+
+      @apply py-6 px-7;
+    }
+
+    &--loading {
+      @apply animate-spin -ml-1 mr-3 h-5 w-5 text-gray-600 dark:text-white inline-block;
+    }
+
+    &__disabled {
+      @apply disabled:text-gray-400 disabled:cursor-not-allowed;
+    }
+
+    &--round-none {
+      @apply rounded-none;
+    }
+
+    &--round-sm {
+      @apply rounded-sm;
+    }
+
+    &--round-md {
+      @apply rounded-md;
+    }
+
+    &--round-lg {
+      @apply rounded-lg;
+    }
+
+    &--round-xl {
+      @apply rounded-xl;
+    }
+
+    &--round-2xl {
+      @apply rounded-2xl;
+    }
+
+    &--round-3xl {
+      @apply rounded-3xl;
+    }
+
+    &--round-full {
+      @apply rounded-full;
+    }
+  }
+
+  .vui-button--shadow-sm {
+    @apply shadow-sm;
+  }
+
+  .vui-button--shadow-md {
+    @apply shadow-md;
+  }
+
+  .vui-button--shadow-lg {
+    @apply shadow-lg;
+  }
+
+  .vui-button--shadow-xl {
+    @apply shadow-xl;
+  }
+
+  .vui-button--shadow-2xl {
+    @apply shadow-2xl;
+  }
+
+  .vui-button--shadow-none {
+    @apply shadow-none;
+  }
+}

@@ -1,8 +1,15 @@
 {
-  "author": "Miguel Ramos",
+  "author": {
+    "email": "miguel.marques.ramos@gmail.com",
+    "name": "Miguel Ramos",
+    "url": "https://miguelramos.dev"
+  },
+  "bugs": {
+    "url": "https://github.com/websublime/vitamin/issues"
+  },
   "bundle-phobia": {
-    "max-size": "85KB",
-    "max-overall-size": "85KB"
+    "max-overall-size": "85KB",
+    "max-size": "85KB"
   },
   "description": "Vue UI components",
   "devDependencies": {
@@ -63,10 +70,7 @@
     "vue": "^3.0.0",
     "vue-jest": "^5.0.0-alpha.8"
   },
-  "files": [
-    "dist",
-    "types/*.d.ts"
-  ],
+  "files": ["dist", "types/*.d.ts", "README.md", "package.json", "CHANGELOG.md"],
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -77,6 +81,10 @@
   "private": false,
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/websublime/vitamin"
   },
   "scripts": {
     "build": "rimraf dist && rollup -c && rollup -c --environment MINIFY && yarn build:css",
