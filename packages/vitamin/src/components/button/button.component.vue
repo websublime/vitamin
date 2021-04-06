@@ -46,7 +46,9 @@
     >
       <Icon
         :icon="iconLeftRef"
-        class="mr-2"
+        :class="[
+          {'mr-2': !iconOnlyRef}
+        ]"
       />
     </slot>
 
@@ -58,7 +60,9 @@
     >
       <Icon
         :icon="iconRightRef"
-        class="ml-2"
+        :class="[
+          {'ml-2': !iconOnlyRef}
+        ]"
       />
     </slot>
   </button>
