@@ -1,6 +1,6 @@
 import { Component } from 'vue';
 
-import introDoc from '../../vitamin/Readme.md';
+import introDoc from '../../vitamin/README.md';
 import alertDoc from '../../vitamin/src/components/alert/examples/Alert.md';
 import buttonDoc from '../../vitamin/src/components/button/examples/Button.md';
 

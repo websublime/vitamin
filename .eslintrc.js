@@ -45,7 +45,8 @@ module.exports = {
       properties: true
     }],
     'import/extensions': ['error', {
-      'json': 'ignorePackages'
+      'json': 'ignorePackages',
+      'md': 'ignorePackages'
     }],
     'import/first': 'error',
     'import/newline-after-import': 'error',
