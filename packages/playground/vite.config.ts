@@ -1,14 +1,17 @@
 import vue from '@vitejs/plugin-vue';
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 import { defineConfig } from 'vite';
 import vitePluginVuedoc, { vueDocFiles } from 'vite-plugin-vuedoc';
 
 const root = resolve(__dirname);
 const { CI = false } = process.env;
 
+// eslint-disable-next-line no-console
+console.log('ROOT: ', root);
+
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: CI ? 'vitamin/' : '/',
+  base: CI ? '/vitamin/' : '/',
   plugins: [vitePluginVuedoc({
     highlight: {
       theme: 'one-dark'
@@ -18,6 +21,12 @@ export default defineConfig({
   }), vue({
     include: [...vueDocFiles]
   })],
+  resolve: {
+    alias: [{
+      find: '@websublime/vitamin',
+      replacement: resolve(join(root, '../', './vitamin'))
+    }]
+  },
   root,
   server: {
     force: true

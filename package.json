@@ -27,7 +27,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --use-workspaces",
-    "build": "lerna run build --scope=@websublime/{vitamin-ui,vitamin-play} --include-dependencies",
+    "build": "yarn build:lib && yarn build:play",
     "build:lib": "lerna run build --parallel --scope @websublime/vitamin-ui",
     "build:lib:watch": "lerna run build:watch --parallel --scope @websublime/vitamin-ui",
     "build:play": "lerna run build --parallel --scope @websublime/vitamin-play",

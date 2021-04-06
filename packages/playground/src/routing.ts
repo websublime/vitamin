@@ -1,8 +1,7 @@
+import introDoc from '@websublime/vitamin/Readme.md';
+import alertDoc from '@websublime/vitamin/src/components/alert/examples/Alert.md';
+import buttonDoc from '@websublime/vitamin/src/components/button/examples/Button.md';
 import { Component } from 'vue';
-
-import introDoc from '../../vitamin/README.md';
-import alertDoc from '../../vitamin/src/components/alert/examples/Alert.md';
-import buttonDoc from '../../vitamin/src/components/button/examples/Button.md';
 
 declare type Menu = {
   name: string;

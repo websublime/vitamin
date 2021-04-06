@@ -2,6 +2,9 @@ name: Unit Test
 
 on: pull_request
 
+env:
+  CI: true
+
 jobs:
   build:
     name: Unit Test
@@ -20,6 +23,9 @@ jobs:
 
       - name: Test
         run: yarn test
+
+      - name: Test build
+        run: yarn build
 
   dependabot:
     needs:

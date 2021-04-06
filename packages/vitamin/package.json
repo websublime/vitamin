@@ -70,7 +70,7 @@
     "vue": "^3.0.0",
     "vue-jest": "^5.0.0-alpha.8"
   },
-  "files": ["dist", "types/*.d.ts", "README.md", "package.json", "CHANGELOG.md"],
+  "files": ["dist", "types/*.d.ts", "Readme.md", "package.json", "CHANGELOG.md"],
   "license": "MIT",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
