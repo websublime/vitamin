@@ -24,6 +24,7 @@
     "eslint-plugin-sort-destructure-keys": "^1.3.5",
     "eslint-plugin-switch-case": "^1.1.2",
     "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.1.3",
     "vite": "^2.1.3",
     "vite-plugin-vuedoc": "^3.1.3",
@@ -32,7 +33,7 @@
   },
   "name": "@websublime/vitamin-play",
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build --mode=production && yarn copy",
+    "build": "rimraf dist && vue-tsc --noEmit && vite build --mode=production && yarn copy",
     "build:watch": "vite",
     "copy": "cp ./dist/index.html ./dist/404.html",
     "lint": "eslint . --ext .vue,.js,.ts",
