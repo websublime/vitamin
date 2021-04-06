@@ -38,12 +38,4 @@ export default {
   background-color: transparent;
   border-radius: none;
 }
-
-.mb-4 {
-  margin-bottom: 1rem/* 16px */;
-}
-
-.mr-4 {
-  margin-right: 1rem/* 16px */;
-}
 </style>
