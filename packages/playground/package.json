@@ -32,7 +32,7 @@
   },
   "name": "@websublime/vitamin-play",
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build --mode=production",
     "build:watch": "vite",
     "lint": "eslint . --ext .vue,.js,.ts",
     "serve": "vite preview"

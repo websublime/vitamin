@@ -8,6 +8,8 @@ const { CI = false } = process.env;
 
 // eslint-disable-next-line no-console
 console.log('ROOT: ', root);
+// eslint-disable-next-line no-console
+console.log('IsCI: ', CI);
 
 // https://vitejs.dev/config/
 export default defineConfig({
