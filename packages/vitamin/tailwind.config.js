@@ -1,9 +1,11 @@
 module.exports = {
   darkMode: 'class',
+  mode: 'jit',
   plugins: [],
   purge: [
     './src/**/*.html',
-    './src/**/*.js'
+    './src/**/*.js',
+    './src/**/*.md'
   ],
   // or 'media' or 'class'
   theme: {
