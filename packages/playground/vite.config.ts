@@ -13,7 +13,7 @@ console.log('IsCI: ', CI);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: CI ? '/vitamin/' : './',
   plugins: [vitePluginVuedoc({
     highlight: {
       theme: 'one-dark'
