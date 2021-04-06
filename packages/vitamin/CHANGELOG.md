@@ -1,5 +1,11 @@
 # @websublime/vitamin-ui
 
+## 1.4.0
+
+### Minor Changes
+
+- [#2](https://github.com/websublime/vitamin/pull/2) [`e43a684`](https://github.com/websublime/vitamin/commit/e43a6847c5e3674ebe4ba1fcc54547b0854179a3) Thanks [@miguelramos](https://github.com/miguelramos)! - Button component
+
 ## 1.3.2
 
 ### Patch Changes

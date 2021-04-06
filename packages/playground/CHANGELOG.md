@@ -1,5 +1,18 @@
 # @websublime/vitamin-play
 
+## 1.3.0
+
+### Minor Changes
+
+- [#2](https://github.com/websublime/vitamin/pull/2) [`e43a684`](https://github.com/websublime/vitamin/commit/e43a6847c5e3674ebe4ba1fcc54547b0854179a3) Thanks [@miguelramos](https://github.com/miguelramos)! - Button component
+
+### Patch Changes
+
+- [#22](https://github.com/websublime/vitamin/pull/22) [`a283285`](https://github.com/websublime/vitamin/commit/a283285dfcc1070803745295b4a38728d005351d) Thanks [@miguelramos](https://github.com/miguelramos)! - Missing production example classes
+
+- Updated dependencies [[`e43a684`](https://github.com/websublime/vitamin/commit/e43a6847c5e3674ebe4ba1fcc54547b0854179a3)]:
+  - @websublime/vitamin-ui@1.4.0
+
 ## 1.2.4
 
 ### Patch Changes
