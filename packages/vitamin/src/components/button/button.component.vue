@@ -1,5 +1,4 @@
 <template>
-  <!-- eslint-disable max-len -->
   <button
     :class="[
       'vui-button',

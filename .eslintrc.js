@@ -60,7 +60,7 @@ module.exports = {
       beforeBlockComment: true
     }],
     'max-len': ['error', {
-      code: 120,
+      code: 125,
       comments: 100,
       ignoreComments: false,
       ignoreRegExpLiterals: true,
