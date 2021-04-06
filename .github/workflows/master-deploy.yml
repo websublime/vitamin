@@ -26,6 +26,7 @@ jobs:
         run: yarn build
         env:
           CI: true
+          NODE_ENV: 'production'
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@3.7.1
