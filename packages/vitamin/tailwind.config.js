@@ -2,11 +2,10 @@ module.exports = {
   darkMode: 'class',
   mode: 'jit',
   plugins: [],
-  purge: [
-    './src/**/*.html',
-    './src/**/*.js',
-    './src/**/*.md'
-  ],
+  purge: {
+    content: ['./src/**/*.html', './src/**/*.js'],
+    layers: []
+  },
   // or 'media' or 'class'
   theme: {
     extend: {}
