@@ -1,5 +1,15 @@
 # @websublime/vitamin-ui
 
+## 1.5.0
+
+### Minor Changes
+
+- [#27](https://github.com/websublime/vitamin/pull/27) [`7334abe`](https://github.com/websublime/vitamin/commit/7334abe3df134a6274bcfece4123f482af18bd8f) Thanks [@miguelramos](https://github.com/miguelramos)! - Button group feature
+
+### Patch Changes
+
+- [#30](https://github.com/websublime/vitamin/pull/30) [`15118c8`](https://github.com/websublime/vitamin/commit/15118c8447d520df17274d5c35a026b8e2fd9701) Thanks [@miguelramos](https://github.com/miguelramos)! - Improve border alert class
+
 ## 1.4.0
 
 ### Minor Changes
