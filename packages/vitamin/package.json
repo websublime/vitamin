@@ -12,7 +12,7 @@
     "max-size": "85KB"
   },
   "description": "Vue UI components",
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.13.14",
     "@babel/preset-env": "^7.13.12",
     "@babel/types": "^7.13.14",
@@ -94,13 +94,15 @@
     "url": "https://github.com/websublime/vitamin"
   },
   "scripts": {
-    "build": "rm -rf ./dist && rollup -c && rollup -c --environment MINIFY && yarn build:css && yarn theme:copy",
+    "build": "yarn clean && yarn build:rollup && yarn build:css && yarn theme:copy",
     "build:css": "postcss ./src/theme/index.css -o ./dist/theme.css",
     "build:css:watch": "postcss ./src/theme/index.css -o ./dist/theme.css -w",
+    "build:rollup": "rollup -c && rollup -c --environment MINIFY",
     "build:watch": "concurrently \"rollup -c --watch\" \"yarn build:css:watch\"",
-    "theme:copy": "cp -R ./src/theme ./dist",
+    "clean": "rm -rf ./dist",
     "lint": "eslint . --ext .vue,.js,.ts",
-    "test": "jest"
+    "test": "jest",
+    "theme:copy": "cp -R ./src/theme ./dist"
   },
   "typings": "types/index.d.ts",
   "unpkg": "dist/vitamin.min.js",
