@@ -9,7 +9,6 @@ on:
       - main
 env:
   CI: true
-  NODE_ENV: 'production'
 
 jobs:
   release:
@@ -31,11 +30,13 @@ jobs:
       - name: Install dependencies
         run: yarn bootstrap
 
-      - name: Building packages
-        run: yarn build:lib
-
       - name: Test
         run: yarn test
+
+      - name: Building packages
+        run: yarn build
+        env:
+          NODE_ENV: 'production'
 
       - name: Setup CI Git User
         run: |
