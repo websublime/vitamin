@@ -32,7 +32,7 @@ jobs:
         run: yarn bootstrap
 
       - name: Building packages
-        run: yarn build
+        run: yarn build:lib
 
       - name: Test
         run: yarn test
