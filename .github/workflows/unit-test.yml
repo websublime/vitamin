@@ -24,13 +24,10 @@ jobs:
       - name: Test
         run: yarn test
 
-      - name: Test build lib
-        run: yarn build:lib
+      - name: Test build
+        run: yarn build
         env:
           NODE_ENV: 'production'
-
-      - name: Test build site
-        run: yarn build:play
 
   dependabot:
     needs:

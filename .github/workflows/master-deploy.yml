@@ -5,6 +5,9 @@ on:
       - master
       - main
 
+env:
+  CI: true
+
 jobs:
   master-deploy:
     runs-on: ubuntu-latest
@@ -25,7 +28,6 @@ jobs:
       - name: Build Website
         run: yarn build
         env:
-          CI: true
           NODE_ENV: 'production'
 
       - name: Deploy
