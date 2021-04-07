@@ -25,6 +25,10 @@ const ButtonComponent = defineComponent({
   emits: ['click'],
   name: 'VuiButton',
   props: {
+    iconOnly: {
+      default: false,
+      type: Boolean
+    },
     iconPrefix: {
       default: null,
       type: String
@@ -61,6 +65,7 @@ const ButtonComponent = defineComponent({
     });
 
     const borderRef = computed(() => props.hasBorder);
+    const iconOnlyRef = computed(() => props.iconOnly);
     const loadingRef = computed(() => props.isLoading);
     const shadowRef = computed(() => `vui-button--shadow-${props.shadow}`);
     const disableRef = computed(() => props.isDisabled || formToken.disabled);
@@ -80,6 +85,7 @@ const ButtonComponent = defineComponent({
       disableRef,
       handleClick,
       iconLeftRef,
+      iconOnlyRef,
       iconRightRef,
       loadingRef,
       roundRef,

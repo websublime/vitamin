@@ -102,6 +102,13 @@ export default ButtonExample;
       </tr>
     </thead>
     <tbody class="dark:text-gray-300 text-gray-600 text-sm font-light">
+      <tr class="border-b border-gray-200 dark:bg-gray-600 dark:hover:bg-gray-800 bg-gray-50 hover:bg-gray-100">
+        <td class="py-3 px-6 text-left whitespace-nowrap">iconOnly</td>
+        <td class="py-3 px-6 text-left whitespace-nowrap">Button with icon only</td>
+        <td class="py-3 px-6 text-center whitespace-nowrap">boolean</td>
+        <td class="py-3 px-6 text-center whitespace-nowrap">true or false</td>
+        <td class="py-3 px-6 text-center whitespace-nowrap">false</td>
+      </tr>
       <tr class="border-b border-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100">
         <td class="py-3 px-6 text-left whitespace-nowrap">hasBorder</td>
         <td class="py-3 px-6 text-left whitespace-nowrap">Button border</td>

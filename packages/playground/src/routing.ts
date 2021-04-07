@@ -1,6 +1,7 @@
 import introDoc from '@websublime/vitamin/Readme.md';
 import alertDoc from '@websublime/vitamin/src/components/alert/examples/Alert.md';
 import buttonDoc from '@websublime/vitamin/src/components/button/examples/Button.md';
+import buttonGroupDoc from '@websublime/vitamin/src/components/button-group/examples/ButtonGroup.md';
 import { Component } from 'vue';
 
 declare type Menu = {
@@ -34,6 +35,11 @@ const routeConfig: Array<SubMenu> = [
         filePath: buttonDoc,
         name: 'button',
         path: 'button'
+      },
+      {
+        filePath: buttonGroupDoc,
+        name: 'button-group',
+        path: 'button-group'
       }
     ],
     name: 'components'
