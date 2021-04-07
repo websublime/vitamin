@@ -69,6 +69,7 @@
     "ts-loader": "^8.1.0",
     "typescript": "^4.2.3",
     "vue": "^3.0.0",
+    "vue-tsc": "^0.0.8",
     "vue-jest": "^5.0.0-alpha.8"
   },
   "files": [
