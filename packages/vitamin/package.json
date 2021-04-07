@@ -94,7 +94,7 @@
     "url": "https://github.com/websublime/vitamin"
   },
   "scripts": {
-    "build": "rimraf dist && rollup -c && rollup -c --environment MINIFY && yarn build:css && yarn theme:copy",
+    "build": "rm -rf ./dist && rollup -c && rollup -c --environment MINIFY && yarn build:css && yarn theme:copy",
     "build:css": "postcss ./src/theme/index.css -o ./dist/theme.css",
     "build:css:watch": "postcss ./src/theme/index.css -o ./dist/theme.css -w",
     "build:watch": "concurrently \"rollup -c --watch\" \"yarn build:css:watch\"",
