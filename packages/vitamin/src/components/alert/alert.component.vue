@@ -1,7 +1,15 @@
 <template>
   <div
     v-if="visibility"
-    :class="['vui-alert', borderRef ? 'vui-alert--border' : '', shadowRef, roundRef, typeClass]"
+    :class="[
+      'vui-alert',
+      shadowRef,
+      roundRef,
+      typeClass,
+      {
+        'vui-alert--border': borderRef
+      }
+    ]"
   >
     <div
       v-if="withMedia || $slots.media"
