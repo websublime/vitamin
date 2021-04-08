@@ -4,19 +4,13 @@ module.exports = {
   plugins: [],
   purge: {
     content: ['./src/**/*.html', './src/**/*.js'],
-    enabled: true,
-    layers: ['base', 'utilities'],
-    options: {
-      keyframes: true,
-      variables: true
-    }
+    layers: []
   },
   // or 'media' or 'class'
   theme: {
     extend: {}
   },
   variants: {
-    appearance: [],
     extend: {
       cursor: ['disabled'],
       opacity: ['disabled'],

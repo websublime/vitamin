@@ -1,62 +1,53 @@
-import introDoc from '@websublime/vitamin/Readme.md';
-import alertDoc from '@websublime/vitamin/src/components/alert/examples/Alert.md';
-import buttonDoc from '@websublime/vitamin/src/components/button/examples/Button.md';
-import buttonGroupDoc from '@websublime/vitamin/src/components/button-group/examples/ButtonGroup.md';
-import { Component } from 'vue';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-declare type Menu = {
-  name: string;
-  filePath: Component;
-  path: string;
-};
-
-declare type SubMenu = {
-  name: string;
-  children: Array<Menu>;
-};
-
-const routeConfig: Array<SubMenu> = [
+const routes: RouteRecordRaw[] = [
   {
-    children: [{
-      filePath: introDoc,
-      name: 'introduction',
-      path: 'intro'
-    }],
-    name: 'get-start'
+    path: '',
+    redirect: '/home'
+  },
+  {
+    component: () => import(/* webpackChunkName: "group-home" */ './modules/home/home.scene.vue'),
+    name: 'Home',
+    path: '/home'
   },
   {
     children: [
       {
-        filePath: alertDoc,
-        name: 'alert',
+        component: () => import(/* webpackChunkName: "group-config" */ './modules/config/config.scene.vue'),
+        name: 'Config',
+        path: ''
+      },
+      {
+        component: () => import(/* webpackChunkName: "group-alert" */ './modules/alert/alert.scene.vue'),
+        name: 'Alert',
         path: 'alert'
       },
       {
-        filePath: buttonDoc,
-        name: 'button',
+        component: () => import(/* webpackChunkName: "group-button" */ './modules/button/button.scene.vue'),
+        name: 'Button',
         path: 'button'
       },
       {
-        filePath: buttonGroupDoc,
-        name: 'button-group',
+        component: () => import(/* webpackChunkName: "group-button" */ './modules/button-group/button-group.scene.vue'),
+        name: 'ButtonGroup',
         path: 'button-group'
       }
     ],
-    name: 'components'
+    component: () => import(/* webpackChunkName: "group-docs" */ './modules/documentation/documentation.container.vue'),
+    path: '/docs'
   }
 ];
 
-export {
-  routeConfig
-};
-
-export default routeConfig
-  .reduce((prev: Array<Menu>, current: SubMenu): Array<Menu> => [...prev, ...current.children], [])
-  .map((demo: Menu) => {
-    const {path} = demo;
-    return {
-      component: demo.filePath,
-      name,
-      path: `${path?.toLowerCase()}`
-    };
-  });
+export const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  linkActiveClass: 'vt-link-active',
+  linkExactActiveClass: 'vt-exact-link-active',
+  routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  }
+});

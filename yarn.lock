@@ -10869,7 +10869,7 @@ unset-value@^1.0.0:
     has-value "^0.3.1"
     isobject "^3.0.0"
 
-unzipper@0.10.11, unzipper@latest:
+unzipper@0.10.11:
   version "0.10.11"
   resolved "https://registry.yarnpkg.com/unzipper/-/unzipper-0.10.11.tgz#0b4991446472cbdb92ee7403909f26c2419c782e"
   integrity sha512-+BrAq2oFqWod5IESRjL3S8baohbevGcVA+teAIOYWM3pDVdseogqbzhhvvmiyQrUNKFUnDMtELW3X8ykbyDCJw==
@@ -11057,13 +11057,6 @@ vue-tsc@^0.0.21:
   integrity sha512-a4fy1KusXvgEg+IhNbjcdvgVeJfS6AjhMR9X6tc4nrw8KhEHce7h5dCESOgoLt81EmbfY39TbvMcUBi6wqvrLA==
   dependencies:
     unzipper "0.10.11"
-
-vue-tsc@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/vue-tsc/-/vue-tsc-0.0.8.tgz#2b2912d0c11e0d7bfd8d4ea89883c5acd722ac39"
-  integrity sha512-LY3SqDGAvB+x2iLqxZSGCw5tdR0tFQ7QhJ/J0+HQ7FZ5pED9tr4wxBMNeUPliLgIDbi5yFLM86Q+I93DYA0Y6g==
-  dependencies:
-    unzipper latest
 
 vue@^3.0.0, vue@^3.0.5:
   version "3.0.11"

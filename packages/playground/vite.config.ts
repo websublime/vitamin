@@ -24,10 +24,16 @@ export default defineConfig({
     include: [...vueDocFiles]
   })],
   resolve: {
-    alias: [{
-      find: '@websublime/vitamin',
-      replacement: resolve(join(root, '../', './vitamin'))
-    }]
+    alias: [
+      {
+        find: '@websublime/vitamin',
+        replacement: resolve(join(root, '../', './vitamin'))
+      },
+      {
+        find: '@',
+        replacement: resolve(join(root, './src'))
+      }
+    ]
   },
   root,
   server: {
