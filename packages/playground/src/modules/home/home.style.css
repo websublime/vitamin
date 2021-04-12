@@ -1,0 +1,40 @@
+@layer components {
+  .vt-home {
+    &__hero {
+      @apply px-10 grid grid-cols-2;
+      height: calc(100vh - 5.625rem);
+    }
+
+    &__hero-title {
+      @apply font-bold lg:text-9xl sm:text-6xl mt-20 flex items-center;
+
+      img {
+        @apply inline-flex h-32;
+      }
+    }
+
+    &__hero-subtitle {
+      @apply font-semibold text-5xl mt-20 text-yellow-500;
+    }
+
+    &__hero-msg {
+      @apply text-lg mt-4;
+    }
+
+    &__nav {
+      @apply px-4 py-6 lg:py-8 md:px-24 lg:px-8 border-b border-solid border-gray-100 dark:border-gray-700;
+    }
+
+    &__nav-content {
+      @apply relative flex items-center justify-between lg:justify-center lg:space-x-16;
+    }
+
+    &__nav-menu {
+      @apply flex items-center space-x-8 lg:flex;
+    }
+
+    &__nav-link {
+      @apply font-medium tracking-wide dark:text-gray-100 text-gray-700 dark:hover:text-gray-200 hover:text-gray-700;
+    }
+  }
+}

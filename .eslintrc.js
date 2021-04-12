@@ -45,8 +45,13 @@ module.exports = {
       properties: true
     }],
     'import/extensions': ['error', {
+      'component': 'ignorePackages',
+      'container': 'ignorePackages',
+      'context': 'ignorePackages',
       'json': 'ignorePackages',
-      'md': 'ignorePackages'
+      'md': 'ignorePackages',
+      'scene': 'ignorePackages',
+      'vue': 'ignorePackages'
     }],
     'import/first': 'error',
     'import/newline-after-import': 'error',

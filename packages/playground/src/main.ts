@@ -1,14 +1,13 @@
-// eslint-disable-next-line import/extensions
-import '@websublime/vitamin-ui/dist/theme.css';
-import 'vite-plugin-vuedoc/style.css';
+import './theme/style.css';
 
 import { createApp } from 'vue';
 
-import App from './App.vue';
+import Application from '@/modules/application/app.container';
+
 import { setup } from './provision';
 
 async function boot() {
-  const app = createApp(App);
+  const app = createApp(Application);
 
   setup(app);
 

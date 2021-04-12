@@ -1,0 +1,36 @@
+@layer components {
+  .vt-sidebar {
+    @apply fixed z-30 inset-y-0 left-0 w-64 transform dark:bg-gray-900 overflow-y-auto lg:translate-x-0 lg:static lg:inset-0;
+    @apply border-r border-gray-100 dark:border-gray-700;
+
+    &__header {
+      @apply flex items-center justify-center mt-8;
+    }
+
+    &__header-content {
+      @apply flex items-center;
+    }
+
+    &__logo {
+      @apply h-12 w-14;
+    }
+
+    &__title {
+      @apply dark:text-white text-gray-800 text-2xl mx-2 font-semibold;
+    }
+
+    &__nav {
+      @apply mt-10;
+    }
+
+    &__nav-link {
+      @apply flex items-center duration-200 mt-1 py-2 px-6 border-l-4;
+      @apply border-gray-900 dark:text-gray-500;
+      @apply transition-colors duration-300 hover:bg-gray-300 hover:bg-opacity-25 dark:hover:text-gray-100;
+    }
+  }
+
+  .vt-exact-link-active {
+    @apply dark:bg-gray-600 bg-gray-200 bg-opacity-25 dark:text-gray-100 text-gray-800 border-gray-400;
+  }
+}
