@@ -50,6 +50,7 @@ module.exports = {
       'context': 'ignorePackages',
       'json': 'ignorePackages',
       'md': 'ignorePackages',
+      'provider': 'ignorePackages',
       'scene': 'ignorePackages',
       'vue': 'ignorePackages'
     }],

@@ -5,6 +5,8 @@
  * found in the LICENSE file at https://websublime.dev/license
  */
 
+import { Component, ComponentInternalInstance, Fragment, VNode } from 'vue';
+
 /**
  * Mobile detection
  * https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
@@ -46,4 +48,41 @@ export const merge = <T = any>(target: any, source: any, deep = false): T => {
   } else {
     return Object.assign(target, source);
   }
+};
+
+export const useId = (size = 3) => {
+  let uuid = '';
+  const dictionary = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+  for (let i = 0; i < size; i++) {
+    uuid += dictionary.charAt(Math.floor(Math.random() * dictionary.length));
+  }
+
+  return uuid;
+};
+
+export const findViewChildren = (key: string, vnode: ArrayLike<VNode>) => Array.from(vnode)
+  .reduce<ComponentInternalInstance[]>((acc, node) => {
+  const { component, type } = node;
+  const { name = type } = (type as Component);
+
+  if (name === key && component) {
+    acc.push(component);
+  } else if(name === Fragment || name === 'template') {
+    acc = [...acc, ...findViewChildren(key, node.children as ArrayLike<VNode>)];
+  }
+
+  return acc;
+}, []);
+
+export const slugify = (...args: (string | number)[]): string => {
+  const value = args.join(' ');
+
+  return value
+    .normalize('NFD') // split an accented letter in the base letter and the acent
+    .replace(/[\u0300-\u036f]/g, '') // remove all previously split accents
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9 ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
+    .replace(/\s+/g, '-'); // separator
 };

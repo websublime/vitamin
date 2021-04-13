@@ -1,0 +1,123 @@
+@layer components {
+  .vui-tabs {
+    --vui-tabs-text-color: var(--vui-text-color);
+    --vui-tabs-text-color-inactive: theme('colors.gray.500');
+    --vui-tabs-border-color: theme('borderColor.gray.100');
+    --vui-tab-border-color-active: theme('colors.green.500');
+    --vui-tab-active-background-color: theme('colors.white');
+    --vui-pane-active-background-color: theme('colors.white');
+    --vui-nav-background: theme('colors.gray.50');
+
+    @apply flex  border-transparent border-solid border;
+
+    &__bordered {
+      border-color: var(--vui-tabs-border-color);
+    }
+
+    &--top, &--bottom {
+      @apply flex-col;
+    }
+
+    &--right, &--left {
+      @apply flex-row;
+    }
+
+    &__panes {
+      background-color: var(--vui-pane-active-background-color);
+      @apply flex-1;
+    }
+
+    &__nav {
+      background-color: var(--vui-nav-background);
+      @apply flex border-solid;
+
+      &:is(.vui-tabs__nav--top),
+      &:is(.vui-tabs__nav--bottom) {
+        @apply flex-row;
+      }
+
+      &:is(.vui-tabs__nav--right),
+      &:is(.vui-tabs__nav--left) {
+        @apply flex-col;
+      }
+
+      &:not(.vui-tabs__nav--border) > .vui-tabs__tab {
+        margin: 0;
+      }
+
+      &:is(.vui-tabs__nav--border):is(.vui-tabs__nav--top) {
+        @apply border-b;
+        border-color: var(--vui-tabs-border-color);
+      }
+
+      &:is(.vui-tabs__nav--border):is(.vui-tabs__nav--bottom) {
+        @apply border-t;
+        border-color: var(--vui-tabs-border-color);
+      }
+
+      &:is(.vui-tabs__nav--border):is(.vui-tabs__nav--right) {
+        @apply border-l;
+        border-color: var(--vui-tabs-border-color);
+      }
+
+      &:is(.vui-tabs__nav--border):is(.vui-tabs__nav--left) {
+        @apply border-r;
+        border-color: var(--vui-tabs-border-color);
+      }
+    }
+
+    &__tab {
+      color: var(--vui-tabs-text-color-inactive);
+      @apply inline-flex border-solid px-2 py-2 cursor-pointer;
+
+      &:is(.vui-tabs__tab--top) {
+        margin-bottom: -1px;
+        @apply border-b-2 border-transparent;
+      }
+
+      &:is(.vui-tabs__tab--bottom) {
+        margin-top: -1px;
+        @apply border-t-2 border-transparent;
+      }
+
+      &:is(.vui-tabs__tab--right) {
+        margin-left: -1px;
+        @apply border-r-2 border-transparent;
+      }
+
+      &:is(.vui-tabs__tab--left) {
+        margin-right: -1px;
+        @apply border-l-2 border-transparent;
+      }
+
+      &:is(.vui-tabs__tab--active) {
+        border-color: var(--vui-tab-border-color-active);
+        background-color: var(--vui-tab-active-background-color);
+      }
+    }
+
+    &__tab--active {
+      color: var(--vui-tabs-text-color);
+
+      &:is(.vui-tabs__tab--top) {
+        margin-bottom: -1px;
+      }
+
+      &:is(.vui-tabs__tab--bottom) {
+        margin-top: -1px;
+      }
+
+      &:is(.vui-tabs__tab--right) {
+        margin-left: -1px;
+      }
+
+      &:is(.vui-tabs__tab--left) {
+        margin-right: -1px;
+      }
+    }
+
+    &__tab--disable {
+      @apply cursor-not-allowed;
+    }
+  }
+}

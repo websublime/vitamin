@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { compilerOptions } = require('./tsconfig');
+
 module.exports = {
   collectCoverage: true,
   globals: {
@@ -6,15 +11,21 @@ module.exports = {
     'ts-jest': {
       diagnostics: {
         ignoreCodes: [151001]
-      }
+      },
+      tsconfig: './tsconfig.json'
     }
   },
   moduleFileExtensions: ['vue', 'js', 'json', 'jsx', 'ts', 'tsx', 'node'],
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/' }),
   preset: 'ts-jest',
   setupFiles: ['./setup.js'],
   testEnvironment: 'jsdom',
+  testMatch: [
+    '**/**/*.spec.(js|jsx|ts|tsx)|**/__tests__/*.(js|jsx|ts|tsx)'
+  ],
   transform: {
-    '^.+\\.vue$': 'vue-jest',
-    '^.+\\js$': 'babel-jest'
+    '^.+\\.(js|jsx)?$': 'babel-jest',
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    '^.+\\.vue?$': 'vue-jest'
   }
 };

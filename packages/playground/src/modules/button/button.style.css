@@ -1,0 +1,11 @@
+@layer components {
+  .vt-tabs {
+    --vui-nav-background: theme('backgroundColor.transparent');
+    --vui-pane-active-background-color: theme('backgroundColor.transparent');
+    --vui-tab-active-background-color: theme('backgroundColor.transparent');
+  }
+
+  .vt-tabs .vui-tabs__tab {
+    @apply dark:text-gray-50;
+  }
+}
