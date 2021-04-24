@@ -1,14 +1,14 @@
 <template>
-  <button-group-doc />
+  <tabs-doc />
 </template>
 
 <script lang="ts">
-import ButtonGroupDoc from '@websublime/vitamin/src/components/button-group/examples/ButtonGroup.md';
+import TabsDoc from '@websublime/vitamin/src/components/tabs/examples/Tabs.md';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   components: {
-    ButtonGroupDoc
+    TabsDoc
   }
 });
 </script>

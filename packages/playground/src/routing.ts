@@ -28,9 +28,9 @@ const routes: RouteRecordRaw[] = [
         path: 'button'
       },
       {
-        component: () => import(/* webpackChunkName: "group-button" */ './modules/button-group/button-group.scene.vue'),
-        name: 'ButtonGroup',
-        path: 'button-group'
+        component: () => import(/* webpackChunkName: "group-tabs" */ './modules/tabs/tabs.scene.vue'),
+        name: 'Tabs',
+        path: 'tabs'
       }
     ],
     component: () => import(/* webpackChunkName: "group-docs" */ './modules/documentation/documentation.container.vue'),

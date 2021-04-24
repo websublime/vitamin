@@ -24,10 +24,10 @@ export const useMenu = () => {
       title: 'Button'
     },
     {
-      description: 'Button group component',
-      icon: 'carbon:edge-cluster',
-      route: 'ButtonGroup',
-      title: 'Button Group'
+      description: 'Tabs component',
+      icon: 'carbon:view-mode-2',
+      route: 'Tabs',
+      title: 'Tabs'
     }
   ];
 
