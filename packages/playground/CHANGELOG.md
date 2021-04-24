@@ -1,5 +1,16 @@
 # @websublime/vitamin-play
 
+## 1.5.0
+
+### Minor Changes
+
+- [#36](https://github.com/websublime/vitamin/pull/36) [`6dc268a`](https://github.com/websublime/vitamin/commit/6dc268ac9d9094535db1a876ec2d6c2d0e299b34) Thanks [@miguelramos](https://github.com/miguelramos)! - Minimal and simple tabs component.
+
+### Patch Changes
+
+- Updated dependencies [[`6dc268a`](https://github.com/websublime/vitamin/commit/6dc268ac9d9094535db1a876ec2d6c2d0e299b34)]:
+  - @websublime/vitamin-ui@1.6.0
+
 ## 1.4.0
 
 ### Minor Changes
