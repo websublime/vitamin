@@ -27,7 +27,7 @@ export default defineConfig({
     alias: [
       {
         find: '@websublime/vitamin',
-        replacement: resolve(join(root, '../', './vitamin'))
+        replacement: resolve(join(root, '../vitamin'))
       },
       {
         find: '@',

@@ -24,6 +24,12 @@ export const useMenu = () => {
       title: 'Button'
     },
     {
+      description: 'Card component',
+      icon: 'carbon:account',
+      route: 'Card',
+      title: 'Card'
+    },
+    {
       description: 'Tabs component',
       icon: 'carbon:view-mode-2',
       route: 'Tabs',
