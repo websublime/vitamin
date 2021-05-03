@@ -125,7 +125,7 @@ export default ButtonExample;
       </tr>
       <tr class="border-b border-gray-200 dark:hover:bg-gray-800 hover:bg-gray-100">
         <td class="py-3 px-6 text-left whitespace-nowrap">shadow</td>
-        <td class="py-3 px-6 text-left whitespace-nowrap">Alert shadow</td>
+        <td class="py-3 px-6 text-left whitespace-nowrap">Button shadow</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">string</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">sm|md|lg|xl|2xl|none</td>
         <td class="py-3 px-6 text-center whitespace-nowrap">none</td>

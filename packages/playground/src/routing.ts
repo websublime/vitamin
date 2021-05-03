@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
         path: 'button'
       },
       {
+        component: () => import(/* webpackChunkName: "group-card" */ './modules/card/card.scene.vue'),
+        name: 'Card',
+        path: 'card'
+      },
+      {
         component: () => import(/* webpackChunkName: "group-tabs" */ './modules/tabs/tabs.scene.vue'),
         name: 'Tabs',
         path: 'tabs'
