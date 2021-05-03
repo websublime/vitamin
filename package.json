@@ -8,7 +8,7 @@
     "url": "https://github.com/websublime/vitamin/issues"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=12"
   },
   "description": "Vitamin components",
   "devDependencies": {

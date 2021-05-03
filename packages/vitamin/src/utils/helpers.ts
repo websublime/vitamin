@@ -7,6 +7,8 @@
 
 import { Component, ComponentInternalInstance, Fragment, VNode } from 'vue';
 
+import { TreeCollection } from './types';
+
 /**
  * Mobile detection
  * https://www.abeautifulsite.net/detecting-mobile-devices-with-javascript
@@ -86,3 +88,25 @@ export const slugify = (...args: (string | number)[]): string => {
     .replace(/[^a-z0-9 ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
     .replace(/\s+/g, '-'); // separator
 };
+
+export const createTree = <List extends Record<string, any>>({
+  id = null,
+  idKey = 'id',
+  index = null,
+  items,
+  parentKey = 'parentId'
+}: TreeCollection<List>): Array<List & { index: string, children: any }> =>
+  items
+    .filter(item => item[parentKey] === id)
+    .map((item, idx) => {
+
+      const child = {
+        ...item,
+        index: index ? `${index}.${idx}` : `${idx}` as any
+      };
+
+      return {
+        ...child,
+        children: createTree({id: item[idKey], index: child.index || `${idx}`, items})
+      };
+    });
