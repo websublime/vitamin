@@ -1,5 +1,18 @@
 # @websublime/vitamin-play
 
+## 1.6.0
+
+### Minor Changes
+
+- [#38](https://github.com/websublime/vitamin/pull/38) [`267aee0`](https://github.com/websublime/vitamin/commit/267aee0d902a90822565b1426b3dd83977877c14) Thanks [@miguelramos](https://github.com/miguelramos)! - Card component
+
+  Card component featuring title property, shadow, border, type and image. Slots available for all card sections. When image property is present it will be used as background for middle/media section.
+
+### Patch Changes
+
+- Updated dependencies [[`267aee0`](https://github.com/websublime/vitamin/commit/267aee0d902a90822565b1426b3dd83977877c14)]:
+  - @websublime/vitamin-ui@1.7.0
+
 ## 1.5.0
 
 ### Minor Changes
