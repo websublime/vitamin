@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "skipLibCheck": false,
+    "composite": true,
+    "incremental": true
+  },
+  "exclude": ["packages/**/tests/**", "packages/**/dist/**"],
+  "references": [
+    {
+      "path": "./packages/*"
+    }
+  ]
+}

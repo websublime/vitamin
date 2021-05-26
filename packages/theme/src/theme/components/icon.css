@@ -1,0 +1,6 @@
+.vui-icon {
+	@apply icon-props;
+
+	margin: var(--icon-margin-y) var(--icon-margin-x);
+	display:  var(--icon-display);
+}

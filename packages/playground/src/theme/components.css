@@ -1,0 +1,4 @@
+@import "tailwindcss/components";
+
+/* Add your components */
+@import "./components/button.css";

@@ -1,0 +1,266 @@
+.is-white {
+  background-color: theme('colors.white');
+  color: theme('colors.white-contrast');
+}
+
+.is-black {
+  background-color: theme('colors.black');
+  color: theme('colors.black-contrast');
+}
+
+.is-light {
+  background-color: theme('colors.light');
+  color: theme('colors.light-contrast');
+}
+
+.is-dark {
+  background-color: theme('colors.dark');
+  color: theme('colors.dark-contrast');
+}
+
+.is-primary {
+  background-color: theme('colors.primary');
+  color: theme('colors.primary-contrast');
+}
+
+.is-primary-dark {
+  background-color: theme('colors.primary-dark');
+  color: theme('colors.primary-dark-contrast');
+}
+
+.is-primary-light {
+  background-color: theme('colors.primary-light');
+  color: theme('colors.primary-light-contrast');
+}
+
+.is-info {
+  background-color: theme('colors.info');
+  color: theme('colors.info-contrast');
+}
+
+.is-info-dark {
+  background-color: theme('colors.info-dark');
+  color: theme('colors.info-dark-contrast');
+}
+
+.is-info-light {
+  background-color: theme('colors.info-light');
+  color: theme('colors.info-light-contrast');
+}
+
+.is-error {
+  background-color: theme('colors.error');
+  color: theme('colors.error-contrast');
+}
+
+.is-error-dark {
+  background-color: theme('colors.error-dark');
+  color: theme('colors.error-dark-contrast');
+}
+
+.is-error-light {
+  background-color: theme('colors.error-light');
+  color: theme('colors.error-light-contrast');
+}
+
+.is-danger {
+  background-color: theme('colors.danger');
+  color: theme('colors.danger-contrast');
+}
+
+.is-danger-dark {
+  background-color: theme('colors.danger-dark');
+  color: theme('colors.danger-dark-contrast');
+}
+
+.is-danger-light {
+  background-color: theme('colors.danger-light');
+  color: theme('colors.danger-light-contrast');
+}
+
+.is-warning {
+  background-color: theme('colors.warning');
+  color: theme('colors.warning-contrast');
+}
+
+.is-warning-dark {
+  background-color: theme('colors.warning-dark');
+  color: theme('colors.warning-dark-contrast');
+}
+
+.is-warning-light {
+  background-color: theme('colors.warning-light');
+  color: theme('colors.warning-light-contrast');
+}
+
+.is-success {
+  background-color: theme('colors.success');
+  color: theme('colors.success-contrast');
+}
+
+.is-success-dark {
+  background-color: theme('colors.success-dark');
+  color: theme('colors.success-dark-contrast');
+}
+
+.is-success-light {
+  background-color: theme('colors.success-light');
+  color: theme('colors.success-light-contrast');
+}
+
+.is-grey {
+  background-color: theme('colors.grey');
+  color: theme('colors.grey-contrast');
+}
+
+.is-grey-dark {
+  background-color: theme('colors.grey-dark');
+  color: theme('colors.grey-dark-contrast');
+}
+
+.is-grey-light {
+  background-color: theme('colors.grey-light');
+  color: theme('colors.grey-light-contrast');
+}
+
+.is-tertiary {
+  background-color: theme('colors.tertiary');
+  color: theme('colors.tertiary-contrast');
+}
+
+.is-tertiary-dark {
+  background-color: theme('colors.tertiary-dark');
+  color: theme('colors.tertiary-dark-contrast');
+}
+
+.is-tertiary-light {
+  background-color: theme('colors.tertiary-light');
+  color: theme('colors.tertiary-light-contrast');
+}
+
+.is-secondary {
+  background-color: theme('colors.secondary');
+  color: theme('colors.secondary-contrast');
+}
+
+.is-secondary-dark {
+  background-color: theme('colors.secondary-dark');
+  color: theme('colors.secondary-dark-contrast');
+}
+
+.is-secondary-light {
+  background-color: theme('colors.secondary-light');
+  color: theme('colors.secondary-light-contrast');
+}
+
+.has-text-white {
+  color: theme('colors.white');
+}
+
+.has-text-black {
+  color: theme('colors.black');
+}
+
+.has-text-light {
+  color: theme('colors.light');
+}
+
+.has-text-dark {
+  color: theme('colors.dark');
+}
+
+.has-text-primary {
+  color: theme('colors.primary');
+}
+
+.has-text-primary-dark {
+  color: theme('colors.primary-dark');
+}
+
+.has-text-primary-light {
+  color: theme('colors.primary-light');
+}
+
+.has-text-info {
+  color: theme('colors.info');
+}
+
+.has-text-info-dark {
+  color: theme('colors.info-dark');
+}
+
+.has-text-info-light {
+  color: theme('colors.info-light');
+}
+
+.has-text-success {
+  color: theme('colors.success');
+}
+
+.has-text-success-dark {
+  color: theme('colors.success-dark');
+}
+
+.has-text-success-light {
+  color: theme('colors.success-light');
+}
+
+.has-text-warning {
+  color: theme('colors.warning');
+}
+
+.has-text-warning-dark {
+  color: theme('colors.warning-dark');
+}
+
+.has-text-warning-light {
+  color: theme('colors.warning-light');
+}
+
+.has-text-danger {
+  color: theme('colors.danger');
+}
+
+.has-text-danger-dark {
+  color: theme('colors.danger-dark');
+}
+
+.has-text-danger-light {
+  color: theme('colors.danger-light');
+}
+
+.has-text-tertiary {
+  color: theme('colors.tertiary');
+}
+
+.has-text-tertiary-dark {
+  color: theme('colors.tertiary-dark');
+}
+
+.has-text-tertiary-light {
+  color: theme('colors.tertiary-light');
+}
+
+.has-text-error {
+  color: theme('colors.error');
+}
+
+.has-text-error-dark {
+  color: theme('colors.error-dark');
+}
+
+.has-text-error-light {
+  color: theme('colors.error-light');
+}
+
+.has-text-grey {
+  color: theme('colors.grey');
+}
+
+.has-text-grey-dark {
+  color: theme('colors.grey-dark');
+}
+
+.has-text-grey-light {
+  color: theme('colors.grey-light');
+}

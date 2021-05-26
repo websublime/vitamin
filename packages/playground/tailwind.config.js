@@ -1,19 +1,22 @@
 module.exports = {
-  darkMode: 'class',
+  content: [
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx,html}'
+  ],
+  darkMode: 'media',
   // mode: 'jit',
-  plugins: [],
-  purge: {
-    content: ['./src/**/*.html', './src/**/*.js'],
-    layers: []
-  },
-  // or 'media' or 'class'
+  plugins: [
+    require('@websublime/vitamin-theme')
+  ],
   theme: {
     extend: {}
   },
   variants: {
     extend: {
+      borderWidth: ['hover', 'focus'],
       cursor: ['disabled'],
       opacity: ['disabled'],
+      outline: ['hover', 'active'],
       textColor: ['visited', 'disabled']
     }
   }

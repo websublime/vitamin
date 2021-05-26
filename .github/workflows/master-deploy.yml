@@ -20,13 +20,13 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
 
       - name: Install dependencies
-        run: yarn bootstrap
+        run: yarn
 
       - name: Build Website
-        run: yarn build
+        run: yarn turbo run build
         env:
           NODE_ENV: 'production'
 
@@ -38,4 +38,4 @@ jobs:
           FOLDER: packages/playground/dist
           GIT_CONFIG_NAME: VitaminBot
           GIT_CONFIG_EMAIL: hello@websublime.dev
-          COMMIT_MESSAGE: website deploy
+          COMMIT_MESSAGE: feat: website deploy

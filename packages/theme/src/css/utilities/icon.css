@@ -1,0 +1,7 @@
+.icon-props {
+	--icon-margin-x: theme('margin.1');
+
+	--icon-margin-y: theme('margin.0');
+
+	--icon-display:  inline-flex;
+}

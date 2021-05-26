@@ -1,0 +1,10 @@
+@import "@websublime/vitamin-theme/dist/theme/style.css";
+
+body {
+  @apply h-screen w-full flex flex-col;
+}
+
+.ui-layout,
+.ui-window {
+  @apply h-full w-full;
+}

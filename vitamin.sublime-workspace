@@ -1,0 +1,907 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"i",
+				"index.js"
+			],
+			[
+				"node",
+				"node_modules/"
+			],
+			[
+				"de",
+				"dependencies"
+			],
+			[
+				"gist",
+				"gist_id\t(SyncSettings.sublime-settings)"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "packages/vital/src/postcss.config.js",
+			"settings":
+			{
+				"buffer_size": 365,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					1,
+					1,
+					"expand_tabs",
+					{
+						"set_translate_tabs": true
+					},
+					"AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					2,
+					1,
+					"add_file_header",
+					{
+						"path": "/Users/miguelramos/Public/workspace/vitamin/packages/vital/src/postcss.config.js"
+					},
+					"AQAAAAAAAAAAAAAAjAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					5,
+					1,
+					"paste",
+					null,
+					"AgAAAAAAAAAAAAAAbAEAAAAAAAAAAAAAbAEAAAAAAABsAQAAAAAAAIwAAAAvKgoqIEBBdXRob3I6IE1pZ3VlbCBSYW1vcwoqIEBEYXRlOiAgIDIwMjEtMDUtMjggMDE6MDU6MDUKKiBATGFzdCBNb2RpZmllZCBieTogICBNaWd1ZWwgUmFtb3MKKiBATGFzdCBNb2RpZmllZCB0aW1lOiAyMDIxLTA1LTI4IDAxOjA1OjA1CiovCg",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					7,
+					1,
+					"ensure_newline_at_eof",
+					null,
+					"AQAAAGwBAAAAAAAAbQEAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAABsAQAAAAAAAGwBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					13,
+					1,
+					"left_delete",
+					null,
+					"AQAAAGUBAAAAAAAAZQEAAAAAAAABAAAALA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAABmAQAAAAAAAGYBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					16,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAAGsBAAAAAAAAbAEAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAABrAQAAAAAAAGsBAAAAAAAAAAAAAAAA8L8"
+				]
+			]
+		},
+		{
+			"file": "packages/vital/package.json",
+			"settings":
+			{
+				"buffer_size": 1607,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": ","
+					},
+					"AQAAAPoBAAAAAAAA+wEAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAD6AQAAAAAAAPoBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					4,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AgAAAPsBAAAAAAAA/AEAAAAAAAAAAAAA/AEAAAAAAAAAAgAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAD7AQAAAAAAAPsBAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					5,
+					1,
+					"paste",
+					null,
+					"AQAAAAACAAAAAAAANAIAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAgAAAAAAAAACAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					6,
+					1,
+					"left_delete",
+					null,
+					"AQAAADMCAAAAAAAAMwIAAAAAAAABAAAALA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAA0AgAAAAAAADQCAAAAAAAAAAAAAAAA8L8"
+				]
+			]
+		},
+		{
+			"file": "packages/vital/tools/index.js",
+			"settings":
+			{
+				"buffer_size": 201,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					4,
+					1,
+					"insert",
+					{
+						"characters": "dis"
+					},
+					"BAAAAIcAAAAAAAAAiAAAAAAAAAAAAAAAiAAAAAAAAACIAAAAAAAAAAMAAABsaWKIAAAAAAAAAIkAAAAAAAAAAAAAAIkAAAAAAAAAigAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACHAAAAAAAAAIoAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					5,
+					1,
+					"insert",
+					{
+						"characters": "t"
+					},
+					"AQAAAIoAAAAAAAAAiwAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACKAAAAAAAAAIoAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					12,
+					1,
+					"duplicate_line",
+					null,
+					"AQAAAI8AAAAAAAAA1gAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAABiAAAAAAAAAGIAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					17,
+					1,
+					"paste",
+					null,
+					"AgAAAJsAAAAAAAAAxQAAAAAAAAAAAAAAxQAAAAAAAADFAAAAAAAAADcAAABwb3N0Y3NzIC0tY29uZmlnIHNyYyBzcmMvKiovKi5jc3MgLS1iYXNlIHNyYyAtLWRpciBkaXN0",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACbAAAAAAAAANIAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					21,
+					1,
+					"insert",
+					{
+						"characters": "test"
+					},
+					"BQAAAKsAAAAAAAAArAAAAAAAAAAAAAAArAAAAAAAAACsAAAAAAAAAAQAAABiYXNlrAAAAAAAAACtAAAAAAAAAAAAAACtAAAAAAAAAK4AAAAAAAAAAAAAAK4AAAAAAAAArwAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAACrAAAAAAAAAK8AAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					31,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAAMkAAAAAAAAAygAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAADJAAAAAAAAAMkAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					34,
+					1,
+					"left_delete",
+					null,
+					"AQAAAMkAAAAAAAAAyQAAAAAAAAABAAAACg",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAADKAAAAAAAAAMoAAAAAAAAAAAAAAAAA8L8"
+				]
+			]
+		},
+		{
+			"file": "packages/vital/src/tailwind.config.js",
+			"settings":
+			{
+				"buffer_size": 21,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "module.exports = {};"
+			},
+			"undo_stack":
+			[
+				[
+					1,
+					1,
+					"insert",
+					{
+						"characters": "modul"
+					},
+					"BQAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAAAAAAAAAAAMAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAFAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					2,
+					1,
+					"insert",
+					{
+						"characters": "e.expo"
+					},
+					"BgAAAAUAAAAAAAAABgAAAAAAAAAAAAAABgAAAAAAAAAHAAAAAAAAAAAAAAAHAAAAAAAAAAgAAAAAAAAAAAAAAAgAAAAAAAAACQAAAAAAAAAAAAAACQAAAAAAAAAKAAAAAAAAAAAAAAAKAAAAAAAAAAsAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAFAAAAAAAAAAUAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": "rts"
+					},
+					"AwAAAAsAAAAAAAAADAAAAAAAAAAAAAAADAAAAAAAAAANAAAAAAAAAAAAAAANAAAAAAAAAA4AAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAALAAAAAAAAAAsAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					4,
+					1,
+					"insert",
+					{
+						"characters": " ="
+					},
+					"AgAAAA4AAAAAAAAADwAAAAAAAAAAAAAADwAAAAAAAAAQAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAOAAAAAAAAAA4AAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					5,
+					1,
+					"insert",
+					{
+						"characters": " "
+					},
+					"AQAAABAAAAAAAAAAEQAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAQAAAAAAAAABAAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					6,
+					1,
+					"insert_snippet",
+					{
+						"contents": "{$0}"
+					},
+					"AQAAABEAAAAAAAAAEwAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAARAAAAAAAAABEAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					8,
+					1,
+					"insert",
+					{
+						"characters": ";"
+					},
+					"AQAAABMAAAAAAAAAFAAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAATAAAAAAAAABMAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					9,
+					1,
+					"insert",
+					{
+						"characters": "\n"
+					},
+					"AQAAABQAAAAAAAAAFQAAAAAAAAAAAAAA",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAUAAAAAAAAABQAAAAAAAAAAAAAAAAA8L8"
+				],
+				[
+					10,
+					1,
+					"expand_tabs",
+					{
+						"set_translate_tabs": true
+					},
+					"AQAAAAAAAAAAAAAAFQAAAAAAAAAVAAAAbW9kdWxlLmV4cG9ydHMgPSB7fTsK",
+					"AgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/AAAAAAEAAAAVAAAAAAAAABUAAAAAAAAAAAAAAAAA8L8"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"lint",
+				"SublimeLinter: Lint This View"
+			],
+			[
+				"sort",
+				"Pretty JSON: Format and Sort JSON"
+			],
+			[
+				"prettir",
+				"JsPrettier: Format Code"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"bum",
+				"Bump: Choose Distribution Mode"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 144.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/miguelramos/Public/workspace/vitamin",
+		"/Users/miguelramos/Public/workspace/vitamin/packages",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/src",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/tools"
+	],
+	"file_history":
+	[
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/src/test.css",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/package.json",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/tools/index.js",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/User/JsPrettier.sublime-settings",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/.eslintrc.js",
+		"/Users/miguelramos/Public/workspace/vitamin/package.json",
+		"/Users/miguelramos/Public/workspace/vitamin/vitamin.sublime-project",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/vue.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/playground/.eslintrc.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vitamin/.eslintrc.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/playground/package.json",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/package.json",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vitamin/package.json",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/.eslintrc.json",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/.eslintignore",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/index.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/rules/typescript.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/rules/vue.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/eslint-config-vitamin/rules/base.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/index.js",
+		"/Users/miguelramos/Public/workspace/vitamin/packages/vital/jsconfig.json",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/User/SyncSettings.sublime-settings",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/Sync Settings/SyncSettings.sublime-settings",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/User/Pretty JSON.sublime-settings",
+		"/Users/miguelramos/Library/Application Support/Sublime Text 3/Packages/Pretty JSON/Pretty JSON.sublime-settings"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"\""
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "packages/vital/src/postcss.config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 365,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								292,
+								292
+							]
+						],
+						"settings":
+						{
+							"c_time":
+							[
+								128,
+								3,
+								99,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								113,
+								0,
+								67,
+								10,
+								7,
+								229,
+								5,
+								28,
+								1,
+								5,
+								5,
+								7,
+								11,
+								54,
+								113,
+								1,
+								133,
+								113,
+								2,
+								82,
+								113,
+								3,
+								46
+							],
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/zzz A File Icon zzz/aliases/JavaScript (Post CSS).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "packages/vital/package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1607,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								305,
+								305
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html, text.xml"
+								},
+								{
+									"rhs_empty": true,
+									"selector": "punctuation.accessor"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"c_time":
+							[
+								128,
+								3,
+								99,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								113,
+								0,
+								67,
+								10,
+								7,
+								229,
+								5,
+								28,
+								1,
+								3,
+								46,
+								11,
+								185,
+								119,
+								113,
+								1,
+								133,
+								113,
+								2,
+								82,
+								113,
+								3,
+								46
+							],
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/zzz A File Icon zzz/aliases/JSON (NPM).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "packages/vital/tools/index.js",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 201,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								201,
+								201
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html, text.xml"
+								},
+								{
+									"rhs_empty": true,
+									"selector": "punctuation.accessor"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"c_time":
+							[
+								128,
+								3,
+								99,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								113,
+								0,
+								67,
+								10,
+								7,
+								229,
+								5,
+								28,
+								1,
+								3,
+								6,
+								15,
+								60,
+								171,
+								113,
+								1,
+								133,
+								113,
+								2,
+								82,
+								113,
+								3,
+								46
+							],
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "packages/vital/src/tailwind.config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21,
+								21
+							]
+						],
+						"settings":
+						{
+							"auto_name": "module.exports = {};",
+							"c_time":
+							[
+								128,
+								3,
+								99,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								100,
+								97,
+								116,
+								101,
+								116,
+								105,
+								109,
+								101,
+								10,
+								113,
+								0,
+								67,
+								10,
+								7,
+								229,
+								5,
+								28,
+								1,
+								6,
+								50,
+								1,
+								243,
+								33,
+								113,
+								1,
+								133,
+								113,
+								2,
+								82,
+								113,
+								3,
+								46
+							],
+							"editorconfig": true,
+							"ensure_newline_at_eof_on_save": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true,
+							"trim_trailing_white_space_on_save": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 49.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.CSS Extended Completions":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 120.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "vitamin.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 241.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

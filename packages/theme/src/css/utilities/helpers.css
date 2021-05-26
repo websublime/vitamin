@@ -1,0 +1,42 @@
+.is-rounded {
+  @apply rounded;
+
+  &-sm {
+    @apply rounded-sm;
+  }
+
+  &-md {
+    @apply rounded-md;
+  }
+
+  &-lg {
+    @apply rounded-lg;
+  }
+
+  &-xl {
+    @apply rounded-xl;
+  }
+
+  &-big {
+    @apply rounded-2xl;
+  }
+
+  &-bigger {
+    @apply rounded-3xl;
+  }
+
+  &-full {
+    @apply rounded-full;
+  }
+}
+
+.is-tiny {
+  height: 1rem;
+  font-size: .6rem;
+  padding: 0.1rem;
+}
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
