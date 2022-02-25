@@ -1,0 +1,92 @@
+.vui-btn {
+  @apply button-props transition-colors flex items-center ripple;
+
+  padding: var(--button-padding-y, theme('padding.2')) var(--button-padding-x, theme('padding.4'));
+
+  &:hover:not([disabled]) {
+    --button-background-opacity: .8;
+  }
+
+  &:active {
+    background-size: 100%;
+    transition: background 0s;
+  }
+
+  &:is([disabled]) {
+    background-color: hsl(var(--grey-dark-color) / var(--button-background-opacity, 1));
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &-primary {
+      background: hsl(var(--primary-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--primary-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--primary-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--primary-dark-color) / .8);
+      }
+    }
+
+    &-secondary {
+      background: hsl(var(--secondary-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--secondary-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--secondary-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--secondary-dark-color) / .8);
+      }
+    }
+
+    &-tertiary {
+      background: hsl(var(--tertiary-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--tertiary-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--tertiary-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--tertiary-dark-color) / .8);
+      }
+    }
+
+    &-info {
+      background: hsl(var(--info-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--info-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--info-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--info-dark-color) / .8);
+      }
+    }
+
+    &-success {
+      background: hsl(var(--success-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--success-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--success-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--success-dark-color) / .8);
+      }
+    }
+
+    &-error {
+      background: hsl(var(--error-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--error-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--error-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--error-dark-color) / .8);
+      }
+    }
+
+    &-warning {
+      background: hsl(var(--warning-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--warning-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--warning-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--warning-dark-color) / .8);
+      }
+    }
+
+    &-danger {
+      background: hsl(var(--danger-dark-color) / var(--button-background-opacity, 1)) radial-gradient(circle, transparent 1%, hsl(var(--danger-dark-color) / var(--button-background-opacity, 1)) 1%) center/15000%;
+      color: hsl(var(--danger-dark-contrast) / var(--button-color-opacity, 1));
+
+      &:active {
+        background-color: hsl(var(--danger-dark-color) / .8);
+      }
+    }
+  }
+}

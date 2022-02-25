@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.11.0",
+    "@typescript-eslint/parser": "^5.11.0",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/eslint-config-typescript": "^7.0.0",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.2",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-new-with-error": "^2.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "eslint-plugin-sort-class-members": "^1.11.0",
+    "eslint-plugin-sort-destructure-keys": "^1.3.5",
+    "eslint-plugin-switch-case": "^1.1.2",
+    "eslint-plugin-vue": "^7.8.0",
+    "prettier": "1.18.2"
+  },
+  "files": [
+    "rules/",
+    "index.js",
+    "typescript.js",
+    "vue.js"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "@websublime/eslint-config-vitamin",
+  "scripts": {
+    "lint": "eslint . --fix"
+  },
+  "version": "1.0.0"
+}

@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "paths": {
       "@/*": ["./src/*"],
-      "@websublime/vitamin-ui/*": ["../vitamin/*"]
+      "@websublime/vitamin-ui": ["../ui/src/index.ts"]
     },
     "resolveJsonModule": true,
     "sourceMap": true,
@@ -16,5 +16,6 @@
     "target": "esnext",
     "types": ["vite/client"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "extends": "../../tsconfig.base.json"
 }

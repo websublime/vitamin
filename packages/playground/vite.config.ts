@@ -1,6 +1,6 @@
 import vue from '@vitejs/plugin-vue';
 import { join, resolve } from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, searchForWorkspaceRoot } from 'vite';
 import vitePluginVuedoc, { vueDocFiles } from 'vite-plugin-vuedoc';
 
 const root = resolve(__dirname);
@@ -26,8 +26,8 @@ export default defineConfig({
   resolve: {
     alias: [
       {
-        find: '@websublime/vitamin',
-        replacement: resolve(join(root, '../vitamin'))
+        find: '@websublime/vitamin-ui',
+        replacement: resolve(join(root, '../ui/src/index.ts'))
       },
       {
         find: '@',
@@ -37,6 +37,9 @@ export default defineConfig({
   },
   root,
   server: {
-    force: true
+    force: true,
+    fs: {
+      allow: [searchForWorkspaceRoot(resolve(join(root, '../')))]
+    }
   }
 });

@@ -1,0 +1,6 @@
+/dist
+/types
+/coverage
+**/*.d.ts
+temp/*
+node_modules

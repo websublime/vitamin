@@ -2,3 +2,4 @@
 /types
 /coverage
 **/*.d.ts
+temp/*
