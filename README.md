@@ -1,8 +1,4 @@
 <p align="center">
-  <img src="./logo.svg" alt="vitamin"/>
-</p>
-
-<p align="center">
   <img style="display: inline; margin: 0 6px" alt="GitHub issues" src="https://img.shields.io/github/issues/websublime/vitamin?style=flat-square">
   <img style="display: inline; margin: 0 6px" alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/websublime/vitamin?style=flat-square">
   <img style="display: inline; margin: 0 6px" alt="GitHub" src="https://img.shields.io/github/license/websublime/vitamin?style=flat-square">
