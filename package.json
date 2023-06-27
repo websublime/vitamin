@@ -1,50 +1,63 @@
 {
+  "name": "@websublime/vitamin",
   "author": {
-    "email": "miguel.marques.ramos@gmail.com",
-    "name": "Miguel Ramos",
-    "url": "https://miguelramos.dev"
+    "email": "hello@miguelramos.dev",
+    "name": "miguelramos",
+    "url": "https://github.com/miguelramos"
   },
   "bugs": {
     "url": "https://github.com/websublime/vitamin/issues"
   },
-  "engines": {
-    "node": ">=14"
-  },
-  "description": "Vitamin components",
-  "devDependencies": {
-    "@changesets/changelog-github": "^0.3.0",
-    "@changesets/cli": "^2.14.1",
-    "@changesets/get-github-info": "^0.5.0",
-    "bundlesize": "^0.18.1",
-    "husky": "^6.0.0",
-    "lerna": "^4.0.0",
-    "lint-staged": "^10.5.4"
-  },
-  "keywords": ["components", "vue", "ui", "lib"],
-  "license": "MIT",
-  "name": "root",
-  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/websublime/vitamin"
+    "url": "ssh://git@github.com:websublime/vitamin.git"
   },
-  "scripts": {
-    "bootstrap": "lerna bootstrap --use-workspaces",
-    "build": "yarn build:lib && yarn build:play",
-    "build:lib": "lerna run build --parallel --scope @websublime/vitamin-ui",
-    "build:lib:watch": "lerna run build:watch --parallel --scope @websublime/vitamin-ui",
-    "build:play": "lerna run build --parallel --scope @websublime/vitamin-play",
-    "build:watch": "lerna run build:watch --parallel --scope=@websublime/{vitamin-ui,vitamin-play}",
-    "clean": "lerna run clean",
-    "evalbundle": "bundlesize",
-    "lint": "lerna run lint --parallel --scope=@websublime/{vitamin-ui,vitamin-play}",
-    "prepare": "husky install",
-    "postinstall": "lerna link && yarn build:lib",
-    "publish-ci": "lerna publish from-package -y --no-verify-access",
-    "release": "yarn changeset publish",
-    "start": "yarn build:watch",
-    "test": "lerna run test --parallel --scope @websublime/vitamin-ui"
+  "engines": {
+    "node": ">=18"
   },
+  "private": true,
+  "packageManager": "pnpm@8.6.3",
   "version": "1.0.0",
-  "workspaces": ["packages/*"]
+  "description": "",
+  "scripts": {
+    "lint": "pnpm --filter \"@websublime/*\" lint",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "components",
+    "lit",
+    "ui",
+    "lib"
+  ],
+  "license": "ISC",
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.26.1",
+    "@changesets/get-github-info": "^0.5.2",
+    "@typescript-eslint/eslint-plugin": "5.60.1",
+    "@typescript-eslint/parser": "5.60.1",
+    "eslint": "^8.43.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-sort-destructure-keys": "^1.5.0",
+    "eslint-plugin-unicorn": "^47.0.0",
+    "lint-staged": "^13.2.2",
+    "prettier": "^2.8.8",
+    "rome": "12.1.3",
+    "simple-git-hooks": "^2.8.1",
+    "yorkie": "2.0.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,tsx,md}": [
+      "eslint --cache --fix"
+    ]
+  }
 }

@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
-/dist
-temp/
+dist/
 www/
 
 # local env files
@@ -17,9 +16,8 @@ pnpm-debug.log*
 # Editor directories and files
 .idea
 .vscode
-.idea
-node_modules
-.DS_Store
-dist
-temp
-coverage
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

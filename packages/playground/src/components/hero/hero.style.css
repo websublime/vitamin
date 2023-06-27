@@ -1,5 +1,0 @@
-@layer components {
-  .vt-hero {
-    @apply py-16 dark:bg-gray-800 bg-gray-100 dark:text-gray-200;
-  }
-}

@@ -9,34 +9,18 @@
 </p>
 
 
-<p align="center">💊 Vitamin - A Vue.js 3.0 UI library</p>
+<p align="center">💊 Vitamin - UI library</p>
 
-* 💪 Vue 3.0 Composition API
+* 💪 Lit API
 * 🔥 Written in TypeScript
 * 🎨 TailwindCss
 -----
 
 ## ⛓ Installation (WIP)
 
-Install library with npm or yarn
-
-```bash
-yarn add @websublime/vitamin-ui
-```
 
 ## 🧮 Usage
 
-Choose your desired icons from Iconify.
-
-```ts
-import codicon from '@iconify/json/json/codicon.json';
-import Vitamin from '@websublime/vitamin-ui';
-
-app.use(Vitamin, {
-  iconifyPack: codicon,
-  iconifyPrefix: 'codicon'
-});
-```
 
 ## ⚒ Develop
 
