@@ -3,6 +3,5 @@ www/
 types/
 coverage/
 **/*.d.ts
-node_modules/
 temp/*
-coverage/*
+node_modules/

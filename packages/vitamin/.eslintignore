@@ -1,5 +1,0 @@
-/dist
-/types
-/coverage
-**/*.d.ts
-temp/*

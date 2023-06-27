@@ -2,27 +2,36 @@ name: Lint Test
 
 on: pull_request
 
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
 jobs:
   build:
     name: Lint Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v2
+      - name: Checkout code repository
+        uses: actions/checkout@v3
         with:
-          node-version: '14'
-      - name: Install dependencies
-        run: yarn bootstrap
-      - name: Lint
-        run: yarn lint
+          fetch-depth: 0
 
-  dependabot:
-    needs:
-      - build
-    runs-on: ubuntu-latest
-    steps:
-      - name: auto-merge
-        uses: ridedott/dependabot-auto-merge-action@master
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          node-version: '16'
+
+      - name: Install pnpm package manager
+        run: npm i pnpm@latest -g
+
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm lint
