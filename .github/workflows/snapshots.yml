@@ -54,10 +54,8 @@ jobs:
       - name: Create Snapshot
         uses: changesets/action@v1
         with:
-          version: pnpm changeset version --snapshot
-          publish: pnpm changeset publish --snapshot
-          title: "chore(snapshot): version packages"
-          commit: "chore(snapshot): version packages"
+          version: pnpm snapshot:version
+          publish: pnpm snapshot:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
