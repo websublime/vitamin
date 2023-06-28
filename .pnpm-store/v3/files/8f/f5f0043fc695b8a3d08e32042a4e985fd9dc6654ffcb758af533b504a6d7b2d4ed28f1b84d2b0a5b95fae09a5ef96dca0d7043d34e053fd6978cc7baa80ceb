@@ -1,7 +1,0 @@
-import{decorateProperty as e}from"./base.js";
-/**
- * @license
- * Copyright 2017 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */function t(t){const n=t?.slot,r=t;return e({descriptor:e=>({get(){const e="slot"+(n?`[name=${n}]`:":not([name])"),t=this.renderRoot?.querySelector(e);return t?.assignedNodes(r)??[]},enumerable:!0,configurable:!0})})}export{t as queryAssignedNodes};
-//# sourceMappingURL=query-assigned-nodes.js.map

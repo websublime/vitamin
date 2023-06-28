@@ -23,3 +23,4 @@ node_modules
 dist
 temp
 coverage
+.pnpm-store
