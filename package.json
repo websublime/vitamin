@@ -22,8 +22,8 @@
   "scripts": {
     "lint": "pnpm --filter \"@websublime/*\" lint",
     "build": "pnpm --filter \"@websublime/*\" build",
-    "snapshot:version": "changeset version --tag SNAPSHOT --snapshot",
-    "snapshot:publish": "changeset publish --no-git-tag --tag SNAPSHOT --snapshot",
+    "snapshot:version": "changeset version --snapshot SNAPSHOT",
+    "snapshot:publish": "changeset publish --no-git-tag --snapshot SNAPSHOT",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
