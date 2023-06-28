@@ -21,7 +21,7 @@ async function development({ serve = true, watch = true } = {}) {
   });
 
   if (watch) {
-    contextBuild.watch();
+    await contextBuild.watch();
   }
 
   if (serve) {

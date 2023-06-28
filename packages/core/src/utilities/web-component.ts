@@ -8,7 +8,7 @@
 |
 */
 
-import { LitElement, ReactiveElement } from 'lit';
+import { LitElement, PropertyValues, ReactiveElement } from 'lit';
 
 import { ComponentMetadata, ComponentMixinInterface, Constructor, WebComponentOptions } from '../types/index.js';
 
@@ -82,9 +82,17 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
     public override disconnectedCallback(): void {
       super.disconnectedCallback();
     }
+
+    /**
+     * @internal
+     * @readonly
+     */
+    public override updated(changedProperties: PropertyValues) {
+      super.updated?.(changedProperties);
+    }
   }
 
-  return SuperElement;
+  return SuperElement as Constructor<SuperElement> & T;
 }
 
 /**
@@ -116,9 +124,9 @@ export class ComponentElement extends ComponentMixin<Constructor<ReactiveElement
  */
 export function defineWebComponent<WebComponent extends ComponentElement>(
   name: string,
-  component: new () => WebComponent,
+  component: Constructor<WebComponent>,
   options: WebComponentOptions = {}
-): new () => WebComponent {
+): Constructor<WebComponent> {
   Object.defineProperty(component.prototype, 'componentOptions', {
     enumerable: true,
     value: options,

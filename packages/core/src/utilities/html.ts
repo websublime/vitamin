@@ -8,4 +8,5 @@
 |
 */
 
-export { html, noChange, nothing, render, svg } from 'lit/html.js';
+export { html, svg } from 'lit/html.js';
+export type { noChange, nothing, render } from 'lit/html.js';

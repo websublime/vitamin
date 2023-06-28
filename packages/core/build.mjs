@@ -21,7 +21,8 @@ export async function build({ watch = false } = {}) {
     outdir: './dist',
     plugins: [clean(), litCssPlugin()],
     sourcemap: true,
-    target: 'es2020'
+    target: 'es2020',
+    treeShaking: true
   });
 
   if (watch) {
