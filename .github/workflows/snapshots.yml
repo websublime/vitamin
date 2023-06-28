@@ -48,9 +48,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm build
-
       - name: Create Snapshot
         uses: changesets/action@v1
         with:
