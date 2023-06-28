@@ -26,7 +26,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '18'
 
       - name: Install pnpm package manager
         run: npm i pnpm@latest -g
@@ -55,7 +55,7 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm changeset version --snapshot
-          publish: pnpm changeset publish --no-git-tag --snapshot
+          publish: pnpm changeset publish --snapshot
           title: "chore(snapshot): version packages"
           commit: "chore(snapshot): version packages"
         env:
