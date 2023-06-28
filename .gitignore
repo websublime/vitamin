@@ -24,3 +24,4 @@ dist
 temp
 coverage
 .pnpm-store
+.eslintcache
