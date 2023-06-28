@@ -1,0 +1,7 @@
+import{decorateProperty as t}from"./base.js";
+/**
+ * @license
+ * Copyright 2017 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */function r(r,n){return t({descriptor:t=>{const e={get(){return this.renderRoot?.querySelector(r)??null},enumerable:!0,configurable:!0};if(n){const t=Symbol();e.get=function(){return void 0===this[t]&&(this[t]=this.renderRoot?.querySelector(r)??null),this[t]}}return e}})}export{r as query};
+//# sourceMappingURL=query.js.map
