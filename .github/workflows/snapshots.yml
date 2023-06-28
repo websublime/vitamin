@@ -53,8 +53,11 @@ jobs:
       - name: Create Snapshot
         uses: changesets/action@v1.4.5
         with:
+          setupGitUser: false
           version: pnpm snapshot:version
           publish: pnpm snapshot:publish
+          title: "Snapshot Release"
+          commit: "chore(release): snapshot release"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}
