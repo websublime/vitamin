@@ -67,10 +67,18 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
       return this.dir === 'ltr';
     }
 
+    /**
+     * @internal
+     * @readonly
+     */
     public override connectedCallback(): void {
       super.connectedCallback();
     }
 
+    /**
+     * @internal
+     * @readonly
+     */
     public override disconnectedCallback(): void {
       super.disconnectedCallback();
     }

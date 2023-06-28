@@ -7,6 +7,10 @@ on:
       - 'feature/**'
       - 'fix/**'
       - 'next/**'
+    branches-ignore:
+      - $default-branch
+      - 'main'
+      - 'changeset-set-release/**'
 
 env:
   CI: true
@@ -56,7 +60,7 @@ jobs:
         uses: changesets/action@v1.4.5
         with:
           version: pnpm snapshot:version
-          publish: pnpm build && pnpm snapshot:publish
+          publish: pnpm snapshot:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}

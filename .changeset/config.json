@@ -15,7 +15,7 @@
   "useCalculatedVersion": true,
   "snapshot": {
     "useCalculatedVersion": true,
-    "prereleaseTemplate": "{timestamp}-{commit}"
+    "prereleaseTemplate": "{tag}-{commit}"
   },
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "updateInternalDependents": "always",
