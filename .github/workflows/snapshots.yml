@@ -2,11 +2,6 @@ name: Build and Deploy Feature artifacts
 
 on:
   push:
-    branches:
-      - 'feat/**'
-      - 'feature/**'
-      - 'fix/**'
-      - 'next/**'
     branches-ignore:
       - $default-branch
       - 'main'
