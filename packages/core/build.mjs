@@ -12,7 +12,7 @@ export async function build({ watch = false } = {}) {
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
-    entryPoints: [...sync('src/**/*.ts')],
+    entryPoints: ['./src/index.ts', './src/version.ts', ...sync('./src/utilities/*.ts')],
     external: ['lit', 'tslib'],
     format: 'esm',
     logLevel: 'debug',

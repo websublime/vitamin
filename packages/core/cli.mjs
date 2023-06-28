@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved
+import clean from '@akrc/esbuild-plugin-clean';
 import { context } from 'esbuild';
 import { sync } from 'glob';
 
@@ -14,6 +16,7 @@ async function development({ serve = true, watch = true } = {}) {
     format: 'esm',
     logLevel: 'debug',
     outdir: 'www/js',
+    plugins: [clean({ dirs: ['www/js'] })],
     target: 'es2020'
   });
 
