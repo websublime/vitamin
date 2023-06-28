@@ -1,0 +1,7 @@
+import{decorateProperty as e}from"./base.js";
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */const o=null!=globalThis.HTMLSlotElement?.prototype.assignedElements?(e,o)=>e.assignedElements(o):(e,o)=>e.assignedNodes(o).filter((e=>e.nodeType===Node.ELEMENT_NODE));function t(t){const{slot:n,selector:r}=t??{};return e({descriptor:e=>({get(){const e="slot"+(n?`[name=${n}]`:":not([name])"),l=this.renderRoot?.querySelector(e),s=null!=l?o(l,t):[];return r?s.filter((e=>e.matches(r))):s},enumerable:!0,configurable:!0})})}export{t as queryAssignedElements};
+//# sourceMappingURL=query-assigned-elements.js.map

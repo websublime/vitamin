@@ -1,0 +1,45 @@
+{
+  "name": "string-to-template-literal",
+  "version": "2.0.0",
+  "description": "Encode strings to JavaScript template literals",
+  "type": "module",
+  "exports": "./dist/main.js",
+  "types": "dist/main.d.ts",
+  "author": "Mgenware (https://github.com/mgenware)",
+  "homepage": "https://github.com/mgenware/string-to-template-literal",
+  "bugs": "https://github.com/mgenware/string-to-template-literal/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgenware/string-to-template-literal"
+  },
+  "license": "MIT",
+  "scripts": {
+    "r": "daizong",
+    "test": "daizong build"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.ts",
+    "dist/**/*.html",
+    "dist/**/*.css",
+    "dist/**/*.map"
+  ],
+  "devDependencies": {
+    "@types/mocha": "^8.2.0",
+    "@types/node": "^14.14.25",
+    "@typescript-eslint/eslint-plugin": "^4.15.0",
+    "@typescript-eslint/parser": "^4.15.0",
+    "daizong": "^0.12.2",
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb-typescript-lite": "^12.0.0",
+    "eslint-config-mgenware": "^0.0.5",
+    "eslint-plugin-import": "^2.22.1",
+    "mgenware-tsconfig-node": "^14.0.2",
+    "mocha": "^8.2.1",
+    "source-map-support": "^0.5.19",
+    "typescript": "^4.1.4"
+  }
+}

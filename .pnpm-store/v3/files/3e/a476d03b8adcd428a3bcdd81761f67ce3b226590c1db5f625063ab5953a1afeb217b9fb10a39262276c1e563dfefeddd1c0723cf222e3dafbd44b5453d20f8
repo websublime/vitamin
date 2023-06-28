@@ -1,0 +1,7 @@
+import{_$LH as e,noChange as t}from"./lit-html.js";
+/**
+ * @license
+ * Copyright 2019 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */const r={boundAttributeSuffix:e.S,marker:e.A,markerMatch:e.P,HTML_RESULT:e.M,getTemplateHtml:e.C,overrideDirectiveResolve:(e,t)=>class extends e{_$AS(e,r){return t(this,r)}},setDirectiveClass(e,t){e._$litDirective$=t},getAttributePartCommittedValue:(e,r,a)=>{let i=t;return e.j=e=>i=e,e._$AI(r,e,a),i},connectedDisconnectable:e=>({...e,_$AU:!0}),resolveDirective:e.D,AttributePart:e.I,PropertyPart:e.U,BooleanAttributePart:e.H,EventPart:e.N,ElementPart:e.B,TemplateInstance:e.L,isIterable:e.V,ChildPart:e.R};export{r as _$LH};
+//# sourceMappingURL=private-ssr-support.js.map
