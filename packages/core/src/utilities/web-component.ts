@@ -22,18 +22,18 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
   constructor: T
 ): T & Constructor<ComponentMixinInterface> {
   class SuperElement extends constructor {
-    readonly settings!: WebComponentOptions;
+    readonly componentOptions!: WebComponentOptions;
 
     protected _options!: WebComponentOptions;
 
     set options(options: WebComponentOptions) {
       const oldValue = {
-        ...this.settings,
+        ...this.componentOptions,
         ...this._options
       };
 
       this._options = {
-        ...this.settings,
+        ...this.componentOptions,
         ...options
       };
 
@@ -45,7 +45,7 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
      */
     @property({ type: Object })
     get options() {
-      return this._options ?? this.settings;
+      return this._options ?? this.componentOptions;
     }
 
     /**
@@ -111,7 +111,7 @@ export function defineWebComponent<WebComponent extends ComponentElement>(
   component: new () => WebComponent,
   options: WebComponentOptions = {}
 ): new () => WebComponent {
-  Object.defineProperty(component.prototype, 'settings', {
+  Object.defineProperty(component.prototype, 'componentOptions', {
     enumerable: true,
     value: options,
     writable: true
