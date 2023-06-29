@@ -8,19 +8,18 @@
 |
 */
 
-import { ReactiveControllerHost } from 'lit';
+import { ReactiveController, ReactiveControllerHost } from 'lit';
 
 /**
  * @public
  */
-export class EventController {
+export class EventController implements ReactiveController {
   private host: ReactiveControllerHost;
 
   constructor(host: ReactiveControllerHost) {
     this.host = host;
 
-    // rome-ignore lint/suspicious/noExplicitAny: <explanation>
-    host.addController(this as any);
+    host.addController(this);
   }
 
   async notify(dispatcher: (resolved: boolean) => void) {
@@ -28,4 +27,12 @@ export class EventController {
 
     dispatcher(resolved);
   }
+
+  hostConnected() {}
+
+  hostDisconnected() {}
+
+  hostUpdate() {}
+
+  hostUpdated() {}
 }

@@ -13,15 +13,15 @@ const metadata: ComponentMetadata = {
   name: 'Card Component',
   qa: 'card-component',
   scope: '@websublime/vitamin-core',
-  version: '0.0.12'
+  version: '0.0.1'
 };
 
 export class CardComponent extends ComponentElement {
   @property({ type: String })
   title = 'Card Component!';
 
-  constructor(registry: ComponentMetadata = metadata) {
-    super(registry);
+  constructor() {
+    super(metadata);
   }
 
   render() {

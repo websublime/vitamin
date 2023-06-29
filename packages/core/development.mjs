@@ -8,7 +8,6 @@ import packageJson from './package.json' assert { type: 'json' };
 /** type CliOptions = { wacth: boolean; serve: boolean }; */
 async function development({ serve = true, watch = true } = {}) {
   const contextBuild = await context({
-    bundle: true,
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
@@ -17,7 +16,9 @@ async function development({ serve = true, watch = true } = {}) {
     logLevel: 'debug',
     outdir: 'www/js',
     plugins: [clean({ dirs: ['www/js'] })],
-    target: 'es2020'
+    sourcemap: true,
+    target: 'es2020',
+    treeShaking: true
   });
 
   if (watch) {

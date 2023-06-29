@@ -34,7 +34,8 @@
       ]
     },
     "declarationDir": "./dist",
-    "removeComments": false
+    "removeComments": true,
+    "rootDir": "./src"
   },
   "include": [
     "src/**/*.ts",
@@ -42,5 +43,8 @@
     "src/**/*.tsx"
   ],
   "extends": "../../tsconfig.base.json",
-  "references": []
+  "references": [],
+  "exclude": [
+    "./src/main.ts"
+  ]
 }

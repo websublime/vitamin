@@ -8,12 +8,11 @@ import packageJson from './package.json' assert { type: 'json' };
 
 export async function build({ watch = false } = {}) {
   const contextBuild = await context({
-    bundle: true,
+    bundle: false,
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
     entryPoints: ['./src/index.ts', './src/version.ts', ...sync('./src/utilities/*.ts')],
-    external: ['lit', 'tslib'],
     format: 'esm',
     logLevel: 'debug',
     outExtension: { '.js': '.mjs' },
