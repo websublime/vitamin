@@ -16,6 +16,28 @@ const metadata: ComponentMetadata = {
   version: '0.0.1'
 };
 
+const headMetadata: ComponentMetadata = {
+  description: 'A head component.',
+  link: 'https://websublime.dev',
+  name: 'Head Component',
+  qa: 'head-component',
+  scope: '@websublime/vitamin-core',
+  version: '0.0.1'
+};
+
+export class HeadComponent extends ComponentElement {
+  @property({ type: String })
+  title = 'HeadComponent';
+
+  constructor() {
+    super(headMetadata);
+  }
+
+  render() {
+    return html`<p>${this.title}</p>`;
+  }
+}
+
 export class CardComponent extends ComponentElement {
   @property({ type: String })
   title = 'Card Component!';
@@ -25,8 +47,12 @@ export class CardComponent extends ComponentElement {
   }
 
   render() {
-    return html`<h1>${this.title}</h1>`;
+    return html`
+      <h1>${this.title}</h1>
+      <head-component></head-component>
+    `;
   }
 }
 
+defineWebComponent('head-component', HeadComponent, {});
 defineWebComponent('card-component', CardComponent, {});

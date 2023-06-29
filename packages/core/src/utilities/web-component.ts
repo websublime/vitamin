@@ -8,11 +8,12 @@
 |
 */
 
-import { LitElement, PropertyValues, ReactiveElement } from 'lit';
+import { LitElement, PropertyValues, ReactiveElement, html } from 'lit';
 
 import { ComponentMetadata, ComponentMixinInterface, Constructor, WebComponentOptions } from '../types/index.js';
 
 import { property } from './decorators.js';
+import { InspectController } from './inspect-controller.js';
 
 /**
  * @public
@@ -104,6 +105,8 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
 export class ComponentElement extends ComponentMixin<Constructor<ReactiveElement>>(LitElement) {
   declare inspect: boolean;
 
+  protected inspector = new InspectController(this);
+
   /**
    * @public
    */
@@ -114,6 +117,12 @@ export class ComponentElement extends ComponentMixin<Constructor<ReactiveElement
 
     this.registry = Object.freeze(registry);
     this.dataset.qa = registry.qa;
+  }
+
+  protected createRenderRoot() {
+    const root = super.createRenderRoot();
+
+    return root;
   }
 }
 
