@@ -9,7 +9,7 @@
 |
 */
 
-import { ReactiveController, ReactiveElement } from 'lit';
+import { ReactiveController, ReactiveElement, html, render } from 'lit';
 
 import { ComponentMetadata } from '../types/index.js';
 
@@ -41,56 +41,102 @@ export class InspectController implements ReactiveController {
   }
 
   hostUpdated() {
-    //const htmlCollection = this.host.renderRoot.children || [];
-    // const { 0: firstElement, [htmlCollection.length - 1]: lastElement, ...middleElements } = htmlCollection;
-    //console.dir({ htmlCollection, firstElement, lastElement, middleElements });
-    //console.dir({ first: firstElement?.getBoundingClientRect(), last: lastElement?.getBoundingClientRect() });
-    //console.dir(this.host.renderRoot.firstElementChild?.getBoundingClientRect());
+    if (this.host.inspect) {
+      const tag = document.createElement('div');
+      tag.style.fontSize = '12px';
+
+      this.host.addEventListener('mouseover', (event: MouseEvent) => {
+        event.stopPropagation();
+        tag.innerHTML = this.createTemplate();
+
+        document.body.append(tag);
+      });
+
+      this.host.addEventListener('mouseout', (event: MouseEvent) => {
+        event.stopPropagation();
+        tag.remove();
+      });
+    }
   }
 
   /**
    * @private
    */
-  private createSurroundingElement(): HTMLSpanElement {
-    const { registry } = this.host;
+  private createTemplate(): string {
+    const rect = this.host.getBoundingClientRect();
+    const { offsetHeight, offsetLeft, offsetTop, offsetWidth, registry } = this.host;
     const { description, link, name, scope = '', version = '' } = registry;
+
+    const bondary = rect.top <= offsetHeight ? offsetTop + offsetHeight + 4 : offsetTop - 40;
 
     const template = `
       <style>
-      .ws-inspector-tag {
-        display: inline-block;
-        background-color: #edebfc;
-        padding: 2px 4px;
-        transition: background-color .3s ease-in-out;
+      .vita-inspector-highlight {
+        z-index: 1;
+        position: absolute;
+        border-radius: 11px;
+        box-sizing: border-box;
+        padding: 4px;
+        pointer-events: none;
+        top: ${offsetTop - 2}px;
+        left: ${offsetLeft - 4}px;
+        width: ${offsetWidth}px;
+        height: ${offsetHeight + 4}px;
       }
 
-      .ws-inspector-space {
-        display: inline-block;
-        background-color: #fff;
-        padding: 2px 4px;
+      .vita-inspector-highlight:before {
+        background: linear-gradient(to left top,#ff6995,#3ecdff);
+        border-radius: inherit;
+        content: "";
+        inset: 0;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        padding: 2px;
+        position: absolute;
+        z-index: -1;
       }
 
-      .ws-inspector-tag:hover {
-        background-color: #e2defa;
+      .vita-inspector-tag {
+        position: absolute;
+        width: ${offsetWidth}px;
+        top: ${bondary}px;
+      }
+
+      .vita-inspector-info {
+        display: flex;
+        justify-content: center;
+        gap: 4px;
+        color: white;
+      }
+
+      .vita-pkg-name {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      .vita-pkg-version {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      .vita-pkg-name,
+      .vita-pkg-scope,
+      .vita-pkg-version {
+        background: #bd40f2;
+        padding: 2px 4px;
       }
       </style>
-      <span class="ws-inspector-tag" style="border-radius: 4px 0 0 4px">${name}</span>
-      <span class="ws-inspector-space">:</span>
-      <span class="ws-inspector-tag" style="border-radius: 0 4px 4px 0">${scope}@${version}</span>
+      <div class="vita-inspector-highlight"></div>
+      <div class="vita-inspector-tag">
+        <div class="vita-inspector-info">
+          <div class="vita-pkg-name">${name}</div>
+          <div class="vita-pkg-scope">${scope}</div>
+          <div class="vita-pkg-version">${version}</div>
+        </div>
+      </div>
     `;
 
-    const tag = document.createElement('a');
-    tag.href = link;
-    tag.title = description;
-    tag.style.display = 'block';
-    tag.style.textDecoration = 'none';
-    tag.style.backgroundColor = 'transparent';
-    tag.style.color = '#3d3d3d';
-    tag.style.position = 'absolute';
-    tag.style.bottom = '-12px';
-    tag.style.left = '45%';
-    tag.innerHTML = template;
-
-    return tag;
+    return template;
   }
 }
