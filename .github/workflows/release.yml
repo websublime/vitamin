@@ -3,7 +3,9 @@ name: Build and Release
 on:
   push:
     branches:
-      - 'main'
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 env:
   CI: true
@@ -12,7 +14,7 @@ env:
 
 jobs:
   build:
-    name: Snapshot Test
+    name: Build and Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code repository
