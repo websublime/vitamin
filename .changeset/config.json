@@ -15,6 +15,6 @@
   "useCalculatedVersion": true,
   "snapshot": {
     "useCalculatedVersion": true,
-    "prereleaseTemplate": "{tag}-{commit}"
+    "prereleaseTemplate": "SNAPSHOT-{commit}"
   }
 }

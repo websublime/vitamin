@@ -8,20 +8,21 @@ import packageJson from './package.json' assert { type: 'json' };
 
 export async function build({ watch = false } = {}) {
   const contextBuild = await context({
-    bundle: true,
+    bundle: false,
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
-    entryPoints: [...sync('src/**/*.ts')],
-    external: ['lit', 'tslib'],
+    entryPoints: ['./src/index.ts', './src/version.ts', ...sync('./src/utilities/*.ts')],
     format: 'esm',
     logLevel: 'debug',
-    outExtension: { '.js': '.mjs' },
+    minify: true,
+    outExtension: { '.js': '.js' },
     outbase: 'src',
     outdir: './dist',
     plugins: [clean(), litCssPlugin()],
     sourcemap: true,
-    target: 'es2020'
+    target: 'es2020',
+    treeShaking: true
   });
 
   if (watch) {

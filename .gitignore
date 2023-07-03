@@ -2,7 +2,7 @@
 node_modules
 /dist
 temp/
-www/
+www/js/
 
 # local env files
 .env.local
@@ -23,3 +23,5 @@ node_modules
 dist
 temp
 coverage
+.pnpm-store
+.eslintcache

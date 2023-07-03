@@ -21,6 +21,11 @@
   "description": "",
   "scripts": {
     "lint": "pnpm --filter \"@websublime/*\" lint",
+    "build": "pnpm --filter \"@websublime/*\" build",
+    "version": "changeset version",
+    "publish": "changeset publish",
+    "snapshot:version": "changeset version --snapshot",
+    "snapshot:publish": "changeset publish --no-git-tag --snapshot",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -56,7 +61,7 @@
     "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,mjs,ts,tsx,md}": [
+    "*.{js,mjs,ts,tsx}": [
       "eslint --cache --fix"
     ]
   }

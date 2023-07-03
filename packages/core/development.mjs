@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved
+import clean from '@akrc/esbuild-plugin-clean';
 import { context } from 'esbuild';
 import { sync } from 'glob';
 
@@ -6,7 +8,6 @@ import packageJson from './package.json' assert { type: 'json' };
 /** type CliOptions = { wacth: boolean; serve: boolean }; */
 async function development({ serve = true, watch = true } = {}) {
   const contextBuild = await context({
-    bundle: true,
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
@@ -14,11 +15,14 @@ async function development({ serve = true, watch = true } = {}) {
     format: 'esm',
     logLevel: 'debug',
     outdir: 'www/js',
-    target: 'es2020'
+    plugins: [clean({ dirs: ['www/js'] })],
+    sourcemap: true,
+    target: 'es2020',
+    treeShaking: true
   });
 
   if (watch) {
-    contextBuild.watch();
+    await contextBuild.watch();
   }
 
   if (serve) {
