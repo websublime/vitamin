@@ -15,6 +15,7 @@ export async function build({ watch = false } = {}) {
     entryPoints: ['./src/index.ts', './src/version.ts', ...sync('./src/utilities/*.ts')],
     format: 'esm',
     logLevel: 'debug',
+    minify: true,
     outExtension: { '.js': '.js' },
     outbase: 'src',
     outdir: './dist',

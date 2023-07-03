@@ -13,14 +13,27 @@ import type { ReactiveController } from 'lit';
 
 import type { ControllerHost } from '../types/index.js';
 
+import { storage } from './storage.js';
+
 /**
- * Inspector element
+ * Inspector controller can give information about the component
+ * metadata. It will also highlight the component when the mouse is over it.
+ * A local storage variable (vita-inspector property key) is used to enable/disable the inspector.
+ * The inspector will be enabled by default when the component
+ * is created if the local storage variable is set or when
+ * property inspect is presen in the component.
+ *
+ * @example
+ * ```html
+ * <card-component inspect></card-component>
+ * ```
+ *
  * @public
  */
 export class InspectController implements ReactiveController {
   private host: ControllerHost;
 
-  private listeners: Array<Array<string | ((event: MouseEvent) => any)>> = [];
+  private listeners: Array<Array<string | ((event: MouseEvent) => unknown)>> = [];
 
   constructor(host: ControllerHost) {
     this.host = host;
@@ -29,12 +42,18 @@ export class InspectController implements ReactiveController {
   }
 
   hostConnected() {
-    //console.dir(this.host.registry.description);
+    // eslint-disable-next-line unicorn/no-useless-undefined
+    const enabled = storage.local.get('vita-inspector', undefined);
+
+    if (enabled) {
+      this.host.inspect = true;
+      this.hostUpdated();
+    }
   }
 
   hostDisconnected() {
     for (const listener of this.listeners) {
-      const [type, listenerFunction] = listener as [string, (event: Event) => any];
+      const [type, listenerFunction] = listener as [string, (event: Event) => unknown];
 
       if (type && listenerFunction) {
         this.host.removeEventListener(type, listenerFunction);
@@ -42,34 +61,22 @@ export class InspectController implements ReactiveController {
     }
   }
 
-  hostUpdate() {
-    //console.dir({ host: this.host, name: 'hostUpdate' });
-  }
-
   hostUpdated() {
     if (this.host.inspect) {
       const tag = document.createElement('div');
       tag.style.fontSize = '12px';
-
-      const inspectInfoMouseOver = (event: Event) => {
-        event.preventDefault();
-        tag.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, cancelable: true }));
-      };
+      tag.style.pointerEvents = 'none';
 
       const inspectMouseOver = (event: MouseEvent) => {
-        event.stopPropagation();
+        event.stopImmediatePropagation();
         tag.innerHTML = this.createTemplate();
 
         document.body.append(tag);
-
-        tag.querySelectorAll('.vita-inspector-tag')[0].addEventListener('mouseover', inspectInfoMouseOver);
       };
 
       const inspectMouseOut = (event: MouseEvent) => {
-        event.stopPropagation();
+        event.stopImmediatePropagation();
         tag.remove();
-
-        tag.removeEventListener('mouseover', inspectInfoMouseOver);
       };
 
       this.host.addEventListener('mouseover', inspectMouseOver);
