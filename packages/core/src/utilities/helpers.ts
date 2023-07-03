@@ -36,3 +36,18 @@ export const isEmpty = (object: any) =>
  */
 // rome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const isNil = (value: any) => value === null || value === undefined;
+
+/**
+ * Check if value is a stringified JSON.
+ *
+ * @public
+ */
+export const isStringified = (stringified: any): boolean => {
+  try {
+    JSON.parse(stringified);
+  } catch {
+    return false;
+  }
+
+  return true;
+};

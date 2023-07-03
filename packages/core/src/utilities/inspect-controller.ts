@@ -9,20 +9,20 @@
 |
 */
 
-import { ReactiveController, ReactiveElement, html, render } from 'lit';
+import type { ReactiveController } from 'lit';
 
-import { ComponentMetadata } from '../types/index.js';
-
-type InspectControllerHost = ReactiveElement & { inspect: boolean; registry: ComponentMetadata };
+import type { ControllerHost } from '../types/index.js';
 
 /**
  * Inspector element
  * @public
  */
 export class InspectController implements ReactiveController {
-  private host: InspectControllerHost;
+  private host: ControllerHost;
 
-  constructor(host: InspectControllerHost) {
+  private listeners: Array<Array<string | ((event: MouseEvent) => any)>> = [];
+
+  constructor(host: ControllerHost) {
     this.host = host;
 
     host.addController(this);
@@ -33,7 +33,13 @@ export class InspectController implements ReactiveController {
   }
 
   hostDisconnected() {
-    //console.dir({ host: this.host, name: 'hostDisconnected' });
+    for (const listener of this.listeners) {
+      const [type, listenerFunction] = listener as [string, (event: Event) => any];
+
+      if (type && listenerFunction) {
+        this.host.removeEventListener(type, listenerFunction);
+      }
+    }
   }
 
   hostUpdate() {
@@ -45,17 +51,31 @@ export class InspectController implements ReactiveController {
       const tag = document.createElement('div');
       tag.style.fontSize = '12px';
 
-      this.host.addEventListener('mouseover', (event: MouseEvent) => {
+      const inspectInfoMouseOver = (event: Event) => {
+        event.preventDefault();
+        tag.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, cancelable: true }));
+      };
+
+      const inspectMouseOver = (event: MouseEvent) => {
         event.stopPropagation();
         tag.innerHTML = this.createTemplate();
 
         document.body.append(tag);
-      });
 
-      this.host.addEventListener('mouseout', (event: MouseEvent) => {
+        tag.querySelectorAll('.vita-inspector-tag')[0].addEventListener('mouseover', inspectInfoMouseOver);
+      };
+
+      const inspectMouseOut = (event: MouseEvent) => {
         event.stopPropagation();
         tag.remove();
-      });
+
+        tag.removeEventListener('mouseover', inspectInfoMouseOver);
+      };
+
+      this.host.addEventListener('mouseover', inspectMouseOver);
+      this.host.addEventListener('mouseout', inspectMouseOut);
+
+      this.listeners.push(['mouseover', inspectMouseOver], ['mouseout', inspectMouseOut]);
     }
   }
 
@@ -65,9 +85,9 @@ export class InspectController implements ReactiveController {
   private createTemplate(): string {
     const rect = this.host.getBoundingClientRect();
     const { offsetHeight, offsetLeft, offsetTop, offsetWidth, registry } = this.host;
-    const { description, link, name, scope = '', version = '' } = registry;
+    const { name, scope = '', version = '' } = registry;
 
-    const bondary = rect.top <= offsetHeight ? offsetTop + offsetHeight + 4 : offsetTop - 40;
+    const boundary = rect.top <= offsetHeight ? offsetTop + offsetHeight - 10 : offsetTop - 10;
 
     const template = `
       <style>
@@ -100,7 +120,9 @@ export class InspectController implements ReactiveController {
       .vita-inspector-tag {
         position: absolute;
         width: ${offsetWidth}px;
-        top: ${bondary}px;
+        top: ${boundary}px;
+        z-index: 2;
+        pointer-events: none;
       }
 
       .vita-inspector-info {
@@ -108,16 +130,19 @@ export class InspectController implements ReactiveController {
         justify-content: center;
         gap: 4px;
         color: white;
+        pointer-events: none;
       }
 
       .vita-pkg-name {
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
+        pointer-events: none;
       }
 
       .vita-pkg-version {
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
+        pointer-events: none;
       }
 
       .vita-pkg-name,
@@ -125,6 +150,7 @@ export class InspectController implements ReactiveController {
       .vita-pkg-version {
         background: #bd40f2;
         padding: 2px 4px;
+        pointer-events: none;
       }
       </style>
       <div class="vita-inspector-highlight"></div>

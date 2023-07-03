@@ -8,7 +8,7 @@
 |
 */
 
-import { LitElement, PropertyValues, ReactiveElement, html } from 'lit';
+import { LitElement, PropertyValues, ReactiveElement } from 'lit';
 
 import { ComponentMetadata, ComponentMixinInterface, Constructor, WebComponentOptions } from '../types/index.js';
 

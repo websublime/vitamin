@@ -8,6 +8,8 @@
 |
 */
 
+import { ReactiveElement } from 'lit';
+
 export interface WebComponentOptions {
   // eslint-disable-next-line no-use-before-define
   [key: string]: unknown;
@@ -29,3 +31,5 @@ export interface ComponentMetadata {
   scope: string;
   version: string;
 }
+
+export type ControllerHost = ReactiveElement & { inspect: boolean; registry: ComponentMetadata };

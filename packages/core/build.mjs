@@ -15,7 +15,7 @@ export async function build({ watch = false } = {}) {
     entryPoints: ['./src/index.ts', './src/version.ts', ...sync('./src/utilities/*.ts')],
     format: 'esm',
     logLevel: 'debug',
-    outExtension: { '.js': '.mjs' },
+    outExtension: { '.js': '.js' },
     outbase: 'src',
     outdir: './dist',
     plugins: [clean(), litCssPlugin()],
