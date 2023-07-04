@@ -158,6 +158,7 @@ export class InspectController implements ReactiveController {
         background: #bd40f2;
         padding: 2px 4px;
         pointer-events: none;
+        font-weight: 400;
       }
       </style>
       <div class="vita-inspector-highlight"></div>
