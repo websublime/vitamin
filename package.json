@@ -23,7 +23,7 @@
     "lint": "pnpm --filter \"@websublime/*\" lint",
     "build": "pnpm --filter \"@websublime/*\" build",
     "version": "changeset version",
-    "publish": "changeset publish",
+    "release": "changeset publish",
     "status": "changeset status --since=main",
     "empty": "changeset --empty",
     "snapshot:version": "changeset version --snapshot",

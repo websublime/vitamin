@@ -10,10 +10,16 @@
 
 import { isStringified } from './helpers.js';
 
+/**
+ * Wrapper api for local and session storage.
+ *
+ * @public
+ */
 function wrapStorage(storage: Storage) {
   const api = {
     clear: storage.clear.bind(storage),
-    get<T = any>(key: string, defaults: unknown): T {
+    // eslint-disable-next-line unicorn/no-useless-undefined
+    get<T = unknown>(key: string, defaults: unknown = undefined): T {
       const item = storage.getItem(key);
       return item ? (isStringified(item) ? JSON.parse(item) : item) : defaults;
     },
@@ -40,6 +46,11 @@ function wrapStorage(storage: Storage) {
   return api;
 }
 
+/**
+ * Wrapper api for local and session storage.
+ *
+ * @public
+ */
 const storage = {
   local: wrapStorage(localStorage),
   session: wrapStorage(sessionStorage)
