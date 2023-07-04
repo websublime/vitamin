@@ -1,5 +1,11 @@
 # @websublime/vitamin-core
 
+## 0.1.1
+
+### Patch Changes
+
+- [#57](https://github.com/websublime/vitamin/pull/57) [`f3a436c`](https://github.com/websublime/vitamin/commit/f3a436c4c7116154a60f3e328adadd766e532e8b) Thanks [@miguelramos](https://github.com/miguelramos)! - Changeset publish conflict command
+
 ## 0.1.0
 
 ### Minor Changes
