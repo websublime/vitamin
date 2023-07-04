@@ -24,6 +24,8 @@
     "build": "pnpm --filter \"@websublime/*\" build",
     "version": "changeset version",
     "publish": "changeset publish",
+    "status": "changeset status --since=main",
+    "empty": "changeset --empty",
     "snapshot:version": "changeset version --snapshot",
     "snapshot:publish": "changeset publish --no-git-tag --snapshot",
     "test": "echo \"Error: no test specified\" && exit 1"
