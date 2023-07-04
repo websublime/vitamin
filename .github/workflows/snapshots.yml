@@ -1,11 +1,13 @@
 name: Build and Deploy Feature artifacts
 
-on:
-  push:
-    branches-ignore:
-      - $default-branch
-      - 'main'
-      - 'changeset-set-release/**'
+#on:
+#  push:
+#    branches-ignore:
+#      - $default-branch
+#      - 'main'
+#      - 'changeset-set-release/**'
+
+on: workflow_dispatch
 
 env:
   CI: true
