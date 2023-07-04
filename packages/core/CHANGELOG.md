@@ -1,5 +1,11 @@
 # @websublime/vitamin-core
 
+## 0.1.0
+
+### Minor Changes
+
+- [#55](https://github.com/websublime/vitamin/pull/55) [`6632e6e`](https://github.com/websublime/vitamin/commit/6632e6ef01590377e704d10342c658db3519e313) Thanks [@miguelramos](https://github.com/miguelramos)! - Inspector font weight
+
 ## 0.1.0-SNAPSHOT-51fdfea
 
 ### Minor Changes
