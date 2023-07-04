@@ -54,7 +54,6 @@ jobs:
         uses: changesets/action@v1.4.5
         with:
           setupGitUser: false
-          version: pnpm version
           publish: pnpm publish
           title: "Production Release"
           commit: "chore(release): artifact published to github packages"
