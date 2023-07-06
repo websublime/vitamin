@@ -14,13 +14,14 @@ async function build() {
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
-    entryPoints: ['./src/index.ts', './src/version.ts'],
+    entryPoints: ['./src/index.ts', './src/version.ts', './src/themes.ts', './src/colors.ts'],
     format: 'cjs',
     logLevel: 'debug',
     minify: true,
     outExtension: { '.js': '.js' },
     outbase: 'src',
     outdir: './dist',
+    platform: 'node',
     plugins: [clean()],
     sourcemap: true,
     target: 'es2020',
