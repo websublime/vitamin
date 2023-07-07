@@ -2,13 +2,12 @@
 import colors from 'tailwindcss/colors.js';
 
 // eslint-disable-next-line unicorn/no-object-as-default-parameter
-const horizonTheme = (options = { colors: {}, globals: {} }) => {
+export const defineTheme = (options = { colors: {}, globals: {} }) => {
   const mapper = new Map();
 
   mapper.set('globals', {
     fontFamily:
       'Lato, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
-    fontSize: '16px',
     opacityColor: '1',
     ...options.globals
   });
@@ -53,8 +52,4 @@ const horizonTheme = (options = { colors: {}, globals: {} }) => {
     colors: mapper.get('colors'),
     globals: mapper.get('globals')
   };
-};
-
-export const theme = {
-  orizon: horizonTheme
 };

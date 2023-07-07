@@ -13,13 +13,19 @@ async function development({ serve = true, watch = true } = {}) {
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
-    entryPoints: ['./src/index.css', ...sync('./src/style/**/*.css')],
+    entryPoints: ['./src/index.css'],
     format: 'cjs',
     logLevel: 'debug',
     outdir: 'www/assets',
     plugins: [
       clean({ dirs: ['www/assets'] }),
-      postCssPlugin({ plugins: [require('tailwindcss')(), require('autoprefixer')] })
+      postCssPlugin({
+        plugins: [
+          require('tailwindcss')({ config: './tailwind.config.js' }),
+          require('postcss-nested'),
+          require('autoprefixer')
+        ]
+      })
     ],
     sourcemap: true,
     target: 'es2020',
