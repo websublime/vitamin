@@ -1,4 +1,14 @@
 /* eslint-disable unicorn/prefer-module */
+/**
+|--------------------------------------------------------------------------
+| Copyright Websublime All Rights Reserved.
+|--------------------------------------------------------------------------
+|
+| Use of this source code is governed by an MIT-style license that can be
+| found in the LICENSE file at https://websublime.dev/license
+|
+*/
+
 import { join, resolve } from 'node:path';
 
 import convert from 'color-convert';
@@ -39,7 +49,7 @@ export default withOptions(
     return function ({ addBase, addUtilities, config }) {
       const name = config('vitamin.theme.name', 'orizon');
       const globals = config('vitamin.theme.globals', {});
-      const colored = config('vitamin.theme.colors', {});
+      const colors = config('vitamin.theme.colors', {});
 
       // eslint-disable-next-line no-console
       console.log('Tailwind Vitamin-Wind Theme:', name);
@@ -56,7 +66,7 @@ export default withOptions(
       const propertiesCss = readFileSync(resolve(join(__dirname, './css/utilities/properties.css')), 'utf8');
       const propertiesResult = postcssJs.objectify(parse(propertiesCss));
 
-      const defaults = setupTheme(defineTheme({ colors: colored, globals }));
+      const defaults = setupTheme(defineTheme({ colors, globals }));
 
       addBase([{ [`[theme=${name}]`]: defaults }, { ...globalsResult }]);
       addUtilities([{ ...colorsResult }, { ...helpersResult }, { ...propertiesResult }]);
