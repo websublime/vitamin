@@ -42,8 +42,34 @@ async function build() {
   await contextBuild.dispose();
 }
 
+/** type CliOptions = { wacth: boolean; serve: boolean }; */
+async function buildIcons() {
+  const contextBuild = await context({
+    bundle: false,
+    define: {
+      VERSION: JSON.stringify(packageJson.version)
+    },
+    entryPoints: ['./src/icons.ts'],
+    format: 'esm',
+    logLevel: 'debug',
+    minify: true,
+    outExtension: { '.js': '.mjs' },
+    outbase: 'src',
+    outdir: './dist',
+    platform: 'browser',
+    plugins: [],
+    sourcemap: true,
+    target: 'es2020',
+    treeShaking: true
+  });
+
+  await contextBuild.rebuild();
+  await contextBuild.dispose();
+}
+
 async function buildBundle() {
   await build();
+  await buildIcons();
   await copyStyles();
   //await copyTheme();
 }
