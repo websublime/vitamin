@@ -1,18 +1,15 @@
-/* eslint-disable unicorn/prefer-module */
-// eslint-disable-next-line import/no-unresolved
-const { join, resolve } = require('node:path');
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const postCssPlugin = require('@deanc/esbuild-plugin-postcss');
-const { context } = require('esbuild');
-//const { sync } = require('glob');
-const { copy } = require('fs-extra');
+import { context } from 'esbuild';
+import { copy } from 'fs-extra';
 
-const packageJson = require('./package.json');
+import packageJson from './package.json' assert { type: 'json' };
 
 async function copyStyles() {
-  const source = resolve(join(__dirname, './src/css'));
+  const source = resolve(join(dirname(fileURLToPath(import.meta.url)), './src/css'));
 
-  const destiny = resolve(join(__dirname, './dist/css'));
+  const destiny = resolve(join(dirname(fileURLToPath(import.meta.url)), './dist/css'));
 
   copy(source, destiny, { recursive: true });
 }
@@ -25,7 +22,7 @@ async function build() {
       VERSION: JSON.stringify(packageJson.version)
     },
     entryPoints: ['./src/index.ts', './src/version.ts', './src/themes.ts', './src/colors.ts'],
-    format: 'cjs',
+    format: 'esm',
     logLevel: 'debug',
     minify: true,
     outExtension: { '.js': '.js' },
