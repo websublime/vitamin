@@ -6,3 +6,4 @@ coverage/
 node_modules/
 temp/*
 coverage/*
+tailwind.config.js
