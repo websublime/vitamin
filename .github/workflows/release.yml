@@ -50,7 +50,7 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Create Snapshot
+      - name: Create Release
         uses: changesets/action@v1.4.5
         with:
           setupGitUser: false
