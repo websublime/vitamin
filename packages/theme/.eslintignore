@@ -5,3 +5,4 @@ coverage/
 **/*.d.ts
 temp/*
 node_modules/
+tailwind.config.js
