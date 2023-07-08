@@ -42,7 +42,7 @@ export default defineConfig({
           injectScript('page', `document.getElementsByTagName('html')[0].setAttribute('theme', 'orizon');`);
         }
       },
-      name: '@sublime/globals'
+      name: '@websublime/vitamin-docs-theme'
     }
   ],
   site: 'https://websublime.github.io'
