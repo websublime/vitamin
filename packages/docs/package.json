@@ -8,12 +8,16 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint": "eslint . --ext .js,.ts,.mjs"
   },
   "dependencies": {
+    "@websublime/vitamin-theme": "workspace:*",
     "@astrojs/starlight": "^0.4.2",
-    "astro": "2.7.0",
-    "sharp": "^0.32.1"
+    "@astrojs/tailwind": "^4.0.0",
+    "astro": "2.6.6",
+    "sharp": "^0.32.1",
+    "tailwindcss": "^3.0.24"
   },
   "repository": {
     "type": "git",
