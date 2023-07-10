@@ -1,0 +1,66 @@
+{
+  "name": "@websublime/vitamin-ui",
+  "version": "1.7.0",
+  "description": "UI components",
+  "type": "module",
+  "scripts": {
+    "debug": "NODE_ENV=local NODE_OPTIONS='--enable-source-maps --inspect --loader tsx' node src/any.ts",
+    "dev": "NODE_ENV=development node development.mjs --watch --serve",
+    "build": "rm -rf ./dist && pnpm parse && pnpm dts && pnpm types && pnpm clean",
+    "parse": "NODE_ENV=production node build.mjs",
+    "dts": "tsc --declaration --emitDeclarationOnly --project tsconfig.declaration.json",
+    "types": "mkdir dist/docs && api-extractor run --local",
+    "clean": "rm -rf ./temp && rm -rf ./tsconfig.tsbuildinfo && rm -rf tsconfig.declaration.tsbuildinfo",
+    "lint": "eslint . --ext .js,.ts,.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "esbuild-postcss": "0.0.4",
+    "tailwindcss": "3.3.2",
+    "@akrc/esbuild-plugin-clean": "^0.1.3",
+    "@microsoft/api-documenter": "^7.22.21",
+    "@microsoft/api-extractor": "^7.36.0",
+    "esbuild": "^0.18.6",
+    "esbuild-plugin-lit-css": "^2.0.4",
+    "glob": "^10.3.0",
+    "@websublime/vitamin-theme": "workspace:*"
+  },
+  "dependencies": {
+    "lit": "3.0.0-pre.0",
+    "@websublime/vitamin-core": "workspace:*"
+  },
+  "keywords": [
+    "components",
+    "websublime",
+    "lit",
+    "ui"
+  ],
+  "author": {
+    "email": "hello@miguelramos.dev",
+    "name": "miguelramos",
+    "url": "https://github.com/miguelramos"
+  },
+  "license": "ISC",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/@types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/@types/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com:websublime/vitamin.git",
+    "directory": "packages/ui"
+  },
+  "files": [
+    "dist/",
+    "./LICENSE.md",
+    "./README.md"
+  ]
+}
