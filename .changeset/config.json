@@ -11,7 +11,7 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@websublime/vitamin-docs"],
+  "ignore": [],
   "useCalculatedVersion": true,
   "snapshot": {
     "useCalculatedVersion": true,
