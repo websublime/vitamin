@@ -38,6 +38,12 @@ jobs:
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
       - name: Install, build, and upload your site
         uses: withastro/action@v0
         with:
