@@ -3,7 +3,7 @@ import clean from '@akrc/esbuild-plugin-clean';
 import { context } from 'esbuild';
 import { litCssPlugin } from 'esbuild-plugin-lit-css';
 import postCssPlugin from 'esbuild-postcss';
-// import { sync } from 'glob';
+import { sync } from 'glob';
 
 import packageJson from './package.json' assert { type: 'json' };
 
@@ -13,7 +13,7 @@ export async function build({ watch = false } = {}) {
     define: {
       VERSION: JSON.stringify(packageJson.version)
     },
-    entryPoints: ['./src/version.ts'],
+    entryPoints: ['./src/version.ts', ...sync('./src/elements/*.ts')],
     format: 'esm',
     logLevel: 'debug',
     minify: true,
