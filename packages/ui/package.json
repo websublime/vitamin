@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "debug": "NODE_ENV=local NODE_OPTIONS='--enable-source-maps --inspect --loader tsx' node src/any.ts",
-    "dev": "NODE_ENV=development node development.mjs --watch --serve",
+    "dev": "NODE_ENV=development NODE_OPTIONS='--enable-source-maps --inspect' node development.mjs --watch --serve",
     "build": "rm -rf ./dist && pnpm parse && pnpm dts && pnpm types && pnpm clean",
     "parse": "NODE_ENV=production node build.mjs",
     "dts": "tsc --declaration --emitDeclarationOnly --project tsconfig.declaration.json",

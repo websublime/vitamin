@@ -42,5 +42,9 @@
     "src/**/*.tsx"
   ],
   "extends": "../../tsconfig.base.json",
-  "references": []
+  "references": [
+    {
+      "path": "../core"
+    }
+  ]
 }

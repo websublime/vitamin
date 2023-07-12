@@ -42,44 +42,44 @@
   "types": "./dist/@types/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/@types/index.d.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./version.js": {
-      "types": "./version.d.ts",
-      "default": "./version.js"
+      "types": "./dist/version.d.ts",
+      "default": "./dist/version.js"
     },
     "./decorators.js": {
-      "types": "./utilities/decorators.d.ts",
-      "default": "./utilities/decorators.js"
+      "types": "./dist/utilities/decorators.d.ts",
+      "default": "./dist/utilities/decorators.js"
     },
     "./directives.js": {
-      "types": "./utilities/directives.d.ts",
-      "default": "./utilities/directives.js"
+      "types": "./dist/utilities/directives.d.ts",
+      "default": "./dist/utilities/directives.js"
     },
     "./event-controller.js": {
-      "types": "./utilities/event-controller.d.ts",
-      "default": "./utilities/event-controller.js"
+      "types": "./dist/utilities/event-controller.d.ts",
+      "default": "./dist/utilities/event-controller.js"
     },
     "./helpers.js": {
-      "types": "./utilities/helpers.d.ts",
-      "default": "./utilities/helpers.js"
+      "types": "./dist/utilities/helpers.d.ts",
+      "default": "./dist/utilities/helpers.js"
     },
     "./html.js": {
-      "types": "./utilities/html.d.ts",
-      "default": "./utilities/html.js"
+      "types": "./dist/utilities/html.d.ts",
+      "default": "./dist/utilities/html.js"
     },
     "./web-component.js": {
-      "types": "./utilities/web-component.d.ts",
-      "default": "./utilities/web-component.js"
+      "types": "./dist/utilities/web-component.d.ts",
+      "default": "./dist/utilities/web-component.js"
     },
     "./inspect-controller.js": {
-      "types": "./utilities/inspect-controller.d.ts",
-      "default": "./utilities/inspect-controller.js"
+      "types": "./dist/utilities/inspect-controller.d.ts",
+      "default": "./dist/utilities/inspect-controller.js"
     },
     "./storage.js": {
-      "types": "./utilities/storage.d.ts",
-      "default": "./utilities/storage.js"
+      "types": "./dist/utilities/storage.d.ts",
+      "default": "./dist/utilities/storage.js"
     }
   },
   "publishConfig": {

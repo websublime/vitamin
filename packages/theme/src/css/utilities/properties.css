@@ -1,11 +1,9 @@
 .button-props {
   --button-color-opacity: 1;
-
   --button-background-opacity: 1;
-
   --button-padding-y: theme('padding.2');
-
   --button-padding-x: theme('padding.4');
-
+  --button-margin-y: 0;
+  --button-margin-x: 0;
   --button-border-width: 1px;
 }

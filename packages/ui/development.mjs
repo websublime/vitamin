@@ -6,6 +6,33 @@ import { sync } from 'glob';
 
 import packageJson from './package.json' assert { type: 'json' };
 
+function httpResolver() {
+  /** @type {import('esbuild').Plugin} */
+  return {
+    name: 'httpResolver',
+    setup: (build) => {
+      console.log(build);
+
+      build.onResolve({ filter: /^@websublime\/.+/ }, (parameters) => {
+        console.log(parameters);
+        debugger;
+        return {
+          namespace: 'http-resolver',
+          path: parameters.path
+        };
+      });
+
+      build.onLoad({ filter: /.*/, namespace: 'http-resolver' }, async (parameters) => {
+        console.log(parameters);
+        debugger;
+        return {
+          contents: `export default ${JSON.stringify(parameters.path)}`
+        };
+      });
+    }
+  };
+}
+
 /** type CliOptions = { wacth: boolean; serve: boolean }; */
 async function development({ serve = true, watch = true } = {}) {
   const contextBuild = await context({
@@ -16,7 +43,7 @@ async function development({ serve = true, watch = true } = {}) {
     format: 'esm',
     logLevel: 'debug',
     outdir: 'www/js',
-    plugins: [clean({ dirs: ['www/js'] }), postCssPlugin()],
+    plugins: [httpResolver(), clean({ dirs: ['www/js'] }), postCssPlugin()],
     sourcemap: true,
     target: 'es2020',
     treeShaking: true
@@ -35,6 +62,6 @@ async function development({ serve = true, watch = true } = {}) {
 
 // eslint-disable-next-line unicorn/prefer-top-level-await
 development({
-  serve: process.argv.includes('--watch'),
-  watch: process.argv.includes('--watch')
+  serve: true, //process.argv.includes('--serve'),
+  watch: false //process.argv.includes('--watch')
 });
