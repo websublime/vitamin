@@ -2,6 +2,7 @@
 node_modules
 dist/
 www/js/
+www/assets/
 
 # local env files
 .env.local
