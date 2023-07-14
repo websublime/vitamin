@@ -1,17 +1,19 @@
+/* eslint-disable import/no-unresolved */
+import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// eslint-disable-next-line import/no-unresolved
 import clean from '@akrc/esbuild-plugin-clean';
 import postcssAutoprefixer from 'autoprefixer';
 import { context } from 'esbuild';
 import { litCssPlugin } from 'esbuild-plugin-lit-css';
-import postCssPlugin from 'esbuild-postcss';
+import { outputFile } from 'fs-extra/esm';
 import { sync } from 'glob';
 import postcss from 'postcss';
 import postcssImport from 'postcss-import';
 import postcssNested from 'postcss-nested';
+// eslint-disable-next-line import/no-unresolved
 import sirv from 'sirv';
 import tailwindcss from 'tailwindcss';
 
@@ -56,16 +58,18 @@ function local() {
   serve.listen(3000);
 }
 
-async function style() {
-  const contextBuild = await context({
-    entryPoints: ['./src/style.css'],
-    format: 'esm',
-    logLevel: 'debug',
-    outdir: 'www/assets',
-    plugins: [postCssPlugin()]
-  });
-
-  await contextBuild.watch();
+function styleTheme() {
+  return {
+    name: 'style-theme',
+    setup(build) {
+      build.onStart(async () => {
+        const content = await readFile('./src/style.css', 'utf8');
+        const { css } = await processor.process(content, { from: './src/style.css' });
+        await outputFile('./www/assets/style.css', css);
+        return console.info('Tailwind style generated.');
+      });
+    }
+  };
 }
 
 /** type CliOptions = { wacth: boolean; serve: boolean }; */
@@ -86,7 +90,8 @@ async function development({ serve = true, watch = true } = {}) {
             return result.css;
           });
         }
-      })
+      }),
+      styleTheme()
     ],
     sourcemap: true,
     target: 'es2020',
@@ -105,12 +110,8 @@ async function development({ serve = true, watch = true } = {}) {
   }
 }
 
-function buildDevelopment() {
-  style();
-  development({
-    serve: process.argv.includes('--serve'),
-    watch: true //process.argv.includes('--watch')
-  });
-}
-
-buildDevelopment();
+// eslint-disable-next-line unicorn/prefer-top-level-await
+development({
+  serve: process.argv.includes('--serve'),
+  watch: true //process.argv.includes('--watch')
+});
