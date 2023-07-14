@@ -57,19 +57,19 @@
       "default": "./dist/index.js"
     },
     "./version.js": {
-      "types": "./version.d.ts",
+      "types": "./dist/version.d.ts",
       "default": "./dist/version.js"
     },
     "./colors.js": {
-      "types": "./colors.d.ts",
+      "types": "./dist/colors.d.ts",
       "default": "./dist/colors.js"
     },
     "./themes.js": {
-      "types": "./themes.d.ts",
+      "types": "./dist/themes.d.ts",
       "default": "./dist/themes.js"
     },
     "./icons.js": {
-      "types": "./icons.d.ts",
+      "types": "./dist/icons.d.ts",
       "default": "./dist/icons.mjs"
     }
   },

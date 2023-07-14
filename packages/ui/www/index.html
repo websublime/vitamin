@@ -7,7 +7,17 @@
     <script type="importmap">
     {
       "imports": {
-        "@websublime/vitamin-core/web-component.js": "../../core/dist/utilities/web-component.js",
+        "@websublime/vitamin-core/web-component.js": "http://localhost:3000/utilities/web-component.js",
+        "@websublime/vitamin-core": "http://localhost:3000/index.js",
+        "@websublime/vitamin-core/decorators.js": "http://localhost:3000/utitlities/decorators.js",
+        "@websublime/vitamin-core/directives.js": "http://localhost:3000/utitlities/directives.js",
+        "@websublime/vitamin-core/event-controller.js": "http://localhost:3000/utitlities/event-controller.js",
+        "@websublime/vitamin-core/helpers.js": "http://localhost:3000/utitlities/helpers.js",
+        "@websublime/vitamin-core/html.js": "http://localhost:3000/utitlities/html.js",
+        "@websublime/vitamin-core/inspect-controller.js": "http://localhost:3000/utitlities/inspect-controller.js",
+        "@websublime/vitamin-core/storage.js": "http://localhost:3000/utitlities/storage.js",
+        "@websublime/vitamin-theme/icons.js": "http://localhost:3000/icons.mjs",
+
         "lit": "https://cdn.jsdelivr.net/npm/lit@3.0.0-pre.0/+esm",
         "lit/": "https://cdn.jsdelivr.net/npm/lit@3.0.0-pre.0/",
         "lit-html": "https://cdn.jsdelivr.net/npm/lit-html@3.0.0-pre.0/+esm",
@@ -39,9 +49,10 @@
         location.reload();
       });
     </script>
+    <link href="/assets/style.css" rel="stylesheet">
   </head>
   <body style="height: 100vh;">
-    <card-component></card-component>
-    <script type="module" src="js/main.js"></script>
+    <ui-icon name="bootstrap" class="h-64 w-64"></ui-icon>
+    <script type="module" src="/assets/main.js"></script>
   </body>
 </html>
