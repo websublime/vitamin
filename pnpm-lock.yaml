@@ -172,6 +172,9 @@ importers:
       '@websublime/vitamin-core':
         specifier: workspace:*
         version: link:../core
+      fs-extra:
+        specifier: 11.1.1
+        version: 11.1.1
       lit:
         specifier: 3.0.0-pre.0
         version: 3.0.0-pre.0

@@ -41,6 +41,6 @@ export class IconElement extends ComponentElement {
   }
 
   render() {
-    return html`<i class=${this.classes}>${this.name ? this.icon : ''}</i>`;
+    return this.icon;
   }
 }
