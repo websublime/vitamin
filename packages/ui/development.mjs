@@ -58,6 +58,7 @@ function local() {
   serve.listen(3000);
 }
 
+/** @type {import('esbuild').Plugin} */
 function styleTheme() {
   return {
     name: 'style-theme',
@@ -67,6 +68,21 @@ function styleTheme() {
         const { css } = await processor.process(content, { from: './src/style.css' });
         await outputFile('./www/assets/style.css', css);
         return console.info('Tailwind style generated.');
+      });
+    }
+  };
+}
+
+/** @type {import('esbuild').Plugin} */
+function litCssInJs() {
+  return {
+    name: 'lit-css-to-js',
+    setup(build) {
+      build.onLoad({ filter: /\.ts$/ }, async (parameters) => {
+        const content = await readFile(parameters.path, 'utf8');
+        const contents = content.replaceAll('.css', '.js');
+
+        return { contents, loader: 'ts' };
       });
     }
   };
@@ -91,7 +107,8 @@ async function development({ serve = true, watch = true } = {}) {
           });
         }
       }),
-      styleTheme()
+      styleTheme(),
+      litCssInJs()
     ],
     sourcemap: true,
     target: 'es2020',
