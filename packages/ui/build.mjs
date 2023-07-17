@@ -2,6 +2,7 @@ import { readFile } from 'node:fs/promises';
 
 // eslint-disable-next-line import/no-unresolved
 import clean from '@akrc/esbuild-plugin-clean';
+// eslint-disable-next-line import/no-unresolved
 import postcssAutoprefixer from 'autoprefixer';
 import { context } from 'esbuild';
 import { litCssPlugin } from 'esbuild-plugin-lit-css';
