@@ -16,8 +16,6 @@ export interface WebComponentOptions {
 }
 
 export interface ComponentMixinInterface {
-  readonly componentOptions: WebComponentOptions;
-  options: WebComponentOptions;
   inspect: boolean;
   isLTR: boolean;
   dir: 'ltr' | 'rtl';
