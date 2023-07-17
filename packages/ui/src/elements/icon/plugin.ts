@@ -1,12 +1,7 @@
-import { WebComponentOptions } from '@websublime/vitamin-core';
 import { defineWebComponent } from '@websublime/vitamin-core/web-component.js';
 
 import { IconElement } from './icon.js';
-
-interface IconElementOptions extends WebComponentOptions {
-  className?: string[];
-  enabled?: boolean;
-}
+import type { IconElementOptions } from './types.js';
 
 /**
  * @public
@@ -17,9 +12,3 @@ export const registerComponent = (options: IconElementOptions = {}, name = 'ui-i
     enabled: false,
     ...options
   });
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'ui-icon': IconElement;
-  }
-}

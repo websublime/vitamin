@@ -20,6 +20,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { version } from '../../version.js';
 
 import style from './style.css';
+import type { IconElementOptions } from './types.js';
 
 const metadata: ComponentMetadata = {
   description: 'Icon component render svg',
@@ -30,7 +31,7 @@ const metadata: ComponentMetadata = {
   version
 };
 
-export class IconElement extends ComponentElement {
+export class IconElement extends ComponentElement<IconElementOptions> {
   static styles = css`
     ${unsafeCSS(style)}
   `;
@@ -51,7 +52,7 @@ export class IconElement extends ComponentElement {
   connectedCallback(): void {
     super.connectedCallback();
 
-    const { className = [] } = this.options as any; //TODO: fix this
+    const { className = [] } = this.options;
 
     for (const name of className) {
       this.classList.add(name);
@@ -60,5 +61,11 @@ export class IconElement extends ComponentElement {
 
   render() {
     return this.icon;
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'ui-icon': IconElement;
   }
 }

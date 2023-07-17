@@ -54,6 +54,14 @@
     ".": {
       "types": "./dist/@types/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./element/icon.js": {
+      "types": "./dist/elements/icon/index.d.ts",
+      "default": "./dist/element/icon/index.js"
+    },
+    "./plugin/icon.js": {
+      "types": "./dist/elements/icon/plugin.d.ts",
+      "default": "./dist/element/icon/plugin.js"
     }
   },
   "publishConfig": {

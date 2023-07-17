@@ -23,32 +23,6 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
   constructor: T
 ): T & Constructor<ComponentMixinInterface> {
   class SuperElement extends constructor {
-    readonly componentOptions!: WebComponentOptions;
-
-    protected _options!: WebComponentOptions;
-
-    set options(options: WebComponentOptions) {
-      const oldValue = {
-        ...this.componentOptions,
-        ...this._options
-      };
-
-      this._options = {
-        ...this.componentOptions,
-        ...options
-      };
-
-      this.requestUpdate('options', oldValue);
-    }
-
-    /**
-     * @public
-     */
-    @property({ type: Object })
-    get options() {
-      return this._options ?? this.componentOptions;
-    }
-
     /**
      * @public
      */
@@ -102,10 +76,37 @@ export function ComponentMixin<T extends Constructor<ReactiveElement>>(
  *
  * @public
  */
-export class ComponentElement extends ComponentMixin<Constructor<ReactiveElement>>(LitElement) {
+export class ComponentElement<Options = WebComponentOptions> extends ComponentMixin<Constructor<ReactiveElement>>(
+  LitElement
+) {
+  readonly componentOptions!: Options;
   declare inspect: boolean;
 
   protected inspector = new InspectController(this);
+
+  protected _options!: Options;
+
+  set options(options: Options) {
+    const oldValue = {
+      ...this.componentOptions,
+      ...this._options
+    };
+
+    this._options = {
+      ...this.componentOptions,
+      ...options
+    };
+
+    this.requestUpdate('options', oldValue);
+  }
+
+  /**
+   * @public
+   */
+  @property({ type: Object })
+  get options() {
+    return this._options ?? this.componentOptions;
+  }
 
   /**
    * @public
