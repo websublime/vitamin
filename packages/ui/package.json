@@ -56,11 +56,11 @@
     },
     "./element/icon.js": {
       "types": "./dist/elements/icon/index.d.ts",
-      "default": "./dist/element/icon/index.js"
+      "default": "./dist/elements/icon/index.js"
     },
     "./plugin/icon.js": {
       "types": "./dist/elements/icon/plugin.d.ts",
-      "default": "./dist/element/icon/plugin.js"
+      "default": "./dist/elements/icon/plugin.js"
     }
   },
   "publishConfig": {
