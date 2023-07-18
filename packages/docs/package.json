@@ -4,25 +4,18 @@
   "type": "module",
   "version": "0.0.2",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint . --ext .js,.ts,.mjs"
+    "lint": "eslint . --ext .js,.ts,.mjs",
+    "dev": "storybook dev -p 3000",
+    "build": "storybook build -o ./dist"
   },
   "dependencies": {
     "@websublime/vitamin-theme": "workspace:*",
-    "@astrojs/starlight": "^0.4.2",
-    "@astrojs/tailwind": "^4.0.0",
-    "astro": "2.6.6",
-    "sharp": "^0.32.1",
-    "tailwindcss": "^3.0.24"
+    "@websublime/vitamin-ui": "workspace:*"
   },
   "keywords": [
     "docs",
     "websublime",
-    "astrojs",
+    "storybook",
     "ui"
   ],
   "author": {
@@ -42,5 +35,21 @@
     "dist/",
     "./LICENSE.md",
     "./README.md"
-  ]
+  ],
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.0.27",
+    "@storybook/addon-links": "^7.0.27",
+    "@storybook/blocks": "^7.0.27",
+    "@storybook/web-components": "^7.0.27",
+    "@storybook/web-components-vite": "^7.0.27",
+    "autoprefixer": "10.4.14",
+    "lit": "3.0.0-pre.0",
+    "postcss": "8.4.24",
+    "postcss-import": "15.1.0",
+    "postcss-nested": "6.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.0.27",
+    "tailwindcss": "^3.0.24"
+  }
 }

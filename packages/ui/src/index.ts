@@ -1,1 +1,1 @@
-export { IconElement, registerComponent } from './elements/icon/index.js';
+export { IconElement, registerComponent as registIconComponent } from './elements/icon/index.js';
