@@ -16,17 +16,98 @@
   }
 }
 
-html {
-  -webkit-tap-highlight-color: transparent;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-size-adjust: 100%;
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
 
-body {
-  font-family: var(--font-family);
-  font-size: var(--font-size, clamp(2rem, 4vw + 1rem, 3rem));
-  /* color: hsla(var(--primary-color) / var(--tw-text-opacity, 1)); */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+iframe {
+  border: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+td:not([align]),
+th:not([align]) {
+  text-align: inherit;
+}
+
+html {
+  font-size: 16px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  min-width: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+     -moz-text-size-adjust: 100%;
+          text-size-adjust: 100%;
 }
 
 article,
@@ -39,10 +120,26 @@ section {
   display: block;
 }
 
+body,
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: var(--font-family);
+}
+
 code,
 pre {
   -moz-osx-font-smoothing: auto;
   -webkit-font-smoothing: auto;
+  font-family: monospace;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size, clamp(2rem, 4vw + 1rem, 3rem));
+  /* color: hsla(var(--primary-color) / var(--tw-text-opacity, 1)); */
 }
 
 a {
@@ -50,9 +147,21 @@ a {
   text-decoration: none;
 }
 
+a strong {
+  color: currentColor;
+}
+
+code {
+  font-weight: normal;
+  padding: 0.25em 0.5em 0.25em;
+}
+
 hr {
+  background-color: whitesmoke;
   border: none;
   display: block;
+  height: 2px;
+  margin: 1.5rem 0;
 }
 
 img {
@@ -65,19 +174,54 @@ input[type="radio"] {
   vertical-align: baseline;
 }
 
+small {
+  font-size: 0.875em;
+}
+
 span {
   font-style: inherit;
   font-weight: inherit;
+}
+
+strong {
+  font-weight: 700;
 }
 
 fieldset {
   border: none;
 }
 
-table
-td,
-th {
+pre {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  white-space: pre;
+  word-wrap: normal;
+}
+
+pre code {
+  background-color: transparent;
+  color: currentColor;
+  font-size: 1em;
+  padding: 0;
+}
+
+table td,
+table th {
   vertical-align: top;
+}
+
+table td:not([align]),
+table th:not([align]) {
+  text-align: inherit;
+}
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
 }
 
 .debug {
