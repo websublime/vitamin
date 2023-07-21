@@ -1,6 +1,6 @@
 {
   "name": "@websublime/vitamin-theme",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Base theme for Vitamin",
   "type": "module",
   "scripts": {
