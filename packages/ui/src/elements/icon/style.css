@@ -2,7 +2,7 @@
 
 @layer components {
   :host {
-    @apply inline-flex items-center justify-center;
+    @apply items-center justify-center;
   }
 
   .ui-icon-svg {
