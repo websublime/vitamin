@@ -7,3 +7,23 @@
   --button-margin-x: 0;
   --button-border-width: 1px;
 }
+
+.switch-props {
+  --switch-width: 60px;
+  --switch-height: 30px;
+  --switch-button-width: 24px;
+  --switch-button-height: 24px;
+  --switch-button-radius: 20px;
+  --switch-bar-radius: 300px;
+  --switch-padding-y: 0;
+  --switch-padding-x: theme('padding.1');
+  --switch-color: theme('colors.grey');
+  --switch-bar-background: theme('colors.grey-dark');
+  --switch-button-on-background: theme('colors.white');
+  --switch-button-off-background: theme('colors.grey');
+  --swicth-label-font-size: calc(var(--switch-height) - 10px);
+  --switch-button-transform: translate(calc(var(--switch-width) - 22px));
+  --switch-transition: .4s;
+  --switch-button-left: 3px;
+  --switch-button-bottom: 3px;
+}

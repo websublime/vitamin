@@ -61,6 +61,14 @@
     "./plugin/icon.js": {
       "types": "./dist/elements/icon/plugin.d.ts",
       "default": "./dist/elements/icon/plugin.js"
+    },
+    "./element/switch.js": {
+      "types": "./dist/elements/switch/index.d.ts",
+      "default": "./dist/elements/switch/index.js"
+    },
+    "./plugin/switch.js": {
+      "types": "./dist/elements/switch/plugin.d.ts",
+      "default": "./dist/elements/switch/plugin.js"
     }
   },
   "publishConfig": {

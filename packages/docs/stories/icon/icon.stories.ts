@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/web-components';
 import { IconsMap } from '@websublime/vitamin-theme/icons.js';
-import { registerComponent } from '@websublime/vitamin-ui/plugin/icon.js';
 import { html } from 'lit';
 import { repeat } from 'lit/directives/repeat.js';
 
-registerComponent();
+import { registerComponents } from '../loader.js';
+
+registerComponents();
 
 type Story = StoryObj;
 
@@ -29,7 +30,8 @@ export const Icon: Story = {
     name: 'github'
   },
 
-  render: ({ name }) => html`<ui-icon style="width: 48px; height: 48px; display: block;" name="${name}"></ui-icon>`
+  render: ({ name }) =>
+    html`<ui-icon style="width: 48px; height: 48px; display: block; color: black" name="${name}"></ui-icon>`
 };
 
 export const Icons: Story = {
@@ -54,7 +56,7 @@ export const Icons: Story = {
               <div
                 style="padding: 2px;border-radius: 4px; background: #FFFFFF; box-shadow: rgba(0, 0, 0, 0.10) 0 1px 3px 0; border: 1px solid hsla(203, 50%, 30%, 0.15); overflow: hidden; height: 40px; width: 40px; justify-content: center;"
               >
-                <ui-icon name="${icon}"></ui-icon>
+                <ui-icon style="width: 48px; height: 48px; display: block; color: black" name="${icon}"></ui-icon>
               </div>
               <span style="margin-left: 6px;display:block">${icon}</span>
             </div>
