@@ -1,5 +1,11 @@
 # @websublime/vitamin-theme
 
+## 0.2.0
+
+### Minor Changes
+
+- [#65](https://github.com/websublime/vitamin/pull/65) [`763ce0b`](https://github.com/websublime/vitamin/commit/763ce0b2be1ceaa3c5126937d7ed8dfbf5119e08) Thanks [@miguelramos](https://github.com/miguelramos)! - switch component minimal example ui/theme/docs
+
 ## 0.1.1
 
 ### Patch Changes

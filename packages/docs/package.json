@@ -2,7 +2,7 @@
   "name": "@websublime/vitamin-docs",
   "private": true,
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "scripts": {
     "lint": "eslint . --ext .js,.ts,.mjs",
     "dev": "storybook dev -p 3000",
