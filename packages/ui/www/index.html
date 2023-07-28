@@ -49,10 +49,58 @@
         location.reload();
       });
     </script>
+
     <link href="/assets/style.css" rel="stylesheet">
   </head>
   <body style="height: 100vh;">
-    <ui-icon name="bootstrap" class="h-64 w-64"></ui-icon>
+    <!-- DO NOT USE TAILWIND HERE OR CLASSES WILL BE ADDED TO YOUR COMPONENT STYLES -->
+    <style>.ui-switch {  }</style>
+
+    <section class="ui-play-section">
+      <table>
+        <tr>
+          <th>Tag Name</th>
+          <th>Component</th>
+          <th>Properties</th>
+          <th>CSS Properties</th>
+        </tr>
+        <tr>
+          <td>
+            <p>Name: ui-icon</p>
+          </td>
+          <td>
+            <i style="height: 64px; width: 64px; display: block"><ui-icon name="github"></ui-icon></i>
+          </td>
+          <td>TODO</td>
+          <td>TODO</td>
+        </tr>
+        <tr>
+          <td>
+            <p>Name: ui-switch</p>
+          </td>
+          <td>
+            <ui-switch>
+              <ui-icon slot="prepend" name="moon"></ui-icon>
+              <ui-icon slot="append" name="sun"></ui-icon>
+            </ui-switch>
+            <ui-switch>
+              <span slot="left">OFF</span>
+              <span slot="right">ON</span>
+              <ui-icon style="color: red" slot="prepend" name="moon"></ui-icon>
+              <ui-icon style="color: green" slot="append" name="sun"></ui-icon>
+            </ui-switch>
+          </td>
+          <td>TODO</td>
+          <td>TODO</td>
+        </tr>
+      </table>
+    </section>
+
     <script type="module" src="/assets/main.js"></script>
+    <script>
+      document.querySelector('ui-switch').addEventListener('change', e => {
+        console.dir(e);
+      });
+    </script>
   </body>
 </html>
