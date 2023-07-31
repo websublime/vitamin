@@ -3,6 +3,7 @@ import { readFile } from 'node:fs/promises';
 // eslint-disable-next-line import/no-unresolved
 import clean from '@akrc/esbuild-plugin-clean';
 // eslint-disable-next-line import/no-unresolved
+import vitaminTheme from '@websublime/vitamin-theme';
 import postcssAutoprefixer from 'autoprefixer';
 import { context } from 'esbuild';
 import { litCssPlugin } from 'esbuild-plugin-lit-css';
@@ -17,7 +18,15 @@ import packageJson from './package.json' assert { type: 'json' };
 const processor = postcss([
   postcssImport(),
   postcssNested(),
-  tailwindcss({ config: './tailwind.config.cjs' }),
+  tailwindcss({
+    config: {
+      content: ['./src/**/*.{ts,tsx}'],
+      plugins: [vitaminTheme()],
+      theme: {
+        extend: {}
+      }
+    }
+  }),
   postcssAutoprefixer()
 ]);
 

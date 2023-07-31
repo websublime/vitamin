@@ -1,0 +1,8 @@
+@tailwind utilities;
+@tailwind components;
+
+@layer components {
+  :host {
+    @apply flex flex-wrap content-center;
+  }
+}

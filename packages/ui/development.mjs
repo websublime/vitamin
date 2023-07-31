@@ -5,6 +5,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import clean from '@akrc/esbuild-plugin-clean';
+import vitaminTheme from '@websublime/vitamin-theme';
 import postcssAutoprefixer from 'autoprefixer';
 import { context } from 'esbuild';
 import { litCssPlugin } from 'esbuild-plugin-lit-css';
@@ -23,12 +24,31 @@ const ROOT = resolve(join(dirname(fileURLToPath(import.meta.url)), '../'));
 const CORE = resolve(join(ROOT, './core/dist'));
 const THEME = resolve(join(ROOT, './theme/dist'));
 
-const processor = postcss([
-  postcssImport(),
-  postcssNested(),
-  tailwindcss({ config: './tailwind.config.cjs' }),
-  postcssAutoprefixer()
-]);
+const processor = (html = false) =>
+  postcss([
+    postcssImport(),
+    postcssNested(),
+    html
+      ? tailwindcss({
+          config: {
+            content: ['./www/index.html'],
+            plugins: [vitaminTheme()],
+            theme: {
+              extend: {}
+            }
+          }
+        })
+      : tailwindcss({
+          config: {
+            content: ['./src/**/*.{ts,tsx}'],
+            plugins: [vitaminTheme()],
+            theme: {
+              extend: {}
+            }
+          }
+        }),
+    postcssAutoprefixer()
+  ]);
 
 function local() {
   const handlerCore = sirv(CORE, { dev: true, single: true });
@@ -65,7 +85,7 @@ function styleTheme() {
     setup(build) {
       build.onStart(async () => {
         const content = await readFile('./src/style.css', 'utf8');
-        const { css } = await processor.process(content, { from: './src/style.css' });
+        const { css } = await processor(true).process(content, { from: './src/style.css' });
         await outputFile('./www/assets/style.css', css);
         return console.info('Tailwind style generated.');
       });
@@ -102,13 +122,15 @@ async function development({ serve = true, watch = true } = {}) {
       clean({ dirs: ['www/assets'] }),
       litCssPlugin({
         transform: async (css, { filePath }) => {
-          return await processor.process(css, { from: filePath }).then((result) => {
-            return result.css;
-          });
+          return await processor(false)
+            .process(css, { from: filePath })
+            .then((result) => {
+              return result.css;
+            });
         }
       }),
-      styleTheme(),
-      litCssInJs()
+      litCssInJs(),
+      styleTheme()
     ],
     sourcemap: true,
     target: 'es2020',
