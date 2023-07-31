@@ -1,5 +1,51 @@
 @tailwind base;
+@tailwind utilities;
+@tailwind components;
 
-.ui-play-section {
-  display: flex;
+@layer base {
+  body {
+    --font-size: 16px;
+  }
 }
+
+@layer utilities {
+  .transition-colors {
+    transition-property: color,background-color,border-color,text-decoration-color,fill,stroke;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-duration: .15s;
+  }
+
+  .border-b {
+    border-bottom-width: 1px;
+  }
+}
+
+@layer components {
+  .ui-play-section {
+    display: flex;
+    @apply rounded-[0.5rem] border shadow;
+  }
+
+  .ui-play-container {
+    flex: 1;
+    @apply flex-col flex;
+  }
+
+  .ui-play-nav {
+    border-bottom-width: 1px;
+    @apply flex h-16 items-center px-4;
+  }
+
+  .ui-play-content {
+    @apply flex-1 space-y-4 p-8 pt-6;
+
+    table tr {
+      @apply border-b transition-colors;
+
+      td {
+        @apply p-4 align-middle;
+      }
+    }
+  }
+}
+
