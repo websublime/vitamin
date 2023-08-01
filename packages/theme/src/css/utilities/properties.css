@@ -27,3 +27,15 @@
   --switch-button-left: 3px;
   --switch-button-bottom: 3px;
 }
+
+.checkbox-props {
+  --checkbox-checked-color: theme('colors.grey-dark');
+  --checkbox-background-color: theme('colors.white');
+  --checkbox-hover-color: theme('colors.grey-dark');
+  --checkbox-diameter: 20px;
+  --checkbox-border-radius: 5px;
+  --checkbox-border-color: theme('colors.grey');;
+  --checkbox-border-width: 1px;
+  --checkbox-border-style: solid;
+  --checkbox-checkmark-size: 1.2;
+}
