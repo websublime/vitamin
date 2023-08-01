@@ -18,7 +18,7 @@ export const defineTheme = (options = { colors: {}, globals: {} }) => {
   mapper.set('globals', {
     fontFamily:
       'Lato, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji',
-    opacityColor: '1',
+    'opacity-color': '1',
     ...options.globals
   });
 

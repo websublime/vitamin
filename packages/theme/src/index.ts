@@ -9,17 +9,19 @@
 |
 */
 
-import { join, resolve } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import convert from 'color-convert';
-import { readFileSync } from 'fs-extra';
 import { parse } from 'postcss';
 import postcssJs from 'postcss-js';
-import { withOptions } from 'tailwindcss/plugin.js';
+import plugin from 'tailwindcss/plugin.js';
 
 import { palette } from './colors.js';
 import { defineTheme } from './themes.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const hslToString = ([hue, saturation, lightness]) => `${hue}deg ${saturation}% ${lightness}%`;
 
 const setupTheme = (themeDescriptor) => {
@@ -44,7 +46,7 @@ const setupTheme = (themeDescriptor) => {
   return base;
 };
 
-export default withOptions(
+export default plugin.withOptions(
   () => {
     return function ({ addBase, addUtilities, config }) {
       const name = config('vitamin.theme.name', 'orizon');

@@ -69,6 +69,14 @@
     "./plugin/switch.js": {
       "types": "./dist/elements/switch/plugin.d.ts",
       "default": "./dist/elements/switch/plugin.js"
+    },
+    "./element/checkbox.js": {
+      "types": "./dist/elements/checkbox/index.d.ts",
+      "default": "./dist/elements/checkbox/index.js"
+    },
+    "./plugin/checkbox.js": {
+      "types": "./dist/elements/checkbox/plugin.d.ts",
+      "default": "./dist/elements/checkbox/plugin.js"
     }
   },
   "publishConfig": {
