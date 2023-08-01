@@ -14,7 +14,6 @@ import { sync } from 'glob';
 import postcss from 'postcss';
 import postcssImport from 'postcss-import';
 import postcssNested from 'postcss-nested';
-// eslint-disable-next-line import/no-unresolved
 import sirv from 'sirv';
 import tailwindcss from 'tailwindcss';
 

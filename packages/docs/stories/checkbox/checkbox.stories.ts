@@ -11,8 +11,8 @@ registerComponents();
 type Story = StoryObj;
 
 /**
- * # Switch stories
- * These stories showcase the switch
+ * # Checkbox stories
+ * These stories showcase the checkbox
  */
 const meta: Meta<CheckboxElement> = {
   argTypes: {
