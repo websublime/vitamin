@@ -52,7 +52,7 @@ export const Checkbox: Story = {
 export const CheckboxStyle: Story = {
   render: () => html`
     <style>
-      .switch-props {
+      .checkbox-props {
         --checkbox-checked-color: theme('colors.grey-dark');
         --checkbox-background-color: theme('colors.white');
         --checkbox-hover-color: theme('colors.grey-dark');
@@ -76,5 +76,5 @@ export const CheckboxStyle: Story = {
 export const CheckboxLabel: Story = {
   args: {},
   render: ({ name }) =>
-    html` <ui-checkbox><span class="text-black dark:text-white" slot="label">Checked</span></ui-checkbox> `
+    html` <ui-checkbox><span class="text-black dark:text-white" slot="label">Checked</span></ui-checkbox>`
 };

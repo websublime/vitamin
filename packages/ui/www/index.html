@@ -53,7 +53,7 @@
     <link href="/assets/style.css" rel="stylesheet">
   </head>
   <body style="height: 100vh;">
-    <!-- DO NOT USE TAILWIND HERE OR CLASSES WILL BE ADDED TO YOUR COMPONENT STYLES -->
+    <!-- CUSTOMIZE ELEMENTS CSS VARS -->
     <style>.ui-switch {  }</style>
 
     <section class="ui-play-section">
@@ -112,16 +112,22 @@
               <td>TODO</td>
               <td>TODO</td>
             </tr>
+
+            <tr>
+              <td>
+                <p>Name: ui-range</p>
+              </td>
+              <td>
+                <ui-range min="10" max="100"></ui-range>
+              </td>
+              <td>TODO</td>
+              <td>TODO</td>
+            </tr>
           </table>
         </div>
       </div>
     </section>
 
     <script type="module" src="/assets/main.js"></script>
-    <script>
-      document.querySelector('ui-switch').addEventListener('change', e => {
-        console.dir(e);
-      });
-    </script>
   </body>
 </html>
