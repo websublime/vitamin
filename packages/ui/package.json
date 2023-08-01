@@ -77,6 +77,14 @@
     "./plugin/checkbox.js": {
       "types": "./dist/elements/checkbox/plugin.d.ts",
       "default": "./dist/elements/checkbox/plugin.js"
+    },
+    "./element/range.js": {
+      "types": "./dist/elements/range/index.d.ts",
+      "default": "./dist/elements/range/index.js"
+    },
+    "./plugin/range.js": {
+      "types": "./dist/elements/range/plugin.d.ts",
+      "default": "./dist/elements/range/plugin.js"
     }
   },
   "publishConfig": {
