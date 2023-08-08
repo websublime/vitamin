@@ -32,6 +32,7 @@ const processor = (html = false) =>
           config: {
             content: ['./www/index.html'],
             plugins: [vitaminTheme()],
+            safelist: ['dark', 'light', 'debug'],
             theme: {
               extend: {}
             }
@@ -41,6 +42,7 @@ const processor = (html = false) =>
           config: {
             content: ['./src/**/*.{ts,tsx}'],
             plugins: [vitaminTheme()],
+            safelist: ['dark', 'light'],
             theme: {
               extend: {}
             }
