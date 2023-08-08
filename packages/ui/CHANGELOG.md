@@ -1,5 +1,13 @@
 # @websublime/vitamin-ui
 
+## 1.10.0
+
+### Minor Changes
+
+- [#69](https://github.com/websublime/vitamin/pull/69) [`5a71124`](https://github.com/websublime/vitamin/commit/5a71124c75ddf89f8cdf38c793c33f0f0f0da6d2) Thanks [@miguelramos](https://github.com/miguelramos)! - Range element
+
+  Add range element with min and max. Defined how light/dark theme are applied.
+
 ## 1.9.0
 
 ### Minor Changes
