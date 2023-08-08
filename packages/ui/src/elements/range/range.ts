@@ -73,6 +73,7 @@ export class RangeElement extends ComponentElement<RangeElementOptions> {
   render() {
     return html`
       <label for="range">
+        <slot name="min"></slot>
         <input
           type="range"
           .min="${this.min}"
@@ -81,6 +82,7 @@ export class RangeElement extends ComponentElement<RangeElementOptions> {
           @change=${this.handleChange}
           id="range"
         />
+        <slot name="max"></slot>
       </label>
     `;
   }

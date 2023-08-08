@@ -6,6 +6,14 @@
     @apply checkbox-props flex flex-wrap content-center;
   }
 
+  :host-context(html.dark) {
+    @apply checkbox-props-dark;
+  }
+
+  :host-context(html.light) {
+    @apply checkbox-props-light;
+  }
+
   .ui-checkbox-label {
     @apply flex;
   }

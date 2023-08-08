@@ -34,8 +34,43 @@
   --checkbox-hover-color: theme('colors.grey-dark');
   --checkbox-diameter: 20px;
   --checkbox-border-radius: 5px;
-  --checkbox-border-color: theme('colors.grey');;
+  --checkbox-border-color: theme('colors.grey');
   --checkbox-border-width: 1px;
   --checkbox-border-style: solid;
   --checkbox-checkmark-size: 1.2;
+}
+
+.checkbox-props-dark {
+  --checkbox-checked-color: theme('colors.grey-light');
+  --checkbox-background-color: theme('colors.grey-dark');
+  --checkbox-hover-color: theme('colors.grey-light');
+  --checkbox-border-color: theme('colors.white');
+}
+
+.checkbox-props-light {
+  --checkbox-checked-color: theme('colors.grey-dark');
+  --checkbox-background-color: theme('colors.white');
+  --checkbox-hover-color: theme('colors.grey-dark');
+  --checkbox-border-color: theme('colors.grey');
+}
+
+
+.range-props {
+  --range-width: 100%;
+  --range-height: 4px;
+  --range-border-radius: 5px;
+  --range-thumb-width: 15px;
+  --range-thumb-height: 15px;
+  --range-thumb-border-radius: 50%;
+  --range-thumb-hover-box-shadow: 0px 0px 0px 8px theme('colors.grey');
+}
+
+.range-props-dark {
+  --range-background-color: theme('colors.grey');
+  --range-thumb-background-color: theme('colors.white');
+}
+
+.range-props-light {
+  --range-background-color: theme('colors.grey-dark');
+  --range-thumb-background-color: theme('colors.grey-light');
 }

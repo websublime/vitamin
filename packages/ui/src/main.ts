@@ -28,6 +28,21 @@ function defineListeners() {
 function boot() {
   defineComponents();
   defineListeners();
+  handleTheme();
 }
 
 boot();
+
+function handleTheme() {
+  const root = document.querySelector(':root');
+
+  document.querySelector('#theme-change')?.addEventListener('change', (event: any) => {
+    if (event.detail) {
+      root?.classList.remove('dark');
+      root?.classList.add('light');
+    } else {
+      root?.classList.remove('light');
+      root?.classList.add('dark');
+    }
+  });
+}
