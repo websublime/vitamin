@@ -1,5 +1,13 @@
 # @websublime/vitamin-ui
 
+## 1.11.0
+
+### Minor Changes
+
+- [#71](https://github.com/websublime/vitamin/pull/71) [`cdc67c5`](https://github.com/websublime/vitamin/commit/cdc67c5354dad183c433730e218979f235ff9bb1) Thanks [@miguelramos](https://github.com/miguelramos)! - Limiter and Range
+
+  Limiter and range elements to define value interval. Fix storybook icons and add dark/light theme to it.
+
 ## 1.10.0
 
 ### Minor Changes
