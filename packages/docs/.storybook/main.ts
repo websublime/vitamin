@@ -7,13 +7,7 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     {
       name: '@storybook/addon-styling',
-      options: {
-        // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
-        // For more details on this addon's options.
-        postCss: {
-          implementation: require.resolve('postcss'),
-        },
-      },
+      options: {},
     },
   ],
   framework: {
@@ -26,7 +20,7 @@ const config: StorybookConfig = {
   previewHead: (head) => `
     ${head}
     ${
-      "<script>document.getElementsByTagName('html')[0].setAttribute('theme', 'orizon');document.getElementsByTagName('html')[0].setAttribute('class', 'dark');</script>"
+      "<script>document.getElementsByTagName('html')[0].setAttribute('theme', 'orizon');</script>"
     }
   `,
 };
