@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en" theme="orizon" class="dark">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -28,116 +29,133 @@
     }
     </script>
     <script>
-      new EventSource('/esbuild').addEventListener('change', e => {
-        const { added, removed, updated } = JSON.parse(e.data);
+        new EventSource('/esbuild').addEventListener('change', e => {
+            const {added, removed, updated} = JSON.parse(e.data);
 
-        if (!added.length && !removed.length && updated.length === 1) {
-          for (const link of document.getElementsByTagName("link")) {
-            const url = new URL(link.href);
+            if (!added.length && !removed.length && updated.length === 1) {
+                for (const link of document.getElementsByTagName("link")) {
+                    const url = new URL(link.href);
 
-            if (url.host === location.host && url.pathname === updated[0]) {
-              const next = link.cloneNode();
-              next.href = updated[0] + '?' + Math.random().toString(36).slice(2);
-              next.onload = () => link.remove();
-              link.parentNode.insertBefore(next, link.nextSibling);
+                    if (url.host === location.host && url.pathname === updated[0]) {
+                        const next = link.cloneNode();
+                        next.href = updated[0] + '?' + Math.random().toString(36).slice(2);
+                        next.onload = () => link.remove();
+                        link.parentNode.insertBefore(next, link.nextSibling);
 
-              return;
+                        return;
+                    }
+                }
             }
-          }
-        }
 
-        location.reload();
-      });
+            location.reload();
+        });
     </script>
 
     <link href="/assets/style.css" rel="stylesheet">
-  </head>
-  <body style="height: 100vh;">
+</head>
+
+<body style="height: 100vh;">
     <!-- CUSTOMIZE ELEMENTS CSS VARS -->
-    <style>.ui-switch {  }</style>
+    <style>
+        .ui-switch {}
+    </style>
+
     <nav class="ui-navigator">
-      <ui-switch id="theme-change">
-        <ui-icon slot="prepend" name="moon"></ui-icon>
-        <ui-icon slot="append" name="sun"></ui-icon>
-      </ui-switch>
+        <ui-switch id="theme-change">
+            <ui-icon slot="prepend" name="moon"></ui-icon>
+            <ui-icon slot="append" name="sun"></ui-icon>
+        </ui-switch>
     </nav>
 
     <section class="ui-play-section">
-      <div class="ui-play-container">
-        <nav class="ui-play-nav">Navigation</nav>
-        <div class="ui-play-content">
-          <table class="w-full">
-            <tr>
-              <th>Tag Name</th>
-              <th>Component</th>
-              <th>Properties</th>
-              <th>CSS Properties</th>
-            </tr>
+        <div class="ui-play-container">
+            <nav class="ui-play-nav">Navigation</nav>
+            <div class="ui-play-content">
+                <table class="w-full">
+                    <tr>
+                        <th>Tag Name</th>
+                        <th>Component</th>
+                        <th>Properties</th>
+                        <th>CSS Properties</th>
+                    </tr>
 
-            <tr>
-              <td>
-                <p>Name: ui-icon</p>
-              </td>
-              <td>
-                <i style="height: 64px; width: 64px; display: block"><ui-icon name="github"></ui-icon></i>
-              </td>
-              <td>TODO</td>
-              <td>TODO</td>
-            </tr>
+                    <tr>
+                        <td>
+                            <p>Name: ui-icon</p>
+                        </td>
+                        <td>
+                            <i style="height: 64px; width: 64px; display: block"><ui-icon name="github"></ui-icon></i>
+                        </td>
+                        <td>TODO</td>
+                        <td>TODO</td>
+                    </tr>
 
-            <tr>
-              <td>
-                <p>Name: ui-switch</p>
-              </td>
-              <td>
-                <ui-switch>
-                  <ui-icon slot="prepend" name="moon"></ui-icon>
-                  <ui-icon slot="append" name="sun"></ui-icon>
-                </ui-switch>
-                <ui-switch>
-                  <span slot="left">OFF</span>
-                  <span slot="right">ON</span>
-                  <ui-icon style="color: red" slot="prepend" name="moon"></ui-icon>
-                  <ui-icon style="color: green" slot="append" name="sun"></ui-icon>
-                </ui-switch>
-              </td>
-              <td>TODO</td>
-              <td>TODO</td>
-            </tr>
+                    <tr>
+                        <td>
+                            <p>Name: ui-switch</p>
+                        </td>
+                        <td>
+                            <ui-switch>
+                                <ui-icon slot="prepend" name="moon"></ui-icon>
+                                <ui-icon slot="append" name="sun"></ui-icon>
+                            </ui-switch>
+                            <ui-switch>
+                                <span slot="left">OFF</span>
+                                <span slot="right">ON</span>
+                                <ui-icon style="color: red" slot="prepend" name="moon"></ui-icon>
+                                <ui-icon style="color: green" slot="append" name="sun"></ui-icon>
+                            </ui-switch>
+                        </td>
+                        <td>TODO</td>
+                        <td>TODO</td>
+                    </tr>
 
-            <tr>
-              <td>
-                <p>Name: ui-checkbox</p>
-              </td>
-              <td>
-                <ui-checkbox></ui-checkbox>
-                <ui-checkbox>
-                  <span slot="label">Check</span>
-                </ui-checkbox>
-              </td>
-              <td>TODO</td>
-              <td>TODO</td>
-            </tr>
+                    <tr>
+                        <td>
+                            <p>Name: ui-checkbox</p>
+                        </td>
+                        <td>
+                            <ui-checkbox></ui-checkbox>
+                            <ui-checkbox>
+                                <span slot="label">Check</span>
+                            </ui-checkbox>
+                        </td>
+                        <td>TODO</td>
+                        <td>TODO</td>
+                    </tr>
 
-            <tr>
-              <td>
-                <p>Name: ui-range</p>
-              </td>
-              <td>
-                <ui-range min="10" max="100"></ui-range>
-                <ui-range min="10" max="100">
-                  <span slot="min">10</span>
-                  <span slot="max">100</span>
-                </ui-range>
-              </td>
-              <td>TODO</td>
-              <td>TODO</td>
-            </tr>
-          </table>
+                    <tr>
+                        <td>
+                            <p>Name: ui-range</p>
+                        </td>
+                        <td>
+                            <ui-range min="10" max="100"></ui-range>
+                            <ui-range min="10" max="100">
+                                <span slot="min">10</span>
+                                <span slot="max">100</span>
+                            </ui-range>
+                        </td>
+                        <td>TODO</td>
+                        <td>TODO</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <p>Name: ui-limiter</p>
+                        </td>
+                        <td>
+                            <ui-limiter min="0" max="1000"></ui-limiter>
+                            <ui-limiter min="0" max="50" value="10"></ui-limiter>
+                        </td>
+                        <td>TODO</td>
+                        <td>TODO</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-      </div>
     </section>
 
     <script type="module" src="/assets/main.js"></script>
-  </body>
+</body>
+
 </html>

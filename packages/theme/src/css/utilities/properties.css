@@ -54,7 +54,6 @@
   --checkbox-border-color: theme('colors.grey');
 }
 
-
 .range-props {
   --range-width: 100%;
   --range-height: 4px;
@@ -73,4 +72,22 @@
 .range-props-light {
   --range-background-color: theme('colors.grey-dark');
   --range-thumb-background-color: theme('colors.grey-light');
+}
+
+.limiter-props {
+  --limiter-size: 24px;
+  --limiter-outline-width: 1px;
+  --limiter-outline-style: solid;
+}
+
+.limiter-props-dark {
+  --limiter-bar-color: theme('colors.grey-light');
+  --limiter-outline-color: theme('colors.grey-dark');
+  --limiter-drag-color: theme('colors.grey-dark');
+}
+
+.limiter-props-light {
+  --limiter-bar-color: theme('colors.grey-dark');
+  --limiter-outline-color: theme('colors.grey');
+  --limiter-drag-color: theme('colors.grey-light');
 }

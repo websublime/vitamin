@@ -53,7 +53,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    -webkit-box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--primary-color);
+    -webkit-box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--checkbox-checked-color);
     box-shadow: 0 0 0 calc(var(--checkbox-diameter) / 2.5) var(--checkbox-checked-color);
     border-radius: inherit;
     opacity: 0;
