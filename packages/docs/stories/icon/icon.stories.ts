@@ -54,11 +54,11 @@ export const Icons: Story = {
               style="display: inline-flex;flex-direction: row;flex: 0 1 calc(20% - 10px); min-width: 120px; margin: 0px 10px 30px 0;align-items: center;"
             >
               <div
-                style="padding: 2px;border-radius: 4px; background: #FFFFFF; box-shadow: rgba(0, 0, 0, 0.10) 0 1px 3px 0; border: 1px solid hsla(203, 50%, 30%, 0.15); overflow: hidden; height: 40px; width: 40px; justify-content: center;"
+                style="padding: 2px;border-radius: 4px; background: #FFFFFF; box-shadow: rgba(0, 0, 0, 0.10) 0 1px 3px 0; border: 1px solid hsla(203, 50%, 30%, 0.15); overflow: hidden; height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;"
               >
-                <ui-icon style="width: 48px; height: 48px; display: block; color: black" name="${icon}"></ui-icon>
+                <ui-icon style="width: 24px; height: 24px; display: block; color: black" name="${icon}"></ui-icon>
               </div>
-              <span style="margin-left: 6px;display:block">${icon}</span>
+              <span class="text-black" style="margin-left: 6px;display:block">${icon}</span>
             </div>
           `
         )}
