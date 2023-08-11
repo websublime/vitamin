@@ -26,7 +26,7 @@ const config: StorybookConfig = {
   previewHead: (head) => `
     ${head}
     ${
-      "<script>document.getElementsByTagName('html')[0].setAttribute('theme', 'orizon');</script>"
+      "<script>document.getElementsByTagName('html')[0].setAttribute('theme', 'orizon');document.getElementsByTagName('html')[0].setAttribute('class', 'dark');</script>"
     }
   `,
 };

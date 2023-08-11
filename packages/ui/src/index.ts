@@ -2,3 +2,4 @@ export { IconElement, registerComponent as registIconComponent } from './element
 export { SwitchElement, registerComponent as registSwitchComponent } from './elements/switch/index.js';
 export { CheckboxElement, registerComponent as registCheckboxComponent } from './elements/checkbox/index.js';
 export { RangeElement, registerComponent as registRangeComponent } from './elements/range/index.js';
+export { LimiterElement, registerComponent as registLimiterComponent } from './elements/limiter/index.js';

@@ -85,6 +85,14 @@
     "./plugin/range.js": {
       "types": "./dist/elements/range/plugin.d.ts",
       "default": "./dist/elements/range/plugin.js"
+    },
+    "./element/limiter.js": {
+      "types": "./dist/elements/limiter/index.d.ts",
+      "default": "./dist/elements/limiter/index.js"
+    },
+    "./plugin/limiter.js": {
+      "types": "./dist/elements/limiter/plugin.d.ts",
+      "default": "./dist/elements/limiter/plugin.js"
     }
   },
   "publishConfig": {
