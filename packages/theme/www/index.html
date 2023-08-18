@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="en" theme="orizon">
+<html dir="ltr" lang="en" class="dark">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,27 +37,22 @@
     <link href="/assets/style.css" rel="stylesheet">
     <script type="module">
       import { IconsMap } from 'icons';
-      document.getElementById('shrink-0').innerHTML = IconsMap.get('columns').render('class="h-64 w-64 text-black"');
+      //document.getElementById('shrink-0').innerHTML = IconsMap.get('columns').render('class="h-64 w-64 text-black"');
     </script>
     
   </head>
-  <body style="height: 100vh;">
-    <div class="p-6 max-w-sm mx-auto bg-white is-rounded-md shadow-lg flex items-center space-x-4 debug">
-      <div id="shrink-0">
-        
-      </div>
-      <div>
-        <div class="text-xl font-medium text-black">ChitChat</div>
-        <p class="text-slate-500 has-text-info-dark">You have a new message!</p>
-        <svg class="text-black" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-<path d="M8 4.951c-1.008 0-1.629 1.09-1.629 2.895v.31c0 1.81.627 2.895 1.629 2.895s1.623-1.09 1.623-2.895v-.31c0-1.8-.621-2.895-1.623-2.895Z"/>
-<path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-8.012 4.158c1.858 0 2.96-1.582 2.96-3.99V7.84c0-2.426-1.079-3.996-2.936-3.996-1.864 0-2.965 1.588-2.965 3.996v.328c0 2.42 1.09 3.99 2.941 3.99Z"/>
-</svg>
-<svg class="h-64 w-64 text-black"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="10" cy="10" r="7" />  <line x1="7" y1="10" x2="13" y2="10" />  <line x1="21" y1="21" x2="15" y2="15" /></svg>
-        <button class="ui-btn ui-btn-secondary">
-          Resolved
+  <body style="height: 100vh;" class="theme-gray">
+    <nav class="w-full p-3 relative flex flex-col items-start md:flex-row md:items-center">
+      <h1 class="text-3xl font-bold" style="flex:1">Theme</h1>
+      <div class="mr-2 hidden items-center space-x-0.5 lg:flex">
+        <button class="flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs is-gray-border">
+          <span class="flex h-6 w-6 items-center justify-center rounded-full is-gray">G</span>
+        </button>
+
+        <button class="flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs is-red-border">
+          <span class="flex h-6 w-6 items-center justify-center rounded-full is-red">M</span>
         </button>
       </div>
-    </div>
+    </nav>
   </body>
 </html>

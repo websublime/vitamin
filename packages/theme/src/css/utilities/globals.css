@@ -2,18 +2,9 @@
   color-scheme: light dark;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --color: theme('colors.black');
-    --background-color: theme('colors.white');
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color: theme('colors.white');
-    --background-color: theme('colors.black');
-  }
+body {
+  background: var(--background);
+  color: var(--high-contrast);
 }
 
 .dark {
