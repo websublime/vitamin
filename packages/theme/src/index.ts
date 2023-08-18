@@ -10,8 +10,8 @@
 */
 
 import { readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join, resolve } from 'node:path';
+// import { fileURLToPath } from 'node:url';
 
 import convert from 'color-convert';
 import { parse } from 'postcss';
@@ -21,7 +21,9 @@ import plugin from 'tailwindcss/plugin.js';
 import { palette } from './colors.js';
 import { defineTheme } from './themes.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+// eslint-disable-next-line max-len
+// const currentDirectory = typeof __dirname === undefined ? dirname(fileURLToPath(import.meta.url)) : __dirname;
+const currentDirectory = __dirname;
 const hslToString = ([hue, saturation, lightness]) => `${hue}deg ${saturation}% ${lightness}%`;
 
 const setupTheme = (themeDescriptor) => {
@@ -56,16 +58,16 @@ export default plugin.withOptions(
       // eslint-disable-next-line no-console
       console.log('Tailwind Vitamin-Wind Theme:', name);
 
-      const globalsCss = readFileSync(resolve(join(__dirname, './css/utilities/globals.css')), 'utf8');
+      const globalsCss = readFileSync(resolve(join(currentDirectory, './css/utilities/globals.css')), 'utf8');
       const globalsResult = postcssJs.objectify(parse(globalsCss));
 
-      const colorsCss = readFileSync(resolve(join(__dirname, './css/utilities/colors.css')), 'utf8');
+      const colorsCss = readFileSync(resolve(join(currentDirectory, './css/utilities/colors.css')), 'utf8');
       const colorsResult = postcssJs.objectify(parse(colorsCss));
 
-      const helpersCss = readFileSync(resolve(join(__dirname, './css/utilities/helpers.css')), 'utf8');
+      const helpersCss = readFileSync(resolve(join(currentDirectory, './css/utilities/helpers.css')), 'utf8');
       const helpersResult = postcssJs.objectify(parse(helpersCss));
 
-      const propertiesCss = readFileSync(resolve(join(__dirname, './css/utilities/properties.css')), 'utf8');
+      const propertiesCss = readFileSync(resolve(join(currentDirectory, './css/utilities/properties.css')), 'utf8');
       const propertiesResult = postcssJs.objectify(parse(propertiesCss));
 
       const defaults = setupTheme(defineTheme({ colors, globals }));
