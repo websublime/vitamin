@@ -16,10 +16,12 @@ async function development({ serve = true, watch = true } = {}) {
     chunkNames: 'style',
     entryNames: 'style',
     entryPoints: {
+      index: './src/index.ts',
       style: './src/style.css'
     },
     logLevel: 'debug',
     outdir: 'www/assets',
+    platform: 'node',
     plugins: [clean({ dirs: ['www/assets'] }), postCssPlugin()],
     sourcemap: false
   });
