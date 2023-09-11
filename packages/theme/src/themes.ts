@@ -1600,18 +1600,18 @@ export const defineThemes = () => {
 
   mapper.set('red', {
     light: {
-      '--background': 'var(--red-ligth-1)',
-      '--subtle-background': 'var(--red-ligth-2)',
-      '--ui-background': 'var(--red-ligth-3)',
-      '--hover-background': 'var(--red-ligth-4)',
-      '--active-background': 'var(--red-ligth-5)',
-      '--subtle-border': 'var(--red-ligth-6)',
-      '--ui-border': 'var(--red-ligth-7)',
-      '--ui-hover': 'var(--red-ligth-8)',
-      '--solid-background': 'var(--red-ligth-9)',
-      '--hover-solid': 'var(--red-ligth-10)',
-      '--low-contrast': 'var(--red-ligth-11)',
-      '--high-contrast': 'var(--red-ligth-12)'
+      '--background': 'var(--red-light-1)',
+      '--subtle-background': 'var(--red-light-2)',
+      '--ui-background': 'var(--red-light-3)',
+      '--hover-background': 'var(--red-light-4)',
+      '--active-background': 'var(--red-light-5)',
+      '--subtle-border': 'var(--red-light-6)',
+      '--ui-border': 'var(--red-light-7)',
+      '--ui-hover': 'var(--red-light-8)',
+      '--solid-background': 'var(--red-light-9)',
+      '--hover-solid': 'var(--red-light-10)',
+      '--low-contrast': 'var(--red-light-11)',
+      '--high-contrast': 'var(--red-light-12)'
     },
     dark: {
       '--background': 'var(--red-dark-1)',

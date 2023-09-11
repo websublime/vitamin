@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en" class="dark">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -12,47 +13,65 @@
     }
     </script>
     <script>
-      new EventSource('/esbuild').addEventListener('change', e => {
-        const { added, removed, updated } = JSON.parse(e.data);
+        new EventSource('/esbuild').addEventListener('change', e => {
+            const {added, removed, updated} = JSON.parse(e.data);
 
-        if (!added.length && !removed.length && updated.length === 1) {
-          for (const link of document.getElementsByTagName("link")) {
-            const url = new URL(link.href);
+            if (!added.length && !removed.length && updated.length === 1) {
+                for (const link of document.getElementsByTagName("link")) {
+                    const url = new URL(link.href);
 
-            if (url.host === location.host && url.pathname === updated[0]) {
-              const next = link.cloneNode();
-              next.href = updated[0] + '?' + Math.random().toString(36).slice(2);
-              next.onload = () => link.remove();
-              link.parentNode.insertBefore(next, link.nextSibling);
+                    if (url.host === location.host && url.pathname === updated[0]) {
+                        const next = link.cloneNode();
+                        next.href = updated[0] + '?' + Math.random().toString(36).slice(2);
+                        next.onload = () => link.remove();
+                        link.parentNode.insertBefore(next, link.nextSibling);
 
-              return;
+                        return;
+                    }
+                }
             }
-          }
-        }
 
-        location.reload();
-      });
+            location.reload();
+        });
     </script>
 
     <link href="/assets/style.css" rel="stylesheet">
     <script type="module">
-      import { IconsMap } from 'icons';
+        import {IconsMap} from 'icons';
       //document.getElementById('shrink-0').innerHTML = IconsMap.get('columns').render('class="h-64 w-64 text-black"');
     </script>
-    
-  </head>
-  <body style="height: 100vh;" class="theme-gray">
-    <nav class="w-full p-3 relative flex flex-col items-start md:flex-row md:items-center">
-      <h1 class="text-3xl font-bold" style="flex:1">Theme</h1>
-      <div class="mr-2 hidden items-center space-x-0.5 lg:flex">
-        <button class="flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs is-gray-border">
-          <span class="flex h-6 w-6 items-center justify-center rounded-full is-gray">G</span>
-        </button>
 
-        <button class="flex h-9 w-9 items-center justify-center rounded-full border-2 text-xs is-red-border">
-          <span class="flex h-6 w-6 items-center justify-center rounded-full is-red">M</span>
-        </button>
-      </div>
+</head>
+
+<body style="height: 100vh;" class="theme-gray">
+    <nav class="ui-nav">
+        <h1 class="ui-nav-title">Theme</h1>
+        <div class="ui-nav-colors">
+            <button class="ui-nav-button border-2 is-gray-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-gray">G</span>
+            </button>
+
+            <button class="ui-nav-button is-red-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-red">R</span>
+            </button>
+        </div>
     </nav>
-  </body>
+    <section class="p-4"></section>
+
+    <script type="module">
+        function uiNav() {
+            document.querySelectorAll('.ui-nav-button').forEach((button) => {
+                button.addEventListener('click', (event) => {
+                    document.querySelectorAll('.ui-nav-button').forEach((button) => {
+                        button.classList.remove('border-2');
+                    });
+                    console.dir(event);
+                });
+            });
+        }
+
+        uiNav();
+    </script>
+</body>
+
 </html>
