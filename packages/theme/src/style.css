@@ -17,7 +17,13 @@
     @apply mr-2 hidden items-center space-x-0.5 lg:flex;
   }
 
-  .ui-nav-button {
+  .ui-nav-button,
+  .ui-theme-button {
     @apply flex h-9 w-9 items-center justify-center rounded-full text-xs;
+  }
+
+  .ui-theme-button {
+    color: var(--high-contrast);
+    border-color: var(--ui-border);
   }
 }

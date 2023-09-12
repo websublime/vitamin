@@ -36,42 +36,72 @@
     </script>
 
     <link href="/assets/style.css" rel="stylesheet">
-    <script type="module">
-        import {IconsMap} from 'icons';
-      //document.getElementById('shrink-0').innerHTML = IconsMap.get('columns').render('class="h-64 w-64 text-black"');
-    </script>
-
 </head>
 
 <body style="height: 100vh;" class="theme-gray">
     <nav class="ui-nav">
         <h1 class="ui-nav-title">Theme</h1>
         <div class="ui-nav-colors">
-            <button class="ui-nav-button border-2 is-gray-border">
+            <button data-theme="theme-gray" class="ui-nav-button border-2 is-gray-border">
                 <span class="flex h-6 w-6 items-center justify-center rounded-full is-gray">G</span>
             </button>
 
-            <button class="ui-nav-button is-red-border">
+            <button data-theme="theme-red" class="ui-nav-button is-red-border">
                 <span class="flex h-6 w-6 items-center justify-center rounded-full is-red">R</span>
             </button>
+
+            <button data-theme="theme-mauve" class="ui-nav-button is-mauve-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-mauve">M</span>
+            </button>
+
+            <button data-theme="theme-slate" class="ui-nav-button is-slate-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-slate">S</span>
+            </button>
+
+            <button data-theme="theme-sage" class="ui-nav-button is-sage-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-sage">S</span>
+            </button>
+
+            <button data-theme="theme-olive" class="ui-nav-button is-olive-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-olive">O</span>
+            </button>
+
+            <button data-theme="theme-tomato" class="ui-nav-button is-tomato-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-tomato">T</span>
+            </button>
+
+            <button data-theme="theme-crimson" class="ui-nav-button is-crimson-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-crimson">C</span>
+            </button>
+
+            <button data-theme="theme-pink" class="ui-nav-button is-pink-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-pink">P</span>
+            </button>
+
+            <button data-theme="theme-plum" class="ui-nav-button is-plum-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-plum">P</span>
+            </button>
+
+            <button data-theme="theme-purple" class="ui-nav-button is-purple-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-purple">P</span>
+            </button>
+
+            <button data-theme="theme-violet" class="ui-nav-button is-violet-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-violet">V</span>
+            </button>
+
+            <button data-theme="theme-indigo" class="ui-nav-button is-indigo-border">
+                <span class="flex h-6 w-6 items-center justify-center rounded-full is-indigo">I</span>
+            </button>
+        </div>
+
+        <div class="ui-nav-theme">
+            <button class="ui-theme-button border-2"></button>
         </div>
     </nav>
     <section class="p-4"></section>
 
-    <script type="module">
-        function uiNav() {
-            document.querySelectorAll('.ui-nav-button').forEach((button) => {
-                button.addEventListener('click', (event) => {
-                    document.querySelectorAll('.ui-nav-button').forEach((button) => {
-                        button.classList.remove('border-2');
-                    });
-                    console.dir(event);
-                });
-            });
-        }
-
-        uiNav();
-    </script>
+    <script type="module" src="/dist/main.js"></script>
 </body>
 
 </html>
