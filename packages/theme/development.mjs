@@ -3,6 +3,7 @@
 
 import clean from '@akrc/esbuild-plugin-clean';
 import { context } from 'esbuild';
+import * as esbuild from 'esbuild';
 import postCssPlugin from 'esbuild-postcss';
 
 //import { sync } from 'glob';
@@ -37,8 +38,19 @@ async function development({ serve = true, watch = true } = {}) {
   }
 }
 
+esbuild.build({
+  bundle: true,
+  entryPoints: ['./src/main.ts'],
+  external: ['icons'],
+  format: 'esm',
+  logLevel: 'debug',
+  outfile: 'www/dist/main.js',
+  sourcemap: false,
+  target: 'es2020'
+});
+
 // eslint-disable-next-line unicorn/prefer-top-level-await
 development({
-  serve: process.argv.includes('--watch'),
+  serve: process.argv.includes('--serve'),
   watch: process.argv.includes('--watch')
 });

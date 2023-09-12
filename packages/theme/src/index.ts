@@ -79,17 +79,42 @@ export default plugin.withOptions(
         {}
       );
 
-      const { gray, red } = defineThemes();
+      const { crimson, gray, indigo, mauve, olive, pink, plum, purple, red, sage, sand, slate, tomato, violet } =
+        defineThemes();
 
       addBase([
         {
           '.dark': {
+            '.theme-crimson': crimson?.dark,
             '.theme-gray': gray?.dark,
-            '.theme-red': red?.dark
+            '.theme-indigo': indigo?.dark,
+            '.theme-mauve': mauve?.dark,
+            '.theme-olive': olive?.dark,
+            '.theme-pink': pink?.dark,
+            '.theme-plum': plum?.dark,
+            '.theme-purple': purple?.dark,
+            '.theme-red': red?.dark,
+            '.theme-sage': sage?.dark,
+            '.theme-sand': sand?.dark,
+            '.theme-slate': slate?.dark,
+            '.theme-tomato': tomato?.dark,
+            '.theme-violet': violet?.dark
           },
           '.light': {
+            '.theme-crimson': crimson?.light,
             '.theme-gray': gray?.light,
-            '.theme-red': red?.light
+            '.theme-indigo': indigo?.light,
+            '.theme-mauve': mauve?.light,
+            '.theme-olive': olive?.light,
+            '.theme-pink': pink?.light,
+            '.theme-plum': plum?.light,
+            '.theme-purple': purple?.light,
+            '.theme-red': red?.light,
+            '.theme-sage': sage?.light,
+            '.theme-sand': sand?.light,
+            '.theme-slate': slate?.light,
+            '.theme-tomato': tomato?.light,
+            '.theme-violet': violet?.light
           },
           ':root': {
             ...defaults
