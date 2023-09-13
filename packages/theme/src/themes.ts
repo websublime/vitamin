@@ -70,18 +70,18 @@ export const defineRoot = (options = { colors: {}, globals: {} }) => {
   });
 
   mapper.set('colors', {
-    'gray-ligth-1': 'hsl(0, 0%, 99.0%)',
-    'gray-ligth-2': 'hsl(0, 0%, 97.5%)',
-    'gray-ligth-3': 'hsl(0, 0%, 94.6%)',
-    'gray-ligth-4': 'hsl(0, 0%, 92.0%)',
-    'gray-ligth-5': 'hsl(0, 0%, 89.5%)',
-    'gray-ligth-6': 'hsl(0, 0%, 86.8%)',
-    'gray-ligth-7': 'hsl(0, 0%, 83.0%)',
-    'gray-ligth-8': 'hsl(0, 0%, 73.2%)',
-    'gray-ligth-9': 'hsl(0, 0%, 55.2%)',
-    'gray-ligth-10': 'hsl(0, 0%, 50.3%)',
-    'gray-ligth-11': 'hsl(0, 0%, 39.3%)',
-    'gray-ligth-12': 'hsl(0, 0%, 12.5%)',
+    'gray-light-1': 'hsl(0, 0%, 99.0%)',
+    'gray-light-2': 'hsl(0, 0%, 97.5%)',
+    'gray-light-3': 'hsl(0, 0%, 94.6%)',
+    'gray-light-4': 'hsl(0, 0%, 92.0%)',
+    'gray-light-5': 'hsl(0, 0%, 89.5%)',
+    'gray-light-6': 'hsl(0, 0%, 86.8%)',
+    'gray-light-7': 'hsl(0, 0%, 83.0%)',
+    'gray-light-8': 'hsl(0, 0%, 73.2%)',
+    'gray-light-9': 'hsl(0, 0%, 55.2%)',
+    'gray-light-10': 'hsl(0, 0%, 50.3%)',
+    'gray-light-11': 'hsl(0, 0%, 39.3%)',
+    'gray-light-12': 'hsl(0, 0%, 12.5%)',
 
     'gray-dark-1': 'hsl(0, 0%, 9.5%)',
     'gray-dark-2': 'hsl(0, 0%, 10.5%)',
@@ -1569,18 +1569,18 @@ export const defineThemes = () => {
 
   mapper.set('gray', {
     light: {
-      '--background': 'var(--gray-ligth-1)',
-      '--subtle-background': 'var(--gray-ligth-2)',
-      '--ui-background': 'var(--gray-ligth-3)',
-      '--hover-background': 'var(--gray-ligth-4)',
-      '--active-background': 'var(--gray-ligth-5)',
-      '--subtle-border': 'var(--gray-ligth-6)',
-      '--ui-border': 'var(--gray-ligth-7)',
-      '--ui-hover': 'var(--gray-ligth-8)',
-      '--solid-background': 'var(--gray-ligth-9)',
-      '--hover-solid': 'var(--gray-ligth-10)',
-      '--low-contrast': 'var(--gray-ligth-11)',
-      '--high-contrast': 'var(--gray-ligth-12)'
+      '--background': 'var(--gray-light-1)',
+      '--subtle-background': 'var(--gray-light-2)',
+      '--ui-background': 'var(--gray-light-3)',
+      '--hover-background': 'var(--gray-light-4)',
+      '--active-background': 'var(--gray-light-5)',
+      '--subtle-border': 'var(--gray-light-6)',
+      '--ui-border': 'var(--gray-light-7)',
+      '--ui-hover': 'var(--gray-light-8)',
+      '--solid-background': 'var(--gray-light-9)',
+      '--hover-solid': 'var(--gray-light-10)',
+      '--low-contrast': 'var(--gray-light-11)',
+      '--high-contrast': 'var(--gray-light-12)'
     },
     dark: {
       '--background': 'var(--gray-dark-1)',
@@ -1600,18 +1600,18 @@ export const defineThemes = () => {
 
   mapper.set('mauve', {
     light: {
-      '--background': 'var(--mauve-ligth-1)',
-      '--subtle-background': 'var(--mauve-ligth-2)',
-      '--ui-background': 'var(--mauve-ligth-3)',
-      '--hover-background': 'var(--mauve-ligth-4)',
-      '--active-background': 'var(--mauve-ligth-5)',
-      '--subtle-border': 'var(--mauve-ligth-6)',
-      '--ui-border': 'var(--mauve-ligth-7)',
-      '--ui-hover': 'var(--mauve-ligth-8)',
-      '--solid-background': 'var(--mauve-ligth-9)',
-      '--hover-solid': 'var(--mauve-ligth-10)',
-      '--low-contrast': 'var(--mauve-ligth-11)',
-      '--high-contrast': 'var(--mauve-ligth-12)'
+      '--background': 'var(--mauve-light-1)',
+      '--subtle-background': 'var(--mauve-light-2)',
+      '--ui-background': 'var(--mauve-light-3)',
+      '--hover-background': 'var(--mauve-light-4)',
+      '--active-background': 'var(--mauve-light-5)',
+      '--subtle-border': 'var(--mauve-light-6)',
+      '--ui-border': 'var(--mauve-light-7)',
+      '--ui-hover': 'var(--mauve-light-8)',
+      '--solid-background': 'var(--mauve-light-9)',
+      '--hover-solid': 'var(--mauve-light-10)',
+      '--low-contrast': 'var(--mauve-light-11)',
+      '--high-contrast': 'var(--mauve-light-12)'
     },
     dark: {
       '--background': 'var(--mauve-dark-1)',
@@ -1631,18 +1631,18 @@ export const defineThemes = () => {
 
   mapper.set('slate', {
     light: {
-      '--background': 'var(--slate-ligth-1)',
-      '--subtle-background': 'var(--slate-ligth-2)',
-      '--ui-background': 'var(--slate-ligth-3)',
-      '--hover-background': 'var(--slate-ligth-4)',
-      '--active-background': 'var(--slate-ligth-5)',
-      '--subtle-border': 'var(--slate-ligth-6)',
-      '--ui-border': 'var(--slate-ligth-7)',
-      '--ui-hover': 'var(--slate-ligth-8)',
-      '--solid-background': 'var(--slate-ligth-9)',
-      '--hover-solid': 'var(--slate-ligth-10)',
-      '--low-contrast': 'var(--slate-ligth-11)',
-      '--high-contrast': 'var(--slate-ligth-12)'
+      '--background': 'var(--slate-light-1)',
+      '--subtle-background': 'var(--slate-light-2)',
+      '--ui-background': 'var(--slate-light-3)',
+      '--hover-background': 'var(--slate-light-4)',
+      '--active-background': 'var(--slate-light-5)',
+      '--subtle-border': 'var(--slate-light-6)',
+      '--ui-border': 'var(--slate-light-7)',
+      '--ui-hover': 'var(--slate-light-8)',
+      '--solid-background': 'var(--slate-light-9)',
+      '--hover-solid': 'var(--slate-light-10)',
+      '--low-contrast': 'var(--slate-light-11)',
+      '--high-contrast': 'var(--slate-light-12)'
     },
     dark: {
       '--background': 'var(--slate-dark-1)',
@@ -1662,18 +1662,18 @@ export const defineThemes = () => {
 
   mapper.set('sage', {
     light: {
-      '--background': 'var(--sage-ligth-1)',
-      '--subtle-background': 'var(--sage-ligth-2)',
-      '--ui-background': 'var(--sage-ligth-3)',
-      '--hover-background': 'var(--sage-ligth-4)',
-      '--active-background': 'var(--sage-ligth-5)',
-      '--subtle-border': 'var(--sage-ligth-6)',
-      '--ui-border': 'var(--sage-ligth-7)',
-      '--ui-hover': 'var(--sage-ligth-8)',
-      '--solid-background': 'var(--sage-ligth-9)',
-      '--hover-solid': 'var(--sage-ligth-10)',
-      '--low-contrast': 'var(--sage-ligth-11)',
-      '--high-contrast': 'var(--sage-ligth-12)'
+      '--background': 'var(--sage-light-1)',
+      '--subtle-background': 'var(--sage-light-2)',
+      '--ui-background': 'var(--sage-light-3)',
+      '--hover-background': 'var(--sage-light-4)',
+      '--active-background': 'var(--sage-light-5)',
+      '--subtle-border': 'var(--sage-light-6)',
+      '--ui-border': 'var(--sage-light-7)',
+      '--ui-hover': 'var(--sage-light-8)',
+      '--solid-background': 'var(--sage-light-9)',
+      '--hover-solid': 'var(--sage-light-10)',
+      '--low-contrast': 'var(--sage-light-11)',
+      '--high-contrast': 'var(--sage-light-12)'
     },
     dark: {
       '--background': 'var(--sage-dark-1)',
@@ -1693,18 +1693,18 @@ export const defineThemes = () => {
 
   mapper.set('olive', {
     light: {
-      '--background': 'var(--olive-ligth-1)',
-      '--subtle-background': 'var(--olive-ligth-2)',
-      '--ui-background': 'var(--olive-ligth-3)',
-      '--hover-background': 'var(--olive-ligth-4)',
-      '--active-background': 'var(--olive-ligth-5)',
-      '--subtle-border': 'var(--olive-ligth-6)',
-      '--ui-border': 'var(--olive-ligth-7)',
-      '--ui-hover': 'var(--olive-ligth-8)',
-      '--solid-background': 'var(--olive-ligth-9)',
-      '--hover-solid': 'var(--olive-ligth-10)',
-      '--low-contrast': 'var(--olive-ligth-11)',
-      '--high-contrast': 'var(--olive-ligth-12)'
+      '--background': 'var(--olive-light-1)',
+      '--subtle-background': 'var(--olive-light-2)',
+      '--ui-background': 'var(--olive-light-3)',
+      '--hover-background': 'var(--olive-light-4)',
+      '--active-background': 'var(--olive-light-5)',
+      '--subtle-border': 'var(--olive-light-6)',
+      '--ui-border': 'var(--olive-light-7)',
+      '--ui-hover': 'var(--olive-light-8)',
+      '--solid-background': 'var(--olive-light-9)',
+      '--hover-solid': 'var(--olive-light-10)',
+      '--low-contrast': 'var(--olive-light-11)',
+      '--high-contrast': 'var(--olive-light-12)'
     },
     dark: {
       '--background': 'var(--olive-dark-1)',
@@ -1724,18 +1724,18 @@ export const defineThemes = () => {
 
   mapper.set('sand', {
     light: {
-      '--background': 'var(--sand-ligth-1)',
-      '--subtle-background': 'var(--sand-ligth-2)',
-      '--ui-background': 'var(--sand-ligth-3)',
-      '--hover-background': 'var(--sand-ligth-4)',
-      '--active-background': 'var(--sand-ligth-5)',
-      '--subtle-border': 'var(--sand-ligth-6)',
-      '--ui-border': 'var(--sand-ligth-7)',
-      '--ui-hover': 'var(--sand-ligth-8)',
-      '--solid-background': 'var(--sand-ligth-9)',
-      '--hover-solid': 'var(--sand-ligth-10)',
-      '--low-contrast': 'var(--sand-ligth-11)',
-      '--high-contrast': 'var(--sand-ligth-12)'
+      '--background': 'var(--sand-light-1)',
+      '--subtle-background': 'var(--sand-light-2)',
+      '--ui-background': 'var(--sand-light-3)',
+      '--hover-background': 'var(--sand-light-4)',
+      '--active-background': 'var(--sand-light-5)',
+      '--subtle-border': 'var(--sand-light-6)',
+      '--ui-border': 'var(--sand-light-7)',
+      '--ui-hover': 'var(--sand-light-8)',
+      '--solid-background': 'var(--sand-light-9)',
+      '--hover-solid': 'var(--sand-light-10)',
+      '--low-contrast': 'var(--sand-light-11)',
+      '--high-contrast': 'var(--sand-light-12)'
     },
     dark: {
       '--background': 'var(--sand-dark-1)',
@@ -1755,18 +1755,18 @@ export const defineThemes = () => {
 
   mapper.set('tomato', {
     light: {
-      '--background': 'var(--tomato-ligth-1)',
-      '--subtle-background': 'var(--tomato-ligth-2)',
-      '--ui-background': 'var(--tomato-ligth-3)',
-      '--hover-background': 'var(--tomato-ligth-4)',
-      '--active-background': 'var(--tomato-ligth-5)',
-      '--subtle-border': 'var(--tomato-ligth-6)',
-      '--ui-border': 'var(--tomato-ligth-7)',
-      '--ui-hover': 'var(--tomato-ligth-8)',
-      '--solid-background': 'var(--tomato-ligth-9)',
-      '--hover-solid': 'var(--tomato-ligth-10)',
-      '--low-contrast': 'var(--tomato-ligth-11)',
-      '--high-contrast': 'var(--tomato-ligth-12)'
+      '--background': 'var(--tomato-light-1)',
+      '--subtle-background': 'var(--tomato-light-2)',
+      '--ui-background': 'var(--tomato-light-3)',
+      '--hover-background': 'var(--tomato-light-4)',
+      '--active-background': 'var(--tomato-light-5)',
+      '--subtle-border': 'var(--tomato-light-6)',
+      '--ui-border': 'var(--tomato-light-7)',
+      '--ui-hover': 'var(--tomato-light-8)',
+      '--solid-background': 'var(--tomato-light-9)',
+      '--hover-solid': 'var(--tomato-light-10)',
+      '--low-contrast': 'var(--tomato-light-11)',
+      '--high-contrast': 'var(--tomato-light-12)'
     },
     dark: {
       '--background': 'var(--tomato-dark-1)',
