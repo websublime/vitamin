@@ -79,42 +79,98 @@ export default plugin.withOptions(
         {}
       );
 
-      const { crimson, gray, indigo, mauve, olive, pink, plum, purple, red, sage, sand, slate, tomato, violet } =
-        defineThemes();
+      const {
+        amber,
+        blue,
+        bronze,
+        brown,
+        crimson,
+        cyan,
+        gold,
+        grass,
+        gray,
+        green,
+        indigo,
+        lime,
+        mauve,
+        mint,
+        olive,
+        orange,
+        pink,
+        plum,
+        purple,
+        red,
+        sage,
+        sand,
+        sky,
+        slate,
+        teal,
+        tomato,
+        violet,
+        yellow
+      } = defineThemes();
 
       addBase([
         {
           '.dark': {
+            '.theme-amber': amber?.dark,
+            '.theme-blue': blue?.dark,
+            '.theme-bronze': bronze?.dark,
+            '.theme-brown': brown?.dark,
             '.theme-crimson': crimson?.dark,
+            '.theme-cyan': cyan?.dark,
+            '.theme-gold': gold?.dark,
+            '.theme-grass': grass?.dark,
             '.theme-gray': gray?.dark,
+            '.theme-green': green?.dark,
             '.theme-indigo': indigo?.dark,
+            '.theme-lime': lime?.dark,
             '.theme-mauve': mauve?.dark,
+            '.theme-mint': mint?.dark,
             '.theme-olive': olive?.dark,
+            '.theme-orange': orange?.dark,
             '.theme-pink': pink?.dark,
             '.theme-plum': plum?.dark,
             '.theme-purple': purple?.dark,
             '.theme-red': red?.dark,
             '.theme-sage': sage?.dark,
             '.theme-sand': sand?.dark,
+            '.theme-sky': sky?.dark,
             '.theme-slate': slate?.dark,
+            '.theme-teal': teal?.dark,
             '.theme-tomato': tomato?.dark,
-            '.theme-violet': violet?.dark
+            '.theme-violet': violet?.dark,
+            '.theme-yellow': yellow?.dark
           },
           '.light': {
+            '.theme-amber': amber?.light,
+            '.theme-blue': blue?.light,
+            '.theme-bronze': bronze?.light,
+            '.theme-brown': brown?.light,
             '.theme-crimson': crimson?.light,
+            '.theme-cyan': cyan?.light,
+            '.theme-gold': gold?.light,
+            '.theme-grass': grass?.light,
             '.theme-gray': gray?.light,
+            '.theme-green': green?.light,
             '.theme-indigo': indigo?.light,
+            '.theme-lime': lime?.light,
             '.theme-mauve': mauve?.light,
+            '.theme-mint': mint?.light,
             '.theme-olive': olive?.light,
+            '.theme-orange': orange?.light,
             '.theme-pink': pink?.light,
             '.theme-plum': plum?.light,
             '.theme-purple': purple?.light,
             '.theme-red': red?.light,
             '.theme-sage': sage?.light,
             '.theme-sand': sand?.light,
+            '.theme-sky': sky?.light,
             '.theme-slate': slate?.light,
+            '.theme-teal': teal?.light,
             '.theme-tomato': tomato?.light,
-            '.theme-violet': violet?.light
+            '.theme-violet': violet?.light,
+            '.theme-yellow': yellow?.light
           },
           ':root': {
             ...defaults

@@ -26,4 +26,16 @@
     color: var(--high-contrast);
     border-color: var(--ui-border);
   }
+
+  .ui-palette {
+    @apply grid grid-cols-7 gap-4;
+  }
+
+  .ui-scale {
+    @apply grid grid-cols-3 gap-4;
+  }
+
+  .ui-scale-container {
+    @apply grid grid-cols-12 gap-2;
+  }
 }
