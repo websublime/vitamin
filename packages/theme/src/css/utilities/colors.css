@@ -1,757 +1,3369 @@
 .light {
-    .is-gray {
-        color: var(--gray-dark-12);
-        background-color: var(--gray-light-9);
-    }
-
-    .is-gray-background {
-      background-color: var(--gray-light-1);
-    }
-
-    .is-gray-subtle-background {
-      background-color: var(--gray-light-2);
-    }
-
-    .is-gray-ui-background {
-      background-color: var(--gray-light-3);
-    }
-
-    .is-gray-hover-background {
-      background-color: var(--gray-light-4);
-    }
-
-    .is-gray-active-background {
-      background-color: var(--gray-light-5);
-    }
-
-    .is-gray-subtle-element-background {
-      background-color: var(--gray-light-6);
-    }
-
-    .is-gray-ui-element-background {
-      background-color: var(--gray-light-7);
-    }
-
-    .is-gray-ui-hover-background {
-      background-color: var(--gray-light-8);
-    }
-
-    .is-gray-solid-background {
-      background-color: var(--gray-light-9);
-    }
-
-    .is-gray-hover-solid-background {
-      background-color: var(--gray-light-10);
-    }
-
-    .is-gray-low-contrast-background {
-      background-color: var(--gray-light-11);
-    }
-
-    .is-gray-high-contrast-background {
-      background-color: var(--gray-light-12);
-    }
-
-    .is-gray-border {
-        outline-color: var(--gray-light-7);
-        border-color: var(--gray-light-7);
-    }
-
-    .is-red {
-        color: var(--red-dark-12);
-        background-color: var(--red-light-9);
-    }
-
-    .is-red-background {
-      background-color: var(--red-light-1);
-    }
-
-    .is-red-subtle-background {
-      background-color: var(--red-light-2);
-    }
-
-    .is-red-ui-background {
-      background-color: var(--red-light-3);
-    }
-
-    .is-red-hover-background {
-      background-color: var(--red-light-4);
-    }
-
-    .is-red-active-background {
-      background-color: var(--red-light-5);
-    }
-
-    .is-red-subtle-element-background {
-      background-color: var(--red-light-6);
-    }
-
-    .is-red-ui-element-background {
-      background-color: var(--red-light-7);
-    }
-
-    .is-red-ui-hover-background {
-      background-color: var(--red-light-8);
-    }
-
-    .is-red-solid-background {
-      background-color: var(--red-light-9);
-    }
-
-    .is-red-hover-solid-background {
-      background-color: var(--red-light-10);
-    }
-
-    .is-red-low-contrast-background {
-      background-color: var(--red-light-11);
-    }
-
-    .is-red-high-contrast-background {
-      background-color: var(--red-light-12);
-    }
-
-    .is-red-border {
-        outline-color: var(--red-light-7);
-        border-color: var(--red-light-7);
-    }
-
-    .is-mauve {
-        color: var(--mauve-dark-12);
-        background-color: var(--mauve-light-9);
-    }
-
-    .is-mauve-border {
-        outline-color: var(--mauve-light-7);
-        border-color: var(--mauve-light-7);
-    }
-
-    .is-slate {
-        color: var(--slate-dark-12);
-        background-color: var(--slate-light-9);
-    }
-
-    .is-slate-border {
-        outline-color: var(--slate-light-7);
-        border-color: var(--slate-light-7);
-    }
-
-    .is-sage {
-        color: var(--sage-dark-12);
-        background-color: var(--sage-light-9);
-    }
-
-    .is-sage-border {
-        outline-color: var(--sage-light-7);
-        border-color: var(--sage-light-7);
-    }
-
-    .is-olive {
-        color: var(--olive-dark-12);
-        background-color: var(--olive-light-9);
-    }
-
-    .is-olive-border {
-        outline-color: var(--olive-light-7);
-        border-color: var(--olive-light-7);
-    }
-
-    .is-sand {
-        color: var(--sand-dark-12);
-        background-color: var(--sand-light-9);
-    }
-
-    .is-sand-border {
-        outline-color: var(--sand-light-7);
-        border-color: var(--sand-light-7);
-    }
-
-    .is-tomato {
-        color: var(--tomato-dark-12);
-        background-color: var(--tomato-light-9);
-    }
-
-    .is-tomato-border {
-        outline-color: var(--tomato-light-7);
-        border-color: var(--tomato-light-7);
-    }
-
-    .is-crimson {
-        color: var(--crimson-dark-12);
-        background-color: var(--crimson-light-9);
-    }
-
-    .is-crimson-border {
-        outline-color: var(--crimson-light-7);
-        border-color: var(--crimson-light-7);
-    }
-
-    .is-pink {
-        color: var(--pink-dark-12);
-        background-color: var(--pink-light-9);
-    }
-
-    .is-pink-border {
-        outline-color: var(--pink-light-7);
-        border-color: var(--pink-light-7);
-    }
-
-    .is-plum {
-        color: var(--plum-dark-12);
-        background-color: var(--plum-light-9);
-    }
-
-    .is-plum-border {
-        outline-color: var(--plum-light-7);
-        border-color: var(--plum-light-7);
-    }
-
-    .is-purple {
-        color: var(--purple-dark-12);
-        background-color: var(--purple-light-9);
-    }
-
-    .is-purple-border {
-        outline-color: var(--purple-light-7);
-        border-color: var(--purple-light-7);
-    }
-
-    .is-violet {
-        color: var(--violet-dark-12);
-        background-color: var(--violet-light-9);
-    }
-
-    .is-violet-border {
-        outline-color: var(--violet-light-7);
-        border-color: var(--violet-light-7);
-    }
-
-    .is-indigo {
-        color: var(--indigo-dark-12);
-        background-color: var(--indigo-light-9);
-    }
-
-    .is-indigo-border {
-        outline-color: var(--indigo-light-7);
-        border-color: var(--indigo-light-7);
-    }
-
-    .is-blue {
-        color: var(--blue-dark-12);
-        background-color: var(--blue-light-9);
-    }
-
-    .is-blue-border {
-        outline-color: var(--blue-light-7);
-        border-color: var(--blue-light-7);
-    }
-
-    .is-cyan {
-        color: var(--cyan-dark-12);
-        background-color: var(--cyan-light-9);
-    }
-
-    .is-cyan-border {
-        outline-color: var(--cyan-light-7);
-        border-color: var(--cyan-light-7);
-    }
-
-    .is-teal {
-        color: var(--teal-dark-12);
-        background-color: var(--teal-light-9);
-    }
-
-    .is-teal-border {
-        outline-color: var(--teal-light-7);
-        border-color: var(--teal-light-7);
-    }
-
-    .is-green {
-        color: var(--green-dark-12);
-        background-color: var(--green-light-9);
-    }
-
-    .is-green-border {
-        outline-color: var(--green-light-7);
-        border-color: var(--green-light-7);
-    }
-
-    .is-grass {
-        color: var(--grass-dark-12);
-        background-color: var(--grass-light-9);
-    }
-
-    .is-grass-border {
-        outline-color: var(--grass-light-7);
-        border-color: var(--grass-light-7);
-    }
-
-    .is-brown {
-        color: var(--brown-dark-12);
-        background-color: var(--brown-light-9);
-    }
-
-    .is-brown-border {
-        outline-color: var(--brown-light-7);
-        border-color: var(--brown-light-7);
-    }
-
-    .is-bronze {
-        color: var(--bronze-dark-12);
-        background-color: var(--bronze-light-9);
-    }
-
-    .is-bronze-border {
-        outline-color: var(--bronze-light-7);
-        border-color: var(--bronze-light-7);
-    }
-
-    .is-gold {
-        color: var(--gold-dark-12);
-        background-color: var(--gold-light-9);
-    }
-
-    .is-gold-border {
-        outline-color: var(--gold-light-7);
-        border-color: var(--gold-light-7);
-    }
-
-    .is-sky {
-        color: var(--sky-light-12);
-        background-color: var(--sky-light-9);
-    }
-
-    .is-sky-border {
-        outline-color: var(--sky-light-7);
-        border-color: var(--sky-light-7);
-    }
-
-    .is-mint {
-        color: var(--mint-light-12);
-        background-color: var(--mint-light-9);
-    }
-
-    .is-mint-border {
-        outline-color: var(--mint-light-7);
-        border-color: var(--mint-light-7);
-    }
-
-    .is-lime {
-        color: var(--lime-light-12);
-        background-color: var(--lime-light-9);
-    }
-
-    .is-lime-border {
-        outline-color: var(--lime-light-7);
-        border-color: var(--lime-light-7);
-    }
-
-    .is-yellow {
-        color: var(--yellow-light-12);
-        background-color: var(--yellow-light-9);
-    }
-
-    .is-yellow-border {
-        outline-color: var(--yellow-light-7);
-        border-color: var(--yellow-light-7);
-    }
-
-    .is-amber {
-        color: var(--amber-light-12);
-        background-color: var(--amber-light-9);
-    }
-
-    .is-amber-border {
-        outline-color: var(--amber-light-7);
-        border-color: var(--amber-light-7);
-    }
-
-    .is-orange {
-        color: var(--orange-dark-12);
-        background-color: var(--orange-light-9);
-    }
-
-    .is-orange-border {
-        outline-color: var(--orange-light-7);
-        border-color: var(--orange-light-7);
-    }
+  .is-gray {
+    color: var(--gray-dark-12);
+    background-color: var(--gray-light-9);
+  }
+
+  .is-gray-color {
+    color: var(--gray-dark-12);
+  }
+
+  .is-gray-background {
+    background-color: var(--gray-light-1);
+  }
+
+  .is-gray-subtle-background {
+    background-color: var(--gray-light-2);
+  }
+
+  .is-gray-ui-background {
+    background-color: var(--gray-light-3);
+  }
+
+  .is-gray-hover-background {
+    background-color: var(--gray-light-4);
+  }
+
+  .is-gray-active-background {
+    background-color: var(--gray-light-5);
+  }
+
+  .is-gray-subtle-element-background {
+    background-color: var(--gray-light-6);
+  }
+
+  .is-gray-ui-element-background {
+    background-color: var(--gray-light-7);
+  }
+
+  .is-gray-ui-hover-background {
+    background-color: var(--gray-light-8);
+  }
+
+  .is-gray-solid-background {
+    background-color: var(--gray-light-9);
+  }
+
+  .is-gray-hover-solid-background {
+    background-color: var(--gray-light-10);
+  }
+
+  .is-gray-low-contrast-background {
+    background-color: var(--gray-light-11);
+  }
+
+  .is-gray-high-contrast-background {
+    background-color: var(--gray-light-12);
+  }
+
+  .is-gray-border {
+    outline-color: var(--gray-light-7);
+    border-color: var(--gray-light-7);
+  }
+
+  .is-red {
+    color: var(--red-dark-12);
+    background-color: var(--red-light-9);
+  }
+
+  .is-red-color {
+    color: var(--red-dark-12);
+  }
+
+  .is-red-background {
+    background-color: var(--red-light-1);
+  }
+
+  .is-red-subtle-background {
+    background-color: var(--red-light-2);
+  }
+
+  .is-red-ui-background {
+    background-color: var(--red-light-3);
+  }
+
+  .is-red-hover-background {
+    background-color: var(--red-light-4);
+  }
+
+  .is-red-active-background {
+    background-color: var(--red-light-5);
+  }
+
+  .is-red-subtle-element-background {
+    background-color: var(--red-light-6);
+  }
+
+  .is-red-ui-element-background {
+    background-color: var(--red-light-7);
+  }
+
+  .is-red-ui-hover-background {
+    background-color: var(--red-light-8);
+  }
+
+  .is-red-solid-background {
+    background-color: var(--red-light-9);
+  }
+
+  .is-red-hover-solid-background {
+    background-color: var(--red-light-10);
+  }
+
+  .is-red-low-contrast-background {
+    background-color: var(--red-light-11);
+  }
+
+  .is-red-high-contrast-background {
+    background-color: var(--red-light-12);
+  }
+
+  .is-red-border {
+    outline-color: var(--red-light-7);
+    border-color: var(--red-light-7);
+  }
+
+  .is-mauve {
+    color: var(--mauve-dark-12);
+    background-color: var(--mauve-light-9);
+  }
+
+  .is-mauve-color {
+    color: var(--mauve-dark-12);
+  }
+
+  .is-mauve-background {
+    background-color: var(--mauve-light-1);
+  }
+
+  .is-mauve-subtle-background {
+    background-color: var(--mauve-light-2);
+  }
+
+  .is-mauve-ui-background {
+    background-color: var(--mauve-light-3);
+  }
+
+  .is-mauve-hover-background {
+    background-color: var(--mauve-light-4);
+  }
+
+  .is-mauve-active-background {
+    background-color: var(--mauve-light-5);
+  }
+
+  .is-mauve-subtle-element-background {
+    background-color: var(--mauve-light-6);
+  }
+
+  .is-mauve-ui-element-background {
+    background-color: var(--mauve-light-7);
+  }
+
+  .is-mauve-ui-hover-background {
+    background-color: var(--mauve-light-8);
+  }
+
+  .is-mauve-solid-background {
+    background-color: var(--mauve-light-9);
+  }
+
+  .is-mauve-hover-solid-background {
+    background-color: var(--mauve-light-10);
+  }
+
+  .is-mauve-low-contrast-background {
+    background-color: var(--mauve-light-11);
+  }
+
+  .is-mauve-high-contrast-background {
+    background-color: var(--mauve-light-12);
+  }
+
+  .is-mauve-border {
+    outline-color: var(--mauve-light-7);
+    border-color: var(--mauve-light-7);
+  }
+
+  .is-slate {
+    color: var(--slate-dark-12);
+    background-color: var(--slate-light-9);
+  }
+
+  .is-slate-color {
+    color: var(--slate-dark-12);
+  }
+
+  .is-slate-background {
+    background-color: var(--slate-light-1);
+  }
+
+  .is-slate-subtle-background {
+    background-color: var(--slate-light-2);
+  }
+
+  .is-slate-ui-background {
+    background-color: var(--slate-light-3);
+  }
+
+  .is-slate-hover-background {
+    background-color: var(--slate-light-4);
+  }
+
+  .is-slate-active-background {
+    background-color: var(--slate-light-5);
+  }
+
+  .is-slate-subtle-element-background {
+    background-color: var(--slate-light-6);
+  }
+
+  .is-slate-ui-element-background {
+    background-color: var(--slate-light-7);
+  }
+
+  .is-slate-ui-hover-background {
+    background-color: var(--slate-light-8);
+  }
+
+  .is-slate-solid-background {
+    background-color: var(--slate-light-9);
+  }
+
+  .is-slate-hover-solid-background {
+    background-color: var(--slate-light-10);
+  }
+
+  .is-slate-low-contrast-background {
+    background-color: var(--slate-light-11);
+  }
+
+  .is-slate-high-contrast-background {
+    background-color: var(--slate-light-12);
+  }
+
+  .is-slate-border {
+    outline-color: var(--slate-light-7);
+    border-color: var(--slate-light-7);
+  }
+
+  .is-sage {
+    color: var(--sage-dark-12);
+    background-color: var(--sage-light-9);
+  }
+
+  .is-sage-color {
+    color: var(--sage-dark-12);
+  }
+
+  .is-sage-background {
+    background-color: var(--sage-light-1);
+  }
+
+  .is-sage-subtle-background {
+    background-color: var(--sage-light-2);
+  }
+
+  .is-sage-ui-background {
+    background-color: var(--sage-light-3);
+  }
+
+  .is-sage-hover-background {
+    background-color: var(--sage-light-4);
+  }
+
+  .is-sage-active-background {
+    background-color: var(--sage-light-5);
+  }
+
+  .is-sage-subtle-element-background {
+    background-color: var(--sage-light-6);
+  }
+
+  .is-sage-ui-element-background {
+    background-color: var(--sage-light-7);
+  }
+
+  .is-sage-ui-hover-background {
+    background-color: var(--sage-light-8);
+  }
+
+  .is-sage-solid-background {
+    background-color: var(--sage-light-9);
+  }
+
+  .is-sage-hover-solid-background {
+    background-color: var(--sage-light-10);
+  }
+
+  .is-sage-low-contrast-background {
+    background-color: var(--sage-light-11);
+  }
+
+  .is-sage-high-contrast-background {
+    background-color: var(--sage-light-12);
+  }
+
+  .is-sage-border {
+    outline-color: var(--sage-light-7);
+    border-color: var(--sage-light-7);
+  }
+
+  .is-olive {
+    color: var(--olive-dark-12);
+    background-color: var(--olive-light-9);
+  }
+
+  .is-olive-color {
+    color: var(--olive-dark-12);
+  }
+
+  .is-olive-background {
+    background-color: var(--olive-light-1);
+  }
+
+  .is-olive-subtle-background {
+    background-color: var(--olive-light-2);
+  }
+
+  .is-olive-ui-background {
+    background-color: var(--olive-light-3);
+  }
+
+  .is-olive-hover-background {
+    background-color: var(--olive-light-4);
+  }
+
+  .is-olive-active-background {
+    background-color: var(--olive-light-5);
+  }
+
+  .is-olive-subtle-element-background {
+    background-color: var(--olive-light-6);
+  }
+
+  .is-olive-ui-element-background {
+    background-color: var(--olive-light-7);
+  }
+
+  .is-olive-ui-hover-background {
+    background-color: var(--olive-light-8);
+  }
+
+  .is-olive-solid-background {
+    background-color: var(--olive-light-9);
+  }
+
+  .is-olive-hover-solid-background {
+    background-color: var(--olive-light-10);
+  }
+
+  .is-olive-low-contrast-background {
+    background-color: var(--olive-light-11);
+  }
+
+  .is-olive-high-contrast-background {
+    background-color: var(--olive-light-12);
+  }
+
+  .is-olive-border {
+    outline-color: var(--olive-light-7);
+    border-color: var(--olive-light-7);
+  }
+
+  .is-sand {
+    color: var(--sand-dark-12);
+    background-color: var(--sand-light-9);
+  }
+
+  .is-sand-color {
+    color: var(--sand-dark-12);
+  }
+
+  .is-sand-background {
+    background-color: var(--sand-light-1);
+  }
+
+  .is-sand-subtle-background {
+    background-color: var(--sand-light-2);
+  }
+
+  .is-sand-ui-background {
+    background-color: var(--sand-light-3);
+  }
+
+  .is-sand-hover-background {
+    background-color: var(--sand-light-4);
+  }
+
+  .is-sand-active-background {
+    background-color: var(--sand-light-5);
+  }
+
+  .is-sand-subtle-element-background {
+    background-color: var(--sand-light-6);
+  }
+
+  .is-sand-ui-element-background {
+    background-color: var(--sand-light-7);
+  }
+
+  .is-sand-ui-hover-background {
+    background-color: var(--sand-light-8);
+  }
+
+  .is-sand-solid-background {
+    background-color: var(--sand-light-9);
+  }
+
+  .is-sand-hover-solid-background {
+    background-color: var(--sand-light-10);
+  }
+
+  .is-sand-low-contrast-background {
+    background-color: var(--sand-light-11);
+  }
+
+  .is-sand-high-contrast-background {
+    background-color: var(--sand-light-12);
+  }
+
+  .is-sand-border {
+    outline-color: var(--sand-light-7);
+    border-color: var(--sand-light-7);
+  }
+
+  .is-tomato {
+    color: var(--tomato-dark-12);
+    background-color: var(--tomato-light-9);
+  }
+
+  .is-tomato-color {
+    color: var(--tomato-dark-12);
+  }
+
+  .is-tomato-background {
+    background-color: var(--tomato-light-1);
+  }
+
+  .is-tomato-subtle-background {
+    background-color: var(--tomato-light-2);
+  }
+
+  .is-tomato-ui-background {
+    background-color: var(--tomato-light-3);
+  }
+
+  .is-tomato-hover-background {
+    background-color: var(--tomato-light-4);
+  }
+
+  .is-tomato-active-background {
+    background-color: var(--tomato-light-5);
+  }
+
+  .is-tomato-subtle-element-background {
+    background-color: var(--tomato-light-6);
+  }
+
+  .is-tomato-ui-element-background {
+    background-color: var(--tomato-light-7);
+  }
+
+  .is-tomato-ui-hover-background {
+    background-color: var(--tomato-light-8);
+  }
+
+  .is-tomato-solid-background {
+    background-color: var(--tomato-light-9);
+  }
+
+  .is-tomato-hover-solid-background {
+    background-color: var(--tomato-light-10);
+  }
+
+  .is-tomato-low-contrast-background {
+    background-color: var(--tomato-light-11);
+  }
+
+  .is-tomato-high-contrast-background {
+    background-color: var(--tomato-light-12);
+  }
+
+  .is-tomato-border {
+    outline-color: var(--tomato-light-7);
+    border-color: var(--tomato-light-7);
+  }
+
+  .is-crimson {
+    color: var(--crimson-dark-12);
+    background-color: var(--crimson-light-9);
+  }
+
+  .is-crimson-color {
+    color: var(--crimson-dark-12);
+  }
+
+  .is-crimson-background {
+    background-color: var(--crimson-light-1);
+  }
+
+  .is-crimson-subtle-background {
+    background-color: var(--crimson-light-2);
+  }
+
+  .is-crimson-ui-background {
+    background-color: var(--crimson-light-3);
+  }
+
+  .is-crimson-hover-background {
+    background-color: var(--crimson-light-4);
+  }
+
+  .is-crimson-active-background {
+    background-color: var(--crimson-light-5);
+  }
+
+  .is-crimson-subtle-element-background {
+    background-color: var(--crimson-light-6);
+  }
+
+  .is-crimson-ui-element-background {
+    background-color: var(--crimson-light-7);
+  }
+
+  .is-crimson-ui-hover-background {
+    background-color: var(--crimson-light-8);
+  }
+
+  .is-crimson-solid-background {
+    background-color: var(--crimson-light-9);
+  }
+
+  .is-crimson-hover-solid-background {
+    background-color: var(--crimson-light-10);
+  }
+
+  .is-crimson-low-contrast-background {
+    background-color: var(--crimson-light-11);
+  }
+
+  .is-crimson-high-contrast-background {
+    background-color: var(--crimson-light-12);
+  }
+
+  .is-crimson-border {
+    outline-color: var(--crimson-light-7);
+    border-color: var(--crimson-light-7);
+  }
+
+  .is-pink {
+    color: var(--pink-dark-12);
+    background-color: var(--pink-light-9);
+  }
+
+  .is-pink-color {
+    color: var(--pink-dark-12);
+  }
+
+  .is-pink-background {
+    background-color: var(--pink-light-1);
+  }
+
+  .is-pink-subtle-background {
+    background-color: var(--pink-light-2);
+  }
+
+  .is-pink-ui-background {
+    background-color: var(--pink-light-3);
+  }
+
+  .is-pink-hover-background {
+    background-color: var(--pink-light-4);
+  }
+
+  .is-pink-active-background {
+    background-color: var(--pink-light-5);
+  }
+
+  .is-pink-subtle-element-background {
+    background-color: var(--pink-light-6);
+  }
+
+  .is-pink-ui-element-background {
+    background-color: var(--pink-light-7);
+  }
+
+  .is-pink-ui-hover-background {
+    background-color: var(--pink-light-8);
+  }
+
+  .is-pink-solid-background {
+    background-color: var(--pink-light-9);
+  }
+
+  .is-pink-hover-solid-background {
+    background-color: var(--pink-light-10);
+  }
+
+  .is-pink-low-contrast-background {
+    background-color: var(--pink-light-11);
+  }
+
+  .is-pink-high-contrast-background {
+    background-color: var(--pink-light-12);
+  }
+
+  .is-pink-border {
+    outline-color: var(--pink-light-7);
+    border-color: var(--pink-light-7);
+  }
+
+  .is-plum {
+    color: var(--plum-dark-12);
+    background-color: var(--plum-light-9);
+  }
+
+  .is-plum-color {
+    color: var(--plum-dark-12);
+  }
+
+  .is-plum-background {
+    background-color: var(--plum-light-1);
+  }
+
+  .is-plum-subtle-background {
+    background-color: var(--plum-light-2);
+  }
+
+  .is-plum-ui-background {
+    background-color: var(--plum-light-3);
+  }
+
+  .is-plum-hover-background {
+    background-color: var(--plum-light-4);
+  }
+
+  .is-plum-active-background {
+    background-color: var(--plum-light-5);
+  }
+
+  .is-plum-subtle-element-background {
+    background-color: var(--plum-light-6);
+  }
+
+  .is-plum-ui-element-background {
+    background-color: var(--plum-light-7);
+  }
+
+  .is-plum-ui-hover-background {
+    background-color: var(--plum-light-8);
+  }
+
+  .is-plum-solid-background {
+    background-color: var(--plum-light-9);
+  }
+
+  .is-plum-hover-solid-background {
+    background-color: var(--plum-light-10);
+  }
+
+  .is-plum-low-contrast-background {
+    background-color: var(--plum-light-11);
+  }
+
+  .is-plum-high-contrast-background {
+    background-color: var(--plum-light-12);
+  }
+
+  .is-plum-border {
+    outline-color: var(--plum-light-7);
+    border-color: var(--plum-light-7);
+  }
+
+  .is-purple {
+    color: var(--purple-dark-12);
+    background-color: var(--purple-light-9);
+  }
+
+  .is-purple-color {
+    color: var(--purple-dark-12);
+  }
+
+  .is-purple-background {
+    background-color: var(--purple-light-1);
+  }
+
+  .is-purple-subtle-background {
+    background-color: var(--purple-light-2);
+  }
+
+  .is-purple-ui-background {
+    background-color: var(--purple-light-3);
+  }
+
+  .is-purple-hover-background {
+    background-color: var(--purple-light-4);
+  }
+
+  .is-purple-active-background {
+    background-color: var(--purple-light-5);
+  }
+
+  .is-purple-subtle-element-background {
+    background-color: var(--purple-light-6);
+  }
+
+  .is-purple-ui-element-background {
+    background-color: var(--purple-light-7);
+  }
+
+  .is-purple-ui-hover-background {
+    background-color: var(--purple-light-8);
+  }
+
+  .is-purple-solid-background {
+    background-color: var(--purple-light-9);
+  }
+
+  .is-purple-hover-solid-background {
+    background-color: var(--purple-light-10);
+  }
+
+  .is-purple-low-contrast-background {
+    background-color: var(--purple-light-11);
+  }
+
+  .is-purple-high-contrast-background {
+    background-color: var(--purple-light-12);
+  }
+
+  .is-purple-border {
+    outline-color: var(--purple-light-7);
+    border-color: var(--purple-light-7);
+  }
+
+  .is-violet {
+    color: var(--violet-dark-12);
+    background-color: var(--violet-light-9);
+  }
+
+  .is-violet-color {
+    color: var(--violet-dark-12);
+  }
+
+  .is-violet-background {
+    background-color: var(--violet-light-1);
+  }
+
+  .is-violet-subtle-background {
+    background-color: var(--violet-light-2);
+  }
+
+  .is-violet-ui-background {
+    background-color: var(--violet-light-3);
+  }
+
+  .is-violet-hover-background {
+    background-color: var(--violet-light-4);
+  }
+
+  .is-violet-active-background {
+    background-color: var(--violet-light-5);
+  }
+
+  .is-violet-subtle-element-background {
+    background-color: var(--violet-light-6);
+  }
+
+  .is-violet-ui-element-background {
+    background-color: var(--violet-light-7);
+  }
+
+  .is-violet-ui-hover-background {
+    background-color: var(--violet-light-8);
+  }
+
+  .is-violet-solid-background {
+    background-color: var(--violet-light-9);
+  }
+
+  .is-violet-hover-solid-background {
+    background-color: var(--violet-light-10);
+  }
+
+  .is-violet-low-contrast-background {
+    background-color: var(--violet-light-11);
+  }
+
+  .is-violet-high-contrast-background {
+    background-color: var(--violet-light-12);
+  }
+
+  .is-violet-border {
+    outline-color: var(--violet-light-7);
+    border-color: var(--violet-light-7);
+  }
+
+  .is-indigo {
+    color: var(--indigo-dark-12);
+    background-color: var(--indigo-light-9);
+  }
+
+  .is-indigo-color {
+    color: var(--indigo-dark-12);
+  }
+
+  .is-indigo-background {
+    background-color: var(--indigo-light-1);
+  }
+
+  .is-indigo-subtle-background {
+    background-color: var(--indigo-light-2);
+  }
+
+  .is-indigo-ui-background {
+    background-color: var(--indigo-light-3);
+  }
+
+  .is-indigo-hover-background {
+    background-color: var(--indigo-light-4);
+  }
+
+  .is-indigo-active-background {
+    background-color: var(--indigo-light-5);
+  }
+
+  .is-indigo-subtle-element-background {
+    background-color: var(--indigo-light-6);
+  }
+
+  .is-indigo-ui-element-background {
+    background-color: var(--indigo-light-7);
+  }
+
+  .is-indigo-ui-hover-background {
+    background-color: var(--indigo-light-8);
+  }
+
+  .is-indigo-solid-background {
+    background-color: var(--indigo-light-9);
+  }
+
+  .is-indigo-hover-solid-background {
+    background-color: var(--indigo-light-10);
+  }
+
+  .is-indigo-low-contrast-background {
+    background-color: var(--indigo-light-11);
+  }
+
+  .is-indigo-high-contrast-background {
+    background-color: var(--indigo-light-12);
+  }
+
+  .is-indigo-border {
+    outline-color: var(--indigo-light-7);
+    border-color: var(--indigo-light-7);
+  }
+
+  .is-blue {
+    color: var(--blue-dark-12);
+    background-color: var(--blue-light-9);
+  }
+
+  .is-blue-color {
+    color: var(--blue-dark-12);
+  }
+
+  .is-blue-background {
+    background-color: var(--blue-light-1);
+  }
+
+  .is-blue-subtle-background {
+    background-color: var(--blue-light-2);
+  }
+
+  .is-blue-ui-background {
+    background-color: var(--blue-light-3);
+  }
+
+  .is-blue-hover-background {
+    background-color: var(--blue-light-4);
+  }
+
+  .is-blue-active-background {
+    background-color: var(--blue-light-5);
+  }
+
+  .is-blue-subtle-element-background {
+    background-color: var(--blue-light-6);
+  }
+
+  .is-blue-ui-element-background {
+    background-color: var(--blue-light-7);
+  }
+
+  .is-blue-ui-hover-background {
+    background-color: var(--blue-light-8);
+  }
+
+  .is-blue-solid-background {
+    background-color: var(--blue-light-9);
+  }
+
+  .is-blue-hover-solid-background {
+    background-color: var(--blue-light-10);
+  }
+
+  .is-blue-low-contrast-background {
+    background-color: var(--blue-light-11);
+  }
+
+  .is-blue-high-contrast-background {
+    background-color: var(--blue-light-12);
+  }
+
+  .is-blue-border {
+    outline-color: var(--blue-light-7);
+    border-color: var(--blue-light-7);
+  }
+
+  .is-cyan {
+    color: var(--cyan-dark-12);
+    background-color: var(--cyan-light-9);
+  }
+
+  .is-cyan-color {
+    color: var(--cyan-dark-12);
+  }
+
+  .is-cyan-background {
+    background-color: var(--cyan-light-1);
+  }
+
+  .is-cyan-subtle-background {
+    background-color: var(--cyan-light-2);
+  }
+
+  .is-cyan-ui-background {
+    background-color: var(--cyan-light-3);
+  }
+
+  .is-cyan-hover-background {
+    background-color: var(--cyan-light-4);
+  }
+
+  .is-cyan-active-background {
+    background-color: var(--cyan-light-5);
+  }
+
+  .is-cyan-subtle-element-background {
+    background-color: var(--cyan-light-6);
+  }
+
+  .is-cyan-ui-element-background {
+    background-color: var(--cyan-light-7);
+  }
+
+  .is-cyan-ui-hover-background {
+    background-color: var(--cyan-light-8);
+  }
+
+  .is-cyan-solid-background {
+    background-color: var(--cyan-light-9);
+  }
+
+  .is-cyan-hover-solid-background {
+    background-color: var(--cyan-light-10);
+  }
+
+  .is-cyan-low-contrast-background {
+    background-color: var(--cyan-light-11);
+  }
+
+  .is-cyan-high-contrast-background {
+    background-color: var(--cyan-light-12);
+  }
+
+  .is-cyan-border {
+    outline-color: var(--cyan-light-7);
+    border-color: var(--cyan-light-7);
+  }
+
+  .is-teal {
+    color: var(--teal-dark-12);
+    background-color: var(--teal-light-9);
+  }
+
+  .is-teal-color {
+    color: var(--teal-dark-12);
+  }
+
+  .is-teal-background {
+    background-color: var(--teal-light-1);
+  }
+
+  .is-teal-subtle-background {
+    background-color: var(--teal-light-2);
+  }
+
+  .is-teal-ui-background {
+    background-color: var(--teal-light-3);
+  }
+
+  .is-teal-hover-background {
+    background-color: var(--teal-light-4);
+  }
+
+  .is-teal-active-background {
+    background-color: var(--teal-light-5);
+  }
+
+  .is-teal-subtle-element-background {
+    background-color: var(--teal-light-6);
+  }
+
+  .is-teal-ui-element-background {
+    background-color: var(--teal-light-7);
+  }
+
+  .is-teal-ui-hover-background {
+    background-color: var(--teal-light-8);
+  }
+
+  .is-teal-solid-background {
+    background-color: var(--teal-light-9);
+  }
+
+  .is-teal-hover-solid-background {
+    background-color: var(--teal-light-10);
+  }
+
+  .is-teal-low-contrast-background {
+    background-color: var(--teal-light-11);
+  }
+
+  .is-teal-high-contrast-background {
+    background-color: var(--teal-light-12);
+  }
+
+  .is-teal-border {
+    outline-color: var(--teal-light-7);
+    border-color: var(--teal-light-7);
+  }
+
+  .is-green {
+    color: var(--green-dark-12);
+    background-color: var(--green-light-9);
+  }
+
+  .is-green-color {
+    color: var(--green-dark-12);
+  }
+
+  .is-green-background {
+    background-color: var(--green-light-1);
+  }
+
+  .is-green-subtle-background {
+    background-color: var(--green-light-2);
+  }
+
+  .is-green-ui-background {
+    background-color: var(--green-light-3);
+  }
+
+  .is-green-hover-background {
+    background-color: var(--green-light-4);
+  }
+
+  .is-green-active-background {
+    background-color: var(--green-light-5);
+  }
+
+  .is-green-subtle-element-background {
+    background-color: var(--green-light-6);
+  }
+
+  .is-green-ui-element-background {
+    background-color: var(--green-light-7);
+  }
+
+  .is-green-ui-hover-background {
+    background-color: var(--green-light-8);
+  }
+
+  .is-green-solid-background {
+    background-color: var(--green-light-9);
+  }
+
+  .is-green-hover-solid-background {
+    background-color: var(--green-light-10);
+  }
+
+  .is-green-low-contrast-background {
+    background-color: var(--green-light-11);
+  }
+
+  .is-green-high-contrast-background {
+    background-color: var(--green-light-12);
+  }
+
+  .is-green-border {
+    outline-color: var(--green-light-7);
+    border-color: var(--green-light-7);
+  }
+
+  .is-grass {
+    color: var(--grass-dark-12);
+    background-color: var(--grass-light-9);
+  }
+
+  .is-grass-color {
+    color: var(--grass-dark-12);
+  }
+
+  .is-grass-background {
+    background-color: var(--grass-light-1);
+  }
+
+  .is-grass-subtle-background {
+    background-color: var(--grass-light-2);
+  }
+
+  .is-grass-ui-background {
+    background-color: var(--grass-light-3);
+  }
+
+  .is-grass-hover-background {
+    background-color: var(--grass-light-4);
+  }
+
+  .is-grass-active-background {
+    background-color: var(--grass-light-5);
+  }
+
+  .is-grass-subtle-element-background {
+    background-color: var(--grass-light-6);
+  }
+
+  .is-grass-ui-element-background {
+    background-color: var(--grass-light-7);
+  }
+
+  .is-grass-ui-hover-background {
+    background-color: var(--grass-light-8);
+  }
+
+  .is-grass-solid-background {
+    background-color: var(--grass-light-9);
+  }
+
+  .is-grass-hover-solid-background {
+    background-color: var(--grass-light-10);
+  }
+
+  .is-grass-low-contrast-background {
+    background-color: var(--grass-light-11);
+  }
+
+  .is-grass-high-contrast-background {
+    background-color: var(--grass-light-12);
+  }
+
+  .is-grass-border {
+    outline-color: var(--grass-light-7);
+    border-color: var(--grass-light-7);
+  }
+
+  .is-brown {
+    color: var(--brown-dark-12);
+    background-color: var(--brown-light-9);
+  }
+
+  .is-brown-color {
+    color: var(--brown-dark-12);
+  }
+
+  .is-brown-background {
+    background-color: var(--brown-light-1);
+  }
+
+  .is-brown-subtle-background {
+    background-color: var(--brown-light-2);
+  }
+
+  .is-brown-ui-background {
+    background-color: var(--brown-light-3);
+  }
+
+  .is-brown-hover-background {
+    background-color: var(--brown-light-4);
+  }
+
+  .is-brown-active-background {
+    background-color: var(--brown-light-5);
+  }
+
+  .is-brown-subtle-element-background {
+    background-color: var(--brown-light-6);
+  }
+
+  .is-brown-ui-element-background {
+    background-color: var(--brown-light-7);
+  }
+
+  .is-brown-ui-hover-background {
+    background-color: var(--brown-light-8);
+  }
+
+  .is-brown-solid-background {
+    background-color: var(--brown-light-9);
+  }
+
+  .is-brown-hover-solid-background {
+    background-color: var(--brown-light-10);
+  }
+
+  .is-brown-low-contrast-background {
+    background-color: var(--brown-light-11);
+  }
+
+  .is-brown-high-contrast-background {
+    background-color: var(--brown-light-12);
+  }
+
+  .is-brown-border {
+    outline-color: var(--brown-light-7);
+    border-color: var(--brown-light-7);
+  }
+
+  .is-bronze {
+    color: var(--bronze-dark-12);
+    background-color: var(--bronze-light-9);
+  }
+
+  .is-bronze-color {
+    color: var(--bronze-dark-12);
+  }
+
+  .is-bronze-background {
+    background-color: var(--bronze-light-1);
+  }
+
+  .is-bronze-subtle-background {
+    background-color: var(--bronze-light-2);
+  }
+
+  .is-bronze-ui-background {
+    background-color: var(--bronze-light-3);
+  }
+
+  .is-bronze-hover-background {
+    background-color: var(--bronze-light-4);
+  }
+
+  .is-bronze-active-background {
+    background-color: var(--bronze-light-5);
+  }
+
+  .is-bronze-subtle-element-background {
+    background-color: var(--bronze-light-6);
+  }
+
+  .is-bronze-ui-element-background {
+    background-color: var(--bronze-light-7);
+  }
+
+  .is-bronze-ui-hover-background {
+    background-color: var(--bronze-light-8);
+  }
+
+  .is-bronze-solid-background {
+    background-color: var(--bronze-light-9);
+  }
+
+  .is-bronze-hover-solid-background {
+    background-color: var(--bronze-light-10);
+  }
+
+  .is-bronze-low-contrast-background {
+    background-color: var(--bronze-light-11);
+  }
+
+  .is-bronze-high-contrast-background {
+    background-color: var(--bronze-light-12);
+  }
+
+  .is-bronze-border {
+    outline-color: var(--bronze-light-7);
+    border-color: var(--bronze-light-7);
+  }
+
+  .is-gold {
+    color: var(--gold-dark-12);
+    background-color: var(--gold-light-9);
+  }
+
+  .is-gold-color {
+    color: var(--gold-dark-12);
+  }
+
+  .is-gold-background {
+    background-color: var(--gold-light-1);
+  }
+
+  .is-gold-subtle-background {
+    background-color: var(--gold-light-2);
+  }
+
+  .is-gold-ui-background {
+    background-color: var(--gold-light-3);
+  }
+
+  .is-gold-hover-background {
+    background-color: var(--gold-light-4);
+  }
+
+  .is-gold-active-background {
+    background-color: var(--gold-light-5);
+  }
+
+  .is-gold-subtle-element-background {
+    background-color: var(--gold-light-6);
+  }
+
+  .is-gold-ui-element-background {
+    background-color: var(--gold-light-7);
+  }
+
+  .is-gold-ui-hover-background {
+    background-color: var(--gold-light-8);
+  }
+
+  .is-gold-solid-background {
+    background-color: var(--gold-light-9);
+  }
+
+  .is-gold-hover-solid-background {
+    background-color: var(--gold-light-10);
+  }
+
+  .is-gold-low-contrast-background {
+    background-color: var(--gold-light-11);
+  }
+
+  .is-gold-high-contrast-background {
+    background-color: var(--gold-light-12);
+  }
+
+  .is-gold-border {
+    outline-color: var(--gold-light-7);
+    border-color: var(--gold-light-7);
+  }
+
+  .is-sky {
+    color: var(--sky-light-12);
+    background-color: var(--sky-light-9);
+  }
+
+  .is-sky-color {
+    color: var(--sky-light-12);
+  }
+
+  .is-sky-background {
+    background-color: var(--sky-light-1);
+  }
+
+  .is-sky-subtle-background {
+    background-color: var(--sky-light-2);
+  }
+
+  .is-sky-ui-background {
+    background-color: var(--sky-light-3);
+  }
+
+  .is-sky-hover-background {
+    background-color: var(--sky-light-4);
+  }
+
+  .is-sky-active-background {
+    background-color: var(--sky-light-5);
+  }
+
+  .is-sky-subtle-element-background {
+    background-color: var(--sky-light-6);
+  }
+
+  .is-sky-ui-element-background {
+    background-color: var(--sky-light-7);
+  }
+
+  .is-sky-ui-hover-background {
+    background-color: var(--sky-light-8);
+  }
+
+  .is-sky-solid-background {
+    background-color: var(--sky-light-9);
+  }
+
+  .is-sky-hover-solid-background {
+    background-color: var(--sky-light-10);
+  }
+
+  .is-sky-low-contrast-background {
+    background-color: var(--sky-light-11);
+  }
+
+  .is-sky-high-contrast-background {
+    background-color: var(--sky-light-12);
+  }
+
+  .is-sky-border {
+    outline-color: var(--sky-light-7);
+    border-color: var(--sky-light-7);
+  }
+
+  .is-mint {
+    color: var(--mint-light-12);
+    background-color: var(--mint-light-9);
+  }
+
+  .is-mint-color {
+    color: var(--mint-light-12);
+  }
+
+  .is-mint-background {
+    background-color: var(--mint-light-1);
+  }
+
+  .is-mint-subtle-background {
+    background-color: var(--mint-light-2);
+  }
+
+  .is-mint-ui-background {
+    background-color: var(--mint-light-3);
+  }
+
+  .is-mint-hover-background {
+    background-color: var(--mint-light-4);
+  }
+
+  .is-mint-active-background {
+    background-color: var(--mint-light-5);
+  }
+
+  .is-mint-subtle-element-background {
+    background-color: var(--mint-light-6);
+  }
+
+  .is-mint-ui-element-background {
+    background-color: var(--mint-light-7);
+  }
+
+  .is-mint-ui-hover-background {
+    background-color: var(--mint-light-8);
+  }
+
+  .is-mint-solid-background {
+    background-color: var(--mint-light-9);
+  }
+
+  .is-mint-hover-solid-background {
+    background-color: var(--mint-light-10);
+  }
+
+  .is-mint-low-contrast-background {
+    background-color: var(--mint-light-11);
+  }
+
+  .is-mint-high-contrast-background {
+    background-color: var(--mint-light-12);
+  }
+
+  .is-mint-border {
+    outline-color: var(--mint-light-7);
+    border-color: var(--mint-light-7);
+  }
+
+  .is-lime {
+    color: var(--lime-light-12);
+    background-color: var(--lime-light-9);
+  }
+
+  .is-lime-color {
+    color: var(--lime-light-12);
+  }
+
+  .is-lime-background {
+    background-color: var(--lime-light-1);
+  }
+
+  .is-lime-subtle-background {
+    background-color: var(--lime-light-2);
+  }
+
+  .is-lime-ui-background {
+    background-color: var(--lime-light-3);
+  }
+
+  .is-lime-hover-background {
+    background-color: var(--lime-light-4);
+  }
+
+  .is-lime-active-background {
+    background-color: var(--lime-light-5);
+  }
+
+  .is-lime-subtle-element-background {
+    background-color: var(--lime-light-6);
+  }
+
+  .is-lime-ui-element-background {
+    background-color: var(--lime-light-7);
+  }
+
+  .is-lime-ui-hover-background {
+    background-color: var(--lime-light-8);
+  }
+
+  .is-lime-solid-background {
+    background-color: var(--lime-light-9);
+  }
+
+  .is-lime-hover-solid-background {
+    background-color: var(--lime-light-10);
+  }
+
+  .is-lime-low-contrast-background {
+    background-color: var(--lime-light-11);
+  }
+
+  .is-lime-high-contrast-background {
+    background-color: var(--lime-light-12);
+  }
+
+  .is-lime-border {
+    outline-color: var(--lime-light-7);
+    border-color: var(--lime-light-7);
+  }
+
+  .is-yellow {
+    color: var(--yellow-light-12);
+    background-color: var(--yellow-light-9);
+  }
+
+  .is-yellow-color {
+    color: var(--yellow-light-12);
+  }
+
+  .is-yellow-background {
+    background-color: var(--yellow-light-1);
+  }
+
+  .is-yellow-subtle-background {
+    background-color: var(--yellow-light-2);
+  }
+
+  .is-yellow-ui-background {
+    background-color: var(--yellow-light-3);
+  }
+
+  .is-yellow-hover-background {
+    background-color: var(--yellow-light-4);
+  }
+
+  .is-yellow-active-background {
+    background-color: var(--yellow-light-5);
+  }
+
+  .is-yellow-subtle-element-background {
+    background-color: var(--yellow-light-6);
+  }
+
+  .is-yellow-ui-element-background {
+    background-color: var(--yellow-light-7);
+  }
+
+  .is-yellow-ui-hover-background {
+    background-color: var(--yellow-light-8);
+  }
+
+  .is-yellow-solid-background {
+    background-color: var(--yellow-light-9);
+  }
+
+  .is-yellow-hover-solid-background {
+    background-color: var(--yellow-light-10);
+  }
+
+  .is-yellow-low-contrast-background {
+    background-color: var(--yellow-light-11);
+  }
+
+  .is-yellow-high-contrast-background {
+    background-color: var(--yellow-light-12);
+  }
+
+  .is-yellow-border {
+    outline-color: var(--yellow-light-7);
+    border-color: var(--yellow-light-7);
+  }
+
+  .is-amber {
+    color: var(--amber-light-12);
+    background-color: var(--amber-light-9);
+  }
+
+  .is-amber-color {
+    color: var(--amber-light-12);
+  }
+
+  .is-amber-background {
+    background-color: var(--amber-light-1);
+  }
+
+  .is-amber-subtle-background {
+    background-color: var(--amber-light-2);
+  }
+
+  .is-amber-ui-background {
+    background-color: var(--amber-light-3);
+  }
+
+  .is-amber-hover-background {
+    background-color: var(--amber-light-4);
+  }
+
+  .is-amber-active-background {
+    background-color: var(--amber-light-5);
+  }
+
+  .is-amber-subtle-element-background {
+    background-color: var(--amber-light-6);
+  }
+
+  .is-amber-ui-element-background {
+    background-color: var(--amber-light-7);
+  }
+
+  .is-amber-ui-hover-background {
+    background-color: var(--amber-light-8);
+  }
+
+  .is-amber-solid-background {
+    background-color: var(--amber-light-9);
+  }
+
+  .is-amber-hover-solid-background {
+    background-color: var(--amber-light-10);
+  }
+
+  .is-amber-low-contrast-background {
+    background-color: var(--amber-light-11);
+  }
+
+  .is-amber-high-contrast-background {
+    background-color: var(--amber-light-12);
+  }
+
+  .is-amber-border {
+    outline-color: var(--amber-light-7);
+    border-color: var(--amber-light-7);
+  }
+
+  .is-orange {
+    color: var(--orange-dark-12);
+    background-color: var(--orange-light-9);
+  }
+
+  .is-orange-color {
+    color: var(--orange-dark-12);
+  }
+
+  .is-orange-background {
+    background-color: var(--orange-light-1);
+  }
+
+  .is-orange-subtle-background {
+    background-color: var(--orange-light-2);
+  }
+
+  .is-orange-ui-background {
+    background-color: var(--orange-light-3);
+  }
+
+  .is-orange-hover-background {
+    background-color: var(--orange-light-4);
+  }
+
+  .is-orange-active-background {
+    background-color: var(--orange-light-5);
+  }
+
+  .is-orange-subtle-element-background {
+    background-color: var(--orange-light-6);
+  }
+
+  .is-orange-ui-element-background {
+    background-color: var(--orange-light-7);
+  }
+
+  .is-orange-ui-hover-background {
+    background-color: var(--orange-light-8);
+  }
+
+  .is-orange-solid-background {
+    background-color: var(--orange-light-9);
+  }
+
+  .is-orange-hover-solid-background {
+    background-color: var(--orange-light-10);
+  }
+
+  .is-orange-low-contrast-background {
+    background-color: var(--orange-light-11);
+  }
+
+  .is-orange-high-contrast-background {
+    background-color: var(--orange-light-12);
+  }
+
+  .is-orange-border {
+    outline-color: var(--orange-light-7);
+    border-color: var(--orange-light-7);
+  }
 }
 
 .dark {
-    .is-gray {
-        color: var(--gray-dark-12);
-        background-color: var(--gray-dark-9);
-    }
-
-    .is-gray-background {
-      background-color: var(--gray-dark-1);
-    }
-
-    .is-gray-subtle-background {
-      background-color: var(--gray-dark-2);
-    }
-
-    .is-gray-ui-background {
-      background-color: var(--gray-dark-3);
-    }
-
-    .is-gray-hover-background {
-      background-color: var(--gray-dark-4);
-    }
-
-    .is-gray-active-background {
-      background-color: var(--gray-dark-5);
-    }
-
-    .is-gray-subtle-element-background {
-      background-color: var(--gray-dark-6);
-    }
-
-    .is-gray-ui-element-background {
-      background-color: var(--gray-dark-7);
-    }
-
-    .is-gray-ui-hover-background {
-      background-color: var(--gray-dark-8);
-    }
-
-    .is-gray-solid-background {
-      background-color: var(--gray-dark-9);
-    }
-
-    .is-gray-hover-solid-background {
-      background-color: var(--gray-dark-10);
-    }
-
-    .is-gray-low-contrast-background {
-      background-color: var(--gray-dark-11);
-    }
-
-    .is-gray-high-contrast-background {
-      background-color: var(--gray-dark-12);
-    }
-
-    .is-gray-border {
-        outline-color: var(--gray-dark-7);
-        border-color: var(--gray-dark-7);
-    }
-
-    .is-red {
-        color: var(--red-dark-12);
-        background-color: var(--red-dark-9);
-    }
-
-    .is-red-background {
-      background-color: var(--red-dark-1);
-    }
-
-    .is-red-subtle-background {
-      background-color: var(--red-dark-2);
-    }
-
-    .is-red-ui-background {
-      background-color: var(--red-dark-3);
-    }
-
-    .is-red-hover-background {
-      background-color: var(--red-dark-4);
-    }
-
-    .is-red-active-background {
-      background-color: var(--red-dark-5);
-    }
-
-    .is-red-subtle-element-background {
-      background-color: var(--red-dark-6);
-    }
-
-    .is-red-ui-element-background {
-      background-color: var(--red-dark-7);
-    }
-
-    .is-red-ui-hover-background {
-      background-color: var(--red-dark-8);
-    }
-
-    .is-red-solid-background {
-      background-color: var(--red-dark-9);
-    }
-
-    .is-red-hover-solid-background {
-      background-color: var(--red-dark-10);
-    }
-
-    .is-red-low-contrast-background {
-      background-color: var(--red-dark-11);
-    }
-
-    .is-red-high-contrast-background {
-      background-color: var(--red-dark-12);
-    }
-
-    .is-red-border {
-        outline-color: var(--red-dark-7);
-        border-color: var(--red-dark-7);
-    }
-
-    .is-mauve {
-        color: var(--mauve-dark-12);
-        background-color: var(--mauve-dark-9);
-    }
-
-    .is-mauve-border {
-        outline-color: var(--mauve-dark-7);
-        border-color: var(--mauve-dark-7);
-    }
-
-    .is-slate {
-        color: var(--slate-dark-12);
-        background-color: var(--slate-dark-9);
-    }
-
-    .is-slate-border {
-        outline-color: var(--slate-dark-7);
-        border-color: var(--slate-dark-7);
-    }
-
-    .is-sage {
-        color: var(--sage-dark-12);
-        background-color: var(--sage-dark-9);
-    }
-
-    .is-sage-border {
-        outline-color: var(--sage-dark-7);
-        border-color: var(--sage-dark-7);
-    }
-
-    .is-olive {
-        color: var(--olive-dark-12);
-        background-color: var(--olive-dark-9);
-    }
-
-    .is-olive-border {
-        outline-color: var(--olive-dark-7);
-        border-color: var(--olive-dark-7);
-    }
-
-    .is-sand {
-        color: var(--sand-dark-12);
-        background-color: var(--sand-dark-9);
-    }
-
-    .is-sand-border {
-        outline-color: var(--sand-dark-7);
-        border-color: var(--sand-dark-7);
-    }
-
-    .is-tomato {
-        color: var(--tomato-dark-12);
-        background-color: var(--tomato-dark-9);
-    }
-
-    .is-tomato-border {
-        outline-color: var(--tomato-dark-7);
-        border-color: var(--tomato-dark-7);
-    }
-
-    .is-crimson {
-        color: var(--crimson-dark-12);
-        background-color: var(--crimson-dark-9);
-    }
-
-    .is-crimson-border {
-        outline-color: var(--crimson-dark-7);
-        border-color: var(--crimson-dark-7);
-    }
-
-    .is-pink {
-        color: var(--pink-dark-12);
-        background-color: var(--pink-dark-9);
-    }
-
-    .is-pink-border {
-        outline-color: var(--pink-dark-7);
-        border-color: var(--pink-dark-7);
-    }
-
-    .is-plum {
-        color: var(--plum-dark-12);
-        background-color: var(--plum-dark-9);
-    }
-
-    .is-plum-border {
-        outline-color: var(--plum-dark-7);
-        border-color: var(--plum-dark-7);
-    }
-
-    .is-purple {
-        color: var(--purple-dark-12);
-        background-color: var(--purple-dark-9);
-    }
-
-    .is-purple-border {
-        outline-color: var(--purple-dark-7);
-        border-color: var(--purple-dark-7);
-    }
-
-    .is-violet {
-        color: var(--violet-dark-12);
-        background-color: var(--violet-dark-9);
-    }
-
-    .is-violet-border {
-        outline-color: var(--violet-dark-7);
-        border-color: var(--violet-dark-7);
-    }
-
-    .is-indigo {
-        color: var(--indigo-dark-12);
-        background-color: var(--indigo-dark-9);
-    }
-
-    .is-indigo-border {
-        outline-color: var(--indigo-dark-7);
-        border-color: var(--indigo-dark-7);
-    }
-
-    .is-blue {
-        color: var(--blue-dark-12);
-        background-color: var(--blue-dark-9);
-    }
-
-    .is-blue-border {
-        outline-color: var(--blue-dark-7);
-        border-color: var(--blue-dark-7);
-    }
-
-    .is-cyan {
-        color: var(--cyan-dark-12);
-        background-color: var(--cyan-dark-9);
-    }
-
-    .is-cyan-border {
-        outline-color: var(--cyan-dark-7);
-        border-color: var(--cyan-dark-7);
-    }
-
-    .is-teal {
-        color: var(--teal-dark-12);
-        background-color: var(--teal-dark-9);
-    }
-
-    .is-teal-border {
-        outline-color: var(--teal-dark-7);
-        border-color: var(--teal-dark-7);
-    }
-
-    .is-green {
-        color: var(--green-dark-12);
-        background-color: var(--green-dark-9);
-    }
-
-    .is-green-border {
-        outline-color: var(--green-dark-7);
-        border-color: var(--green-dark-7);
-    }
-
-    .is-grass {
-        color: var(--grass-dark-12);
-        background-color: var(--grass-dark-9);
-    }
-
-    .is-grass-border {
-        outline-color: var(--grass-dark-7);
-        border-color: var(--grass-dark-7);
-    }
-
-    .is-brown {
-        color: var(--brown-dark-12);
-        background-color: var(--brown-dark-9);
-    }
-
-    .is-brown-border {
-        outline-color: var(--brown-dark-7);
-        border-color: var(--brown-dark-7);
-    }
-
-    .is-bronze {
-        color: var(--bronze-dark-12);
-        background-color: var(--bronze-dark-9);
-    }
-
-    .is-bronze-border {
-        outline-color: var(--bronze-dark-7);
-        border-color: var(--bronze-dark-7);
-    }
-
-    .is-gold {
-        color: var(--gold-dark-12);
-        background-color: var(--gold-dark-9);
-    }
-
-    .is-gold-border {
-        outline-color: var(--gold-dark-7);
-        border-color: var(--gold-dark-7);
-    }
-
-    .is-sky {
-        color: var(--sky-light-12);
-        background-color: var(--sky-dark-9);
-    }
-
-    .is-sky-border {
-        outline-color: var(--sky-dark-7);
-        border-color: var(--sky-dark-7);
-    }
-
-    .is-mint {
-        color: var(--mint-light-12);
-        background-color: var(--mint-dark-9);
-    }
-
-    .is-mint-border {
-        outline-color: var(--mint-dark-7);
-        border-color: var(--mint-dark-7);
-    }
-
-    .is-lime {
-        color: var(--lime-light-12);
-        background-color: var(--lime-dark-9);
-    }
-
-    .is-lime-border {
-        outline-color: var(--lime-dark-7);
-        border-color: var(--lime-dark-7);
-    }
-
-    .is-yellow {
-        color: var(--yellow-light-12);
-        background-color: var(--yellow-dark-9);
-    }
-
-    .is-yellow-border {
-        outline-color: var(--yellow-dark-7);
-        border-color: var(--yellow-dark-7);
-    }
-
-    .is-amber {
-        color: var(--amber-light-12);
-        background-color: var(--amber-dark-9);
-    }
-
-    .is-amber-border {
-        outline-color: var(--amber-dark-7);
-        border-color: var(--amber-dark-7);
-    }
-
-    .is-orange {
-        color: var(--orange-dark-12);
-        background-color: var(--orange-dark-9);
-    }
-
-    .is-orange-border {
-        outline-color: var(--orange-dark-7);
-        border-color: var(--orange-dark-7);
-    }
+  .is-gray {
+    color: var(--gray-dark-12);
+    background-color: var(--gray-dark-9);
+  }
+
+  .is-gray-color {
+    color: var(--gray-light-12);
+  }
+
+  .is-gray-background {
+    background-color: var(--gray-dark-1);
+  }
+
+  .is-gray-subtle-background {
+    background-color: var(--gray-dark-2);
+  }
+
+  .is-gray-ui-background {
+    background-color: var(--gray-dark-3);
+  }
+
+  .is-gray-hover-background {
+    background-color: var(--gray-dark-4);
+  }
+
+  .is-gray-active-background {
+    background-color: var(--gray-dark-5);
+  }
+
+  .is-gray-subtle-element-background {
+    background-color: var(--gray-dark-6);
+  }
+
+  .is-gray-ui-element-background {
+    background-color: var(--gray-dark-7);
+  }
+
+  .is-gray-ui-hover-background {
+    background-color: var(--gray-dark-8);
+  }
+
+  .is-gray-solid-background {
+    background-color: var(--gray-dark-9);
+  }
+
+  .is-gray-hover-solid-background {
+    background-color: var(--gray-dark-10);
+  }
+
+  .is-gray-low-contrast-background {
+    background-color: var(--gray-dark-11);
+  }
+
+  .is-gray-high-contrast-background {
+    background-color: var(--gray-dark-12);
+  }
+
+  .is-gray-border {
+    outline-color: var(--gray-dark-7);
+    border-color: var(--gray-dark-7);
+  }
+
+  .is-red {
+    color: var(--red-dark-12);
+    background-color: var(--red-dark-9);
+  }
+
+  .is-red-background {
+    background-color: var(--red-dark-1);
+  }
+
+  .is-red-subtle-background {
+    background-color: var(--red-dark-2);
+  }
+
+  .is-red-ui-background {
+    background-color: var(--red-dark-3);
+  }
+
+  .is-red-hover-background {
+    background-color: var(--red-dark-4);
+  }
+
+  .is-red-active-background {
+    background-color: var(--red-dark-5);
+  }
+
+  .is-red-subtle-element-background {
+    background-color: var(--red-dark-6);
+  }
+
+  .is-red-ui-element-background {
+    background-color: var(--red-dark-7);
+  }
+
+  .is-red-ui-hover-background {
+    background-color: var(--red-dark-8);
+  }
+
+  .is-red-solid-background {
+    background-color: var(--red-dark-9);
+  }
+
+  .is-red-hover-solid-background {
+    background-color: var(--red-dark-10);
+  }
+
+  .is-red-low-contrast-background {
+    background-color: var(--red-dark-11);
+  }
+
+  .is-red-high-contrast-background {
+    background-color: var(--red-dark-12);
+  }
+
+  .is-red-border {
+    outline-color: var(--red-dark-7);
+    border-color: var(--red-dark-7);
+  }
+
+  .is-mauve {
+    color: var(--mauve-dark-12);
+    background-color: var(--mauve-dark-9);
+  }
+
+  .is-mauve-background {
+    background-color: var(--mauve-dark-1);
+  }
+
+  .is-mauve-subtle-background {
+    background-color: var(--mauve-dark-2);
+  }
+
+  .is-mauve-ui-background {
+    background-color: var(--mauve-dark-3);
+  }
+
+  .is-mauve-hover-background {
+    background-color: var(--mauve-dark-4);
+  }
+
+  .is-mauve-active-background {
+    background-color: var(--mauve-dark-5);
+  }
+
+  .is-mauve-subtle-element-background {
+    background-color: var(--mauve-dark-6);
+  }
+
+  .is-mauve-ui-element-background {
+    background-color: var(--mauve-dark-7);
+  }
+
+  .is-mauve-ui-hover-background {
+    background-color: var(--mauve-dark-8);
+  }
+
+  .is-mauve-solid-background {
+    background-color: var(--mauve-dark-9);
+  }
+
+  .is-mauve-hover-solid-background {
+    background-color: var(--mauve-dark-10);
+  }
+
+  .is-mauve-low-contrast-background {
+    background-color: var(--mauve-dark-11);
+  }
+
+  .is-mauve-high-contrast-background {
+    background-color: var(--mauve-dark-12);
+  }
+
+  .is-mauve-border {
+    outline-color: var(--mauve-dark-7);
+    border-color: var(--mauve-dark-7);
+  }
+
+  .is-slate {
+    color: var(--slate-dark-12);
+    background-color: var(--slate-dark-9);
+  }
+
+  .is-slate-background {
+    background-color: var(--slate-dark-1);
+  }
+
+  .is-slate-subtle-background {
+    background-color: var(--slate-dark-2);
+  }
+
+  .is-slate-ui-background {
+    background-color: var(--slate-dark-3);
+  }
+
+  .is-slate-hover-background {
+    background-color: var(--slate-dark-4);
+  }
+
+  .is-slate-active-background {
+    background-color: var(--slate-dark-5);
+  }
+
+  .is-slate-subtle-element-background {
+    background-color: var(--slate-dark-6);
+  }
+
+  .is-slate-ui-element-background {
+    background-color: var(--slate-dark-7);
+  }
+
+  .is-slate-ui-hover-background {
+    background-color: var(--slate-dark-8);
+  }
+
+  .is-slate-solid-background {
+    background-color: var(--slate-dark-9);
+  }
+
+  .is-slate-hover-solid-background {
+    background-color: var(--slate-dark-10);
+  }
+
+  .is-slate-low-contrast-background {
+    background-color: var(--slate-dark-11);
+  }
+
+  .is-slate-high-contrast-background {
+    background-color: var(--slate-dark-12);
+  }
+
+  .is-slate-border {
+    outline-color: var(--slate-dark-7);
+    border-color: var(--slate-dark-7);
+  }
+
+  .is-sage {
+    color: var(--sage-dark-12);
+    background-color: var(--sage-dark-9);
+  }
+
+  .is-sage-background {
+    background-color: var(--sage-dark-1);
+  }
+
+  .is-sage-subtle-background {
+    background-color: var(--sage-dark-2);
+  }
+
+  .is-sage-ui-background {
+    background-color: var(--sage-dark-3);
+  }
+
+  .is-sage-hover-background {
+    background-color: var(--sage-dark-4);
+  }
+
+  .is-sage-active-background {
+    background-color: var(--sage-dark-5);
+  }
+
+  .is-sage-subtle-element-background {
+    background-color: var(--sage-dark-6);
+  }
+
+  .is-sage-ui-element-background {
+    background-color: var(--sage-dark-7);
+  }
+
+  .is-sage-ui-hover-background {
+    background-color: var(--sage-dark-8);
+  }
+
+  .is-sage-solid-background {
+    background-color: var(--sage-dark-9);
+  }
+
+  .is-sage-hover-solid-background {
+    background-color: var(--sage-dark-10);
+  }
+
+  .is-sage-low-contrast-background {
+    background-color: var(--sage-dark-11);
+  }
+
+  .is-sage-high-contrast-background {
+    background-color: var(--sage-dark-12);
+  }
+
+  .is-sage-border {
+    outline-color: var(--sage-dark-7);
+    border-color: var(--sage-dark-7);
+  }
+
+  .is-olive {
+    color: var(--olive-dark-12);
+    background-color: var(--olive-dark-9);
+  }
+
+  .is-olive-background {
+    background-color: var(--olive-dark-1);
+  }
+
+  .is-olive-subtle-background {
+    background-color: var(--olive-dark-2);
+  }
+
+  .is-olive-ui-background {
+    background-color: var(--olive-dark-3);
+  }
+
+  .is-olive-hover-background {
+    background-color: var(--olive-dark-4);
+  }
+
+  .is-olive-active-background {
+    background-color: var(--olive-dark-5);
+  }
+
+  .is-olive-subtle-element-background {
+    background-color: var(--olive-dark-6);
+  }
+
+  .is-olive-ui-element-background {
+    background-color: var(--olive-dark-7);
+  }
+
+  .is-olive-ui-hover-background {
+    background-color: var(--olive-dark-8);
+  }
+
+  .is-olive-solid-background {
+    background-color: var(--olive-dark-9);
+  }
+
+  .is-olive-hover-solid-background {
+    background-color: var(--olive-dark-10);
+  }
+
+  .is-olive-low-contrast-background {
+    background-color: var(--olive-dark-11);
+  }
+
+  .is-olive-high-contrast-background {
+    background-color: var(--olive-dark-12);
+  }
+
+  .is-olive-border {
+    outline-color: var(--olive-dark-7);
+    border-color: var(--olive-dark-7);
+  }
+
+  .is-sand {
+    color: var(--sand-dark-12);
+    background-color: var(--sand-dark-9);
+  }
+
+  .is-sand-background {
+    background-color: var(--sand-dark-1);
+  }
+
+  .is-sand-subtle-background {
+    background-color: var(--sand-dark-2);
+  }
+
+  .is-sand-ui-background {
+    background-color: var(--sand-dark-3);
+  }
+
+  .is-sand-hover-background {
+    background-color: var(--sand-dark-4);
+  }
+
+  .is-sand-active-background {
+    background-color: var(--sand-dark-5);
+  }
+
+  .is-sand-subtle-element-background {
+    background-color: var(--sand-dark-6);
+  }
+
+  .is-sand-ui-element-background {
+    background-color: var(--sand-dark-7);
+  }
+
+  .is-sand-ui-hover-background {
+    background-color: var(--sand-dark-8);
+  }
+
+  .is-sand-solid-background {
+    background-color: var(--sand-dark-9);
+  }
+
+  .is-sand-hover-solid-background {
+    background-color: var(--sand-dark-10);
+  }
+
+  .is-sand-low-contrast-background {
+    background-color: var(--sand-dark-11);
+  }
+
+  .is-sand-high-contrast-background {
+    background-color: var(--sand-dark-12);
+  }
+
+  .is-sand-border {
+    outline-color: var(--sand-dark-7);
+    border-color: var(--sand-dark-7);
+  }
+
+  .is-tomato {
+    color: var(--tomato-dark-12);
+    background-color: var(--tomato-dark-9);
+  }
+
+  .is-tomato-background {
+    background-color: var(--tomato-dark-1);
+  }
+
+  .is-tomato-subtle-background {
+    background-color: var(--tomato-dark-2);
+  }
+
+  .is-tomato-ui-background {
+    background-color: var(--tomato-dark-3);
+  }
+
+  .is-tomato-hover-background {
+    background-color: var(--tomato-dark-4);
+  }
+
+  .is-tomato-active-background {
+    background-color: var(--tomato-dark-5);
+  }
+
+  .is-tomato-subtle-element-background {
+    background-color: var(--tomato-dark-6);
+  }
+
+  .is-tomato-ui-element-background {
+    background-color: var(--tomato-dark-7);
+  }
+
+  .is-tomato-ui-hover-background {
+    background-color: var(--tomato-dark-8);
+  }
+
+  .is-tomato-solid-background {
+    background-color: var(--tomato-dark-9);
+  }
+
+  .is-tomato-hover-solid-background {
+    background-color: var(--tomato-dark-10);
+  }
+
+  .is-tomato-low-contrast-background {
+    background-color: var(--tomato-dark-11);
+  }
+
+  .is-tomato-high-contrast-background {
+    background-color: var(--tomato-dark-12);
+  }
+
+  .is-tomato-border {
+    outline-color: var(--tomato-dark-7);
+    border-color: var(--tomato-dark-7);
+  }
+
+  .is-crimson {
+    color: var(--crimson-dark-12);
+    background-color: var(--crimson-dark-9);
+  }
+
+  .is-crimson-background {
+    background-color: var(--crimson-dark-1);
+  }
+
+  .is-crimson-subtle-background {
+    background-color: var(--crimson-dark-2);
+  }
+
+  .is-crimson-ui-background {
+    background-color: var(--crimson-dark-3);
+  }
+
+  .is-crimson-hover-background {
+    background-color: var(--crimson-dark-4);
+  }
+
+  .is-crimson-active-background {
+    background-color: var(--crimson-dark-5);
+  }
+
+  .is-crimson-subtle-element-background {
+    background-color: var(--crimson-dark-6);
+  }
+
+  .is-crimson-ui-element-background {
+    background-color: var(--crimson-dark-7);
+  }
+
+  .is-crimson-ui-hover-background {
+    background-color: var(--crimson-dark-8);
+  }
+
+  .is-crimson-solid-background {
+    background-color: var(--crimson-dark-9);
+  }
+
+  .is-crimson-hover-solid-background {
+    background-color: var(--crimson-dark-10);
+  }
+
+  .is-crimson-low-contrast-background {
+    background-color: var(--crimson-dark-11);
+  }
+
+  .is-crimson-high-contrast-background {
+    background-color: var(--crimson-dark-12);
+  }
+
+  .is-crimson-border {
+    outline-color: var(--crimson-dark-7);
+    border-color: var(--crimson-dark-7);
+  }
+
+  .is-pink {
+    color: var(--pink-dark-12);
+    background-color: var(--pink-dark-9);
+  }
+
+  .is-pink-background {
+    background-color: var(--pink-dark-1);
+  }
+
+  .is-pink-subtle-background {
+    background-color: var(--pink-dark-2);
+  }
+
+  .is-pink-ui-background {
+    background-color: var(--pink-dark-3);
+  }
+
+  .is-pink-hover-background {
+    background-color: var(--pink-dark-4);
+  }
+
+  .is-pink-active-background {
+    background-color: var(--pink-dark-5);
+  }
+
+  .is-pink-subtle-element-background {
+    background-color: var(--pink-dark-6);
+  }
+
+  .is-pink-ui-element-background {
+    background-color: var(--pink-dark-7);
+  }
+
+  .is-pink-ui-hover-background {
+    background-color: var(--pink-dark-8);
+  }
+
+  .is-pink-solid-background {
+    background-color: var(--pink-dark-9);
+  }
+
+  .is-pink-hover-solid-background {
+    background-color: var(--pink-dark-10);
+  }
+
+  .is-pink-low-contrast-background {
+    background-color: var(--pink-dark-11);
+  }
+
+  .is-pink-high-contrast-background {
+    background-color: var(--pink-dark-12);
+  }
+
+  .is-pink-border {
+    outline-color: var(--pink-dark-7);
+    border-color: var(--pink-dark-7);
+  }
+
+  .is-plum {
+    color: var(--plum-dark-12);
+    background-color: var(--plum-dark-9);
+  }
+
+  .is-plum-background {
+    background-color: var(--plum-dark-1);
+  }
+
+  .is-plum-subtle-background {
+    background-color: var(--plum-dark-2);
+  }
+
+  .is-plum-ui-background {
+    background-color: var(--plum-dark-3);
+  }
+
+  .is-plum-hover-background {
+    background-color: var(--plum-dark-4);
+  }
+
+  .is-plum-active-background {
+    background-color: var(--plum-dark-5);
+  }
+
+  .is-plum-subtle-element-background {
+    background-color: var(--plum-dark-6);
+  }
+
+  .is-plum-ui-element-background {
+    background-color: var(--plum-dark-7);
+  }
+
+  .is-plum-ui-hover-background {
+    background-color: var(--plum-dark-8);
+  }
+
+  .is-plum-solid-background {
+    background-color: var(--plum-dark-9);
+  }
+
+  .is-plum-hover-solid-background {
+    background-color: var(--plum-dark-10);
+  }
+
+  .is-plum-low-contrast-background {
+    background-color: var(--plum-dark-11);
+  }
+
+  .is-plum-high-contrast-background {
+    background-color: var(--plum-dark-12);
+  }
+
+  .is-plum-border {
+    outline-color: var(--plum-dark-7);
+    border-color: var(--plum-dark-7);
+  }
+
+  .is-purple {
+    color: var(--purple-dark-12);
+    background-color: var(--purple-dark-9);
+  }
+
+  .is-purple-background {
+    background-color: var(--purple-dark-1);
+  }
+
+  .is-purple-subtle-background {
+    background-color: var(--purple-dark-2);
+  }
+
+  .is-purple-ui-background {
+    background-color: var(--purple-dark-3);
+  }
+
+  .is-purple-hover-background {
+    background-color: var(--purple-dark-4);
+  }
+
+  .is-purple-active-background {
+    background-color: var(--purple-dark-5);
+  }
+
+  .is-purple-subtle-element-background {
+    background-color: var(--purple-dark-6);
+  }
+
+  .is-purple-ui-element-background {
+    background-color: var(--purple-dark-7);
+  }
+
+  .is-purple-ui-hover-background {
+    background-color: var(--purple-dark-8);
+  }
+
+  .is-purple-solid-background {
+    background-color: var(--purple-dark-9);
+  }
+
+  .is-purple-hover-solid-background {
+    background-color: var(--purple-dark-10);
+  }
+
+  .is-purple-low-contrast-background {
+    background-color: var(--purple-dark-11);
+  }
+
+  .is-purple-high-contrast-background {
+    background-color: var(--purple-dark-12);
+  }
+
+  .is-purple-border {
+    outline-color: var(--purple-dark-7);
+    border-color: var(--purple-dark-7);
+  }
+
+  .is-violet {
+    color: var(--violet-dark-12);
+    background-color: var(--violet-dark-9);
+  }
+
+  .is-violet-background {
+    background-color: var(--violet-dark-1);
+  }
+
+  .is-violet-subtle-background {
+    background-color: var(--violet-dark-2);
+  }
+
+  .is-violet-ui-background {
+    background-color: var(--violet-dark-3);
+  }
+
+  .is-violet-hover-background {
+    background-color: var(--violet-dark-4);
+  }
+
+  .is-violet-active-background {
+    background-color: var(--violet-dark-5);
+  }
+
+  .is-violet-subtle-element-background {
+    background-color: var(--violet-dark-6);
+  }
+
+  .is-violet-ui-element-background {
+    background-color: var(--violet-dark-7);
+  }
+
+  .is-violet-ui-hover-background {
+    background-color: var(--violet-dark-8);
+  }
+
+  .is-violet-solid-background {
+    background-color: var(--violet-dark-9);
+  }
+
+  .is-violet-hover-solid-background {
+    background-color: var(--violet-dark-10);
+  }
+
+  .is-violet-low-contrast-background {
+    background-color: var(--violet-dark-11);
+  }
+
+  .is-violet-high-contrast-background {
+    background-color: var(--violet-dark-12);
+  }
+
+  .is-violet-border {
+    outline-color: var(--violet-dark-7);
+    border-color: var(--violet-dark-7);
+  }
+
+  .is-indigo {
+    color: var(--indigo-dark-12);
+    background-color: var(--indigo-dark-9);
+  }
+
+  .is-indigo-background {
+    background-color: var(--indigo-dark-1);
+  }
+
+  .is-indigo-subtle-background {
+    background-color: var(--indigo-dark-2);
+  }
+
+  .is-indigo-ui-background {
+    background-color: var(--indigo-dark-3);
+  }
+
+  .is-indigo-hover-background {
+    background-color: var(--indigo-dark-4);
+  }
+
+  .is-indigo-active-background {
+    background-color: var(--indigo-dark-5);
+  }
+
+  .is-indigo-subtle-element-background {
+    background-color: var(--indigo-dark-6);
+  }
+
+  .is-indigo-ui-element-background {
+    background-color: var(--indigo-dark-7);
+  }
+
+  .is-indigo-ui-hover-background {
+    background-color: var(--indigo-dark-8);
+  }
+
+  .is-indigo-solid-background {
+    background-color: var(--indigo-dark-9);
+  }
+
+  .is-indigo-hover-solid-background {
+    background-color: var(--indigo-dark-10);
+  }
+
+  .is-indigo-low-contrast-background {
+    background-color: var(--indigo-dark-11);
+  }
+
+  .is-indigo-high-contrast-background {
+    background-color: var(--indigo-dark-12);
+  }
+
+  .is-indigo-border {
+    outline-color: var(--indigo-dark-7);
+    border-color: var(--indigo-dark-7);
+  }
+
+  .is-blue {
+    color: var(--blue-dark-12);
+    background-color: var(--blue-dark-9);
+  }
+
+  .is-blue-background {
+    background-color: var(--blue-dark-1);
+  }
+
+  .is-blue-subtle-background {
+    background-color: var(--blue-dark-2);
+  }
+
+  .is-blue-ui-background {
+    background-color: var(--blue-dark-3);
+  }
+
+  .is-blue-hover-background {
+    background-color: var(--blue-dark-4);
+  }
+
+  .is-blue-active-background {
+    background-color: var(--blue-dark-5);
+  }
+
+  .is-blue-subtle-element-background {
+    background-color: var(--blue-dark-6);
+  }
+
+  .is-blue-ui-element-background {
+    background-color: var(--blue-dark-7);
+  }
+
+  .is-blue-ui-hover-background {
+    background-color: var(--blue-dark-8);
+  }
+
+  .is-blue-solid-background {
+    background-color: var(--blue-dark-9);
+  }
+
+  .is-blue-hover-solid-background {
+    background-color: var(--blue-dark-10);
+  }
+
+  .is-blue-low-contrast-background {
+    background-color: var(--blue-dark-11);
+  }
+
+  .is-blue-high-contrast-background {
+    background-color: var(--blue-dark-12);
+  }
+
+  .is-blue-border {
+    outline-color: var(--blue-dark-7);
+    border-color: var(--blue-dark-7);
+  }
+
+  .is-cyan {
+    color: var(--cyan-dark-12);
+    background-color: var(--cyan-dark-9);
+  }
+
+  .is-cyan-background {
+    background-color: var(--cyan-dark-1);
+  }
+
+  .is-cyan-subtle-background {
+    background-color: var(--cyan-dark-2);
+  }
+
+  .is-cyan-ui-background {
+    background-color: var(--cyan-dark-3);
+  }
+
+  .is-cyan-hover-background {
+    background-color: var(--cyan-dark-4);
+  }
+
+  .is-cyan-active-background {
+    background-color: var(--cyan-dark-5);
+  }
+
+  .is-cyan-subtle-element-background {
+    background-color: var(--cyan-dark-6);
+  }
+
+  .is-cyan-ui-element-background {
+    background-color: var(--cyan-dark-7);
+  }
+
+  .is-cyan-ui-hover-background {
+    background-color: var(--cyan-dark-8);
+  }
+
+  .is-cyan-solid-background {
+    background-color: var(--cyan-dark-9);
+  }
+
+  .is-cyan-hover-solid-background {
+    background-color: var(--cyan-dark-10);
+  }
+
+  .is-cyan-low-contrast-background {
+    background-color: var(--cyan-dark-11);
+  }
+
+  .is-cyan-high-contrast-background {
+    background-color: var(--cyan-dark-12);
+  }
+
+  .is-cyan-border {
+    outline-color: var(--cyan-dark-7);
+    border-color: var(--cyan-dark-7);
+  }
+
+  .is-teal {
+    color: var(--teal-dark-12);
+    background-color: var(--teal-dark-9);
+  }
+
+  .is-teal-background {
+    background-color: var(--teal-dark-1);
+  }
+
+  .is-teal-subtle-background {
+    background-color: var(--teal-dark-2);
+  }
+
+  .is-teal-ui-background {
+    background-color: var(--teal-dark-3);
+  }
+
+  .is-teal-hover-background {
+    background-color: var(--teal-dark-4);
+  }
+
+  .is-teal-active-background {
+    background-color: var(--teal-dark-5);
+  }
+
+  .is-teal-subtle-element-background {
+    background-color: var(--teal-dark-6);
+  }
+
+  .is-teal-ui-element-background {
+    background-color: var(--teal-dark-7);
+  }
+
+  .is-teal-ui-hover-background {
+    background-color: var(--teal-dark-8);
+  }
+
+  .is-teal-solid-background {
+    background-color: var(--teal-dark-9);
+  }
+
+  .is-teal-hover-solid-background {
+    background-color: var(--teal-dark-10);
+  }
+
+  .is-teal-low-contrast-background {
+    background-color: var(--teal-dark-11);
+  }
+
+  .is-teal-high-contrast-background {
+    background-color: var(--teal-dark-12);
+  }
+
+  .is-teal-border {
+    outline-color: var(--teal-dark-7);
+    border-color: var(--teal-dark-7);
+  }
+
+  .is-green {
+    color: var(--green-dark-12);
+    background-color: var(--green-dark-9);
+  }
+
+  .is-green-background {
+    background-color: var(--green-dark-1);
+  }
+
+  .is-green-subtle-background {
+    background-color: var(--green-dark-2);
+  }
+
+  .is-green-ui-background {
+    background-color: var(--green-dark-3);
+  }
+
+  .is-green-hover-background {
+    background-color: var(--green-dark-4);
+  }
+
+  .is-green-active-background {
+    background-color: var(--green-dark-5);
+  }
+
+  .is-green-subtle-element-background {
+    background-color: var(--green-dark-6);
+  }
+
+  .is-green-ui-element-background {
+    background-color: var(--green-dark-7);
+  }
+
+  .is-green-ui-hover-background {
+    background-color: var(--green-dark-8);
+  }
+
+  .is-green-solid-background {
+    background-color: var(--green-dark-9);
+  }
+
+  .is-green-hover-solid-background {
+    background-color: var(--green-dark-10);
+  }
+
+  .is-green-low-contrast-background {
+    background-color: var(--green-dark-11);
+  }
+
+  .is-green-high-contrast-background {
+    background-color: var(--green-dark-12);
+  }
+
+  .is-green-border {
+    outline-color: var(--green-dark-7);
+    border-color: var(--green-dark-7);
+  }
+
+  .is-grass {
+    color: var(--grass-dark-12);
+    background-color: var(--grass-dark-9);
+  }
+
+  .is-grass-background {
+    background-color: var(--grass-dark-1);
+  }
+
+  .is-grass-subtle-background {
+    background-color: var(--grass-dark-2);
+  }
+
+  .is-grass-ui-background {
+    background-color: var(--grass-dark-3);
+  }
+
+  .is-grass-hover-background {
+    background-color: var(--grass-dark-4);
+  }
+
+  .is-grass-active-background {
+    background-color: var(--grass-dark-5);
+  }
+
+  .is-grass-subtle-element-background {
+    background-color: var(--grass-dark-6);
+  }
+
+  .is-grass-ui-element-background {
+    background-color: var(--grass-dark-7);
+  }
+
+  .is-grass-ui-hover-background {
+    background-color: var(--grass-dark-8);
+  }
+
+  .is-grass-solid-background {
+    background-color: var(--grass-dark-9);
+  }
+
+  .is-grass-hover-solid-background {
+    background-color: var(--grass-dark-10);
+  }
+
+  .is-grass-low-contrast-background {
+    background-color: var(--grass-dark-11);
+  }
+
+  .is-grass-high-contrast-background {
+    background-color: var(--grass-dark-12);
+  }
+
+  .is-grass-border {
+    outline-color: var(--grass-dark-7);
+    border-color: var(--grass-dark-7);
+  }
+
+  .is-brown {
+    color: var(--brown-dark-12);
+    background-color: var(--brown-dark-9);
+  }
+
+  .is-brown-background {
+    background-color: var(--brown-dark-1);
+  }
+
+  .is-brown-subtle-background {
+    background-color: var(--brown-dark-2);
+  }
+
+  .is-brown-ui-background {
+    background-color: var(--brown-dark-3);
+  }
+
+  .is-brown-hover-background {
+    background-color: var(--brown-dark-4);
+  }
+
+  .is-brown-active-background {
+    background-color: var(--brown-dark-5);
+  }
+
+  .is-brown-subtle-element-background {
+    background-color: var(--brown-dark-6);
+  }
+
+  .is-brown-ui-element-background {
+    background-color: var(--brown-dark-7);
+  }
+
+  .is-brown-ui-hover-background {
+    background-color: var(--brown-dark-8);
+  }
+
+  .is-brown-solid-background {
+    background-color: var(--brown-dark-9);
+  }
+
+  .is-brown-hover-solid-background {
+    background-color: var(--brown-dark-10);
+  }
+
+  .is-brown-low-contrast-background {
+    background-color: var(--brown-dark-11);
+  }
+
+  .is-brown-high-contrast-background {
+    background-color: var(--brown-dark-12);
+  }
+
+  .is-brown-border {
+    outline-color: var(--brown-dark-7);
+    border-color: var(--brown-dark-7);
+  }
+
+  .is-bronze {
+    color: var(--bronze-dark-12);
+    background-color: var(--bronze-dark-9);
+  }
+
+  .is-bronze-background {
+    background-color: var(--bronze-dark-1);
+  }
+
+  .is-bronze-subtle-background {
+    background-color: var(--bronze-dark-2);
+  }
+
+  .is-bronze-ui-background {
+    background-color: var(--bronze-dark-3);
+  }
+
+  .is-bronze-hover-background {
+    background-color: var(--bronze-dark-4);
+  }
+
+  .is-bronze-active-background {
+    background-color: var(--bronze-dark-5);
+  }
+
+  .is-bronze-subtle-element-background {
+    background-color: var(--bronze-dark-6);
+  }
+
+  .is-bronze-ui-element-background {
+    background-color: var(--bronze-dark-7);
+  }
+
+  .is-bronze-ui-hover-background {
+    background-color: var(--bronze-dark-8);
+  }
+
+  .is-bronze-solid-background {
+    background-color: var(--bronze-dark-9);
+  }
+
+  .is-bronze-hover-solid-background {
+    background-color: var(--bronze-dark-10);
+  }
+
+  .is-bronze-low-contrast-background {
+    background-color: var(--bronze-dark-11);
+  }
+
+  .is-bronze-high-contrast-background {
+    background-color: var(--bronze-dark-12);
+  }
+
+  .is-bronze-border {
+    outline-color: var(--bronze-dark-7);
+    border-color: var(--bronze-dark-7);
+  }
+
+  .is-gold {
+    color: var(--gold-dark-12);
+    background-color: var(--gold-dark-9);
+  }
+
+  .is-gold-background {
+    background-color: var(--gold-dark-1);
+  }
+
+  .is-gold-subtle-background {
+    background-color: var(--gold-dark-2);
+  }
+
+  .is-gold-ui-background {
+    background-color: var(--gold-dark-3);
+  }
+
+  .is-gold-hover-background {
+    background-color: var(--gold-dark-4);
+  }
+
+  .is-gold-active-background {
+    background-color: var(--gold-dark-5);
+  }
+
+  .is-gold-subtle-element-background {
+    background-color: var(--gold-dark-6);
+  }
+
+  .is-gold-ui-element-background {
+    background-color: var(--gold-dark-7);
+  }
+
+  .is-gold-ui-hover-background {
+    background-color: var(--gold-dark-8);
+  }
+
+  .is-gold-solid-background {
+    background-color: var(--gold-dark-9);
+  }
+
+  .is-gold-hover-solid-background {
+    background-color: var(--gold-dark-10);
+  }
+
+  .is-gold-low-contrast-background {
+    background-color: var(--gold-dark-11);
+  }
+
+  .is-gold-high-contrast-background {
+    background-color: var(--gold-dark-12);
+  }
+
+  .is-gold-border {
+    outline-color: var(--gold-dark-7);
+    border-color: var(--gold-dark-7);
+  }
+
+  .is-sky {
+    color: var(--sky-light-12);
+    background-color: var(--sky-dark-9);
+  }
+
+  .is-sky-background {
+    background-color: var(--sky-dark-1);
+  }
+
+  .is-sky-subtle-background {
+    background-color: var(--sky-dark-2);
+  }
+
+  .is-sky-ui-background {
+    background-color: var(--sky-dark-3);
+  }
+
+  .is-sky-hover-background {
+    background-color: var(--sky-dark-4);
+  }
+
+  .is-sky-active-background {
+    background-color: var(--sky-dark-5);
+  }
+
+  .is-sky-subtle-element-background {
+    background-color: var(--sky-dark-6);
+  }
+
+  .is-sky-ui-element-background {
+    background-color: var(--sky-dark-7);
+  }
+
+  .is-sky-ui-hover-background {
+    background-color: var(--sky-dark-8);
+  }
+
+  .is-sky-solid-background {
+    background-color: var(--sky-dark-9);
+  }
+
+  .is-sky-hover-solid-background {
+    background-color: var(--sky-dark-10);
+  }
+
+  .is-sky-low-contrast-background {
+    background-color: var(--sky-dark-11);
+  }
+
+  .is-sky-high-contrast-background {
+    background-color: var(--sky-dark-12);
+  }
+
+  .is-sky-border {
+    outline-color: var(--sky-dark-7);
+    border-color: var(--sky-dark-7);
+  }
+
+  .is-mint {
+    color: var(--mint-light-12);
+    background-color: var(--mint-dark-9);
+  }
+
+  .is-mint-background {
+    background-color: var(--mint-dark-1);
+  }
+
+  .is-mint-subtle-background {
+    background-color: var(--mint-dark-2);
+  }
+
+  .is-mint-ui-background {
+    background-color: var(--mint-dark-3);
+  }
+
+  .is-mint-hover-background {
+    background-color: var(--mint-dark-4);
+  }
+
+  .is-mint-active-background {
+    background-color: var(--mint-dark-5);
+  }
+
+  .is-mint-subtle-element-background {
+    background-color: var(--mint-dark-6);
+  }
+
+  .is-mint-ui-element-background {
+    background-color: var(--mint-dark-7);
+  }
+
+  .is-mint-ui-hover-background {
+    background-color: var(--mint-dark-8);
+  }
+
+  .is-mint-solid-background {
+    background-color: var(--mint-dark-9);
+  }
+
+  .is-mint-hover-solid-background {
+    background-color: var(--mint-dark-10);
+  }
+
+  .is-mint-low-contrast-background {
+    background-color: var(--mint-dark-11);
+  }
+
+  .is-mint-high-contrast-background {
+    background-color: var(--mint-dark-12);
+  }
+
+  .is-mint-border {
+    outline-color: var(--mint-dark-7);
+    border-color: var(--mint-dark-7);
+  }
+
+  .is-lime {
+    color: var(--lime-light-12);
+    background-color: var(--lime-dark-9);
+  }
+
+  .is-lime-background {
+    background-color: var(--lime-dark-1);
+  }
+
+  .is-lime-subtle-background {
+    background-color: var(--lime-dark-2);
+  }
+
+  .is-lime-ui-background {
+    background-color: var(--lime-dark-3);
+  }
+
+  .is-lime-hover-background {
+    background-color: var(--lime-dark-4);
+  }
+
+  .is-lime-active-background {
+    background-color: var(--lime-dark-5);
+  }
+
+  .is-lime-subtle-element-background {
+    background-color: var(--lime-dark-6);
+  }
+
+  .is-lime-ui-element-background {
+    background-color: var(--lime-dark-7);
+  }
+
+  .is-lime-ui-hover-background {
+    background-color: var(--lime-dark-8);
+  }
+
+  .is-lime-solid-background {
+    background-color: var(--lime-dark-9);
+  }
+
+  .is-lime-hover-solid-background {
+    background-color: var(--lime-dark-10);
+  }
+
+  .is-lime-low-contrast-background {
+    background-color: var(--lime-dark-11);
+  }
+
+  .is-lime-high-contrast-background {
+    background-color: var(--lime-dark-12);
+  }
+
+  .is-lime-border {
+    outline-color: var(--lime-dark-7);
+    border-color: var(--lime-dark-7);
+  }
+
+  .is-yellow {
+    color: var(--yellow-light-12);
+    background-color: var(--yellow-dark-9);
+  }
+
+  .is-yellow-background {
+    background-color: var(--yellow-dark-1);
+  }
+
+  .is-yellow-subtle-background {
+    background-color: var(--yellow-dark-2);
+  }
+
+  .is-yellow-ui-background {
+    background-color: var(--yellow-dark-3);
+  }
+
+  .is-yellow-hover-background {
+    background-color: var(--yellow-dark-4);
+  }
+
+  .is-yellow-active-background {
+    background-color: var(--yellow-dark-5);
+  }
+
+  .is-yellow-subtle-element-background {
+    background-color: var(--yellow-dark-6);
+  }
+
+  .is-yellow-ui-element-background {
+    background-color: var(--yellow-dark-7);
+  }
+
+  .is-yellow-ui-hover-background {
+    background-color: var(--yellow-dark-8);
+  }
+
+  .is-yellow-solid-background {
+    background-color: var(--yellow-dark-9);
+  }
+
+  .is-yellow-hover-solid-background {
+    background-color: var(--yellow-dark-10);
+  }
+
+  .is-yellow-low-contrast-background {
+    background-color: var(--yellow-dark-11);
+  }
+
+  .is-yellow-high-contrast-background {
+    background-color: var(--yellow-dark-12);
+  }
+
+  .is-yellow-border {
+    outline-color: var(--yellow-dark-7);
+    border-color: var(--yellow-dark-7);
+  }
+
+  .is-amber {
+    color: var(--amber-light-12);
+    background-color: var(--amber-dark-9);
+  }
+
+  .is-amber-background {
+    background-color: var(--amber-dark-1);
+  }
+
+  .is-amber-subtle-background {
+    background-color: var(--amber-dark-2);
+  }
+
+  .is-amber-ui-background {
+    background-color: var(--amber-dark-3);
+  }
+
+  .is-amber-hover-background {
+    background-color: var(--amber-dark-4);
+  }
+
+  .is-amber-active-background {
+    background-color: var(--amber-dark-5);
+  }
+
+  .is-amber-subtle-element-background {
+    background-color: var(--amber-dark-6);
+  }
+
+  .is-amber-ui-element-background {
+    background-color: var(--amber-dark-7);
+  }
+
+  .is-amber-ui-hover-background {
+    background-color: var(--amber-dark-8);
+  }
+
+  .is-amber-solid-background {
+    background-color: var(--amber-dark-9);
+  }
+
+  .is-amber-hover-solid-background {
+    background-color: var(--amber-dark-10);
+  }
+
+  .is-amber-low-contrast-background {
+    background-color: var(--amber-dark-11);
+  }
+
+  .is-amber-high-contrast-background {
+    background-color: var(--amber-dark-12);
+  }
+
+  .is-amber-border {
+    outline-color: var(--amber-dark-7);
+    border-color: var(--amber-dark-7);
+  }
+
+  .is-orange {
+    color: var(--orange-dark-12);
+    background-color: var(--orange-dark-9);
+  }
+
+  .is-orange-background {
+    background-color: var(--orange-dark-1);
+  }
+
+  .is-orange-subtle-background {
+    background-color: var(--orange-dark-2);
+  }
+
+  .is-orange-ui-background {
+    background-color: var(--orange-dark-3);
+  }
+
+  .is-orange-hover-background {
+    background-color: var(--orange-dark-4);
+  }
+
+  .is-orange-active-background {
+    background-color: var(--orange-dark-5);
+  }
+
+  .is-orange-subtle-element-background {
+    background-color: var(--orange-dark-6);
+  }
+
+  .is-orange-ui-element-background {
+    background-color: var(--orange-dark-7);
+  }
+
+  .is-orange-ui-hover-background {
+    background-color: var(--orange-dark-8);
+  }
+
+  .is-orange-solid-background {
+    background-color: var(--orange-dark-9);
+  }
+
+  .is-orange-hover-solid-background {
+    background-color: var(--orange-dark-10);
+  }
+
+  .is-orange-low-contrast-background {
+    background-color: var(--orange-dark-11);
+  }
+
+  .is-orange-high-contrast-background {
+    background-color: var(--orange-dark-12);
+  }
+
+  .is-orange-border {
+    outline-color: var(--orange-dark-7);
+    border-color: var(--orange-dark-7);
+  }
 }
 
 /*
