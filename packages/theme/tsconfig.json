@@ -1,46 +1,24 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "useDefineForClassFields": false,
-    "declaration": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "inlineSources": true,
-    "isolatedModules": true,
-    "lib": [
-      "esNext",
-      "dom",
-      "dom.iterable"
-    ],
-    "module": "esNext",
-    "moduleResolution": "nodenext",
-    "noImplicitReturns": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "noImplicitAny": false,
-    "rootDir": ".",
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "types": ["vite/client"],
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    /* Linting */
     "strict": true,
-    "sourceMap": true,
-    "target": "esNext",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "./types/*",
-        "*"
-      ],
-      "@websublime/vitamin-theme/*": [
-        "./src/*"
-      ]
-    },
-    "declarationDir": "./dist",
-    "removeComments": false
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx"
-  ],
-  "extends": "../../tsconfig.base.json",
-  "references": []
+  "include": ["src"]
 }
