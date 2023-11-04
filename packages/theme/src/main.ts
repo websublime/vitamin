@@ -1,22 +1,17 @@
-import { IconsMap } from 'icons';
+import './style.css';
 
-function uiNav() {
+function setup() {
   const htmlElement = document.querySelectorAll('html').item(0);
   const bodyElement = document.querySelectorAll('body').item(0);
   const themeButton = document.querySelectorAll('.ui-theme-button').item(0);
 
-  const iconMoon = IconsMap.get('moon').render('class="flex h-6 w-6 items-center justify-center rounded-full"');
-  const iconSun = IconsMap.get('sun').render('class="flex h-6 w-6 items-center justify-center rounded-full"');
-
-  themeButton.innerHTML = htmlElement?.classList.contains('dark') ? iconSun : iconMoon;
-
   for (const button of document.querySelectorAll<HTMLButtonElement>('.ui-nav-button')) {
     button.addEventListener('click', function () {
       for (const button of document.querySelectorAll('.ui-nav-button')) {
-        button.classList.remove('border-2');
+        button.classList.remove('ui-nav-button-active');
       }
 
-      this.classList.add('border-2');
+      this.classList.add('ui-nav-button-active');
       const { theme } = this.dataset;
       bodyElement.classList.value = `${theme}`;
     });
@@ -33,8 +28,8 @@ function uiNav() {
       htmlElement?.classList.add('dark');
     }
 
-    themeButton.innerHTML = htmlElement?.classList.contains('dark') ? iconSun : iconMoon;
+    //themeButton.innerHTML = htmlElement?.classList.contains('dark') ? iconSun : iconMoon;
   });
 }
 
-uiNav();
+setup();

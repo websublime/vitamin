@@ -1,8 +1,0 @@
-dist/
-www/
-types/
-coverage/
-**/*.d.ts
-temp/*
-node_modules/
-astro.config.mjs
