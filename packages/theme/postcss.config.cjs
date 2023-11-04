@@ -1,3 +1,4 @@
+const cssNano = require('cssnano');
 const customMedia = require('postcss-custom-media');
 const postcssImport = require('postcss-import');
 const postcssMixins = require('postcss-mixins');
@@ -28,6 +29,9 @@ module.exports = {
       },
       stage: 0
     }),
-    customMedia()
+    customMedia(),
+    cssNano({
+      preset: 'default'
+    })
   ]
 };
