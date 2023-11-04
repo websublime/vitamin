@@ -20,7 +20,7 @@
 
 ## ⚒ Develop
 
-Clone project and install with yarn because we use monorepo style.
+Clone project and install with pnpm because we use monorepo style.
 
 Run with start
 
