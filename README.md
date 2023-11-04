@@ -9,7 +9,7 @@
 
 * 💪 Lit API
 * 🔥 Written in TypeScript
-* 🎨 TailwindCss
+* 🎨 Postcss (CSS is cool again)
 -----
 
 ## ⛓ Installation (WIP)
