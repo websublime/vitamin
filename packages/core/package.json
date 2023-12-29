@@ -57,10 +57,6 @@
       "types": "./dist/utilities/directives.d.ts",
       "default": "./dist/utilities/directives.js"
     },
-    "./event-controller.js": {
-      "types": "./dist/utilities/event-controller.d.ts",
-      "default": "./dist/utilities/event-controller.js"
-    },
     "./helpers.js": {
       "types": "./dist/utilities/helpers.d.ts",
       "default": "./dist/utilities/helpers.js"
@@ -69,17 +65,25 @@
       "types": "./dist/utilities/html.d.ts",
       "default": "./dist/utilities/html.js"
     },
-    "./web-component.js": {
-      "types": "./dist/utilities/web-component.d.ts",
-      "default": "./dist/utilities/web-component.js"
+    "./event-controller.js": {
+      "types": "./dist/lib/controllers/event-controller.d.ts",
+      "default": "./dist/lib/controllers/event-controller.js"
     },
     "./inspect-controller.js": {
-      "types": "./dist/utilities/inspect-controller.d.ts",
-      "default": "./dist/utilities/inspect-controller.js"
+      "types": "./dist/lib/controllers/inspect-controller.d.ts",
+      "default": "./dist/lib/controllers/inspect-controller.js"
+    },
+    "./web-component.js": {
+      "types": "./dist/lib/web-component.d.ts",
+      "default": "./dist/lib/web-component.js"
     },
     "./storage.js": {
-      "types": "./dist/utilities/storage.d.ts",
-      "default": "./dist/utilities/storage.js"
+      "types": "./dist/lib/storage.d.ts",
+      "default": "./dist/lib/storage.js"
+    },
+    "./inspector.js": {
+      "types": "./dist/lib/ui/inspector.d.ts",
+      "default": "./dist/lib/ui/inspector.js"
     }
   },
   "publishConfig": {

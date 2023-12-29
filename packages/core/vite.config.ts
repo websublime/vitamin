@@ -1,7 +1,7 @@
 import { extname, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import replace from '@rollup/plugin-replace';
+//import replace from '@rollup/plugin-replace';
 import { glob } from 'glob';
 import { defineConfig } from 'vite';
 
@@ -27,7 +27,7 @@ export default defineConfig({
     minify: true,
     outDir: 'dist',
     rollupOptions: {
-      external: ['lit'],
+      external: ['lit', /^lit\/.*/],
       output: {
         assetFileNames: 'assets/[name][extname]',
         chunkFileNames: 'chunks/[name].js',

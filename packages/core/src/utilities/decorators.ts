@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 /**
 |--------------------------------------------------------------------------
 | Copyright Websublime All Rights Reserved.

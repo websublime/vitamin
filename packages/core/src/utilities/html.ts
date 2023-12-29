@@ -9,4 +9,4 @@
 */
 
 export { html, svg } from 'lit/html.js';
-export type { noChange, nothing, render } from 'lit/html.js';
+export { noChange, nothing, render } from 'lit/html.js';

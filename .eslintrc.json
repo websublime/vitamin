@@ -134,8 +134,11 @@
       "error",
       "never",
       {
-        "js": "always",
-        "json": "always"
+        "ignorePackages": true,
+        "pattern": {
+          "json": "always",
+          "js": "ignorePackages"
+        }
       }
     ],
     "import/no-unresolved": [
