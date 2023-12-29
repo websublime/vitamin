@@ -12,7 +12,6 @@ export type ValueOf<T = unknown> = T[keyof T];
 
 export type Constructor<T = Record<string, unknown>> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // rome-ignore lint/suspicious/noExplicitAny: <explanation>
   new  (...arguments_: any[]): T;
   prototype: T;
 };
