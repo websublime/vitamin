@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowJs": true,
-    "importHelpers": true,
+    "importHelpers": false,
     "inlineSources": true,
     "isolatedModules": true,
     "lib": [
