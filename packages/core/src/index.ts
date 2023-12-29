@@ -12,9 +12,9 @@ export type {
   ComponentMixinInterface,
   ControllerHost,
   WebComponentOptions
-} from './types/component.js';
+} from './types/component';
 
-export type { ValueOf, Constructor } from './types/general.js';
+export type { ValueOf, Constructor } from './types/general';
 
 export type {
   DirectiveParent,
@@ -41,4 +41,4 @@ export type {
   CompiledTemplate,
   CompiledTemplateResult,
   ValueSanitizer
-} from './types/lit.js';
+} from './types/lit';

@@ -10,11 +10,11 @@
 
 import { LitElement, PropertyValues, ReactiveElement } from 'lit';
 
-import type { ComponentMetadata, ComponentMixinInterface, WebComponentOptions } from '../types/component.js';
-import type { Constructor } from '../types/general.js';
-import { property } from '../utilities/decorators.js';
+import type { ComponentMetadata, ComponentMixinInterface, WebComponentOptions } from '../types/component';
+import type { Constructor } from '../types/general';
+import { property } from '../utilities/decorators';
 
-import { InspectController } from './controllers/inspect-controller.js';
+import { InspectController } from './controllers/inspect-controller';
 
 const id = Symbol.for('VITA');
 

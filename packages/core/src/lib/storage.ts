@@ -8,7 +8,7 @@
 |
 */
 
-import { isStringified } from '../utilities/helpers.js';
+import { isStringified } from '../utilities/helpers';
 
 /**
  * Wrapper api for local and session storage.

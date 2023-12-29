@@ -10,7 +10,7 @@
 
 import { ReactiveController } from 'lit';
 
-import { ControllerHost } from '../../types/component';
+import type { ControllerHost } from '../../types/component';
 import { storage } from '../storage';
 
 /**
