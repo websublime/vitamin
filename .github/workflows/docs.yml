@@ -1,12 +1,12 @@
 name: Deploy to GitHub Pages
 
-on:
+#on:
   # Trigger the workflow every time you push to the `main` branch
   # Using a different branch name? Replace `main` with your branch’s name
-  push:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
-  workflow_dispatch:
+#  workflow_dispatch:
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -30,7 +30,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install pnpm package manager
         run: npm i pnpm@latest -g
@@ -48,7 +48,7 @@ jobs:
         uses: withastro/action@v0
         with:
           path: packages/docs
-          node-version: 18
+          node-version: 20
           package-manager: pnpm # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
 
   deploy:
