@@ -1,0 +1,19 @@
+name: Checkout
+
+on:
+  workflow_call:
+    inputs:
+      depth:
+        description: 'Depth'
+        default: 0
+        type: number
+
+jobs:
+  checkout-repo:
+    name: Checkout Repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ github.event.inputs.depth }}

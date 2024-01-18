@@ -1,0 +1,19 @@
+name: NodeJs
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        description: 'Node version'
+        default: '20'
+        type: string
+
+jobs:
+  install-node:
+    name: Install Node
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install NodeJs
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ github.event.inputs.version }}
