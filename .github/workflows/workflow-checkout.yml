@@ -1,4 +1,4 @@
-name: Checkout
+name: '[Workflow] Checkout'
 
 on:
   workflow_call:
