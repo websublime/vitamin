@@ -6,13 +6,17 @@ env:
   CI: true
 
 jobs:
-  build:
-    name: Build Packages
+  prepare:
+    name: Checkout, node and pnpm
     runs-on: ubuntu-latest
     steps:
       - name: Checkout, node and pnpm
         uses: ./.github/workflows/workflow-base.yml
-
+  build:
+    name: Build Packages
+    runs-on: ubuntu-latest
+    needs: [prepare]
+    steps:
       - name: Install dependencies
         run: pnpm install
 
