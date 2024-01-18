@@ -1,4 +1,4 @@
-name: Pnpm
+name: '[Workflow] Pnpm'
 
 on:
   workflow_call:

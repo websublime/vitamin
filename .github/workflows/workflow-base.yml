@@ -1,4 +1,4 @@
-name: Checkout, install node and pnpm
+name: '[Workflow] Checkout, install node and pnpm'
 
 on: workflow_call
 

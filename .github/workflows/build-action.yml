@@ -1,4 +1,4 @@
-name: Build Artifact
+name: '[Action] Build Artifact'
 
 on: pull_request
 

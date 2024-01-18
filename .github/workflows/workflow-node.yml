@@ -1,4 +1,4 @@
-name: NodeJs
+name: '[Workflow] NodeJs'
 
 on:
   workflow_call:
