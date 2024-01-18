@@ -1,0 +1,17 @@
+name: Checkout, install node and pnpm
+
+on: workflow_call
+
+jobs:
+  prepare:
+    name: Checkout, install node and pnpm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code repository
+        uses: ./.github/workflows/workflow-checkout.yml
+
+      - name: Install NodeJs
+        uses: ./.github/workflows/workflow-node.yml
+
+      - name: Install pnpm package manager
+        uses: ./.github/workflows/workflow-pnpm.yml

@@ -1,0 +1,20 @@
+name: Build Artifact
+
+on: pull_request
+
+env:
+  CI: true
+
+jobs:
+  build:
+    name: Build Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout, node and pnpm
+        uses: ./.github/workflows/workflow-base.yml
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
