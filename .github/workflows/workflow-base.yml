@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code repository
-        uses: ./.github/workflows/workflow-checkout.yml
+        uses: websublime/vitamin/.github/workflows/workflow-checkout.yml@feature/reusable-actions
   node:
     name: Install NodeJs
     runs-on: ubuntu-latest

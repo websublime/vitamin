@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout, node and pnpm
-        uses: ./.github/workflows/workflow-base.yml
+        uses: websublime/vitamin/.github/workflows/workflow-base.yml@feature/reusable-actions
   build:
     name: Build Packages
     runs-on: ubuntu-latest
