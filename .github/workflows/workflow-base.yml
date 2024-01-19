@@ -6,6 +6,7 @@ jobs:
   checkout:
     name: Checkout Repository
     uses: ./.github/workflows/workflow-checkout.yml
+    secrets: inherit
   node:
     name: Install NodeJs
     needs: [checkout]
