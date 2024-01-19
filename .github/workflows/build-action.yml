@@ -7,7 +7,9 @@ env:
 
 jobs:
   prepare:
+    name: Prepare Environment
     uses: ./.github/workflows/workflow-base.yml
+    secrets: inherit
   build:
     name: Build Packages
     runs-on: ubuntu-latest

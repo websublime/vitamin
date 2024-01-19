@@ -13,7 +13,6 @@ jobs:
     name: Install Node
     runs-on: ubuntu-latest
     steps:
-      - name: Install NodeJs
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ github.event.inputs.version }}
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ github.event.inputs.version }}
