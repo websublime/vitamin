@@ -6,14 +6,7 @@ env:
   CI: true
 
 jobs:
-  prepare:
-    name: Prepare Environment
+  checkout-install-build:
+    name: Prepare Environment and Build
     uses: ./.github/workflows/workflow-base.yml
     secrets: inherit
-    steps:
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
-
