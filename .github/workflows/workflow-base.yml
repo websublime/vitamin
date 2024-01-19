@@ -15,3 +15,6 @@ jobs:
     name: Checkout, install node and pnpm
     needs: [node]
     uses: ./.github/workflows/workflow-pnpm.yml
+      with:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        PNPM_CACHE_FOLDER: .pnpm-store
