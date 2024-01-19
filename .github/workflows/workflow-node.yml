@@ -13,6 +13,6 @@ jobs:
     name: Install Node
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-node
+    - uses: actions/setup-node@v3
       with:
         node-version: ${{ github.event.inputs.version }}
