@@ -7,11 +7,7 @@ env:
 
 jobs:
   prepare:
-    name: Checkout, node and pnpm
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout, node and pnpm
-        uses: websublime/vitamin/.github/workflows/workflow-base.yml@feature/reusable-actions
+    uses: ./.github/workflows/workflow-base.yml
   build:
     name: Build Packages
     runs-on: ubuntu-latest
