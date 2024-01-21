@@ -2,9 +2,8 @@ name: '[Workflow] Pnpm'
 
 on:
   workflow_call:
-    secrets:
-      NPM_TOKEN:
-        required: true
+    NPM_TOKEN:
+      required: true
 
 env:
   CI: true
@@ -19,7 +18,7 @@ jobs:
         run: npm i pnpm@latest -g
 
       - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ NPM_TOKEN }}" > .npmrc
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER

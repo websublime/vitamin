@@ -6,7 +6,6 @@ jobs:
   build:
     name: Build Packages
     runs-on: ubuntu-latest
-    secrets: inherit
     steps:
       - name: Checkout Repository
         uses: ./.github/workflows/workflow-checkout.yml
@@ -16,6 +15,8 @@ jobs:
 
       - name: Install pnpm
         uses: ./.github/workflows/workflow-pnpm.yml
+        with:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install dependencies
         run: pnpm install
