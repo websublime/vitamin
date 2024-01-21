@@ -17,10 +17,5 @@ jobs:
     secrets: inherit
   build:
     name: Build Packages
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build
-        run: pnpm build
+    needs: [pnpm]
+    uses: ./.github/workflows/workflow-build.yml
