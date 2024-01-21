@@ -1,5 +1,7 @@
 name: '[Workflow] Build'
 
+on: workflow_call
+
 jobs:
   checkout-repo:
     name: Build bundle
