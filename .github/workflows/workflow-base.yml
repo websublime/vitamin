@@ -3,23 +3,20 @@ name: '[Workflow] Checkout, install node and pnpm'
 on: workflow_call
 
 jobs:
-  checkout:
-    name: Checkout Repository
-    uses: ./.github/workflows/workflow-checkout.yml
-  node:
-    name: Install NodeJs
-    needs: [checkout]
-    uses: ./.github/workflows/workflow-node.yml
-  pnpm:
-    name: Checkout, install node and pnpm
-    needs: [node]
-    uses: ./.github/workflows/workflow-pnpm.yml
-    secrets: inherit
   build:
     name: Build Packages
     runs-on: ubuntu-latest
-    needs: [pnpm]
     steps:
+      - name: Checkout Repository
+        uses: ./.github/workflows/workflow-checkout.yml
+
+      - name: Install NodeJs
+        uses: ./.github/workflows/workflow-node.yml
+
+      - name: Install pnpm
+        uses: ./.github/workflows/workflow-pnpm.yml
+        secrets: inherit
+
       - name: Install dependencies
         run: pnpm install
 
