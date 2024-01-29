@@ -1,0 +1,33 @@
+name: "PNPM Action"
+description: "Install and cache pnpm"
+author: "xxxxx@github.com"
+
+inputs:
+  cache-folder:
+    description: 'Pnpm cache folder'
+    required: false
+    default: '.pnpm-store'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install pnpm package manager
+        run: npm i pnpm@latest -g
+
+    - name: Setup npmrc
+      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+    - name: Setup pnpm config
+      run: pnpm config set store-dir ${{ inputs.cache-folder }}
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: ${{ inputs.cache-folder }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+branding:
+  icon: "tool"
+  color: "purple"

@@ -1,0 +1,25 @@
+name: Checks
+
+on: pull_request
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+run-name: Build ${{ github.ref_name }} by @${{ github.actor }}
+
+jobs:
+  build:
+    name: Build Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+
+
+      - name: Install pnpm package manager
+        uses: ./.github/actions/pnpm
+        secrets: inherit
