@@ -11,7 +11,8 @@ jobs:
   build:
     name: Build Packages
     runs-on: ubuntu-latest
-    secrets: inherit
+    outputs:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout code repository
         uses: actions/checkout@v4
@@ -19,6 +20,7 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm package manager
+        id: install-pnpm
         uses: ./.github/actions/pnpm
         with:
-          npm-token: ${{ secrets.NPM_TOKEN }}
+          npm-token: ${{ steps.build.outputs.NPM_TOKEN }}
