@@ -23,3 +23,11 @@ jobs:
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: $PNPM_CACHE_FOLDER
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
