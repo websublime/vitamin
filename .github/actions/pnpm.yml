@@ -7,6 +7,9 @@ inputs:
     description: 'Pnpm cache folder'
     required: false
     default: '.pnpm-store'
+  npm-token:
+    description: 'Npm token'
+    required: true
 
 runs:
   using: "composite"
@@ -15,7 +18,7 @@ runs:
         run: npm i pnpm@latest -g
 
     - name: Setup npmrc
-      run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+      run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > .npmrc
 
     - name: Setup pnpm config
       run: pnpm config set store-dir ${{ inputs.cache-folder }}
