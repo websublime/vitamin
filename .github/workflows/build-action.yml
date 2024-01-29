@@ -9,24 +9,24 @@ jobs:
   checkout:
     name: Checkout Repository
     uses: ./.github/workflows/workflow-checkout.yml
-  node:
-    name: Install NodeJs
-    needs: [checkout]
-    permissions:
-      contents: read
-      pull-requests: write
-    uses: ./.github/workflows/workflow-node.yml
   pnpm:
-    name: Checkout, install node and pnpm
-    needs: [node]
+    name: Install pnpm
+    needs: [checkout]
     permissions:
       contents: read
       pull-requests: write
     uses: ./.github/workflows/workflow-pnpm.yml
     secrets: inherit
+  node:
+    name: Install NodeJs
+    needs: [pnpm]
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: ./.github/workflows/workflow-node.yml
   build:
     name: Build Packages
-    needs: [pnpm]
+    needs: [node]
     permissions:
       contents: read
       pull-requests: write
