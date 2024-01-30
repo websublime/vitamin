@@ -1,6 +1,6 @@
 {
   "name": "@websublime/vitamin-core",
-  "version": "0.1.3",
+  "version": "0.2.0-0efb896-SNAPSHOT",
   "description": "Core lit functions",
   "type": "module",
   "scripts": {
