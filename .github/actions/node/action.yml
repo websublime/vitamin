@@ -5,7 +5,7 @@ author: "xxxxx@github.com"
 inputs:
   node-version:
     description: 'Node version'
-    default: '20'
+    default: 20.x
     type: string
 
 runs:
@@ -13,7 +13,9 @@ runs:
   steps:
     - uses: actions/setup-node@v4
       with:
-        node-version: ${{ inputs.version }}
+        node-version: ${{ inputs.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: 'pnpm-workspace.yml'
 
     - uses: actions/cache@v3
       name: Setup node cache
