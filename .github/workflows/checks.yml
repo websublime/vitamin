@@ -24,7 +24,7 @@ jobs:
         id: install-pnpm
         uses: ./.github/actions/pnpm
         with:
-          npm-token: ${{ jobs.build.outputs.NPM_TOKEN }}
+          npm-token: ${{ needs.build.outputs.NPM_TOKEN }}
 
       - name: Install NodeJs
         id: install-node
