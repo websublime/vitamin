@@ -15,12 +15,15 @@ runs:
   using: "composite"
   steps:
     - name: Install pnpm package manager
+      shell: bash
       run: npm i pnpm@latest -g
 
     - name: Setup npmrc
+      shell: bash
       run: echo "//registry.npmjs.org/:_authToken=${{ inputs.npm-token }}" > .npmrc
 
     - name: Setup pnpm config
+      shell: bash
       run: pnpm config set store-dir ${{ inputs.cache-folder }}
 
     - uses: actions/cache@v3
