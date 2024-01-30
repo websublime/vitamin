@@ -15,7 +15,7 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: 'pnpm'
-        cache-dependency-path: 'pnpm-workspace.yml'
+        cache-dependency-path: 'pnpm-lock.yaml'
 
     - uses: actions/cache@v3
       name: Setup node cache
