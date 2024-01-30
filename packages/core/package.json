@@ -73,9 +73,17 @@
       "types": "./dist/lib/controllers/inspect-controller.d.ts",
       "default": "./dist/lib/controllers/inspect-controller.js"
     },
+    "./component.js": {
+      "types": "./dist/lib/component.d.ts",
+      "default": "./dist/lib/component.js"
+    },
     "./web-component.js": {
       "types": "./dist/lib/web-component.d.ts",
       "default": "./dist/lib/web-component.js"
+    },
+    "./htmx-component.js": {
+      "types": "./dist/lib/htmx-component.d.ts",
+      "default": "./dist/lib/htmx-component.js"
     },
     "./storage.js": {
       "types": "./dist/lib/storage.d.ts",

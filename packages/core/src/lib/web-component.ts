@@ -8,69 +8,16 @@
 |
 */
 
-import { LitElement, PropertyValues, ReactiveElement } from 'lit';
+import { LitElement, ReactiveElement } from 'lit';
 
-import type { ComponentMetadata, ComponentMixinInterface, WebComponentOptions } from '../types/component';
+import type { ComponentMetadata, WebComponentOptions } from '../types/component';
 import type { Constructor } from '../types/general';
 import { property } from '../utilities/decorators';
 
+import { ComponentMixin } from './component';
 import { InspectController } from './controllers/inspect-controller';
 
 const id = Symbol.for('VITA');
-
-/**
- * @public
- */
-export function ComponentMixin<T extends Constructor<ReactiveElement>>(
-  constructor: T
-): T & Constructor<ComponentMixinInterface> {
-  class SuperElement extends constructor {
-    /**
-     * @public
-     */
-    @property({ reflect: true })
-    public override dir: 'ltr' | 'rtl' = 'ltr';
-
-    /**
-     * @public
-     */
-    @property({ reflect: true, type: Boolean })
-    public inspect = false;
-
-    /**
-     * @public
-     */
-    public get isLTR(): boolean {
-      return this.dir === 'ltr';
-    }
-
-    /**
-     * @internal
-     * @readonly
-     */
-    public override connectedCallback(): void {
-      super.connectedCallback();
-    }
-
-    /**
-     * @internal
-     * @readonly
-     */
-    public override disconnectedCallback(): void {
-      super.disconnectedCallback();
-    }
-
-    /**
-     * @internal
-     * @readonly
-     */
-    public override updated(changedProperties: PropertyValues) {
-      super.updated?.(changedProperties);
-    }
-  }
-
-  return SuperElement as Constructor<SuperElement> & T;
-}
 
 /**
  * Extend your components from this. Will have QA tag and metadata
