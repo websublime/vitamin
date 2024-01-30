@@ -1,0 +1,29 @@
+name: "Node Action"
+description: "Install and cache node"
+author: "xxxxx@github.com"
+
+inputs:
+  node-version:
+    description: 'Node version'
+    default: '20'
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.version }}
+        cache: 'pnpm'
+
+    - uses: actions/cache@v3
+      name: Setup pnpm cache
+      with:
+        path: .node
+        key: ${{ runner.os }}-node-store-${{ inputs.version }}
+        restore-keys: |
+          ${{ runner.os }}-node-store-
+
+branding:
+  icon: "coffee"
+  color: "yellow"
