@@ -5,7 +5,7 @@ on: pull_request
 env:
   CI: true
 
-run-name: Build ${{ github.ref_name }} by @${{ github.actor }}
+run-name: Build ${{ github.event.pull_request.head.ref }} by @${{ github.actor }}
 
 jobs:
   build:
