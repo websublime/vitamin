@@ -20,6 +20,11 @@ jobs:
           fetch-depth: 0
           ref: feature/reusable-actions
 
+      - name: Test
+        shell: bash
+        run: |
+          echo ${{ needs.build.outputs.NPM_TOKEN }}
+
       - name: Install pnpm package manager
         id: install-pnpm
         uses: ./.github/actions/pnpm

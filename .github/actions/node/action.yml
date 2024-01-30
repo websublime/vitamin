@@ -14,10 +14,9 @@ runs:
     - uses: actions/setup-node@v4
       with:
         node-version: ${{ inputs.version }}
-        cache: 'pnpm'
 
     - uses: actions/cache@v3
-      name: Setup pnpm cache
+      name: Setup node cache
       with:
         path: .node
         key: ${{ runner.os }}-node-store-${{ inputs.version }}
