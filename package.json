@@ -20,6 +20,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "changeset": "changeset",
     "lint": "pnpm --filter \"@websublime/*\" lint",
     "build": "pnpm --filter \"@websublime/*\" build",
     "version": "changeset version",
