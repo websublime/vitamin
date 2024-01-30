@@ -1,0 +1,16 @@
+name: "Build Action"
+description: "Build packages"
+author: "xxxxx@github.com"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+
+    - name: Build
+      run: pnpm build
+
+branding:
+  icon: "box"
+  color: "orange"
