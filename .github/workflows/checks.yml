@@ -5,7 +5,7 @@ on: pull_request
 env:
   CI: true
 
-run-name: Build ${{ github.event.pull_request.head.ref }} by @${{ github.actor }}
+run-name: '[Build]: ${{ github.event.pull_request.head.ref }} by @${{ github.actor }}'
 
 jobs:
   build:
@@ -17,11 +17,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: feature/reusable-actions
-
-      - name: Test
-        shell: bash
-        run: |
-          echo ${{ secrets.NPM_TOKEN }}
 
       - name: Install pnpm package manager
         id: install-pnpm

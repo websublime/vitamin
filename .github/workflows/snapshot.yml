@@ -1,0 +1,51 @@
+name: Deploy Snapshots
+
+on: workflow_dispatch
+
+env:
+  CI: true
+
+run-name: '[Snapshots]: ${{ github.ref_name }} by @${{ github.actor }}'
+
+jobs:
+  build:
+    name: Snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: feature/reusable-actions
+
+      - name: Install pnpm package manager
+        id: install-pnpm
+        uses: ./.github/actions/pnpm
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install NodeJs
+        id: install-node
+        uses: ./.github/actions/node
+
+      - name: Build Packages
+        id: build-packages
+        uses: ./.github/actions/build
+
+      - name: Setup CI Git User
+        id: setup-ci-git-user
+        uses: ./.github/actions/npmrc
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+
+      - name: Create Snapshot
+        uses: changesets/action@v1.4.5
+        with:
+          setupGitUser: false
+          version: pnpm snapshot:version
+          publish: pnpm snapshot:publish
+          title: "Snapshot Release"
+          commit: "chore(release): snapshot release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GH_TOKEN }}
