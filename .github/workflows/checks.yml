@@ -9,10 +9,8 @@ run-name: Build ${{ github.event.pull_request.head.ref }} by @${{ github.actor }
 
 jobs:
   build:
-    name: Build Packages
+    name: Check Packages
     runs-on: ubuntu-latest
-    outputs:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - name: Checkout code repository
         uses: actions/checkout@v4
@@ -23,14 +21,18 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          echo ${{ needs.build.outputs.NPM_TOKEN }}
+          echo ${{ secrets.NPM_TOKEN }}
 
       - name: Install pnpm package manager
         id: install-pnpm
         uses: ./.github/actions/pnpm
         with:
-          npm-token: ${{ needs.build.outputs.NPM_TOKEN }}
+          npm-token: ${{ secrets.NPM_TOKEN }}
 
       - name: Install NodeJs
         id: install-node
         uses: ./.github/actions/node
+
+      - name: Build Packages
+        id: build-packages
+        uses: ./.github/actions/build
