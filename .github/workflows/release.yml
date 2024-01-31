@@ -12,8 +12,7 @@ run-name: '[Release]: Release for ${{ github.ref_name }}'
 
 jobs:
   release-build:
-    if: github.event.pull_request.merged == true
-    name: Snapshot
+    name: Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code repository
