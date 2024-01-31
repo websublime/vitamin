@@ -24,6 +24,12 @@ Clone project and install with pnpm because we use monorepo style.
 
 Run with start
 
+### Snapshots
+
+To create a snapshot create from your current branch a new branch with prefix changeset-snapshot/[whatever]. After run action
+Snapshot version to increment a snapshot version. This will open a PR to merge on your new branch, merge it to Snapshot Deploy action run it
+and deploy on github nmp. After you can back to your original branch and delete the new one.
+
 ## 🦾 Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
