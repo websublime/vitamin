@@ -1,6 +1,9 @@
 name: Checks
 
-on: pull_request
+on:
+  pull_request:
+    branches-ignore:
+      - 'changeset-set-release/**'
 
 env:
   CI: true
