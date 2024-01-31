@@ -1,5 +1,11 @@
 # @websublime/vitamin-core
 
+## 0.2.0
+
+### Minor Changes
+
+- [`0efb896`](https://github.com/websublime/vitamin/commit/0efb896f098cd94868433cc98af29cf3e6e5a4a3) Thanks [@miguelramos](https://github.com/miguelramos)! - Init htmx component for testing
+
 ## 0.1.3
 
 ### Patch Changes
