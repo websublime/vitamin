@@ -1,10 +1,11 @@
 name: Deploy Snapshots
 
 on:
-  workflow_run:
-    workflows: [Version Snapshots]
+  pull_request_target:
     types:
-      - completed
+      - closed
+    branches:
+      - 'changeset-snapshot/**'
 
 env:
   CI: true
@@ -12,7 +13,8 @@ env:
 run-name: '[Snapshots]: Deploying snapshot for ${{ github.ref_name }}'
 
 jobs:
-  build:
+  snapshot-build:
+    if: github.event.pull_request.merged == true
     name: Snapshot
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: changeset-snapshot/htmx
 
       - name: Install pnpm package manager
         id: install-pnpm
@@ -48,8 +50,8 @@ jobs:
           setupGitUser: false
           #version: pnpm snapshot:version
           publish: pnpm snapshot:publish
-          title: "Snapshot Release"
-          commit: "chore(release): snapshot release"
+          title: "chore(release): Snapshot Release"
+          commit: "chore(release): deploy snapshot release"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.GH_TOKEN }}

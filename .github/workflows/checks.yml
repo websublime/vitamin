@@ -3,7 +3,8 @@ name: Checks
 on:
   pull_request:
     branches-ignore:
-      - 'changeset-set-release/**'
+      - 'changeset-release/**'
+      - 'changeset-snapshot/**'
 
 env:
   CI: true
