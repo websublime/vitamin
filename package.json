@@ -28,7 +28,7 @@
     "status": "changeset status --since=main",
     "empty": "changeset --empty",
     "snapshot:version": "changeset version --snapshot",
-    "snapshot:publish": "changeset publish --no-git-tag --snapshot",
+    "snapshot:publish": "changeset publish --snapshot --tag canary",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
