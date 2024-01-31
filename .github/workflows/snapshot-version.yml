@@ -1,11 +1,11 @@
-name: Deploy Snapshots
+name: Version Snapshots
 
 on: workflow_dispatch
 
 env:
   CI: true
 
-run-name: '[Snapshots]: ${{ github.ref_name }} by @${{ github.actor }}'
+run-name: '[Snapshots]: Version for ${{ github.ref_name }}'
 
 jobs:
   build:
@@ -43,7 +43,7 @@ jobs:
         with:
           setupGitUser: false
           version: pnpm snapshot:version
-          publish: pnpm snapshot:publish
+          #publish: pnpm snapshot:publish
           title: "Snapshot Release"
           commit: "chore(release): snapshot release"
         env:
