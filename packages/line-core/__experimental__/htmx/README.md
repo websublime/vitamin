@@ -4,8 +4,15 @@ This folder is experimental. It is excluded from the build and from `exports`, a
 [`pack-and-build.txt`](../../../../docs/retrospective/assets/00-h1/pack-and-build.txt)). The spike validates the
 three Manifesto Law 7 dimensions (`hx-*` forwarding, server-driven state, swap-aware lifecycle) against htmx 2.0.11
 and htmx 4.0.0 (spec §6.H.1, AM-059, AM-060). The
-[Phase 00 retrospective](../../../../docs/retrospective/00-phase-00-retro.md) carries the same findings, and Miguel
-decides the exit (spec §6.H.2).
+[Phase 00 retrospective](../../../../docs/retrospective/00-phase-00-retro.md) carries the same findings and the
+outcome (spec §6.H.2).
+
+## Outcome
+
+Miguel chose the **exploratory** exit on 2026-10-12. `LineHtmxElement` is deferred as a nice-to-have after 1.0, and
+this folder stays here as an unbuilt reference. Ledger row `00-Z17` guards the native htmx paths instead, with htmx 4
+as its design target and checks on htmx 2 and 4. The
+[retrospective's Outcome](../../../../docs/retrospective/00-phase-00-retro.md#outcome) gives the reasons.
 
 ## Files
 
