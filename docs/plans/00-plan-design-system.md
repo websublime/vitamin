@@ -281,64 +281,66 @@ H (HTMX Spike) — parallel to all, depends on D
 
 Phase 00 is **complete** when **all** of the following hold (mirrors PRD §7.2 Exit Criteria with plan-level additions in *italics*):
 
+The exit-criteria table in [`docs/retrospective/00-phase-00-retro.md`](../retrospective/00-phase-00-retro.md#exit-criteria) holds the evidence for every criterion below (Phase 00 exit, 2026-10-12).
+
 ### 7.1 Structural
 
-- [ ] Monorepo structure matches target: **8 published packages + 2 apps** under `packages/` and `apps/`.
-- [ ] All 5 design-system packages (`line-tokens`, `line-colors`, `line-schemas`, `line-themes`, `line-utils`) authored under `packages/` with `exports` maps matching PRD §9.9.
-- [ ] All 3 runtime packages (`line-core`, `line-components`, `line-icons`) scaffolded. `line-components` is an empty umbrella; `line-icons` exposes the registry contract.
-- [ ] Cross-layer dependencies enforced downward only (verified via static analysis or build-time check).
+- [x] Monorepo structure matches target: **8 published packages + 2 apps** under `packages/` and `apps/`.
+- [x] All 5 design-system packages (`line-tokens`, `line-colors`, `line-schemas`, `line-themes`, `line-utils`) authored under `packages/` with `exports` maps matching PRD §9.9.
+- [x] All 3 runtime packages (`line-core`, `line-components`, `line-icons`) scaffolded. `line-components` is an empty umbrella; `line-icons` exposes the registry contract.
+- [x] Cross-layer dependencies enforced downward only (verified via static analysis or build-time check).
 
 ### 7.2 Design System
 
-- [ ] Palettes generated from `@radix-ui/colors` 3.x and **committed** into `line-colors/src/`.
-- [ ] Role mappings, semantic mappings, named aliases (54 vars), and auto-pair defaults functional in `line-themes`.
-- [ ] CSS snapshot tests pass per-hue, per-role, per-auto-pair-behaviour.
-- [ ] Schema-validation tests (Zod) pass; `HUES`, `ACCENT_HUES`, `GRAY_HUES`, `SEMANTIC_MAP` match the generated CSS.
-- [ ] Build-time contrast validation passes for all 31 hues × relevant role pairs × light/dark.
-- [ ] PostCSS pipeline operational; Vite/Rolldown component bundling operational (verified by a smoke build).
+- [x] Palettes generated from `@radix-ui/colors` 3.x and **committed** into `line-colors/src/`.
+- [x] Role mappings, semantic mappings, named aliases (54 vars), and auto-pair defaults functional in `line-themes`.
+- [x] CSS snapshot tests pass per-hue, per-role, per-auto-pair-behaviour.
+- [x] Schema-validation tests (Zod) pass; `HUES`, `ACCENT_HUES`, `GRAY_HUES`, `SEMANTIC_MAP` match the generated CSS.
+- [x] Build-time contrast validation passes for all 31 hues × relevant role pairs × light/dark.
+- [x] PostCSS pipeline operational; Vite/Rolldown component bundling operational (verified by a smoke build).
 
 ### 7.3 Runtime Core
 
-- [ ] `LineElement` refactor complete; mixins (inspector, metadata, direction, form-associated) operational.
-- [ ] FormAssociated mixin verified against a native `<form>` (submit, reset, validity) — **two test tiers required**: (a) `bun test` unit tests with mocked `ElementInternals` confirming the mixin calls the right API surface; (b) Playwright browser test exercising real submit/reset/validation cycles. The browser tier is mandatory because `happy-dom`/`jsdom` do not fully implement `ElementInternals`.
-- [ ] Inspector refactored: feature flag via `localStorage`, hover outline, version display, metadata exposure.
-- [ ] `LineMachineController` (Lit `ReactiveController` at `@websublime/line-core/machine`) operational; wraps `@zag-js/vanilla` primitives; component machine lifecycle (`start`/`subscribe`/`stop`) managed by the controller; failure mode renders static fallback without throwing.
-- [ ] *A "hello world" component (private, not published) built using `LineElement` end-to-end as the integration test.*
+- [x] `LineElement` refactor complete; mixins (inspector, metadata, direction, form-associated) operational.
+- [x] FormAssociated mixin verified against a native `<form>` (submit, reset, validity) — **two test tiers required**: (a) `bun test` unit tests with mocked `ElementInternals` confirming the mixin calls the right API surface; (b) Playwright browser test exercising real submit/reset/validation cycles. The browser tier is mandatory because `happy-dom`/`jsdom` do not fully implement `ElementInternals`.
+- [x] Inspector refactored: feature flag via `localStorage`, hover outline, version display, metadata exposure.
+- [x] `LineMachineController` (Lit `ReactiveController` at `@websublime/line-core/machine`) operational; wraps `@zag-js/vanilla` primitives; component machine lifecycle (`start`/`subscribe`/`stop`) managed by the controller; failure mode renders static fallback without throwing.
+- [x] *A "hello world" component (private, not published) built using `LineElement` end-to-end as the integration test.*
 
 ### 7.4 Icon Registry
 
-- [ ] Icon registry operational; agnostic resolver verified against **two** external libraries (Lucide + Phosphor) to pressure-test the design and prove agnosticism.
+- [x] Icon registry operational; agnostic resolver verified against **two** external libraries (Lucide + Phosphor) to pressure-test the design and prove agnosticism.
 
 ### 7.5 Tooling
 
-- [ ] Bun runtime + workspaces operational; pnpm removed.
-- [ ] Biome operational; ESLint + Prettier + plugins removed.
-- [ ] All dependencies at or above the spec §6.A.3 minimums (Lit 3+, Vite 8+ with Rolldown, PostCSS, TypeScript 5.x, Zag.js).
-- [ ] npm scope `@websublime/line-*` configured; publishability verified via snapshot/canary tag.
+- [x] Bun runtime + workspaces operational; pnpm removed.
+- [x] Biome operational; ESLint + Prettier + plugins removed.
+- [x] All dependencies at or above the spec §6.A.3 minimums (Lit 3+, Vite 8+ with Rolldown, PostCSS, TypeScript 5.x, Zag.js).
+- [x] npm scope `@websublime/line-*` configured; publishability verified via snapshot/canary tag.
 
 ### 7.6 CI/CD
 
-- [ ] GitHub Actions: checks (lint, typecheck, test, build), release, snapshot-deploy, snapshot-version operational.
-- [ ] RC pipeline operational (canary snapshots published from `main`); verified end-to-end with at least one RC release.
-- [ ] Storybook preview deploys verified, and the site deploys to production only (AM-045).
+- [x] GitHub Actions: checks (lint, typecheck, test, build), release, snapshot-deploy, snapshot-version operational.
+- [x] RC pipeline operational (canary snapshots published from `main`); verified end-to-end with at least one RC release.
+- [x] Storybook preview deploys verified, and the site deploys to production only (AM-045).
 
 ### 7.7 Documentation
 
-- [ ] Storybook 10+ operational with `@storybook/web-components-vite` + CEM analyser.
-- [ ] Base documentation published in Storybook: Getting Started, Theming, Customisation.
-- [ ] `docs/specs/COMPONENT-SPEC-TEMPLATE.md` created.
-- [ ] `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` created.
+- [x] Storybook 10+ operational with `@storybook/web-components-vite` + CEM analyser.
+- [x] Base documentation published in Storybook: Getting Started, Theming, Customisation.
+- [x] `docs/specs/COMPONENT-SPEC-TEMPLATE.md` created.
+- [x] `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` created.
 
 ### 7.8 HTMX Spike
 
-- [ ] HTMX integration spike **completed** by Phase 00 exit.
-- [ ] Outcome **documented** as one of: **committed** (`LineHtmxElement` enters Phase 1 spec scope) or **exploratory** (`LineHtmxElement` documented as deferred / nice-to-have post-1.0). Both outcomes are valid exits; the decision is genuine output of the spike.
+- [x] HTMX integration spike **completed** by Phase 00 exit.
+- [x] Outcome **documented** as one of: **committed** (`LineHtmxElement` enters Phase 1 spec scope) or **exploratory** (`LineHtmxElement` documented as deferred / nice-to-have post-1.0). Both outcomes are valid exits; the decision is genuine output of the spike.
 
 ### 7.9 Process
 
-- [ ] All PRD §7.2 tasks marked "Review pending" verified for quality and integration.
-- [ ] All 8 packages published at `0.1.0` under `latest` by `release.yml` through trusted publishing with provenance; later Phase 00 bumps follow `docs/PROCESS.md` §6; RCs are canary snapshots (PRD §6.5).
-- [ ] Phase 00 retrospective documented (open items, lessons learned, hand-off to Phase 1).
+- [x] All PRD §7.2 tasks marked "Review pending" verified for quality and integration.
+- [x] All 8 packages published at `0.1.0` under `latest` by `release.yml` through trusted publishing with provenance; later Phase 00 bumps follow `docs/PROCESS.md` §6; RCs are canary snapshots (PRD §6.5).
+- [x] Phase 00 retrospective documented (open items, lessons learned, hand-off to Phase 1).
 
 ---
 
