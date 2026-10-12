@@ -8,11 +8,13 @@
  * container queries / JS-driven media logic. They mirror the canonical
  * min-width thresholds.
  */
-:where(html) {
-  --line-breakpoint-xs: 20rem;
-  --line-breakpoint-sm: 30rem;
-  --line-breakpoint-md: 48rem;
-  --line-breakpoint-lg: 64rem;
-  --line-breakpoint-xl: 80rem;
-  --line-breakpoint-xxl: 96rem;
+@layer line {
+  :where(html) {
+    --line-breakpoint-xs: 20rem;
+    --line-breakpoint-sm: 30rem;
+    --line-breakpoint-md: 48rem;
+    --line-breakpoint-lg: 64rem;
+    --line-breakpoint-xl: 80rem;
+    --line-breakpoint-xxl: 96rem;
+  }
 }
