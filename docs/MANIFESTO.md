@@ -28,7 +28,7 @@ This manifesto is the foundation that the PRD, the architecture, and every downs
 
 6. **Inspector as dev tooling.** Feature-flagged via `localStorage`. When active, every component exposes its metadata: version, docs link, scope, QA tags. A first-class affordance for QA teams and integrating developers, not an afterthought.
 
-7. **HTMX through native paths.** The web is bigger than SPAs. Server-rendered, HTMX-driven workflows are an explicit target. Components work with htmx through host attributes, slotted content, form values and a named commit event. A test harness guards those paths on every supported htmx major. The `LineHtmxElement` adapter stayed exploratory and waits until after 1.0. The platform already does the work.
+7. **HTMX through native paths.** The web is bigger than SPAs. Server-rendered, HTMX-driven workflows are an explicit target. Components work with htmx through host attributes, slotted content, form values and a named commit event. A test harness guards those paths on every supported htmx major. The `LineHtmxElement` adapter stayed exploratory and is deferred as a nice-to-have after 1.0. The platform already does the work.
 
 8. **Agent-ready by construction.** Every component is describable to an AI agent. A protocol-neutral catalog of Zod descriptors, checked against the Custom Elements Manifest, states each component's props, slots, events, value binding and accessible name. Agents render line://ui components through the opt-in `@websublime/line-genui` package, which speaks A2UI today. Components never import a protocol, and the host keeps every styling decision. The A2UI renderer stays a preview until A2UI v1.0 is final.
 
