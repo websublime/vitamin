@@ -1,5 +1,14 @@
 # @websublime/line-themes
 
+## 0.1.2
+
+### Patch Changes
+
+- [#246](https://github.com/websublime/line-ui/pull/246) [`54b0a37`](https://github.com/websublime/line-ui/commit/54b0a373aac238350c054d02708db04bd80ba85d) Thanks [@miguelramos](https://github.com/miguelramos)! - Every role, default, semantic and alias rule now sits in the cascade layer `line`, so your rules outside `@layer` win at any specificity, and a layered stylesheet wins by starting with `@layer line;`.
+
+- Updated dependencies [[`54b0a37`](https://github.com/websublime/line-ui/commit/54b0a373aac238350c054d02708db04bd80ba85d)]:
+  - @websublime/line-colors@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes
