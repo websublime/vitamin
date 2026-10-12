@@ -67,7 +67,7 @@ and PRD-only rows (`PRD.n`) follow. "Pass" means the evidence was observed on 20
 | S9.7.4 | `docs/specs/COMPONENT-SPEC-TEMPLATE.md` committed | Pass | The file is tracked. |
 | S9.7.5 | `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` skeleton committed | Pass | The file is tracked. |
 | S9.8.1 | `LineHtmxElement` and a runnable example under `__experimental__/htmx/` | Pass | `packages/line-core/__experimental__/htmx/` tracks `line-htmx-element.ts`, `README.md`, `example/index.html`, `example/line-htmx-counter.ts` and `example/server.ts`. |
-| S9.8.2 | Spike outcome documented with evidence | Pass | Section 00-H1 below records the exploratory exit of 2026-10-12, backed by 25 files under `assets/00-h1/`. |
+| S9.8.2 | Spike outcome documented with evidence | Pass | Section 00-H1 below records the exploratory exit of 2026-10-12. `docs/retrospective/assets/00-h1/` tracks 26 files, which are 4 files for each of the 6 runs plus `results.json` and `pack-and-build.txt`. |
 | S9.9.1 | PRD §7.2 "Review pending" tasks verified | Pass | PRD v0.8.14 marks all 16 §7.2 tasks Done, and each maps to a done ledger row, for example Bun to A1 (#174), Biome to A2 (#175) and dependencies to A3 (#176). |
 | S9.9.2 | `0.1.0` of all 8 packages on `latest` with provenance; later bumps per PROCESS §6 | Pass | Release run https://github.com/websublime/line-ui/actions/runs/37483208484 published `0.1.0` of all 8, and every `0.1.0` carries SLSA v1 provenance. Later bumps are patches only (see What shipped). |
 | S9.9.3 | Phase 00 retrospective committed | Pass | This file. |
