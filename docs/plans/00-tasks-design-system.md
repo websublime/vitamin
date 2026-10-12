@@ -106,7 +106,7 @@ number in the stream + 1.
 
 | ID | Stream | Task | Owner | Deps | Status | Branch | PR | AM |
 |---|---|---|---|---|---|---|---|---|
-| H1 | H | `LineHtmxElement` spike + retrospective entry (`docs/retrospective/00-phase-00-retro.md`) | webcomponents-supervisor | D6 | in_review | feat/00-h1-htmx-spike | #248 | AM-059, AM-060 |
+| H1 | H | `LineHtmxElement` spike + retrospective entry (`docs/retrospective/00-phase-00-retro.md`) | webcomponents-supervisor | D6 | done | feat/00-h1-htmx-spike | #248 | AM-059, AM-060 |
 
 ## Stream Z — Repo-wide
 
@@ -129,3 +129,4 @@ number in the stream + 1.
 | Z15 | Z | Ship every rule of `line-tokens`, `line-colors` and `line-themes` inside the cascade layer `@layer line`, reversing decision T2, so unlayered consumer rules win at any specificity and in any order, a layered consumer wins with one `@layer line;` statement, and the opt-in `reset.css` stops beating later-layer utilities such as Tailwind's; PRD §9.12 and T2, ARCHITECTURE §14.10, the spec, both generators, the Storybook guides and the package READMEs follow (decision by Miguel on 2026-10-12) | webcomponents-supervisor | G3 | done | feat/00-z15-line-cascade-layer | #246 | AM-058 |
 | Z16 | Z | Fix the Storybook MDX tables: MDX 3 parses CommonMark only, so the GFM tables in `theming.mdx` and `customisation.mdx` render as paragraphs; add `remark-gfm` to the `@storybook/addon-docs` MDX compile options in `.storybook/main.ts` (spec §6.F.1, §6.A.3) | infra-supervisor | G2, G3 | done | fix/00-z16-mdx-gfm-tables | #244 | — |
 | Z17 | Z | Guarantee native htmx support after the H1 exploratory exit (decision by Miguel on 2026-10-12). Three pieces: a component-spec-template rule, next to C1–C8, that makes a compound component name the commit event consumers use as `hx-trigger`; an htmx check in the Playwright tier of every value-bearing or compound component (value inside `<form hx-post>`, `hx-trigger` on the commit event, content swapped into slots); a Storybook HTMX guide. The design target is htmx 4, and the checks run on htmx 2 and 4 while upstream supports 2.x | webcomponents-supervisor | H1 | todo | — | — | — |
+| Z18 | Z | Fix the AM-034 row in the spec amendment table: it has 5 cells against the 6-column header because its Reason cell also holds the Evidence text, so the rendered table shows no Evidence for AM-034; split the cell at the sentence boundary, with no content change | main session | — | in_review | docs/00-z18-am-034-evidence-cell | #249 | — |
