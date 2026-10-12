@@ -1,15 +1,16 @@
 # line://ui — Product Requirements Specification
 
-**Date:** 2026-10-10
+**Date:** 2026-10-12
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.12
+**Version:** 0.8.13
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.13 (2026-10-12) — The line packages ship inside the cascade layer `line`.** Every rule of `@websublime/line-tokens`, `@websublime/line-colors` and `@websublime/line-themes` sits inside one cascade layer, `@layer line`, and that includes every rule of `reset.css`. The `:where()` selectors stay as they are. Consumer rules outside `@layer` now win at any specificity and in any order. A consumer stylesheet that declares layers starts with `@layer line;` or puts `line` first in its order statement. The `line-core` shadow-DOM reset sheets stay unlayered. This reverses T2. Miguel chose this over keeping the CSS unlayered with a documented recipe and over shipping both an unlayered and a layered build (ledger row `00-Z15`, decision by Miguel on 2026-10-12; record in `docs/context/00-z15.md`). Why: the cascade compares layers before specificity, and every unlayered rule beats every layered rule. `:where()` acts only on specificity, so a consumer override inside `@layer` lost to the unlayered package rules at any specificity. The unlayered `reset.css` also beat later-layer utilities, such as Tailwind's `mt-4` on a `<p>` inside `.line-card`. A consumer can wrap third-party CSS in a layer only through `@import url(…) layer(name)`. HTML has no `layer` attribute on `<link>` (whatwg/html#7540), and a JavaScript CSS import has no standard way to name a layer. Only a block inside the library reaches every consumer. Sections touched: §9.2 and §9.7 code samples, §9.12, §9.14 T2; ARCHITECTURE §14.10; spec §6.C, §6.F.4, §6.G.3, §9, spec header and AM-058.
 - **v0.8.12 (2026-10-10) — `color-scheme` is the only light/dark switch.** §9.8 names `color-scheme` as the only mode switch. No line package declares a mode class or attribute. A consumer that toggles its own class, such as Tailwind's `.dark`, maps it with one rule, `.dark { color-scheme: dark }`. Miguel chose this over a `data-*` attribute hook and over shipping the `.dark` / `.light` classes with a MANIFESTO Law 2 exception (ledger row `00-Z14`, decision by Miguel on 2026-10-10; record in `docs/context/00-z14.md`). Why: the classes never shipped, because no file under `packages/*/src` has ever declared them since the initial import. Bare `.dark` / `.light` rules would break MANIFESTO Law 2, which requires the `line-` prefix on every public surface we author. ARCHITECTURE v0.8.0 replaced the accent schema classes `.line-schema-X` with `data-*` attributes, and the shipped theming guide already teaches `color-scheme` alone. Sections touched: §9.8; spec §6.C.2, spec header and AM-055.
 - **v0.8.11 (2026-10-10) — Shadows take their colour from the gray role.** The `line-tokens` shadow scale (`--line-shadow-1..6`, `--line-shadow-inner-1..3`) takes its colour from the nearest gray role, `--line-gray-12` in light mode and `--line-gray-1` in dark mode. Without `line-themes` the colour falls back to `--line-neutral-12` and `--line-neutral-1`, so the scale works with `line-colors` alone. Each layer gets back the Open Props 1.7.23 opacity. That opacity is `--line-shadow-strength` (1%) in light mode or the new `--line-shadow-strength-dark` (25%) in dark mode, plus a per-layer offset of 2 to 9 points. Dark mode switches through `light-dark()` alone. `shadows.css` declares its shadow tokens in every theming scope (`:where(html, [data-accent], [data-gray])`), so a nested scope tints its own shadows. It declares the strength knobs only in `:where(html)`, so an override on `<html>` reaches every nested scope. The fix was needed because `shadows.css` pointed `--line-shadow-color` at `--line-gray-a-12`, a token that no package declares, and every shadow token (`--line-shadow-1..6`, `--line-shadow-inner-1..3`) computed `none`. A rename to `--line-gray-a12` drew a black rim in light mode and a white glow in dark mode, because that alpha step is about 89% opaque and the scale had no per-layer opacity. Miguel chose the full fix over a rename and over a light-only fix. He chose the gray role per theming scope over the gray role at `<html>` only and over the fixed `neutral` hue, and `light-dark()` alone over the `.dark` / `.light` classes and over `prefers-color-scheme` (ledger row `00-C17`, decision by Miguel on 2026-10-09 and 2026-10-10; record in `docs/context/00-c17.md`). Whether the `.dark` / `.light` classes ship stays with ledger row `00-Z14`. This revision touches §9.8, which no longer says the classes exist for shadow tokens, and §9.12. That section states the `shadows.css` scope exception. It also corrects a factual error, because its `line-themes` bullet said every role declaration uses `:where([data-accent="X"])` / `:where([data-gray="Y"])`, while `defaults.css`, `semantics.css` and `aliases.css` (since AM-049) use other `:where()` selectors. The bullet now lists the selectors of each file. Spec AM-054 aligns the Phase 0 spec.
 - **v0.8.10 (2026-10-09) — The Radix `gray` hue ships as `neutral`.** The hue that `@radix-ui/colors` names `gray` ships as `neutral`. Its palette tokens are `--line-neutral-*`, its exports are `@websublime/line-colors/neutral`, `@websublime/line-themes/accent/neutral` and `@websublime/line-themes/gray/neutral`, and the attribute values are `data-accent="neutral"` and `data-gray="neutral"`. The gray role keeps its name. Its tokens stay `--line-gray-*`, and its attribute stays `data-gray`. Why: hue tokens (`--line-{hue}-{step}`) and role tokens (`--line-{role}-{step}`) share one pattern, so the hue `gray` and the role `gray` wrote the same `--line-gray-*` names. The role mapping for the hue declared `--line-gray-1: var(--line-gray-1)`, a self-reference cycle. In Chromium on the built `0.1.0` CSS, `data-gray="gray"` and `data-accent="gray"` made `--line-gray-1` invalid and its backgrounds transparent. Without attributes, `--line-gray-1` held the slate value, not the gray hue. Miguel chose to rename the hue rather than the role, and chose the name `neutral` over `ash` (ledger 00-C16). No alias keeps the old hue tokens, since an alias would recreate the collision. Sections touched: §2.1 (`line-tokens` note on palette extremes), §9.2 (hue table, `GRAY_HUES`, the hue-role naming invariant), §9.3 (role table wording), §9.5 (auto-pair table), §9.9 (note on colour-adjacent families), §9.14 (T12). Spec AM-052 aligns the Phase 0 spec.
@@ -1248,11 +1249,13 @@ The 12 functional roles are Radix-standard; light and dark step values are indep
 
 ```css
 /* line-colors/src/blue.css */
-:where(html) {
-  --line-blue-1: light-dark(hsl(206, 100%, 99.2%), hsl(214, 60%, 9%));
-  --line-blue-2: light-dark(hsl(210, 100%, 98.0%), hsl(214, 64%, 11%));
-  /* ... through --line-blue-12 */
-  --line-blue-contrast: #fff;   /* static, single value per hue — NOT light-dark() */
+@layer line {
+  :where(html) {
+    --line-blue-1: light-dark(hsl(206, 100%, 99.2%), hsl(214, 60%, 9%));
+    --line-blue-2: light-dark(hsl(210, 100%, 98.0%), hsl(214, 64%, 11%));
+    /* ... through --line-blue-12 */
+    --line-blue-contrast: #fff;   /* static, single value per hue — NOT light-dark() */
+  }
 }
 ```
 
@@ -1385,29 +1388,31 @@ The aliases apply uniformly to all six roles (accent, gray, success, warning, da
 | Palette generation | Build script imports the TS scale objects (`amber`, `amberDark`, `amberA`, `amberDarkA`, `amberP3`, `amberDarkP3`, `amberP3A`, `amberDarkP3A` per hue, plus `blackA` / `whiteA` / `blackP3A` / `whiteP3A`), then emits `line-colors/src/{hue}.css`. **Generated CSS is committed** so CI does not regenerate every build. Regeneration runs only when bumping `@radix-ui/colors` or the contrast table. |
 | Role-mapping generation | Build script reads `line-schemas` enumerations, emits `line-themes/src/accent/{hue}.css` and `line-themes/src/gray/{hue}.css` mechanically. |
 
-**Palette generation — concrete output shape.** Per hue file (`line-colors/src/{hue}.css`), the script emits:
+**Palette generation — concrete output shape.** Per hue file (`line-colors/src/{hue}.css`), the script emits one `@layer line` block (§9.12):
 
 ```css
-:where(html) {
-  /* Base + Alpha (sRGB) — one declaration per step, light-dark() over light + dark scales. */
-  --line-{hue}-1:  light-dark({hue}[1],     {hueDark}[1]);
-  --line-{hue}-2:  light-dark({hue}[2],     {hueDark}[2]);
-  /* … through step 12 … */
-  --line-{hue}-a1: light-dark({hueA}[1],    {hueDarkA}[1]);
-  /* … through step 12 … */
+@layer line {
+  :where(html) {
+    /* Base + Alpha (sRGB) — one declaration per step, light-dark() over light + dark scales. */
+    --line-{hue}-1:  light-dark({hue}[1],     {hueDark}[1]);
+    --line-{hue}-2:  light-dark({hue}[2],     {hueDark}[2]);
+    /* … through step 12 … */
+    --line-{hue}-a1: light-dark({hueA}[1],    {hueDarkA}[1]);
+    /* … through step 12 … */
 
-  /* Contrast (static single value per hue, Radix Themes table) */
-  --line-{hue}-contrast: #fff;   /* or #000 for amber/yellow/lime/mint/sky/cyan */
-}
+    /* Contrast (static single value per hue, Radix Themes table) */
+    --line-{hue}-contrast: #fff;   /* or #000 for amber/yellow/lime/mint/sky/cyan */
+  }
 
-/* Wide-gamut P3 override (same names — automatic upgrade when supported) */
-@supports (color: color(display-p3 1 1 1)) {
-  @media (color-gamut: p3) {
-    :where(html) {
-      --line-{hue}-1:  light-dark({hueP3}[1],    {hueDarkP3}[1]);
-      /* … through step 12 … */
-      --line-{hue}-a1: light-dark({hueP3A}[1],   {hueDarkP3A}[1]);
-      /* … through step 12 … */
+  /* Wide-gamut P3 override (same names — automatic upgrade when supported) */
+  @supports (color: color(display-p3 1 1 1)) {
+    @media (color-gamut: p3) {
+      :where(html) {
+        --line-{hue}-1:  light-dark({hueP3}[1],    {hueDarkP3}[1]);
+        /* … through step 12 … */
+        --line-{hue}-a1: light-dark({hueP3A}[1],   {hueDarkP3A}[1]);
+        /* … through step 12 … */
+      }
     }
   }
 }
@@ -1615,12 +1620,15 @@ The cascade is **unchanged in shape** from v0.7.0; only the names of the global 
 
 ### 9.12 CSS Cascade Strategy
 
-**Unchanged from v0.7.0:** `@layer` is not needed. The `:where()` strategy and Shadow DOM encapsulation together cover all cascade scenarios.
+Every rule of `line-tokens`, `line-colors` and `line-themes` sits inside one cascade layer, `@layer line` (v0.8.13). That includes `reset.css`. The packages declare no sub-layers and no layer order statement. Each selector inside the layer keeps its `:where()` form, so it has zero specificity:
 
 - Every declaration in `line-themes` has zero specificity. The generated `accent/*.css` and `gray/*.css` maps use `:where([data-accent="X"])` and `:where([data-gray="Y"])`. `defaults.css` uses `:where(html:not([data-accent]))` and `:where(html:not([data-accent]):not([data-gray]))` for the root defaults, and `:where([data-accent="X"]:not([data-gray]))` for the auto-pair. `semantics.css` uses `:where(html)`. `aliases.css` uses `:where(html, [data-accent], [data-gray])`, so each theming scope resolves its own aliases.
 - Palette declarations in `line-colors` use `:where(html)` — zero specificity.
 - Token declarations in `line-tokens` use `:where(html)` — zero specificity. The exception is `shadows.css`. It declares its shadow tokens in `:where(html, [data-accent], [data-gray])`, so each theming scope tints its shadows with its own gray role, and it keeps its strength knobs in `:where(html)`.
-- Consumer rules always win.
+
+The cascade compares layers before specificity and order. A consumer rule outside `@layer` beats every rule in `line` at any specificity and in any order. A consumer stylesheet that declares its own layers starts with `@layer line;` or puts `line` first in its order statement. Every later layer then beats `line`. If `line` first appears after the consumer's layers, the consumer's layered rules lose. Consumers reference the layer name `line` in their order statements, so it is public API.
+
+Shadow DOM is unaffected. Page selectors reach elements inside a shadow root only through `::part()`. For the host element and `::part()`, the cascade compares the shadow context before layers, so a consumer normal declaration beats a normal declaration inside the shadow root. Importance comes before context, and for `!important` declarations the shadow root wins. The `line-core` reset rule `[hidden] { display: none !important; }` relies on that, so an element inside the shadow root that carries `hidden` stays hidden, even against a consumer `::part()` rule with `!important`. The `line-core` shadow-DOM reset sheets (§6.2 `./styles`) stay unlayered.
 
 ### 9.13 Structural Refactor (Phase 0)
 
@@ -1646,7 +1654,7 @@ This refactor is the initial authoring of the package layout in `packages/`, sou
 | # | Question | Decision | Phase |
 |---|----------|----------|-------|
 | T1 | Namespace prefix for all tokens | `--line-*` prefix on everything (palette, role, semantic, foundation, component, alias). Single convention, zero collision risk. | Phase 0 |
-| T2 | CSS `@layer` strategy | Not needed. `:where()` + Shadow DOM cover all cascade scenarios. | Closed |
+| T2 | CSS `@layer` strategy | Every rule of `line-tokens`, `line-colors` and `line-themes` ships in **one layer, `@layer line`**, with its `:where()` selector unchanged. Unlayered consumer rules always beat it, and layered consumer rules beat it once `line` comes first in the consumer's order (§9.12, v0.8.13). | Phase 0 |
 | T3 | Foundation token ownership | `@websublime/line-tokens` owns all non-colour primitives. Open Props used as a design reference only — no runtime dependency. | Phase 0 |
 | T4 | Theme switching mechanism | **DOM attributes (`data-accent`, `data-gray`)**, not CSS classes, not a single `data-theme` aggregator. Accent and gray are independent; semantic colours are fixed. (Option A in the design discussion.) | Phase 0 |
 | T5 | Palette source-of-truth | **`@radix-ui/colors` npm package**, 31 hues x 12 steps. Generated palette CSS is **committed** into `line-colors/src/` so CI does not regenerate. Regenerate only on bumping `@radix-ui/colors`. | Phase 0 |

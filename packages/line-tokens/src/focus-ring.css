@@ -8,12 +8,14 @@
  * supplied by line-colors / line-themes (C3/C4). Dangling var() at C2 build
  * time — resolves at use-site once the colour layer is loaded.
  */
-:where(html) {
-  --line-focus-ring-width: 2px;
-  --line-focus-ring-offset: 2px;
-  --line-focus-ring-style: solid;
-  --line-focus-ring-color: var(--line-accent-8);
+@layer line {
+  :where(html) {
+    --line-focus-ring-width: 2px;
+    --line-focus-ring-offset: 2px;
+    --line-focus-ring-style: solid;
+    --line-focus-ring-color: var(--line-accent-8);
 
-  /* Composed shorthand for `outline`. */
-  --line-focus-ring: var(--line-focus-ring-width) var(--line-focus-ring-style) var(--line-focus-ring-color);
+    /* Composed shorthand for `outline`. */
+    --line-focus-ring: var(--line-focus-ring-width) var(--line-focus-ring-style) var(--line-focus-ring-color);
+  }
 }

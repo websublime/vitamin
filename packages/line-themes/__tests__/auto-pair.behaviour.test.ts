@@ -132,7 +132,8 @@ describe('auto-pair cascade (string assertion against src/defaults.css, AM-015)'
   test('all role-map selectors are wrapped in :where() for zero specificity', () => {
     // Strip comments first so comment bodies are not mistaken for selectors.
     const stripped = css.replace(/\/\*[\s\S]*?\*\//g, '');
-    const selectors = (stripped.match(/[^{}]+\{/g) ?? []).map((s) => s.trim());
+    // The `@layer line` opener is not a selector (AM-058; cascade-layer.test.ts checks the block).
+    const selectors = (stripped.match(/[^{}]+\{/g) ?? []).map((s) => s.trim()).filter((s) => s !== '@layer line {');
     expect(selectors.length).toBeGreaterThan(0);
     for (const sel of selectors) {
       expect(sel.startsWith(':where('), `non-:where() selector: ${sel}`).toBe(true);
