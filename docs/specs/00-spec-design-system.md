@@ -4,7 +4,7 @@
 **Author:** Ada (architect)
 **Date:** 2026-05-19
 **Phase target:** `line://ui` v0.1.0
-**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.13, APPROVED)
+**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.14, APPROVED)
 **Source Plan:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/plans/00-plan-design-system.md`](../plans/00-plan-design-system.md) (APPROVED)
 **Source Architecture:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/ARCHITECTURE.md`](../ARCHITECTURE.md)
 **Source Research:**
@@ -536,6 +536,7 @@ This is **not active configuration**; it is documented in `docs/runbooks/bundler
 | AM-059 | 2026-10-12 | ledger `00-H1` pre-implementation investigation (factual correction) | Five changes to §6.H.1, no design change. (a) The snippet imports `LineElement` as a type from `../../src/line-element.js`. (b) The snippet declares `Constructor` locally, as `src/mixins/direction.ts` does, and types the htmx global through a minimal local `HtmxApi` interface and an `isHtmx` type guard instead of `declare const htmx: any`. `HtmxElement` declares its class and returns it with the explicit return type `T`. (c) The selector bullet names the `host` keyword and the `global` prefix, written without a colon, as `hx-target="host"` and `hx-target="global #id"`. (d) The snippet processes the shadow root in `updated()`, which runs after every render, the first one included. Its settle listener is one handler per instance, added in `connectedCallback` and removed in `disconnectedCallback`. A paragraph under the snippet states the Lit timing. (e) An opening paragraph names the three Manifesto Law 7 dimensions the spike validates (`hx-*` attribute forwarding, server-driven state, swap-aware lifecycle) and leaves their mechanics to the spike. | (a) From `packages/line-core/__experimental__/htmx/`, `../../line-element.js` resolves to `packages/line-core/line-element.js`, which does not exist; the class lives in `packages/line-core/src/line-element.ts`. (b) The snippet used `Constructor` without declaring it, and the repo's strict TypeScript rule forbids `any` (`.claude/agents/webcomponents-supervisor.md`, Standards). Declaration emit cannot name the protected members of an exported anonymous class, as AM-032 found for `FormAssociated`. (c) htmx has no `host:` or `global:` syntax. `host` is a keyword, and `global` is a prefix followed by a space and a selector. (d) `ReactiveElement.connectedCallback` creates `renderRoot` and only schedules the first render, so `htmx.process(this.shadowRoot)` in `connectedCallback` sees an empty shadow root and the internal `hx-*` attributes stay inert. An inline arrow added in every `connectedCallback` stacks one more listener per reconnect. (e) Manifesto Law 7, the PRD §7 Phase 0 row "Validate HTMX integration" and plan §2.8 name the three dimensions, and §6.H.1 did not. | `node_modules/.bun/@lit+reactive-element@2.1.2/node_modules/@lit/reactive-element/development/reactive-element.js:575-579`. A throwaway Playwright probe on 2026-10-12 ran in Chromium, Firefox and WebKit (Playwright 1.60.0) against htmx 2.0.11 and 4.0.0, with the same result in all six runs. At the first `connectedCallback`, after `super.connectedCallback()`, the shadow root held 0 child nodes and `hasUpdated` was `false`, and a click on the internal `hx-post` button sent no request. Processing in `updated()` made the button live, and after three re-renders, each followed by `htmx.process`, every click still sent exactly one request. After three reconnects the inline listener ran 4 times for one settle. `tsc` (5.9, `tsconfig.base.json`) on the snippet with an anonymous returned class reports TS4094 for every protected Lit member (`render`, `updated`, `willUpdate`, …); the corrected snippet passes `tsc` and `biome check`. htmx docs: https://htmx.org/examples/web-components/ (`host` "selects the element hosting the current shadow DOM"; `global` "if used as a prefix, selects from the main document") and https://four.htmx.org/llms-full.txt, "Targeting Elements Outside Shadow DOM" (`hx-target="host"`, `hx-target="global #target"`). |
 | AM-060 | 2026-10-12 | ledger `00-H1` (decision — Miguel, 2026-10-12) | Three decisions, four changes. Miguel decided that the spike runs against both htmx 2.0.11 (npm `latest`) and htmx 4.0.0 (npm `next`) with evidence for each, that htmx enters as exact root devDependencies through npm aliases locked in `bun.lock` with no published manifest change, and that `webcomponents-supervisor` recommends the committed or exploratory exit while Miguel decides it. (a) §6.H.1 gains a paragraph that names both majors and the aliased root devDependencies `"htmx2": "npm:htmx.org@2.0.11"` and `"htmx4": "npm:htmx.org@4.0.0"`, which `example/server.ts` serves from `node_modules`. The server bullet drops the 30-line size and says the server keeps the state server-side and selects the htmx major per page load (`?htmx=2\|4`). (b) The §6.H.1 snippet's settle listener covers both majors, `htmx:afterSettle` for htmx 2 and `htmx:after:settle` for htmx 4, and the Lit-timing paragraph says so. (c) The §6.A.3 dependency table gains the `htmx.org` row. (d) §6.H.2 and §11 Q7 replace "Ada (architect)". `webcomponents-supervisor` runs the spike and writes the README and the retrospective entry with the evidence and a recommendation, and Miguel decides the exit. | htmx 4.0.0 shipped on 2026-08-28 under the npm `next` tag, and htmx 2.x stays `latest` until early 2027, so Phase 1 consumers may run either major and evidence from one would not cover the other. htmx 4 renames its events to the `htmx:phase:action` form, so a listener on `htmx:afterSettle` alone never fires under htmx 4. npm aliases let both majors of one package install side by side, and exact versions in `bun.lock` make the example reproducible without touching a published manifest. Ada (architect) is neither a repo agent in `.claude/agents/` nor a role in PROCESS §4, so no agent could author the entry, and the exit sets Phase 1 scope, which is Miguel's call. | npm `htmx.org` dist-tags on 2026-10-12: `latest` 2.0.11, `next` 4.0.0. The htmx 4.0.0 release announcement (https://four.htmx.org/announcements/2026-08-28-htmx-4.0.0-is-released) keeps 2.x on `latest` and 4.x on `next` until early 2027 and lists the event renames (`htmx:afterSwap` → `htmx:after:swap`). `node_modules/htmx2/dist/htmx.esm.js:2056` fires `htmx:afterSettle`, and `node_modules/htmx4/dist/htmx.esm.js:1480` fires `htmx:after:settle`. `.claude/agents/` holds `git-workflow-manager`, `infra-supervisor`, `sdlc` and `webcomponents-supervisor`. The decisions are recorded in the body of the ledger commit `feca66b`. |
 | AM-061 | 2026-10-12 | ledger `00-C18` (bug against `00-C9`; Phase 00 exit sweep, Miguel approved 2026-10-12) | The §6.C.7 `schema.test.ts` row adds that `SEMANTIC_MAP` must match `semantics.css`. The role set declared in `semantics.css` equals the keys of `SEMANTIC_MAP`, and every `--line-*` declaration in `semantics.css` must reference only its mapped hue as `var(--line-<hue>-<same suffix>)`, with no fallback and no literal. | This amendment is a factual alignment and changes no design. Plan §7.2 and the PRD §7.2 exit criteria require that `HUES`, `ACCENT_HUES`, `GRAY_HUES` and `SEMANTIC_MAP` match the generated CSS; the C9 test row covered the first three and omitted `SEMANTIC_MAP`. | Plan §7.2; PRD §7.2 exit criteria; `packages/line-schemas/src/semantic-map.ts`; `packages/line-themes/src/semantics.css`. |
+| AM-062 | 2026-10-12 | ledger `00-Z19` Phase 00 exit sweep (factual correction; Miguel approved 2026-10-12) | Two changes, no design change. (a) The §9.5 smoke-build bullet names the check that runs. The `line-core` library build (`vite build` in library mode, §6.B B4) runs inside the `checks.yml` step `bun run build` on every pull request, and it produces a non-empty `packages/line-core/dist/`. The bullet no longer asks for a separate fixture entry, and it still satisfies plan §7.2. (b) The §6.B B4 note on the `Vite+Rolldown smoke build CI step passes` AC (AM-007) names the same `checks.yml` step as the CI assertion. | The bullet asked for a smoke build against a fixture entry and offered the hello-world target as one, but `checks.yml` has no fixture build step. The hello-world fixture (§6.D.8) is served by the Vite dev server for Playwright and is never built, because it ships in no `dist/`. The `line-core` package entry goes through the same Vite 8 and Rolldown library-mode pipeline on every pull request, so it already proves what the bullet asked for. | Phase 00 exit sweep, item S9.5.6 (2026-10-12). `bun run build` exits 0. Its log shows `@websublime/line-core build: vite v8.0.14 building client environment for production`, then 7 JS files including `dist/index.js` 0.42 kB, `dist/machine/index.js` 1.27 kB and `dist/styles/index.js` 4.53 kB, then `✓ built in 2.02s`; `dist/` holds 164K. `node_modules/vite/package.json` is 8.0.14 and declares `rolldown: 1.0.2`. `.github/workflows/checks.yml:22-23` runs `bun run build` as the step "Build packages" on `pull_request`; `packages/line-core/package.json` sets `build` to `vite build`. checks run 38246314939 (PR #248) succeeded: https://github.com/websublime/line-ui/actions/runs/38246314939. |
 
 **A4 — npm scope.**
 
@@ -601,7 +602,7 @@ Allowed edges (downward only):
 
 **B4 — Scope of `dist/ matches exports map` AC (AM-006).** At B4, the AC `dist/ matches exports map` is satisfied when the build script, given the eventual Stream C source layout, would produce a matching `dist/` tree. The per-hue / per-family CSS source files consumed by `line-tokens` / `line-colors` / `line-themes` are populated by Stream C (§6.C.2, §6.C.3, §6.C.4), not by B4. Empty placeholder `src/` at B4 time is expected. The exports-map ↔ `dist/` conformity is asserted downstream by C9 snapshot tests and by F4 CI per §6.F.5 — not by B4.
 
-**B4 — Scope of `Vite+Rolldown smoke build CI step passes` AC (AM-007).** At B4, CI assertions in `checks.yml` are not yet live — they land in Stream F (F3 / F4 per §6.F.5). B4 satisfies this AC at the *local-build* level: a developer running `bun run build` at repo root succeeds for all 8 packages, and a one-liner zero-export probe on `line-components/dist/index.js` (PRD §6.2; §2 of this spec) passes. The CI step itself is asserted by F3 / F4.
+**B4 — Scope of `Vite+Rolldown smoke build CI step passes` AC (AM-007).** At B4, CI assertions in `checks.yml` are not yet live — they land in Stream F (F3 / F4 per §6.F.5). B4 satisfies this AC at the *local-build* level: a developer running `bun run build` at repo root succeeds for all 8 packages, and a one-liner zero-export probe on `line-components/dist/index.js` (PRD §6.2; §2 of this spec) passes. In CI the AC is the `checks.yml` step `bun run build` (§6.F.5), whose `line-core` library build is the §9.5 smoke build (AM-062).
 
 **B5 — Changesets across all 8 packages.** Existing `.changeset/config.json` is updated to:
 - `baseBranch`: `"main"` — RC / snapshot / canary publishing happens from `main`; there is no `next` branch (see AM-008).
@@ -2443,83 +2444,85 @@ Per round-1 R2: the entire 12-step base + alpha palette uses `light-dark()`. The
 
 Phase 00 is **complete** when **all** of the following hold. This mirrors plan §7 with spec-level concretisation.
 
+The exit-criteria table in [`docs/retrospective/00-phase-00-retro.md`](../retrospective/00-phase-00-retro.md#exit-criteria) holds the evidence for every criterion below (Phase 00 exit, 2026-10-12).
+
 ### 9.1 Structural
 
-- [ ] All 8 packages exist under `packages/` with `package.json`, `tsconfig.json`, `src/`, `README.md`.
-- [ ] All 2 apps exist under `apps/`.
-- [ ] Every `exports` map matches §4 exactly (string-for-string).
-- [ ] `scripts/lint-layers.mjs` passes — no cross-layer leakage.
-- [ ] `packages/line-components/dist/index.js` builds as a zero-export module (umbrella ships empty in Phase 00 per Manifesto Law 6); CI smoke build asserts this by re-loading the built module and verifying its export count is zero.
-- [ ] Prefix audit (Manifesto Law 2, PRD §9.14 T1) passes: all CSS custom properties emitted by `line-tokens`/`line-colors`/`line-themes` are `--line-*` prefixed; all published package names match `@websublime/line-*`; all custom-element tag names registered in tests are `line-*`. Enforced by an audit step in `scripts/lint-layers.mjs` (or sibling).
+- [x] All 8 packages exist under `packages/` with `package.json`, `tsconfig.json`, `src/`, `README.md`.
+- [x] All 2 apps exist under `apps/`.
+- [x] Every `exports` map matches §4 exactly (string-for-string).
+- [x] `scripts/lint-layers.mjs` passes — no cross-layer leakage.
+- [x] `packages/line-components/dist/index.js` builds as a zero-export module (umbrella ships empty in Phase 00 per Manifesto Law 6); CI smoke build asserts this by re-loading the built module and verifying its export count is zero.
+- [x] Prefix audit (Manifesto Law 2, PRD §9.14 T1) passes: all CSS custom properties emitted by `line-tokens`/`line-colors`/`line-themes` are `--line-*` prefixed; all published package names match `@websublime/line-*`; all custom-element tag names registered in tests are `line-*`. Enforced by an audit step in `scripts/lint-layers.mjs` (or sibling).
 
 ### 9.2 Design System
 
-- [ ] 31 hue CSS files committed under `packages/line-colors/src/` and present in `dist/` after `bun run build`.
-- [ ] `special.css` committed and built.
-- [ ] 31 `accent/*.css` + 6 `gray/*.css` files generated and committed under `packages/line-themes/src/`.
-- [ ] `semantics.css`, `aliases.css`, `defaults.css` committed.
-- [ ] `bun test` passes all CSS snapshot tests (palette, role mapping, auto-pair behaviour, schema) and the three `cascade-layer.test.ts` suites (AM-058).
-- [ ] Every rule in every `src/*.css` of `line-tokens`, `line-colors` and `line-themes` sits inside `@layer line`, the barrels hold only `@import` rules, and `cascade-layer.e2e.ts` passes in chromium, firefox and webkit (AM-058).
-- [ ] `scripts/validate-contrast.mjs` passes (31 hues × {light, dark} step-9 vs contrast token ≥ 3:1, with the single documented `orange` allowlist exception at 2.97:1 per AM-014).
-- [ ] `scripts/verify-palettes-fresh.mjs` passes (no drift between generator and committed CSS).
-- [ ] `aliases.css` declares exactly **54 alias variables** (9 named aliases × 6 roles), verified by a count assertion in a snapshot or unit test (PRD §9.14 T7).
-- [ ] No hue shares a name with a role. The Radix `gray` hue ships as `neutral` (`--line-neutral-*`, `accent/neutral.css`, `gray/neutral.css`), and `hue-role-names.e2e.ts` passes (AM-052).
-- [ ] Snapshot tests confirm role-mapping CSS uses `[data-accent='{hue}']` and `[data-gray='{hue}']` selectors only — no `[data-theme]` selector is emitted anywhere in `line-themes` output (PRD §9.14 T4).
+- [x] 31 hue CSS files committed under `packages/line-colors/src/` and present in `dist/` after `bun run build`.
+- [x] `special.css` committed and built.
+- [x] 31 `accent/*.css` + 6 `gray/*.css` files generated and committed under `packages/line-themes/src/`.
+- [x] `semantics.css`, `aliases.css`, `defaults.css` committed.
+- [x] `bun test` passes all CSS snapshot tests (palette, role mapping, auto-pair behaviour, schema) and the three `cascade-layer.test.ts` suites (AM-058).
+- [x] Every rule in every `src/*.css` of `line-tokens`, `line-colors` and `line-themes` sits inside `@layer line`, the barrels hold only `@import` rules, and `cascade-layer.e2e.ts` passes in chromium, firefox and webkit (AM-058).
+- [x] `scripts/validate-contrast.mjs` passes (31 hues × {light, dark} step-9 vs contrast token ≥ 3:1, with the single documented `orange` allowlist exception at 2.97:1 per AM-014).
+- [x] `scripts/verify-palettes-fresh.mjs` passes (no drift between generator and committed CSS).
+- [x] `aliases.css` declares exactly **54 alias variables** (9 named aliases × 6 roles), verified by a count assertion in a snapshot or unit test (PRD §9.14 T7).
+- [x] No hue shares a name with a role. The Radix `gray` hue ships as `neutral` (`--line-neutral-*`, `accent/neutral.css`, `gray/neutral.css`), and `hue-role-names.e2e.ts` passes (AM-052).
+- [x] Snapshot tests confirm role-mapping CSS uses `[data-accent='{hue}']` and `[data-gray='{hue}']` selectors only — no `[data-theme]` selector is emitted anywhere in `line-themes` output (PRD §9.14 T4).
 
 ### 9.3 Runtime Core
 
-- [ ] `LineElement` operational with Inspector / Metadata / Direction mixins.
-- [ ] `FormAssociated` mixin operational. Unit tier (`bun test` + mocked `ElementInternals`) and browser tier (Playwright against `<form>`) both pass.
-- [ ] `LineMachineController` re-exports exactly four `@zag-js/vanilla` primitives (`VanillaMachine`, `normalizeProps`, `spreadProps`, `mergeProps`) + `LineMachineController` itself + the `Attrs` type. **No `bindable` export.**
-- [ ] Manifesto Law 9 failure mode verified: a broken machine config flips `fallback = true` and does not throw at the consumer (unit test in `line-machine-controller.test.ts`).
-- [ ] Hello-world integration test (§6.D.8) passes on `bun test` and Playwright.
-- [ ] Biome `noRestrictedImports` rule prevents `@zag-js/vanilla` imports outside `line-core` (lint passes on the deliberate violation-free codebase; a smoke test introducing the violation locally is rejected by `bun run lint`).
-- [ ] 11 modular reset sheets exist in `packages/line-core/src/styles/` and export singleton `CSSStyleSheet` objects.
+- [x] `LineElement` operational with Inspector / Metadata / Direction mixins.
+- [x] `FormAssociated` mixin operational. Unit tier (`bun test` + mocked `ElementInternals`) and browser tier (Playwright against `<form>`) both pass.
+- [x] `LineMachineController` re-exports exactly four `@zag-js/vanilla` primitives (`VanillaMachine`, `normalizeProps`, `spreadProps`, `mergeProps`) + `LineMachineController` itself + the `Attrs` type. **No `bindable` export.**
+- [x] Manifesto Law 9 failure mode verified: a broken machine config flips `fallback = true` and does not throw at the consumer (unit test in `line-machine-controller.test.ts`).
+- [x] Hello-world integration test (§6.D.8) passes on `bun test` and Playwright.
+- [x] Biome `noRestrictedImports` rule prevents `@zag-js/vanilla` imports outside `line-core` (lint passes on the deliberate violation-free codebase; a smoke test introducing the violation locally is rejected by `bun run lint`).
+- [x] 11 modular reset sheets exist in `packages/line-core/src/styles/` and export singleton `CSSStyleSheet` objects.
 
 ### 9.4 Icon Registry
 
-- [ ] `IconRegistry` class + `IconResolver` type exported from `@websublime/line-icons`.
-- [ ] `createLucideResolver` + `createPhosphorResolver` factories exported and pass their respective tests.
-- [ ] Registry resolves at least 3 icons from each library in tests.
+- [x] `IconRegistry` class + `IconResolver` type exported from `@websublime/line-icons`.
+- [x] `createLucideResolver` + `createPhosphorResolver` factories exported and pass their respective tests.
+- [x] Registry resolves at least 3 icons from each library in tests.
 
 ### 9.5 Tooling
 
-- [ ] Bun ≥ 1.3.14 declared in `engines.bun`. pnpm removed.
-- [ ] Biome ≥ 2.4.15 operational; ESLint + Prettier + plugins removed.
-- [ ] Vite ≥ 8.0.13 installed; Rolldown 1.0.x active (verified by checking Vite's `dependencies` post-install).
-- [ ] All deps from §6.A/A3 at the declared minimum.
-- [ ] `@websublime/*` npm scope verified by at least one snapshot/canary publish.
-- [ ] Vite 8 + Rolldown library-mode smoke build runs in CI against a fixture entry (the `line-core` hello-world integration target qualifies) and produces a non-empty `dist/` bundle. Plan §7.2 `Vite/Rolldown component bundling operational (verified by a smoke build)` is satisfied by this check.
+- [x] Bun ≥ 1.3.14 declared in `engines.bun`. pnpm removed.
+- [x] Biome ≥ 2.4.15 operational; ESLint + Prettier + plugins removed.
+- [x] Vite ≥ 8.0.13 installed; Rolldown 1.0.x active (verified by checking Vite's `dependencies` post-install).
+- [x] All deps from §6.A/A3 at the declared minimum.
+- [x] `@websublime/*` npm scope verified by at least one snapshot/canary publish.
+- [x] Vite 8 + Rolldown library-mode smoke build runs in CI and produces a non-empty `dist/` bundle. The check is the `line-core` library build (`vite build`, §6.B B4) that the `checks.yml` step `bun run build` runs on every pull request, and it emits a non-empty `packages/line-core/dist/` (AM-062). Plan §7.2 `Vite/Rolldown component bundling operational (verified by a smoke build)` is satisfied by this check.
 
 ### 9.6 CI/CD
 
-- [ ] `checks.yml` runs lint + typecheck + build + layer-lint + palette-freshness + contrast + unit + e2e + Storybook build + CEM analyse on every PR.
-- [ ] `release.yml` runs Changesets publish on push to `main`.
-- [ ] `snapshot-version.yml` (manual dispatch, dry run) + `snapshot-deploy.yml` (manual dispatch, publishes a canary only from `main`) operational; no `next` branch.
-- [ ] `deploy-site.yml` deploys `apps/site` to Cloudflare Pages on push to `main` (environment `site-production` → project `line-ui`), verified at `https://line-ui.websublime.com`. The §6.F.5 bootstrap is its prerequisite.
-- [ ] Storybook production deploy verified on push to `main` (`deploy-storybook.yml` → environment `storybook-production` → Cloudflare Pages project `line-ui-storybook`) at `https://line-ui-storybook.websublime.com`, and a preview verified on a same-repo pull request (environment `storybook-preview` → the `pr-<number>` alias in the preview account). The §6.F.5 Storybook bootstrap is its prerequisite. F7's own pull request cannot deploy, because its base commit has no locked wrangler; F7 verifies production on its merge push and the preview on the first later same-repo pull request into `main` that touches a filtered path.
-- [ ] `bunfig.toml` declares `[test] preload = ['./bun-test-preload.ts']` (RK5 mitigation for `@open-wc/testing-helpers` `fixtureCleanup` registration). [F2]
-- [ ] CI asserts the preload entry is present in `bunfig.toml` (`checks.yml` step that greps or parses the file). [F4 — `checks.yml` is authored by Stream F → F4 per §6.F.5; see AM-018]
-- [ ] At least one RC publish verified end-to-end.
+- [x] `checks.yml` runs lint + typecheck + build + layer-lint + palette-freshness + contrast + unit + e2e + Storybook build + CEM analyse on every PR.
+- [x] `release.yml` runs Changesets publish on push to `main`.
+- [x] `snapshot-version.yml` (manual dispatch, dry run) + `snapshot-deploy.yml` (manual dispatch, publishes a canary only from `main`) operational; no `next` branch.
+- [x] `deploy-site.yml` deploys `apps/site` to Cloudflare Pages on push to `main` (environment `site-production` → project `line-ui`), verified at `https://line-ui.websublime.com`. The §6.F.5 bootstrap is its prerequisite.
+- [x] Storybook production deploy verified on push to `main` (`deploy-storybook.yml` → environment `storybook-production` → Cloudflare Pages project `line-ui-storybook`) at `https://line-ui-storybook.websublime.com`, and a preview verified on a same-repo pull request (environment `storybook-preview` → the `pr-<number>` alias in the preview account). The §6.F.5 Storybook bootstrap is its prerequisite. F7's own pull request cannot deploy, because its base commit has no locked wrangler; F7 verifies production on its merge push and the preview on the first later same-repo pull request into `main` that touches a filtered path.
+- [x] `bunfig.toml` declares `[test] preload = ['./bun-test-preload.ts']` (RK5 mitigation for `@open-wc/testing-helpers` `fixtureCleanup` registration). [F2]
+- [x] CI asserts the preload entry is present in `bunfig.toml` (`checks.yml` step that greps or parses the file). [F4 — `checks.yml` is authored by Stream F → F4 per §6.F.5; see AM-018]
+- [x] At least one RC publish verified end-to-end.
 
 ### 9.7 Documentation
 
-- [ ] Storybook 10 boots cleanly with `bun --filter '@websublime/line-storybook' dev`.
-- [ ] `getting-started.mdx`, `theming.mdx`, `customisation.mdx` ship and render.
-- [ ] Palette + roles design-system stories render all 31 hues and all role combos.
-- [ ] `docs/specs/COMPONENT-SPEC-TEMPLATE.md` committed.
-- [ ] `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` skeleton committed.
+- [x] Storybook 10 boots cleanly with `bun --filter '@websublime/line-storybook' dev`.
+- [x] `getting-started.mdx`, `theming.mdx`, `customisation.mdx` ship and render.
+- [x] Palette + roles design-system stories render all 31 hues and all role combos.
+- [x] `docs/specs/COMPONENT-SPEC-TEMPLATE.md` committed.
+- [x] `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` skeleton committed.
 
 ### 9.8 HTMX Spike
 
-- [ ] `LineHtmxElement` mixin + runnable example committed under `packages/line-core/__experimental__/htmx/`.
-- [ ] Outcome (committed vs exploratory) documented in `docs/retrospective/00-phase-00-retro.md` with evidence (screenshots / logs from the example).
+- [x] `LineHtmxElement` mixin + runnable example committed under `packages/line-core/__experimental__/htmx/`.
+- [x] Outcome (committed vs exploratory) documented in `docs/retrospective/00-phase-00-retro.md` with evidence (screenshots / logs from the example).
 
 ### 9.9 Process
 
-- [ ] All PRD §7.2 "Review pending" tasks verified.
-- [ ] First stable release `0.1.0` of all 8 packages published under `latest` by `release.yml` through trusted publishing with provenance; later Phase 00 bumps follow `docs/PROCESS.md` §6; RCs are canary snapshots (AM-041).
-- [ ] Phase 00 retrospective committed.
+- [x] All PRD §7.2 "Review pending" tasks verified.
+- [x] First stable release `0.1.0` of all 8 packages published under `latest` by `release.yml` through trusted publishing with provenance; later Phase 00 bumps follow `docs/PROCESS.md` §6; RCs are canary snapshots (AM-041).
+- [x] Phase 00 retrospective committed.
 
 ---
 

@@ -3,13 +3,14 @@
 **Date:** 2026-10-12
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.13
+**Version:** 0.8.14
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.14 (2026-10-12) — Phase 0 closes.** Every task in the §7.2 table reads Done, and the Phase 0 status note points to the exit record in `docs/retrospective/00-phase-00-retro.md`. The §7.2 CI/CD exit criterion asks for verified Storybook preview deploys and says that the site deploys to production only. The "Update all dependencies" row names PostCSS 8 instead of "PostCSS latest", because Phase 0 held its dependencies at or above the spec §6.A.3 minimums. The §2 "Latest stable versions" row stays the standing policy, and the retrospective hands a dependency refresh within the current majors to the opening of Phase 1. Why: the Phase 0 exit sweep on 2026-10-12 found every mapped ledger row done while the §7.2 cells still read Todo or Review pending. It also found that the exit criterion still asked for a site preview deploy, which spec AM-044 and AM-045 had removed when they made the site production-only (ledger row `00-Z19`, decisions by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md`). Sections touched: §7.2; plan §2.4, §4.1 (A1–A3), §7.5 and §7.6; spec header.
 - **v0.8.13 (2026-10-12) — The line packages ship inside the cascade layer `line`.** Every rule of `@websublime/line-tokens`, `@websublime/line-colors` and `@websublime/line-themes` sits inside one cascade layer, `@layer line`, and that includes every rule of `reset.css`. The `:where()` selectors stay as they are. Consumer rules outside `@layer` now win at any specificity and in any order. A consumer stylesheet that declares layers starts with `@layer line;` or puts `line` first in its order statement. The `line-core` shadow-DOM reset sheets stay unlayered. This reverses T2. Miguel chose this over keeping the CSS unlayered with a documented recipe and over shipping both an unlayered and a layered build (ledger row `00-Z15`, decision by Miguel on 2026-10-12; record in `docs/context/00-z15.md`). Why: the cascade compares layers before specificity, and every unlayered rule beats every layered rule. `:where()` acts only on specificity, so a consumer override inside `@layer` lost to the unlayered package rules at any specificity. The unlayered `reset.css` also beat later-layer utilities, such as Tailwind's `mt-4` on a `<p>` inside `.line-card`. A consumer can wrap third-party CSS in a layer only through `@import url(…) layer(name)`. HTML has no `layer` attribute on `<link>` (whatwg/html#7540), and a JavaScript CSS import has no standard way to name a layer. Only a block inside the library reaches every consumer. Sections touched: §9.2 and §9.7 code samples, §9.12, §9.14 T2; ARCHITECTURE §14.10; spec §6.C, §6.F.4, §6.G.3, §9, spec header and AM-058.
 - **v0.8.12 (2026-10-10) — `color-scheme` is the only light/dark switch.** §9.8 names `color-scheme` as the only mode switch. No line package declares a mode class or attribute. A consumer that toggles its own class, such as Tailwind's `.dark`, maps it with one rule, `.dark { color-scheme: dark }`. Miguel chose this over a `data-*` attribute hook and over shipping the `.dark` / `.light` classes with a MANIFESTO Law 2 exception (ledger row `00-Z14`, decision by Miguel on 2026-10-10; record in `docs/context/00-z14.md`). Why: the classes never shipped, because no file under `packages/*/src` has ever declared them since the initial import. Bare `.dark` / `.light` rules would break MANIFESTO Law 2, which requires the `line-` prefix on every public surface we author. ARCHITECTURE v0.8.0 replaced the accent schema classes `.line-schema-X` with `data-*` attributes, and the shipped theming guide already teaches `color-scheme` alone. Sections touched: §9.8; spec §6.C.2, spec header and AM-055.
 - **v0.8.11 (2026-10-10) — Shadows take their colour from the gray role.** The `line-tokens` shadow scale (`--line-shadow-1..6`, `--line-shadow-inner-1..3`) takes its colour from the nearest gray role, `--line-gray-12` in light mode and `--line-gray-1` in dark mode. Without `line-themes` the colour falls back to `--line-neutral-12` and `--line-neutral-1`, so the scale works with `line-colors` alone. Each layer gets back the Open Props 1.7.23 opacity. That opacity is `--line-shadow-strength` (1%) in light mode or the new `--line-shadow-strength-dark` (25%) in dark mode, plus a per-layer offset of 2 to 9 points. Dark mode switches through `light-dark()` alone. `shadows.css` declares its shadow tokens in every theming scope (`:where(html, [data-accent], [data-gray])`), so a nested scope tints its own shadows. It declares the strength knobs only in `:where(html)`, so an override on `<html>` reaches every nested scope. The fix was needed because `shadows.css` pointed `--line-shadow-color` at `--line-gray-a-12`, a token that no package declares, and every shadow token (`--line-shadow-1..6`, `--line-shadow-inner-1..3`) computed `none`. A rename to `--line-gray-a12` drew a black rim in light mode and a white glow in dark mode, because that alpha step is about 89% opaque and the scale had no per-layer opacity. Miguel chose the full fix over a rename and over a light-only fix. He chose the gray role per theming scope over the gray role at `<html>` only and over the fixed `neutral` hue, and `light-dark()` alone over the `.dark` / `.light` classes and over `prefers-color-scheme` (ledger row `00-C17`, decision by Miguel on 2026-10-09 and 2026-10-10; record in `docs/context/00-c17.md`). Whether the `.dark` / `.light` classes ship stays with ledger row `00-Z14`. This revision touches §9.8, which no longer says the classes exist for shadow tokens, and §9.12. That section states the `shadows.css` scope exception. It also corrects a factual error, because its `line-themes` bullet said every role declaration uses `:where([data-accent="X"])` / `:where([data-gray="Y"])`, while `defaults.css`, `semantics.css` and `aliases.css` (since AM-049) use other `:where()` selectors. The bullet now lists the selectors of each file. Spec AM-054 aligns the Phase 0 spec.
@@ -800,24 +801,24 @@ Workflows:
 
 | Task | Detail | Status | Priority |
 |------|--------|--------|----------|
-| Review & refactor Inspector | Existing component in core. Feature flag via localStorage, outline on hover, version display. Review current implementation, enhance with: docs/storybook link, exposed CSS parts, slot usage, optional metadata panel. Inspired by Bit.dev's original component inspection concept — unique differentiator in the Web Components space | Todo | **P0** |
-| Migrate to Bun | Runtime + workspaces, remove pnpm | Review pending | P0 |
-| Migrate to Biome | Remove ESLint + Prettier + all plugins, configure Biome | Review pending | P0 |
-| Update all dependencies | Lit 3+, Vite 8+ (Rolldown stable as default), PostCSS latest | Review pending | P0 |
-| Refactor LineElement | Base class with Zag.js machine lifecycle delegated to the first-party `LineMachineController` adapter (`@websublime/line-core/machine`, wraps `@zag-js/vanilla`) and mixins (inspector, metadata, direction, form-associated). | Todo | P0 |
-| FormAssociated mixin | Implement opt-in `formAssociated` mixin in LineElement using `ElementInternals`. Provides: `setFormValue()`, `reportValidity()`, `checkValidity()`, `:invalid`/`:valid` states | Todo | P0 |
-| Restructure monorepo | 8 published packages + 2 apps. Packages: core, components (umbrella with per-component subpath exports), tokens, colors, schemas, themes, utils, icons (5 of which are the layered design system). Apps (not published): `apps/site`, `apps/storybook`. | Todo | P0 |
-| Setup Storybook 10+ | `@storybook/web-components-vite` + CEM analyzer | Todo | P1 |
-| Setup testing | Bun test + `@open-wc/testing-helpers` + Playwright | Todo | P1 |
-| Setup CI/CD | GitHub Actions: checks, release, snapshot-deploy, snapshot-version | Todo | P1 |
-| Define RC pipeline | Release candidates as canary snapshots published from `main` by manual dispatch (`canary` dist-tag) | Todo | P1 |
-| npm scope | Configure `@websublime/line-*` on npm | Todo | P0 |
-| Design system v2 (5 packages) | Author the 5-package layered design system from scratch under `packages/`: `line-tokens`, `line-colors`, `line-schemas`, `line-themes`, `line-utils`. Source palettes from `@radix-ui/colors` (31 hues x 12 steps). Build pipeline (PostCSS) generates `themes/src/accent/*.css` and `themes/src/gray/*.css` mechanically from the TS lists in `line-schemas`. Commit generated CSS into `line-colors/src/`. | Todo | P0 |
-| Icon registry | Agnostic resolver system | Todo | P1 |
-| Base documentation | Getting started, theming guide, customisation guide in Storybook | Todo | P1 |
-| Validate HTMX integration | Spike: validate `LineHtmxElement` adapter with `hx-*` forwarding, server-driven state, swap-aware lifecycle. Determine if exploratory or committed for Phase 1 | Todo | P2 |
+| Review & refactor Inspector | Existing component in core. Feature flag via localStorage, outline on hover, version display. Review current implementation, enhance with: docs/storybook link, exposed CSS parts, slot usage, optional metadata panel. Inspired by Bit.dev's original component inspection concept — unique differentiator in the Web Components space | Done | **P0** |
+| Migrate to Bun | Runtime + workspaces, remove pnpm | Done | P0 |
+| Migrate to Biome | Remove ESLint + Prettier + all plugins, configure Biome | Done | P0 |
+| Update all dependencies | Lit 3+, Vite 8+ (Rolldown stable as default), PostCSS 8 | Done | P0 |
+| Refactor LineElement | Base class with Zag.js machine lifecycle delegated to the first-party `LineMachineController` adapter (`@websublime/line-core/machine`, wraps `@zag-js/vanilla`) and mixins (inspector, metadata, direction, form-associated). | Done | P0 |
+| FormAssociated mixin | Implement opt-in `formAssociated` mixin in LineElement using `ElementInternals`. Provides: `setFormValue()`, `reportValidity()`, `checkValidity()`, `:invalid`/`:valid` states | Done | P0 |
+| Restructure monorepo | 8 published packages + 2 apps. Packages: core, components (umbrella with per-component subpath exports), tokens, colors, schemas, themes, utils, icons (5 of which are the layered design system). Apps (not published): `apps/site`, `apps/storybook`. | Done | P0 |
+| Setup Storybook 10+ | `@storybook/web-components-vite` + CEM analyzer | Done | P1 |
+| Setup testing | Bun test + `@open-wc/testing-helpers` + Playwright | Done | P1 |
+| Setup CI/CD | GitHub Actions: checks, release, snapshot-deploy, snapshot-version | Done | P1 |
+| Define RC pipeline | Release candidates as canary snapshots published from `main` by manual dispatch (`canary` dist-tag) | Done | P1 |
+| npm scope | Configure `@websublime/line-*` on npm | Done | P0 |
+| Design system v2 (5 packages) | Author the 5-package layered design system from scratch under `packages/`: `line-tokens`, `line-colors`, `line-schemas`, `line-themes`, `line-utils`. Source palettes from `@radix-ui/colors` (31 hues x 12 steps). Build pipeline (PostCSS) generates `themes/src/accent/*.css` and `themes/src/gray/*.css` mechanically from the TS lists in `line-schemas`. Commit generated CSS into `line-colors/src/`. | Done | P0 |
+| Icon registry | Agnostic resolver system | Done | P1 |
+| Base documentation | Getting started, theming guide, customisation guide in Storybook | Done | P1 |
+| Validate HTMX integration | Spike: validate `LineHtmxElement` adapter with `hx-*` forwarding, server-driven state, swap-aware lifecycle. Determine if exploratory or committed for Phase 1 | Done | P2 |
 
-**Phase 0 Status:** Tasks marked "Review pending" are functionally complete but require verification of quality and integration before sign-off.
+**Phase 0 Status:** Phase 0 closed on 2026-10-12, and its exit record is in `docs/retrospective/00-phase-00-retro.md`.
 
 **Exit criteria:**
 - All tasks marked "Done" with review completed.
@@ -831,7 +832,7 @@ Workflows:
 - Inspector refactored and operational (feature flag via `localStorage`, hover outline, version display, metadata exposure).
 - Icon registry operational (agnostic resolver verified with at least one icon library).
 - HTMX integration spike completed; outcome (exploratory vs committed for Phase 1) documented.
-- CI/CD pipeline operational (checks + RC releases as canary snapshots from `main`; Storybook + site preview deploys verified).
+- CI/CD pipeline operational (checks + RC releases as canary snapshots from `main`; Storybook preview deploys verified, and the site deploys to production only per spec AM-045).
 - npm scope `@websublime/line-*` configured; packages publishable (verified via snapshot/canary tag).
 - Base documentation published in Storybook (Getting Started, Theming, Customisation).
 
