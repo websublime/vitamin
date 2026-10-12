@@ -10,8 +10,8 @@
 - The exit date of record is **2026-10-12**. On that date an exit sweep checked every spec §9, plan §7 and PRD §7.2
   criterion in three slices. The local slice ran every command once on `main` after the 00-H1 merge (`aa3f554`). The
   static slice read the files, and the remote slice queried GitHub Actions, npm and the deployed URLs.
-- Row `00-Z19` closed the gaps the sweep found (spec AM-062, PRD v0.8.14, plan §7.5 and §7.6). Row `00-C18` (AM-061)
-  added the missing `SEMANTIC_MAP` test.
+- Row `00-Z19` closed the gaps the sweep found (spec AM-062, PRD v0.8.14, plan §7.5 and §7.6). Row `00-C18` (AM-061,
+  PR #250) added the missing `SEMANTIC_MAP` test, and row `00-Z18` (PR #249) fixed the AM-034 row cells.
 
 ## Exit criteria
 
@@ -34,7 +34,7 @@ and PRD-only rows (`PRD.n`) follow. "Pass" means the evidence was observed on 20
 | S9.2.6 | Every rule inside `@layer line`, barrels hold only `@import`, `cascade-layer.e2e.ts` passes in 3 engines | Pass | The 3 `cascade-layer.test.ts` suites pass. `playwright test --list` shows `packages/line-themes/__tests__/cascade-layer.e2e.ts` under chromium, firefox and webkit, and `bun run e2e` exits 0 with 105 passed, 0 failed. |
 | S9.2.7 | `scripts/validate-contrast.mjs` passes | Pass | Exit 0 with "OK — 62 step-9/contrast pairs (31 hues × light/dark) meet ≥ 3:1". The only warnings are orange light and dark at 2.97:1, allowlisted by AM-014. |
 | S9.2.8 | `scripts/verify-palettes-fresh.mjs` passes | Pass | Exit 0 with "33 committed palette CSS files match a fresh generation." |
-| S9.2.9 | `aliases.css` declares exactly 54 alias variables, asserted by a test | Pass | `packages/line-themes/__tests__/schema.test.ts:121-130` asserts 54 declarations and `ALIASES.length * ROLES.length` = 54. `bun test packages/line-themes` reports 132 pass, 0 fail. |
+| S9.2.9 | `aliases.css` declares exactly 54 alias variables, asserted by a test | Pass | `packages/line-themes/__tests__/schema.test.ts:125-134` asserts 54 declarations and `ALIASES.length * ROLES.length` = 54. `bun test packages/line-themes` reports 134 pass, 0 fail. |
 | S9.2.10 | No hue shares a role name; `hue-role-names.e2e.ts` passes | Pass | `neutral.css` exists in `line-colors/src/`, `line-themes/src/accent/` and `line-themes/src/gray/`, and no `gray` hue file remains. The 4 tests of `hue-role-names.e2e.ts` pass in 3 engines inside `bun run e2e`. |
 | S9.2.11 | No `[data-theme]` selector in `line-themes` output | Pass | `grep -rn data-theme packages/line-themes/src packages/line-themes/dist` finds nothing. `role-mapping.snapshot.test.ts:42-52` snapshots the 31 accent and 6 gray `dist/` files. |
 | S9.3.1 | `LineElement` with Inspector, Metadata and Direction mixins | Pass | `packages/line-core/src/line-element.ts:19` declares `LineElement extends DirectionMixin(MetadataMixin(InspectorMixin(LitElement)))`. Its tests pass in `bun test packages/line-core` (63 pass, 0 fail). |
@@ -71,7 +71,7 @@ and PRD-only rows (`PRD.n`) follow. "Pass" means the evidence was observed on 20
 | S9.9.1 | PRD §7.2 "Review pending" tasks verified | Pass | PRD v0.8.14 marks all 16 §7.2 tasks Done, and each maps to a done ledger row, for example Bun to A1 (#174), Biome to A2 (#175) and dependencies to A3 (#176). |
 | S9.9.2 | `0.1.0` of all 8 packages on `latest` with provenance; later bumps per PROCESS §6 | Pass | Release run https://github.com/websublime/line-ui/actions/runs/37483208484 published `0.1.0` of all 8, and every `0.1.0` carries SLSA v1 provenance. Later bumps are patches only (see What shipped). |
 | S9.9.3 | Phase 00 retrospective committed | Pass | This file. |
-| P7.2.4 | Zod schema tests pass; `HUES`, `ACCENT_HUES`, `GRAY_HUES`, `SEMANTIC_MAP` match the generated CSS | Covered by 00-C18 | `schema.test.ts` checks the three hue lists against `dist/` (:72, :79, :86) and the `src/` file sets (:94-104). Row `00-C18` (AM-061) adds the `SEMANTIC_MAP` against `semantics.css` assertion to the same file and merges before this row. |
+| P7.2.4 | Zod schema tests pass; `HUES`, `ACCENT_HUES`, `GRAY_HUES`, `SEMANTIC_MAP` match the generated CSS | Pass | `packages/line-themes/__tests__/schema.test.ts` checks the three hue lists against `dist/` (:90, :97, :104) and the `src/` file sets (:112-122). Its `SEMANTIC_MAP ↔ semantics.css (AM-061)` suite (:176-186) asserts the declared role set and each role's hue, merged in #250 (`00-C18`). `bun test packages/line-themes` reports 134 pass, 0 fail across 5 files. |
 | P7.3.3 | Inspector with `localStorage` flag, hover outline, version display and metadata | Pass | `packages/line-core/src/mixins/inspector.ts` reads the flag `line-ui:inspector` = `on` (:11-14), adds the hover outline sheet (:157-160), writes `data-line-version` (:162-166) and exposes `data-line-docs` plus a Ctrl/Cmd+Shift+L panel (:252-276). `inspector.test.ts` passes. |
 | P7.5.3 | All dependencies at or above the spec §6.A.3 minimums | Pass | Plan §7.5 follows the spec by Miguel's decision of 2026-10-12, and S9.5.4 holds. npm already offers newer versions inside the current majors (vite 8.3.4, zag 1.46.0, postcss 8.5.29, biome 2.5.15) and TypeScript 7.0.2, which is hand-off item 1. |
 | P7.6.3 | Storybook preview deploys verified; site on production only (AM-045) | Pass | The preview evidence is S9.6.5. `.github/workflows/deploy-site.yml:2` triggers on push to `main` only, and the workflow has no `pull_request` run. |
@@ -136,13 +136,13 @@ Every current `latest` carries SLSA v1 provenance (npm, 2026-10-12). The decoded
 |---|---|---|
 | A — tooling | Bun 1.3.14 workspaces, Biome 2.4.15, dependencies at the spec minimums, the `@websublime` npm scope | #174–#177 |
 | B — monorepo | 8 packages and 2 apps, the downward-only layer graph with `scripts/lint-layers.mjs`, per-package builds, Changesets | #178–#183 |
-| C — design system | `line-tokens` (18 families and reset), `line-colors` (31 hues and the special scales), `line-schemas`, `line-themes` (31 accent and 6 gray role maps, semantics, 54 aliases, auto-pair defaults), `line-utils`; generators, freshness guard and contrast validator; the `neutral` hue; shadows from the gray role | #184–#193, #196, #233, #236, #240 |
+| C — design system | `line-tokens` (18 families and reset), `line-colors` (31 hues and the special scales), `line-schemas`, `line-themes` (31 accent and 6 gray role maps, semantics, 54 aliases, auto-pair defaults), `line-utils`; generators, freshness guard and contrast validator; the `neutral` hue; shadows from the gray role; the `SEMANTIC_MAP` check | #184–#193, #196, #233, #236, #240, #250 |
 | D — runtime core | `LineElement` with the Inspector, Metadata, Direction and FormAssociated mixins, `LineMachineController`, 11 reset sheets, the hello-world fixture | #197–#199, #202, #205, #207, #210–#212 |
 | E — icons | `IconRegistry` with Lucide and Phosphor resolvers as optional peers | #213, #214 |
 | F — infrastructure | Storybook 10 with CEM, the happy-dom unit tier, the Playwright tier and Storybook smoke tier, the six workflows, the staged publisher, the Cloudflare deploys, native toolbar menus | #194, #195, #201, #204, #209, #215, #217, #221, #228, #229, #235, #245 |
 | G — documentation | Getting Started, Theming and Customisation guides, palette and role stories, `COMPONENT-SPEC-TEMPLATE.md`, `COMPETITIVE-COMPONENT-ANALYSIS.md` | #231, #232, #237–#239, #243 |
 | H — HTMX spike | `HtmxElement` reference under `__experimental__/htmx/`, exploratory exit | #248 |
-| Z — repo-wide | The lifecycle process, MIT metadata, the `0.1.0` release decision, legacy cleanup, the agent-driven UI decision (PRD v0.8.6), Cloudflare hosting, `color-scheme` as the mode switch, `@layer line`, the MDX table fix | #200, #203, #206, #208, #216, #219, #220, #222–#225, #227, #230, #242, #244, #246 |
+| Z — repo-wide | The lifecycle process, MIT metadata, the `0.1.0` release decision, legacy cleanup, the agent-driven UI decision (PRD v0.8.6), Cloudflare hosting, `color-scheme` as the mode switch, `@layer line`, the MDX table fix, the AM-034 row cells | #200, #203, #206, #208, #216, #219, #220, #222–#225, #227, #230, #242, #244, #246, #249 |
 
 ## Lessons learned
 
@@ -187,7 +187,6 @@ Every current `latest` carries SLSA v1 provenance (npm, 2026-10-12). The decoded
 | `noBarrelFile` warnings | `bun run lint` reports 5 warnings, at `line-core/src/index.ts:1`, `line-core/src/machine/index.ts:3`, `line-icons/src/index.ts:30`, `line-schemas/src/index.ts:7` and `line-utils/src/index.ts:6`. | No row yet |
 | `.npmrc` warning | `bun install` prints a non-fatal "invalid _auth value" warning at `.npmrc:2:49`, although the file holds only the two registry keys of AM-037. | No row yet |
 | Placeholder site | https://line-ui.websublime.com serves a placeholder page. That is the plan O4 scope, and the full landing page is Phase 1 parallel work. | Phase 1 |
-| AM-034 row cells | The AM-034 row of the spec amendment table has 6 unescaped pipes instead of 7. | `00-Z18`, PR #249 |
 | Action pins in `checks.yml` | `checks.yml` uses tag-pinned `actions/checkout@v4` and `oven-sh/setup-bun@v2`, while the release workflows pin full SHAs (AM-040). AM-025 deferred SHA pinning by Miguel's decision. | No row yet |
 
 ## Hand-off to Phase 1
