@@ -55,10 +55,10 @@ Phase 00 ships **zero UI components**. Its sole deliverable is a fully operation
 
 ### 2.4 Tooling & Infrastructure
 
-- **Migrate runtime to Bun** (latest stable). Remove pnpm. Workspaces under Bun.
-- **Migrate lint/format to Biome** (latest stable). Remove ESLint, Prettier, and all related plugins.
+- **Migrate runtime to Bun** (≥ 1.3.14). Remove pnpm. Workspaces under Bun.
+- **Migrate lint/format to Biome** (≥ 2.4.15). Remove ESLint, Prettier, and all related plugins.
 - **Bundler:** Vite 8+ (Rolldown stable as default) for components. PostCSS pipeline (`postcss-import`, `postcss-nested`, `postcss-preset-env`, `cssnano`) for design-system CSS.
-- **Update all dependencies** to latest stable: Lit 3+, Zag.js latest, `@radix-ui/colors` latest 3.x.
+- **Update all dependencies** to at least the spec §6.A.3 minimums: Lit 3+, Zag.js, `@radix-ui/colors` 3.x.
 - **Testing:** Bun test + `@open-wc/testing-helpers` + Playwright.
 - **CI/CD:** GitHub Actions — checks (lint, typecheck, test, build), release pipeline, snapshot/canary versions, RC pipeline (RCs are canary snapshots published from `main` by manual dispatch).
 - **npm scope:** Configure `@websublime/line-*` on npm; verify publishability via snapshot/canary tag.
@@ -132,9 +132,9 @@ Rationale: streams closer to the component runtime, design tokens, and developer
 
 | # | Task | Notes |
 |---|---|---|
-| A1 | Migrate runtime to Bun, remove pnpm | Status in PRD: Review pending. Verify lockfile, workspaces, scripts. |
-| A2 | Migrate lint/format to Biome | Status in PRD: Review pending. Remove ESLint + Prettier + plugins. |
-| A3 | Update all dependencies to latest stable | Lit 3+, Vite 8+ (Rolldown stable as default), PostCSS latest, TypeScript latest, Zag.js latest. |
+| A1 | Migrate runtime to Bun, remove pnpm | Status in PRD: Done (v0.8.14). Verify lockfile, workspaces, scripts. |
+| A2 | Migrate lint/format to Biome | Status in PRD: Done (v0.8.14). Remove ESLint + Prettier + plugins. |
+| A3 | Update all dependencies to the spec §6.A.3 minimums | Lit 3+, Vite 8+ with Rolldown, PostCSS, TypeScript 5.x, Zag.js. |
 | A4 | Configure npm scope `@websublime/line-*` | Verify via snapshot/canary tag publish. |
 
 ### 4.2 Stream B — Monorepo Restructure
@@ -313,14 +313,14 @@ Phase 00 is **complete** when **all** of the following hold (mirrors PRD §7.2 E
 
 - [ ] Bun runtime + workspaces operational; pnpm removed.
 - [ ] Biome operational; ESLint + Prettier + plugins removed.
-- [ ] All dependencies on latest stable versions (Lit 3+, Vite 8+ (Rolldown stable as default), PostCSS latest, TypeScript latest, Zag.js latest).
+- [ ] All dependencies at or above the spec §6.A.3 minimums (Lit 3+, Vite 8+ with Rolldown, PostCSS, TypeScript 5.x, Zag.js).
 - [ ] npm scope `@websublime/line-*` configured; publishability verified via snapshot/canary tag.
 
 ### 7.6 CI/CD
 
 - [ ] GitHub Actions: checks (lint, typecheck, test, build), release, snapshot-deploy, snapshot-version operational.
 - [ ] RC pipeline operational (canary snapshots published from `main`); verified end-to-end with at least one RC release.
-- [ ] Storybook + `apps/site` preview deploys verified.
+- [ ] Storybook preview deploys verified, and the site deploys to production only (AM-045).
 
 ### 7.7 Documentation
 
