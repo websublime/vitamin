@@ -3,13 +3,14 @@
 **Date:** 2026-10-12
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.14
+**Version:** 0.8.15
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.15 (2026-10-12) — line components guarantee the native htmx paths.** Components work with htmx through the native paths. These paths are host-level `hx-*`, slotted light-DOM `hx-*`, a form-associated value inside an htmx form, and a commit event as `hx-trigger`. A Playwright harness guards them on htmx 2 and htmx 4 in chromium, firefox and webkit. ARCHITECTURE §17.2 gains rule C9, which makes every value-bearing or compound component name one commit event. Every value-bearing or compound component runs the harness in its Playwright tier, and a Storybook HTMX guide documents the patterns. The `LineHtmxElement` adapter stays exploratory and is deferred as a nice-to-have after 1.0. Why: the H1 spike showed that the native paths work without an adapter on htmx 2.0.11 and 4.0.0 in three engines, and no PRD §7.3 or §7.4 component needs the adapter (ledger row `00-Z17`, decision by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md` and `docs/context/00-z17.md`). ARCHITECTURE, MANIFESTO Law 7 and spec AM-063 align. Sections touched: §1 differentiators and principle 4, §8.1, Appendix A, Appendix D.
 - **v0.8.14 (2026-10-12) — Phase 0 closes.** Every task in the §7.2 table reads Done, and the Phase 0 status note points to the exit record in `docs/retrospective/00-phase-00-retro.md`. The §7.2 CI/CD exit criterion asks for verified Storybook preview deploys and says that the site deploys to production only. The "Update all dependencies" row names PostCSS 8 instead of "PostCSS latest", because Phase 0 held its dependencies at or above the spec §6.A.3 minimums. The §2 "Latest stable versions" row stays the standing policy, and the retrospective hands a dependency refresh within the current majors to the opening of Phase 1. Why: the Phase 0 exit sweep on 2026-10-12 found every mapped ledger row done while the §7.2 cells still read Todo or Review pending. It also found that the exit criterion still asked for a site preview deploy, which spec AM-044 and AM-045 had removed when they made the site production-only (ledger row `00-Z19`, decisions by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md`). Sections touched: §7.2; plan §2.4, §4.1 (A1–A3), §7.5 and §7.6; spec header.
 - **v0.8.13 (2026-10-12) — The line packages ship inside the cascade layer `line`.** Every rule of `@websublime/line-tokens`, `@websublime/line-colors` and `@websublime/line-themes` sits inside one cascade layer, `@layer line`, and that includes every rule of `reset.css`. The `:where()` selectors stay as they are. Consumer rules outside `@layer` now win at any specificity and in any order. A consumer stylesheet that declares layers starts with `@layer line;` or puts `line` first in its order statement. The `line-core` shadow-DOM reset sheets stay unlayered. This reverses T2. Miguel chose this over keeping the CSS unlayered with a documented recipe and over shipping both an unlayered and a layered build (ledger row `00-Z15`, decision by Miguel on 2026-10-12; record in `docs/context/00-z15.md`). Why: the cascade compares layers before specificity, and every unlayered rule beats every layered rule. `:where()` acts only on specificity, so a consumer override inside `@layer` lost to the unlayered package rules at any specificity. The unlayered `reset.css` also beat later-layer utilities, such as Tailwind's `mt-4` on a `<p>` inside `.line-card`. A consumer can wrap third-party CSS in a layer only through `@import url(…) layer(name)`. HTML has no `layer` attribute on `<link>` (whatwg/html#7540), and a JavaScript CSS import has no standard way to name a layer. Only a block inside the library reaches every consumer. Sections touched: §9.2 and §9.7 code samples, §9.12, §9.14 T2; ARCHITECTURE §14.10; spec §6.C, §6.F.4, §6.G.3, §9, spec header and AM-058.
 - **v0.8.12 (2026-10-10) — `color-scheme` is the only light/dark switch.** §9.8 names `color-scheme` as the only mode switch. No line package declares a mode class or attribute. A consumer that toggles its own class, such as Tailwind's `.dark`, maps it with one rule, `.dark { color-scheme: dark }`. Miguel chose this over a `data-*` attribute hook and over shipping the `.dark` / `.light` classes with a MANIFESTO Law 2 exception (ledger row `00-Z14`, decision by Miguel on 2026-10-10; record in `docs/context/00-z14.md`). Why: the classes never shipped, because no file under `packages/*/src` has ever declared them since the initial import. Bare `.dark` / `.light` rules would break MANIFESTO Law 2, which requires the `line-` prefix on every public surface we author. ARCHITECTURE v0.8.0 replaced the accent schema classes `.line-schema-X` with `data-*` attributes, and the shipped theming guide already teaches `color-scheme` alone. Sections touched: §9.8; spec §6.C.2, spec header and AM-055.
@@ -90,7 +91,7 @@ The headless-first approach is validated across multiple framework ecosystems, b
 - **Headless-first + optional themes** — Unlike Web Awesome or Spectrum which ship opinionated styles, line://ui defaults to zero visual opinion. Themes are an accelerator, never a requirement.
 - **Dual-layer CSS customisation** — Both `::part()` for total control and CSS custom properties for quick adjustments. Most competitors offer one or the other, not both as a deliberate strategy.
 - **Inspector tooling** — Built-in developer tooling for QA and onboarding, unique in the Web Components ecosystem.
-- **HTMX integration (exploratory)** — First-class support for server-rendered HTML workflows, targeting a growing segment underserved by existing component libraries.
+- **HTMX integration** — Components work in server-rendered htmx workflows through native paths, and a Playwright harness guards those paths on htmx 2 and htmx 4. This serves a growing segment that existing component libraries underserve.
 
 #### Where Competitors Are Stronger
 
@@ -108,7 +109,7 @@ The headless-first approach is validated across multiple framework ecosystems, b
 1. **Headless-first** — Components carry zero visual opinion. All styling is the consumer's responsibility via `::part()` and `--line-*` custom properties.
 2. **Layered design system as accelerator** — Tokens, colours, schemas, themes, and utils ship as five separate packages with a strict downward dependency. Consumers pick the level of opinion they want: a project can import tokens alone, palettes alone, or the full design system. Never mandatory. See §9.
 3. **Composition over configuration** — Components connect via `<slot>`, not props. A Field does not import an Input — it accepts any form control via slot. A DatePicker accepts any trigger via slot. Independence is the default.
-4. **HTMX as exploration** — Web Components are browser-native. A `<line-dialog>` works in plain HTML served by any backend. HTMX adds server-driven interactivity. First-class support to be explored and validated.
+4. **HTMX through native paths** — Web Components are browser-native. A `<line-dialog>` works in plain HTML served by any backend. HTMX adds server-driven interactivity through host attributes, slotted content, form values and commit events. The `LineHtmxElement` adapter is deferred past 1.0.
 5. **Inspector as dev tooling** — Feature flag via localStorage. When active, every component exposes metadata: version, docs link, scope, QA tags. Useful for QA teams and integrating developers.
 6. **Agent-ready by construction** — Every component is describable to an AI agent through a protocol-neutral catalog of Zod descriptors checked against the Custom Elements Manifest. Agents render line://ui components through the opt-in `@websublime/line-genui` package, which speaks A2UI today. Components never import a protocol, and the host keeps every styling decision. The A2UI renderer is a preview until A2UI v1.0 is final. See Appendix D.
 
@@ -1158,7 +1159,7 @@ Each spec has two clearly separated sections:
 
 - **Part B — Technical Specification:** Anatomy, API (props, events, slots, parts, CSS custom properties), machine states, keyboard navigation, accessibility, agent contract, bundle/entrypoint details, and markup examples. Written for developers implementing or consuming the component.
 
-Every component spec includes an **Agent contract** section. It shows how the component meets rules C1–C8 (ARCHITECTURE §17.2) and fills the descriptor fields (ARCHITECTURE §17.3): catalog name, tag, prop schema, slot map, binding map, action map, accessibility requirements, the agent-facing description, and the `agentExposed` flag, with a reason when it is `false`.
+Every component spec includes an **Agent contract** section. It shows how the component meets rules C1–C9 (ARCHITECTURE §17.2) and fills the descriptor fields (ARCHITECTURE §17.3): catalog name, tag, prop schema, slot map, binding map, action map, accessibility requirements, the agent-facing description, and the `agentExposed` flag, with a reason when it is `false`.
 
 ### 8.2 Spec Lifecycle
 
@@ -1679,15 +1680,27 @@ Full implementation details live in the Phase 0 spec (`docs/specs/00-spec-design
 
 ---
 
-## Appendix A: HTMX Integration (Exploratory)
+## Appendix A: HTMX Integration
 
-Web Components are browser-native. Any `<line-dialog>` works in plain HTML served by any backend. The HTMX adapter (`LineHtmxElement`) extends `LineElement` to add:
+Web Components are browser-native. Any `<line-dialog>` works in plain HTML served by any backend. Line components work with htmx through four native paths:
 
-- `hx-*` attribute forwarding
-- Server-driven state updates
-- Swap-aware lifecycle hooks
+- `hx-*` attributes on the host element
+- `hx-*` attributes on slotted light-DOM children
+- A form-associated value inside an htmx form
+- The component's commit event as `hx-trigger` (ARCHITECTURE §17.2 rule C9)
 
-This is exploratory and will be validated during Phase 0.
+Rule C9 makes every value-bearing or compound component name one commit event. The event fires once per committed result and never for an interaction that commits nothing. A host-level `click` trigger on a compound host fires for every click inside its shadow root, so consumers trigger on the commit event.
+
+A shared Playwright harness guards these paths. It lives in `packages/line-core/__tests__/integration/htmx/` and runs on htmx 2 and htmx 4 in chromium, firefox and webkit. For each value-bearing or compound component it proves four behaviours:
+
+- The component's value reaches the request that `<form hx-post>` sends.
+- `hx-trigger` on the commit event sends one request per commit.
+- An interaction that commits nothing sends no request.
+- Server content swapped into the host's slots renders, and the component picks it up.
+
+The design targets htmx 4. The harness runs on htmx 2 as long as upstream supports 2.x. The Storybook HTMX guide shows the markup patterns and the differences between htmx 2 and htmx 4.
+
+The `LineHtmxElement` adapter stayed exploratory after the H1 spike. It is deferred as a nice-to-have after 1.0, and `packages/line-core/__experimental__/htmx/` stays as an unbuilt reference. The evidence and the conditions for a revisit live in `docs/retrospective/00-phase-00-retro.md`.
 
 ---
 
@@ -1772,5 +1785,5 @@ Agent-driven UI lets an AI agent compose an interface from line://ui components 
 
 - WebMCP for form-associated elements is deferred.
 - An MCP Apps host element is deferred.
-- Server-side A2UI → `<line-*>` HTML is deferred until the HTMX spike (H1) reports.
+- Server-side A2UI → `<line-*>` HTML is deferred. The HTMX spike (H1) reported on 2026-10-12 and informs this item without deciding it (`docs/retrospective/00-phase-00-retro.md`).
 - Model-authored `<line-*>` markup is rejected for now.

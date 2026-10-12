@@ -1,6 +1,6 @@
 # line://ui — Architecture
 
-**Date:** 2026-10-07
+**Date:** 2026-10-12
 **Status:** APPROVED
 **Maintenance:** Living document — updated as architectural decisions evolve.
 **Source:** Extracted from PRD v0.8.3 §3 (Component Architecture) and §9 (Design System — Layered Package Model). Aligned with Manifesto Laws 2, 6, 7, 10 (revised 2026-05-19).
@@ -12,6 +12,11 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.2 (2026-10-12)** — Aligned with PRD v0.8.15 (ledger row `00-Z17`, decision by Miguel on 2026-10-12).
+  - §17.2 (Agent contract) gains rule C9. A value-bearing or compound component names exactly one commit event, and the rule defines a compound component. The contract now has rules C1–C9.
+  - §17.3 (Descriptors and catalogs) points the binding map's commit event at rule C9.
+  - §6 (Base Class — LineElement) rewrites the HTMX paragraph. Components work with htmx through native paths, a Playwright harness guards them, and `LineHtmxElement` is deferred past 1.0.
+  - §17.8 (Deferred and rejected) rewords the trigger for server-side A2UI → `<line-*>` HTML, because the H1 spike reported on 2026-10-12.
 - **v0.8.1 (2026-10-07)** — Aligned with PRD v0.8.6 (ledger row `00-Z11`, decision by Miguel on 2026-10-07).
   - §17 (Agent-Driven UI) added. It covers the layers, the agent contract (rules C1–C8) that every component spec states, descriptors and catalogs, the light-DOM `<line-a2ui-surface>` renderer, transports, the MCP Apps theming bridge, the preview policy, and the deferred items. Evidence lives in `docs/research/00-research-generative-ui.md`.
   - §12 (Bundle Splitting Rule) gains a note that `line-genui` loads component subpaths lazily.
@@ -257,7 +262,7 @@ There is **no first-party Lit adapter in Zag's monorepo** (`packages/frameworks/
 
 **Failure mode (Manifesto Principle 9 / Law 9):** if a machine fails to initialise, the component renders in a static fallback state and never throws an uncaught error at the consumer.
 
-**HTMX adapter — exploratory.** `LineHtmxElement` is a planned extension of `LineElement` that adds `hx-*` attribute forwarding, server-driven state updates, and swap-aware lifecycle hooks (PRD Appendix A). Per Manifesto Law 7 it is **exploratory**: Phase 0 validates feasibility, Phase 1 commitment depends on the outcome. No component in this document depends on HTMX being shipped.
+**HTMX through native paths.** Components work with htmx through native paths. These paths are host-level `hx-*` attributes, `hx-*` attributes on slotted light-DOM children, a form-associated value inside an htmx form, and the §17.2 rule C9 commit event as `hx-trigger`. A Playwright harness guards those paths on htmx 2 and htmx 4 in chromium, firefox and webkit (PRD Appendix A). A host-level `click` trigger on a compound host fires for every click inside its shadow root, as the H1 `hostNative` check showed. Consumers therefore trigger on the commit event. The H1 spike ended exploratory on 2026-10-12. `LineHtmxElement` is deferred as a nice-to-have after 1.0, and `packages/line-core/__experimental__/htmx/` stays as an unbuilt reference. The evidence lives in `docs/retrospective/00-phase-00-retro.md`. No component in this document depends on an HTMX adapter.
 
 ---
 
@@ -1442,6 +1447,7 @@ Every component spec states these rules in its Agent contract section (PRD §8.1
 | C6 | Semantic variants, when a component has them, are reflected attributes with closed enums that carry no styles. |
 | C7 | CEM JSDoc is complete, with `@summary`, `@slot`, `@csspart`, `@cssprop`, `@fires` and `@deprecated`. |
 | C8 | Rendering with missing or partial props degrades to an empty or neutral state. |
+| C9 | A value-bearing component (C3) or a compound component names exactly one commit event. A value-bearing component uses `line-change` (C3). A compound component names its own `line-`-prefixed commit event. A compound component holds more than one interactive element and turns interaction among them into one committed result, as tabs, a radio group, a select or a menu do. The commit event fires on the host once per committed result. It never fires for an interaction that commits nothing, such as a focus move, arrow navigation, hover or the opening of a popup. It bubbles, so an ancestor such as a `<form>` can listen for it. The descriptor binding map (§17.3) records it as the commit event, and consumers bind to it, for example as an htmx `hx-trigger`. |
 
 ### 17.3 Descriptors and catalogs
 
@@ -1449,7 +1455,7 @@ Every component spec states these rules in its Agent contract section (PRD §8.1
 - A descriptor holds these fields:
   - the catalog name, the tag, and `load()`, which imports the component subpath;
   - the prop schema and the slot map;
-  - the binding map (prop → property or attribute, the value prop, the commit event);
+  - the binding map (prop → property or attribute, the value prop, the commit event that §17.2 rule C9 names);
   - the action map (prop → DOM event);
   - the accessibility requirements and the agent-facing description;
   - the `agentExposed` flag, which defaults to `true`.
@@ -1539,7 +1545,7 @@ Recipes pin the middleware version.
 |------|----------|--------------------|
 | WebMCP for form-associated elements | Defer | WebMCP spec issue #94 resolved and a second engine signals support |
 | MCP Apps host element (`<line-mcp-app-frame>`) | Defer | line://ui targets chat hosts; needs a sandbox-proxy origin and a security review |
-| Server-side A2UI → `<line-*>` HTML | Defer | Outcome of the HTMX spike (H1) |
+| Server-side A2UI → `<line-*>` HTML | Defer | A Phase 1+ spec takes it up. The HTMX spike (H1) reported on 2026-10-12 and informs this item without deciding it (`docs/retrospective/00-phase-00-retro.md`). |
 | Model-authored `<line-*>` markup | Reject | The Sanitizer API reaches Baseline and an allowlist story exists |
 | json-render and OpenUI renderers | Out of scope | Upstream ships a web-components renderer |
 | Headless chat primitives | Separate catalogue question | A product decision |
