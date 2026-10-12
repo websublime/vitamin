@@ -6,7 +6,8 @@
  * (AM-060). The example component is bundled once at start-up.
  *
  * Run from the repository root: `bun packages/line-core/__experimental__/htmx/example/server.ts`.
- * `PORT` overrides the default port 4330.
+ * The server binds the loopback address 127.0.0.1 only, because its POST
+ * routes mutate state. `PORT` overrides the default port 4330.
  *
  * @module __experimental__/htmx/example/server
  */
@@ -57,6 +58,7 @@ async function step(req: Request, sign: 1 | -1): Promise<Response> {
 }
 
 const server = Bun.serve({
+  hostname: '127.0.0.1',
   port: Number(process.env.PORT ?? 4330),
   routes: {
     '/': (req) => {

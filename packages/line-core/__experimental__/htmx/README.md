@@ -23,7 +23,8 @@ bun install
 bun packages/line-core/__experimental__/htmx/example/server.ts
 ```
 
-- `http://localhost:4330/?htmx=2` loads htmx 2.0.11, and `http://localhost:4330/?htmx=4` loads htmx 4.0.0.
+- `http://127.0.0.1:4330/?htmx=2` loads htmx 2.0.11, and `http://127.0.0.1:4330/?htmx=4` loads htmx 4.0.0.
+- The server binds 127.0.0.1 only, because its POST routes change the server state.
 - `PORT=4400 bun …` picks another port.
 - The server bundles the counter with `Bun.build` at start-up and serves htmx from the aliased root devDependencies
   `htmx2` and `htmx4`.
