@@ -99,45 +99,29 @@ Every custom property that line://ui authors starts with `--line-`. The prefix k
 
 ## Cascade strategy
 
-Every token declaration in `line-tokens`, `line-colors` and `line-themes` sits inside `:where()`, so it has zero specificity.
+Every rule of `line-tokens`, `line-colors` and `line-themes` sits inside one cascade layer named `line`, and that includes every rule of `reset.css`. Inside the layer, every selector uses `:where()`, so it has zero specificity.
 
 - `line-tokens` declares its tokens in `:where(html)`. `shadows.css` declares its shadow tokens in `:where(html, [data-accent], [data-gray])`, so each theming scope tints its shadows with its own gray role.
 - `line-colors` declares the palettes in `:where(html)`.
 - `line-themes` declares the role maps in `:where([data-accent="X"])` and `:where([data-gray="Y"])`, the defaults and the auto-pairs in `defaults.css`, the semantic roles in `:where(html)` and the aliases in `:where(html, [data-accent], [data-gray])`.
 
-Any unlayered rule of yours whose selector has non-zero specificity, such as `:root`, `html`, `.app` or `#app`, beats the package declaration of the same token. A rule of yours inside `:where()` ties at zero specificity, and the rule that comes later in source order wins.
+The browser compares cascade layers before it compares specificity and source order. A rule of yours outside `@layer` beats every rule in `line`, whatever its selector and wherever it loads. A `:where(html)` rule that loads before the packages still wins.
 
 ```css
-/* Wins over line-tokens, because html has specificity (0,0,1) and :where(html) has none */
+/* Both win over line-tokens, because neither rule sits in a layer */
 html {
   --line-radius-2: 6px;
 }
 
-/* Ties with line-tokens, so it wins only when it loads after line-tokens */
 :where(html) {
   --line-radius-2: 6px;
 }
 ```
 
-Shadow DOM isolates each component. Your selectors do not match elements inside a shadow root, and the component's rules match only its shadow tree and its host element. Three things cross the boundary.
-
-- Inherited properties such as `color` and `font-family` flow from the host into the shadow tree.
-- Custom properties inherit into the shadow tree, which carries Tier 1 tokens to the component and lets you set component tokens on the host.
-- `::part()` rules style the internal elements that a component exposes.
-
-The library needs no `@layer`. Zero specificity already places every package token declaration below your unlayered rules, and Shadow DOM keeps the component rules apart from your page.
-
-Every package rule is unlayered, and an unlayered declaration beats any layered declaration before the browser compares specificity. Keep your overrides outside `@layer`. If your stylesheets use layers, import every line package into your lowest layer, so that every layer you declare later wins over them.
+If your stylesheets declare their own layers, start them with `@layer line;` or put `line` first in your layer order statement. Every layer you declare later then beats `line`, so a Tailwind CSS utility such as `mt-4` in `@layer utilities` beats `reset.css`. If `line` first appears after your layers, your layered rules lose to it.
 
 ```css
-@import '@websublime/line-tokens' layer(line);
-@import '@websublime/line-colors/indigo' layer(line);
-@import '@websublime/line-colors/slate' layer(line);
-@import '@websublime/line-colors/green' layer(line);
-@import '@websublime/line-colors/amber' layer(line);
-@import '@websublime/line-colors/red' layer(line);
-@import '@websublime/line-colors/blue' layer(line);
-@import '@websublime/line-themes' layer(line);
+@layer line, base, components, utilities;
 
 @layer base {
   :root {
@@ -145,3 +129,13 @@ Every package rule is unlayered, and an unlayered declaration beats any layered 
   }
 }
 ```
+
+Load the packages as they are, with a `<link>`, a JavaScript import or a plain `@import`. Do not import them with `@import '…' layer(line)`, because the packages already declare `line`, so that import would nest it as `line.line`.
+
+Shadow DOM isolates each component. Your selectors do not match elements inside a shadow root, and the component's rules match only its shadow tree and its host element. Three things cross the boundary.
+
+- Inherited properties such as `color` and `font-family` flow from the host into the shadow tree.
+- Custom properties inherit into the shadow tree, which carries Tier 1 tokens to the component and lets you set component tokens on the host.
+- `::part()` rules style the internal elements that a component exposes.
+
+Your selectors reach shadow internals only through `::part()`. For the host element and `::part()`, the browser compares the shadow context before layers, so your normal declarations win there whether or not they sit in a layer. The `line-core` shadow-DOM reset sheets stay outside any layer.
