@@ -105,7 +105,7 @@ number in the stream + 1.
 
 | ID | Stream | Task | Owner | Deps | Status | Branch | PR | AM |
 |---|---|---|---|---|---|---|---|---|
-| H1 | H | `LineHtmxElement` spike + retrospective entry (`docs/retrospective/00-phase-00-retro.md`) | webcomponents-supervisor | D6 | todo | — | — | — |
+| H1 | H | `LineHtmxElement` spike + retrospective entry (`docs/retrospective/00-phase-00-retro.md`) | webcomponents-supervisor | D6 | in_progress | feat/00-h1-htmx-spike | — | AM-059, AM-060 |
 
 ## Stream Z — Repo-wide
 
