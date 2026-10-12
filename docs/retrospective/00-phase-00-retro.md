@@ -73,7 +73,25 @@ allow committed. The reasons below are about scope, and Miguel decides.
 Picking the adapter up later is cheap. The mixin is 125 lines, and the capture ran all 120 checks across both
 majors and three engines in under two minutes.
 
-### What a Phase 1 spec needs if the outcome is committed
+### Outcome
+
+Miguel chose the **exploratory** exit on 2026-10-12 (spec §6.H.2, plan §2.8). `LineHtmxElement` is deferred as a
+nice-to-have after 1.0. No planned component renders `hx-*` inside its own shadow root, so the adapter would be a
+public API with no first-party consumer. htmx is between majors, and picking the adapter up later is cheap. The value
+for the HTMX persona lies in the native paths, and nothing guards them yet. `hostNative` shows one gap, because the
+default `click` trigger on a compound host fires for every click inside it.
+
+- `packages/line-core/__experimental__/htmx/` stays where it is as a reference. It is not built and not exported.
+- Ledger row `00-Z17` guards the native paths instead. It adds a component-spec-template rule next to C1–C8 that
+  makes a compound component name the commit event it offers as `hx-trigger`. It adds an htmx check to the
+  Playwright tier of value-bearing and compound components, which covers a value in `<form hx-post>`, `hx-trigger`
+  on the commit event and content swapped into slots. It also adds a Storybook HTMX guide.
+- `00-Z17` targets htmx 4 in its design. Its checks run on htmx 2 and htmx 4 for as long as upstream supports 2.x.
+  The htmx 4.0.0 announcement says 2.x stays supported indefinitely, and npm `latest` moves to 4 in early 2027.
+
+### Conditions for a future revisit
+
+A later decision to commit the adapter would need a Phase 1+ spec that settles these points.
 
 1. **Packaging.** The folder graduates to `packages/line-core/src/htmx/` with a `./htmx` subpath export and a Vite
    entry. The spec decides whether `line-core` declares htmx as an optional peer with a range over the supported
