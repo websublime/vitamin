@@ -112,7 +112,7 @@
 
 ### Events
 
-> Every event name carries the `line-` prefix and a typed `detail`, and a value-bearing component fires `line-change` on commit and `line-input` on live edits (C3).
+> Every event name carries the `line-` prefix and a typed `detail`, and a value-bearing component fires `line-change` on commit and `line-input` on live edits (C3). A value-bearing or compound component marks its one commit event in the Fires when column (C9).
 
 | Event | `detail` type | Fires when |
 |-------|---------------|------------|
@@ -161,6 +161,7 @@
 | C6 | Semantic variants are reflected closed enums with no styles | <how, or "no variants"> |
 | C7 | CEM JSDoc carries `@summary`, `@slot`, `@csspart`, `@cssprop`, `@fires` and `@deprecated` | <how> |
 | C8 | Missing or partial props degrade to an empty or neutral state | <how> |
+| C9 | A value-bearing or compound component names one bubbling commit event that fires once per committed result | <how, or "neither value-bearing nor compound"> |
 
 #### Inputs outside the prop schema (C1)
 
@@ -177,7 +178,7 @@
 | `load()` subpath | `@websublime/line-components/<subpath>` |
 | Prop schema | <props from the Props table, minus the C1 exclusions> |
 | Slot map | <slot → `ComponentId` or `ChildList`> |
-| Binding map | <prop → property or attribute; value prop; commit event> |
+| Binding map | <prop → property or attribute; value prop; commit event (C9)> |
 | Action map | <prop → DOM event> |
 | Accessibility requirements | <requirements the renderer validates> |
 | Agent-facing description | <at most 1024 characters> |
@@ -213,6 +214,7 @@
 | Unit | `bun test` on happy-dom | <props, events, state reflection, C8 degradation> |
 | Browser | Playwright `*.e2e.ts` on chromium, firefox and webkit | <keyboard, focus, form participation, native behaviour> |
 | A11y | axe-core | Zero violations (MANIFESTO Law 3) in <the states checked> |
+| htmx | Playwright `*.e2e.ts` through the shared harness in `packages/line-core/__tests__/integration/htmx/`, on htmx 2 and htmx 4 in chromium, firefox and webkit | <value-bearing or compound only, otherwise `n/a`. The value reaches the `<form hx-post>` request, `hx-trigger` on the commit event sends one request per commit, a non-commit interaction sends none, and server content swapped into slots renders> |
 
 ---
 
