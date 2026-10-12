@@ -1,0 +1,302 @@
+[
+  {
+    "type": "warning",
+    "text": "Lit is in dev mode. Not recommended for production! See https://lit.dev/msg/dev-mode for more information."
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterRequest from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterRequest from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[configured] settle #1 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[native] settle #1 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #1 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #2 htmx:afterSettle at readout, form value 2"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from counter (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #3 htmx:afterSettle at counter, form value 2"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from counter (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #4 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #5 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #6 htmx:afterSettle at readout, form value -2"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from button (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #7 htmx:afterSettle at readout, form value 0"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #8 htmx:afterSettle at readout, form value -7"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "#counter reconnected 3 times"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "counter ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[counter] settle #9 htmx:afterSettle at readout, form value -14"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[configured] settle #2 htmx:afterSettle at readout, form value -13"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:beforeRequest from slotted (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "configured ← htmx:afterRequest from slotted (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:beforeRequest from native (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterRequest from native (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:beforeRequest from native (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:beforeRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterRequest from native (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterSwap from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterRequest from form (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[native] settle #2 htmx:afterSettle at readout, form value -12"
+  },
+  {
+    "type": "info",
+    "text": "native ← htmx:afterSettle from readout (composed: true)"
+  },
+  {
+    "type": "info",
+    "text": "[from-server] settle #1 htmx:afterSettle at readout, form value -12"
+  },
+  {
+    "type": "info",
+    "text": "[from-server] settle #2 htmx:afterSettle at readout, form value -13"
+  },
+  {
+    "type": "info",
+    "text": "[from-server] settle #3 htmx:afterSettle at readout, form value 0"
+  }
+]

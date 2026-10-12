@@ -1,0 +1,259 @@
+[
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "readout"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "x-line-consumer": "page",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "readout"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "readout"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/publish",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "counter",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/log",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "counter-log",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/reset",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/undo",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/submit",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "submit-result",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "page-form"
+    },
+    "body": "count=-7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "x-line-consumer": "page",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/log",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "x-line-consumer": "page",
+      "hx-request": "true",
+      "hx-target": "counter-log",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "slotted"
+    },
+    "body": "consumer=page",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/host",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "host-result",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "native"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/host",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "host-result",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "native"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/element",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "element-slot",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "fetch-element"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2",
+      "hx-trigger": "readout"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/reset",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "hx-request": "true",
+      "hx-target": "readout",
+      "hx-current-url": "http://127.0.0.1:4405/?htmx=2"
+    },
+    "status": 200
+  }
+]

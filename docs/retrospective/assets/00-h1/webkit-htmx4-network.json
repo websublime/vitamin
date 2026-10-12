@@ -1,0 +1,293 @@
+[
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "output#readout",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "x-line-consumer": "page",
+      "hx-request": "true",
+      "hx-source": "output#readout",
+      "hx-target": "output#readout",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4",
+      "hx-request-type": "partial"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "output#readout",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/publish",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button",
+      "hx-target": "line-htmx-counter#counter",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/log",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button",
+      "hx-target": "ol#counter-log",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/reset",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=2",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/undo",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/submit",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form#page-form",
+      "hx-target": "output#submit-result",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "count=-7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=7",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "x-line-consumer": "page",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/log",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button#slotted",
+      "hx-target": "ol#counter-log",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "consumer=page",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/host",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "line-htmx-counter#native",
+      "hx-target": "output#host-result",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/host",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "line-htmx-counter#native",
+      "hx-target": "output#host-result",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/inc",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/element",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "button#fetch-element",
+      "hx-target": "div#element-slot",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "path": "/value",
+    "headers": {
+      "hx-request": "true",
+      "hx-source": "output#readout",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/dec",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "form",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "body": "step=1",
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "path": "/reset",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      "hx-request": "true",
+      "hx-source": "button",
+      "hx-target": "output#readout",
+      "hx-request-type": "partial",
+      "hx-current-url": "http://127.0.0.1:4406/?htmx=4"
+    },
+    "status": 200
+  }
+]
