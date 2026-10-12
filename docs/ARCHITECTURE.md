@@ -1147,7 +1147,7 @@ Useful for Input, Textarea, SearchInput — clicking anywhere on the component f
 /* or: <link rel="stylesheet" href="@websublime/line-tokens/dist/reset.min.css"> */
 ```
 
-All selectors use `:where()` for zero specificity, so consumer styles always win without needing to increase specificity.
+Every reset rule sits inside the cascade layer `line` (`@layer line`, PRD §9.12), and every selector uses `:where()` for zero specificity. A consumer rule outside `@layer` beats the reset at any specificity and in any order. A consumer stylesheet that declares its own layers starts with `@layer line;` or puts `line` first in its order statement, and its layered rules then beat the reset.
 
 **Scope — the reset covers seven categories:**
 
@@ -1164,12 +1164,14 @@ All selectors use `:where()` for zero specificity, so consumer styles always win
 **Example (field component):**
 
 ```css
-:where(line-field) :where(label),
-:where(line-field) :where(span[slot="hint"]),
-:where(line-field) :where(span[slot="error"]) {
-  margin: 0;
-  padding: 0;
-  font: inherit;
+@layer line {
+  :where(line-field) :where(label),
+  :where(line-field) :where(span[slot="hint"]),
+  :where(line-field) :where(span[slot="error"]) {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+  }
 }
 ```
 

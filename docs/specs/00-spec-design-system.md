@@ -4,7 +4,7 @@
 **Author:** Ada (architect)
 **Date:** 2026-05-19
 **Phase target:** `line://ui` v0.1.0
-**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.12, APPROVED)
+**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.13, APPROVED)
 **Source Plan:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/plans/00-plan-design-system.md`](../plans/00-plan-design-system.md) (APPROVED)
 **Source Architecture:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/ARCHITECTURE.md`](../ARCHITECTURE.md)
 **Source Research:**
@@ -531,6 +531,7 @@ This is **not active configuration**; it is documented in `docs/runbooks/bundler
 | AM-055 | 2026-10-10 | ledger `00-Z14` (decision — Miguel chose `color-scheme` as the only mode switch over a `data-*` attribute hook and over shipping the `.dark` / `.light` classes with a MANIFESTO Law 2 exception) | PRD v0.8.12 rewrites §9.8, and the spec header cites PRD v0.8.12. Consumers switch mode through `color-scheme` alone, and a consumer class such as Tailwind's `.dark` maps to it with one rule, `.dark { color-scheme: dark }`. The §6.C.2 bullet on `light-dark()` drops the clause about the `.dark` / `.light` classes. | PRD §9.8 named the `.dark` / `.light` classes as a public API, but no package has ever declared them. Bare classes would break MANIFESTO Law 2, which requires the `line-` prefix and exempts only standard hooks such as `data-*`. ARCHITECTURE v0.8.0 replaced the accent schema classes `.line-schema-X` with `data-*` attributes. ARCHITECTURE §4, spec §6.G.2 item 4 and the theming guide name `color-scheme` as the switch. Plan §4.7 G2 and `CLAUDE.md` name no mode class. Context: `docs/context/00-z14.md`. | No file under `packages/*/src` declares `.dark`, `.light` or `color-scheme`; the claim dates from the initial import `939cad2`. `docs/MANIFESTO.md:41` (Law 2); `docs/ARCHITECTURE.md:24` (v0.8.0); `docs/ARCHITECTURE.md:191` (§4); `docs/plans/00-plan-design-system.md:198` (G2, "light/dark"); `CLAUDE.md:9` ("light/dark via `light-dark()`"); `apps/storybook/stories/theming.mdx:87-107`; Tailwind v4 dark mode (https://tailwindcss.com/docs/dark-mode) toggles `.dark` or `data-theme` and does not set `color-scheme`. |
 | AM-056 | 2026-10-10 | ledger `00-Z16` (bug found after the 00-G3 deploy; Miguel approved 2026-10-10) | Two changes, no design change. (a) The §6.A.3 dependency table gains `remark-gfm` `^4.0.1`, a devDependency of `apps/storybook`. (b) The §6.F.1 `main.ts` block configures `@storybook/addon-docs` with `options.mdxPluginOptions.mdxCompileOptions.remarkPlugins: [remarkGfm]`. | The §6.G MDX guides use GFM tables, but Storybook 10's MDX 3 parses CommonMark only, so the deployed Theming and Customisation pages showed each table as a paragraph of pipes. | Storybook docs, "Markdown tables aren't rendering correctly" (`https://storybook.js.org/docs/writing-docs/mdx`), gives this recipe and says `remark-gfm` must be installed separately; npm `remark-gfm` latest is 4.0.1 (unified 11 / MDX 3 line). Built Storybook before the fix: 0 markdown `<table>` on the Theming and Customisation docs pages (3 and 1 pipe paragraphs). |
 | AM-057 | 2026-10-10 | ledger `00-F11` (decision — Miguel chose storybook-static over storybook dev, and apps/storybook/__tests__ over a dedicated project) | Three changes to §6.F.4; §6.F.5 is unchanged. (a) The `playwright.config.ts` block: `testDir: './packages'` becomes `testDir: '.'`, `testMatch` becomes `['packages/**/*.e2e.ts', 'apps/**/*.e2e.ts']`, and `respectGitIgnore: true` is added. `webServer` becomes an array. Its first entry is the unchanged line-core fixture server on port 4319, and its second serves the built `apps/storybook/storybook-static` with `vite preview apps/storybook --outDir storybook-static --host 127.0.0.1 --port 4320 --strictPort` (`url: 'http://127.0.0.1:4320/iframe.html'`, `reuseExistingServer: !process.env.CI`). `use.baseURL` stays `http://127.0.0.1:4319`. (b) The sentence under the block states that `bun run e2e` needs a prior `bun run build`, which produces `storybook-static`. (c) The Storybook smoke bullet names `apps/storybook/__tests__/storybook-smoke.e2e.ts`, which sets `baseURL` to port 4320 with `test.use()` and loads each page through `iframe.html`. | The smoke tier needs Storybook served to Playwright, and Miguel chose the static build over the dev server and the test inside `apps/storybook` over a dedicated Playwright project. `vite` is already a root devDependency, so no dependency is added. Playwright turns `respectGitIgnore` off when `testDir` is set, and it prefixes every `testMatch` glob with `**/`, so without it the run would walk the gitignored `temp/` tree and could match its `packages/**` files; `node_modules` is always skipped. The `checks.yml` step `bun run build` (AM-029) already builds every app, Storybook included, before `bun run e2e`, so CI needs no change. | `node_modules/playwright/lib/runner/index.js` (`collectFiles`, `createFileMatcher`) and `lib/common/index.js:660` (`respectGitIgnore` default) at `playwright@1.60.0`; `vite preview --help` (vite 8.0.14) lists `[root]` and `--outDir`; `.github/workflows/checks.yml` steps "Build packages" (`bun run build`) before "Browser tier" (`bun run e2e`). |
+| AM-058 | 2026-10-12 | ledger `00-Z15` (decision — Miguel chose every rule of the three packages in `@layer line` over keeping them unlayered with a documented recipe and over shipping both an unlayered and a layered build) | Every rule of `line-tokens`, `line-colors` and `line-themes` moves into the cascade layer `line` (PRD v0.8.13), and the spec header cites PRD v0.8.13. (a) §6.C gains the **Cascade layer** contract. The layer name is `line`, the packages use one layer with no sub-layers and no order statement, each `src/` leaf file wraps all its rules in one `@layer line { … }` block, the generators emit the block, the barrels hold only `@import` rules, every `:where()` selector stays, `reset.css` is included, and the `line-core` shadow-DOM reset sheets stay unlayered. (b) The §6.C.2 `shadows.css` block shows the wrapper. (c) The §6.C.2 derived-token bullet places the consumer override outside `@layer line`. (d) The §6.C.3 generator output block shows the wrapper. (e) The §6.C.3 output barrel line says `index.css` holds no rule and `special.css` uses the wrapper. (f) The §6.C.4 `accent/{H}.css`, `gray/{G}.css`, `defaults.css`, `semantics.css` and `aliases.css` blocks show the wrapper. (g) The §6.C.4 `index.css` caption says the barrel holds `@import` rules only. (h) The §6.C.7 table gains `cascade-layer.test.ts` for each of the three packages. `packages/line-colors/__tests__/` is new. (i) §6.F.4 gains the `cascade-layer.e2e.ts` check in chromium, firefox and webkit. (j) §6.G.3 item 4 teaches the layer, the `:where()` rule, Shadow DOM isolation and the consumer recipe. (k) §9.2 names the three `cascade-layer.test.ts` suites and gains a layer criterion. | PRD T2 said `@layer` was not needed, because `:where()` and Shadow DOM covered every cascade case. The cascade compares layers before specificity, and every unlayered rule beats every layered rule. `:where()` acts only on specificity, so a consumer override inside `@layer`, Tailwind v4's `@layer base` for example, lost to the unlayered package rules. The unlayered `reset.css` also beat a later-layer utility such as Tailwind's `mt-4`. A consumer can place third-party CSS in a layer only with `@import url(…) layer(name)`. HTML has no `layer` attribute on `<link>`, and a JavaScript CSS import cannot name a layer, so only a block inside the library reaches every consumer. | Chromium via Playwright, inline CSS that mirrors the package selectors (`docs/context/00-z15.md`). Unlayered, a `:where(html)` override loaded before the packages loses, an `@layer base` override loses and `mt-4` in `@layer utilities` computes 0px. With `@layer line` the first wins, and the other two win (`mt-4` computes 16px) once the page starts with `@layer line;`. A consumer `::part()` rule inside `@layer` beats an unlayered rule inside the shadow root in both builds. CSS Cascading and Inheritance Level 5 §6.4 (cascade layers; unlayered styles win over layered normal styles). whatwg/html#7540 (`layer` attribute on `<link>`, open since 2022-01). The repo `postcss.config.mjs` keeps `@layer line{…}` as is, and no document-level package declares `!important`. Peers checked 2026-10-12: Web Awesome 3, Tailwind CSS v4, Panda CSS and Mantine (`styles.layer.css`) ship layers; Open Props 1 and Radix Themes 3 ship unlayered CSS. |
 
 **A4 — npm scope.**
 
@@ -610,6 +611,18 @@ Allowed edges (downward only):
 **B5 — Verifiable surface at B5 time (AM-008/AM-009).** B5 is in Stream B and only configures `.changeset/config.json` — it does **not** author CI workflows. `release.yml`, `snapshot-version.yml`, and `snapshot-deploy.yml` are authored by Stream F (F3 / F4 per §6.F.5), and the end-to-end snapshot/canary publish from `main` is asserted there. The B5 verifiable surface is therefore: (1) `.changeset/config.json` matches the field list above (`baseBranch: "main"`, `linked: []`, `access: "public"`, `commit: false`, the `changelog`/`ignore` entries); and (2) a **local** `bunx changeset version --snapshot` dry-run succeeds against the configured workspace. The CI / branch-trigger verification is deferred to Stream F — this mirrors the AM-006 / AM-007 precedent (Stream B configures the plumbing; Stream F asserts the CI surface).
 
 ### 6.C Stream C — Design System Authoring
+
+**Cascade layer (AM-058).** Every rule of `line-tokens`, `line-colors` and `line-themes` sits inside the cascade layer `line` (PRD §9.12, T2). This contract governs §6.C.2, §6.C.3 and §6.C.4:
+
+- The layer name is `line`. It is public API, because consumers name it in their layer order statements.
+- The packages use one layer and no sub-layers. They declare no layer order statement of their own.
+- Each `src/` leaf file wraps all its rules in one `@layer line { … }` block. Only comments sit outside the block. `reset.css` follows the same rule.
+- `scripts/generate-palettes.mjs` and `scripts/generate-role-maps.mjs` emit the block, so the palette freshness guard (§6.C.3) checks it.
+- The barrels (`src/index.css`) hold only `@import` rules and comments.
+- Every selector keeps its `:where()` form inside the block.
+- The `line-core` shadow-DOM reset sheets (§6.D.7) stay unlayered. The cascade compares the shadow context before layers, so consumer `::part()` and host rules beat them.
+
+A consumer rule outside `@layer` beats every rule in `line` at any specificity and in any order. A consumer stylesheet that declares its own layers starts with `@layer line;` or puts `line` first in its order statement.
 
 #### 6.C.1 `line-schemas` — TS contracts (C1)
 
@@ -703,137 +716,139 @@ The `reset.css` file is **distinct from** `line-core/styles/*` (which is the sha
 - `light-dark()` resolves on the element that paints the shadow, so a `color-scheme: dark` container on a light page gets dark-mode shadows. `shadows.css` does not use `prefers-color-scheme`.
 - `--line-shadow-color-{2,3,4,5,6,7,9}`, `--line-shadow-1..6` and `--line-shadow-inner-1..3` are declared in `:where(html, [data-accent], [data-gray])`. Each theming scope resolves them against its own gray role, and that includes the auto-pair that `defaults.css` sets inside a `[data-accent]` without `data-gray` (§6.C.4).
 - The three knobs inherit, and each theming scope substitutes them where it declares the colour tokens. No nested scope declares the knobs again, so a knob override on any element reaches every theming scope below it. An override on `<html>`, a `[data-accent]` or a `[data-gray]` also reaches that element. An override on any other element does not reach that element or its descendants outside a theming scope, because their shadow tokens were substituted at the nearest theming scope above.
-- The colour tokens and the shadow tokens are derived values, not knobs. An override of one on `<html>` stops at the first nested theming scope, which declares it again. A consumer who overrides one everywhere writes a rule for `html, [data-accent], [data-gray]`, and that rule beats the zero-specificity `:where()` (PRD §9.12).
+- The colour tokens and the shadow tokens are derived values, not knobs. An override of one on `<html>` stops at the first nested theming scope, which declares it again. A consumer who overrides one everywhere writes a rule for `html, [data-accent], [data-gray]` outside `@layer line`, and that rule beats the `line` rules (PRD §9.12).
 - The geometry of every layer is unchanged, and each layer takes the Open Props offset for that layer. The inner shadows use the +9 offset and carry no highlight layer, because Open Props builds its highlight from colour literals.
 - The `shadows.css` header comment and the `line-tokens` README state the colour dependency (`line-colors`, plus `line-themes` for the gray tint). They also state that the scale draws nothing with `line-tokens` alone until `--line-shadow-color` is set, that `--line-shadow-color` takes an opaque colour, where knob overrides take effect, and that an override of a derived token stops at the next theming scope.
 
 ```css
-:where(html) {
-  --line-shadow-strength: 1%;
-  --line-shadow-strength-dark: 25%;
-}
+@layer line {
+  :where(html) {
+    --line-shadow-strength: 1%;
+    --line-shadow-strength-dark: 25%;
+  }
 
-:where(html, [data-accent], [data-gray]) {
-  /* --line-shadow-color-N holds the shadow colour at strength + N points. */
-  --line-shadow-color-2: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 2%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 2%),
-      transparent
-    )
-  );
-  --line-shadow-color-3: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 3%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 3%),
-      transparent
-    )
-  );
-  --line-shadow-color-4: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 4%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 4%),
-      transparent
-    )
-  );
-  --line-shadow-color-5: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 5%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 5%),
-      transparent
-    )
-  );
-  --line-shadow-color-6: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 6%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 6%),
-      transparent
-    )
-  );
-  --line-shadow-color-7: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 7%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 7%),
-      transparent
-    )
-  );
-  --line-shadow-color-9: light-dark(
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 9%),
-      transparent
-    ),
-    color-mix(
-      in srgb,
-      var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 9%),
-      transparent
-    )
-  );
+  :where(html, [data-accent], [data-gray]) {
+    /* --line-shadow-color-N holds the shadow colour at strength + N points. */
+    --line-shadow-color-2: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 2%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 2%),
+        transparent
+      )
+    );
+    --line-shadow-color-3: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 3%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 3%),
+        transparent
+      )
+    );
+    --line-shadow-color-4: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 4%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 4%),
+        transparent
+      )
+    );
+    --line-shadow-color-5: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 5%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 5%),
+        transparent
+      )
+    );
+    --line-shadow-color-6: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 6%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 6%),
+        transparent
+      )
+    );
+    --line-shadow-color-7: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 7%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 7%),
+        transparent
+      )
+    );
+    --line-shadow-color-9: light-dark(
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-12, var(--line-neutral-12))) calc(var(--line-shadow-strength) + 9%),
+        transparent
+      ),
+      color-mix(
+        in srgb,
+        var(--line-shadow-color, var(--line-gray-1, var(--line-neutral-1))) calc(var(--line-shadow-strength-dark) + 9%),
+        transparent
+      )
+    );
 
-  --line-shadow-1: 0 1px 2px -1px var(--line-shadow-color-9);
-  --line-shadow-2: 0 3px 5px -2px var(--line-shadow-color-3), 0 7px 14px -5px var(--line-shadow-color-5);
-  --line-shadow-3:
-    0 -1px 3px 0 var(--line-shadow-color-2),
-    0 1px 2px -5px var(--line-shadow-color-2),
-    0 2px 5px -5px var(--line-shadow-color-4),
-    0 4px 12px -5px var(--line-shadow-color-5),
-    0 12px 15px -5px var(--line-shadow-color-7);
-  --line-shadow-4:
-    0 -2px 5px 0 var(--line-shadow-color-2),
-    0 1px 1px -2px var(--line-shadow-color-3),
-    0 2px 2px -2px var(--line-shadow-color-3),
-    0 5px 5px -2px var(--line-shadow-color-4),
-    0 9px 9px -2px var(--line-shadow-color-5),
-    0 16px 16px -2px var(--line-shadow-color-6);
-  --line-shadow-5:
-    0 -1px 2px 0 var(--line-shadow-color-2),
-    0 2px 1px -2px var(--line-shadow-color-3),
-    0 5px 5px -2px var(--line-shadow-color-3),
-    0 10px 10px -2px var(--line-shadow-color-4),
-    0 20px 20px -2px var(--line-shadow-color-5),
-    0 40px 40px -2px var(--line-shadow-color-7);
-  --line-shadow-6:
-    0 -1px 2px 0 var(--line-shadow-color-2),
-    0 3px 2px -2px var(--line-shadow-color-3),
-    0 7px 5px -2px var(--line-shadow-color-3),
-    0 12px 10px -2px var(--line-shadow-color-4),
-    0 22px 18px -2px var(--line-shadow-color-5),
-    0 41px 33px -2px var(--line-shadow-color-6),
-    0 100px 80px -2px var(--line-shadow-color-7);
+    --line-shadow-1: 0 1px 2px -1px var(--line-shadow-color-9);
+    --line-shadow-2: 0 3px 5px -2px var(--line-shadow-color-3), 0 7px 14px -5px var(--line-shadow-color-5);
+    --line-shadow-3:
+      0 -1px 3px 0 var(--line-shadow-color-2),
+      0 1px 2px -5px var(--line-shadow-color-2),
+      0 2px 5px -5px var(--line-shadow-color-4),
+      0 4px 12px -5px var(--line-shadow-color-5),
+      0 12px 15px -5px var(--line-shadow-color-7);
+    --line-shadow-4:
+      0 -2px 5px 0 var(--line-shadow-color-2),
+      0 1px 1px -2px var(--line-shadow-color-3),
+      0 2px 2px -2px var(--line-shadow-color-3),
+      0 5px 5px -2px var(--line-shadow-color-4),
+      0 9px 9px -2px var(--line-shadow-color-5),
+      0 16px 16px -2px var(--line-shadow-color-6);
+    --line-shadow-5:
+      0 -1px 2px 0 var(--line-shadow-color-2),
+      0 2px 1px -2px var(--line-shadow-color-3),
+      0 5px 5px -2px var(--line-shadow-color-3),
+      0 10px 10px -2px var(--line-shadow-color-4),
+      0 20px 20px -2px var(--line-shadow-color-5),
+      0 40px 40px -2px var(--line-shadow-color-7);
+    --line-shadow-6:
+      0 -1px 2px 0 var(--line-shadow-color-2),
+      0 3px 2px -2px var(--line-shadow-color-3),
+      0 7px 5px -2px var(--line-shadow-color-3),
+      0 12px 10px -2px var(--line-shadow-color-4),
+      0 22px 18px -2px var(--line-shadow-color-5),
+      0 41px 33px -2px var(--line-shadow-color-6),
+      0 100px 80px -2px var(--line-shadow-color-7);
 
-  --line-shadow-inner-1: inset 0 0 0 1px var(--line-shadow-color-9);
-  --line-shadow-inner-2: inset 0 1px 2px 0 var(--line-shadow-color-9);
-  --line-shadow-inner-3: inset 0 1px 4px 0 var(--line-shadow-color-9);
+    --line-shadow-inner-1: inset 0 0 0 1px var(--line-shadow-color-9);
+    --line-shadow-inner-2: inset 0 1px 2px 0 var(--line-shadow-color-9);
+    --line-shadow-inner-3: inset 0 1px 4px 0 var(--line-shadow-color-9);
+  }
 }
 ```
 
@@ -855,32 +870,34 @@ generate-palettes.mjs --output packages/line-colors/src/
 
 **Source-to-emitted name map (AM-052).** One shared module, `scripts/radix-sources.mjs`, exports the map from emitted hue name to Radix source name, `{ neutral: 'gray' }`, and a lookup helper that returns the Radix source name for a hue. Every script that reads `@radix-ui/colors` by hue name goes through that helper. Today these are `generate-palettes.mjs` and `validate-contrast.mjs`. `verify-palettes-fresh.mjs` runs the generator as a subprocess and reads no Radix object itself. The map lives under `scripts/`, not in `line-schemas`, so it adds no published surface. For `H = neutral` the generator reads the Radix objects `gray`, `grayA`, `grayP3`, `grayP3A`, `grayDark`, `grayDarkA`, `grayDarkP3` and `grayDarkP3A` with the step keys `gray{n}` and `grayA{n}`. It emits them as `neutral.css` with `--line-neutral-*` tokens. Every other hue maps to itself. The generator emits one file per `HUES` entry, under its emitted name.
 
-**Output per hue:** `packages/line-colors/src/{H}.css`. Concrete shape (per PRD §9.7):
+**Output per hue:** `packages/line-colors/src/{H}.css`. Concrete shape (per PRD §9.7), with every rule inside one `@layer line` block (§6.C):
 
 ```css
 /* AUTO-GENERATED by scripts/generate-palettes.mjs — do not edit by hand */
-:where(html) {
-  /* Base steps (sRGB) — light-dark() over light + dark base scales */
-  --line-{H}-1:  light-dark({H}.{H}1,        {H}Dark.{H}1);
-  --line-{H}-2:  light-dark({H}.{H}2,        {H}Dark.{H}2);
-  /* … through --line-{H}-12 */
+@layer line {
+  :where(html) {
+    /* Base steps (sRGB) — light-dark() over light + dark base scales */
+    --line-{H}-1:  light-dark({H}.{H}1,        {H}Dark.{H}1);
+    --line-{H}-2:  light-dark({H}.{H}2,        {H}Dark.{H}2);
+    /* … through --line-{H}-12 */
 
-  /* Alpha steps (sRGB) — light-dark() over alpha light + alpha dark */
-  --line-{H}-a1: light-dark({H}A.{H}A1,      {H}DarkA.{H}A1);
-  /* … through --line-{H}-a12 */
+    /* Alpha steps (sRGB) — light-dark() over alpha light + alpha dark */
+    --line-{H}-a1: light-dark({H}A.{H}A1,      {H}DarkA.{H}A1);
+    /* … through --line-{H}-a12 */
 
-  /* Contrast (static single value per hue, NOT light-dark()) */
-  --line-{H}-contrast: {PER_HUE_CONTRAST[H]};
-}
+    /* Contrast (static single value per hue, NOT light-dark()) */
+    --line-{H}-contrast: {PER_HUE_CONTRAST[H]};
+  }
 
-/* Wide-gamut P3 override — same token names, automatic upgrade */
-@supports (color: color(display-p3 1 1 1)) {
-  @media (color-gamut: p3) {
-    :where(html) {
-      --line-{H}-1:  light-dark({H}P3.{H}1,      {H}DarkP3.{H}1);
-      /* … through --line-{H}-12 */
-      --line-{H}-a1: light-dark({H}P3A.{H}A1,    {H}DarkP3A.{H}A1);
-      /* … through --line-{H}-a12 */
+  /* Wide-gamut P3 override — same token names, automatic upgrade */
+  @supports (color: color(display-p3 1 1 1)) {
+    @media (color-gamut: p3) {
+      :where(html) {
+        --line-{H}-1:  light-dark({H}P3.{H}1,      {H}DarkP3.{H}1);
+        /* … through --line-{H}-12 */
+        --line-{H}-a1: light-dark({H}P3A.{H}A1,    {H}DarkP3A.{H}A1);
+        /* … through --line-{H}-a12 */
+      }
     }
   }
 }
@@ -901,7 +918,7 @@ So the generator indexes the dark / P3 / dark-P3 base objects with the **base** 
 
 Light/dark are not relevant for the alpha-on-black or alpha-on-white scales — `blackA` is identical in both modes. The generator emits them outside `light-dark()`.
 
-**Output barrel:** `packages/line-colors/src/index.css` = `@import` of all 31 hue files + `special.css`.
+**Output barrel:** `packages/line-colors/src/index.css` = `@import` of all 31 hue files + `special.css`. It holds no rule of its own (§6.C). `special.css` wraps its rules in one `@layer line` block, like each hue file.
 
 **Regeneration policy.** Generated CSS is **committed**. The script runs only when:
 - `@radix-ui/colors` is bumped (the version pin in `package.json` changes), OR
@@ -956,89 +973,99 @@ generate-role-maps.mjs --output packages/line-themes/src/
 
 ```css
 /* AUTO-GENERATED */
-:where([data-accent="{H}"]) {
-  --line-accent-1:  var(--line-{H}-1);
-  /* … through --line-accent-12 */
-  --line-accent-a1: var(--line-{H}-a1);
-  /* … through --line-accent-a12 */
-  --line-accent-contrast: var(--line-{H}-contrast);
+@layer line {
+  :where([data-accent="{H}"]) {
+    --line-accent-1:  var(--line-{H}-1);
+    /* … through --line-accent-12 */
+    --line-accent-a1: var(--line-{H}-a1);
+    /* … through --line-accent-a12 */
+    --line-accent-contrast: var(--line-{H}-contrast);
+  }
 }
 ```
 
 `packages/line-themes/src/gray/{G}.css` (one per gray hue, 6 files):
 
 ```css
-:where([data-gray="{G}"]) {
-  --line-gray-1:  var(--line-{G}-1);
-  /* … through --line-gray-12 */
-  --line-gray-a1: var(--line-{G}-a1);
-  /* … through --line-gray-a12 */
-  --line-gray-contrast: var(--line-{G}-contrast);
+@layer line {
+  :where([data-gray="{G}"]) {
+    --line-gray-1:  var(--line-{G}-1);
+    /* … through --line-gray-12 */
+    --line-gray-a1: var(--line-{G}-a1);
+    /* … through --line-gray-a12 */
+    --line-gray-contrast: var(--line-{G}-contrast);
+  }
 }
 ```
 
 `packages/line-themes/src/defaults.css` (hand-authored, regenerated only on table change):
 
 ```css
-/* Default accent when no [data-accent] is set */
-:where(html:not([data-accent])) {
-  --line-accent-1:  var(--line-indigo-1);
-  /* … through 12 + a1..a12 + contrast */
-}
+@layer line {
+  /* Default accent when no [data-accent] is set */
+  :where(html:not([data-accent])) {
+    --line-accent-1:  var(--line-indigo-1);
+    /* … through 12 + a1..a12 + contrast */
+  }
 
-/* Auto-pair: explicit accent without explicit gray → curated pair */
-:where([data-accent="tomato"]:not([data-gray])) {
-  --line-gray-1: var(--line-mauve-1);
-  /* … through 12 + a1..a12 + contrast */
-}
-/* … one block per accent hue, following the PRD §9.5 pairs */
+  /* Auto-pair: explicit accent without explicit gray → curated pair */
+  :where([data-accent="tomato"]:not([data-gray])) {
+    --line-gray-1: var(--line-mauve-1);
+    /* … through 12 + a1..a12 + contrast */
+  }
+  /* … one block per accent hue, following the PRD §9.5 pairs */
 
-/* Default gray when no [data-accent] AND no [data-gray] */
-:where(html:not([data-accent]):not([data-gray])) {
-  --line-gray-1: var(--line-slate-1);
-  /* … */
+  /* Default gray when no [data-accent] AND no [data-gray] */
+  :where(html:not([data-accent]):not([data-gray])) {
+    --line-gray-1: var(--line-slate-1);
+    /* … */
+  }
 }
 ```
 
 `packages/line-themes/src/semantics.css` (hand-authored, fixed):
 
 ```css
-/* Semantic roles — fixed at root, not swappable per theme */
-:where(html) {
-  /* success → green */
-  --line-success-1:  var(--line-green-1);
-  /* … 12 + a1..a12 + contrast */
-  /* warning → amber */
-  --line-warning-1:  var(--line-amber-1);
-  /* … */
-  /* danger → red */
-  --line-danger-1:   var(--line-red-1);
-  /* … */
-  /* info → blue */
-  --line-info-1:     var(--line-blue-1);
-  /* … */
+@layer line {
+  /* Semantic roles — fixed at root, not swappable per theme */
+  :where(html) {
+    /* success → green */
+    --line-success-1:  var(--line-green-1);
+    /* … 12 + a1..a12 + contrast */
+    /* warning → amber */
+    --line-warning-1:  var(--line-amber-1);
+    /* … */
+    /* danger → red */
+    --line-danger-1:   var(--line-red-1);
+    /* … */
+    /* info → blue */
+    --line-info-1:     var(--line-blue-1);
+    /* … */
+  }
 }
 ```
 
 `packages/line-themes/src/aliases.css` (hand-authored, fixed — 9 aliases × 6 roles = 54 vars). Each theming scope re-resolves the aliases against its own role steps, so a nested `[data-accent]` or `[data-gray]` scope gets its own alias values (PRD §9.4, AM-049):
 
 ```css
-:where(html, [data-accent], [data-gray]) {
-  /* accent aliases */
-  --line-accent-surface:      var(--line-accent-2);
-  --line-accent-bg:           var(--line-accent-3);
-  --line-accent-bg-hover:     var(--line-accent-4);
-  --line-accent-bg-active:    var(--line-accent-5);
-  --line-accent-border:       var(--line-accent-7);
-  --line-accent-solid:        var(--line-accent-9);
-  --line-accent-solid-hover:  var(--line-accent-10);
-  --line-accent-text-low:     var(--line-accent-11);
-  --line-accent-text:         var(--line-accent-12);
-  /* gray, success, warning, danger, info — same 9 aliases each */
+@layer line {
+  :where(html, [data-accent], [data-gray]) {
+    /* accent aliases */
+    --line-accent-surface:      var(--line-accent-2);
+    --line-accent-bg:           var(--line-accent-3);
+    --line-accent-bg-hover:     var(--line-accent-4);
+    --line-accent-bg-active:    var(--line-accent-5);
+    --line-accent-border:       var(--line-accent-7);
+    --line-accent-solid:        var(--line-accent-9);
+    --line-accent-solid-hover:  var(--line-accent-10);
+    --line-accent-text-low:     var(--line-accent-11);
+    --line-accent-text:         var(--line-accent-12);
+    /* gray, success, warning, danger, info — same 9 aliases each */
+  }
 }
 ```
 
-`packages/line-themes/src/index.css`:
+`packages/line-themes/src/index.css` (`@import` rules only, §6.C):
 
 ```css
 @import './semantics.css';
@@ -1111,6 +1138,7 @@ Tests live in `packages/line-themes/__tests__/`:
 | `auto-pair.behaviour.test.ts` | Asserts the auto-pair cascade by **string-matching the committed `src/defaults.css`** role-map rules (AM-015 — `getComputedStyle()` cannot resolve the `var()`/`light-dark()` chain under happy-dom). Verifies the same four cases: default (no attrs), explicit accent only (auto-pair), explicit accent + gray, and nested scope override (`:where([data-accent="X"]:not([data-gray]))`, e.g. violet → slate). |
 | `hue-role-names.e2e.ts` | Playwright browser test, driven by the `line-schemas` lists (AM-052). Reference values come from a page that loads only `line-colors/dist/index.css`. The test page loads `line-colors` and `line-themes`. Every value read must be non-empty. (a) For each `GRAY_HUES` entry `g`, the gray role steps under `[data-gray=g]` equal the reference `--line-{g}-N`. (b) For each `HUES` entry `h`, the accent role steps under `[data-accent=h]` equal the reference `--line-{h}-N`. (c) At a themed root, each `--line-{h}-1` equals its reference. The test fails on `0.1.0`, where the gray role reads empty for `gray`. |
 | `schema.test.ts` | Zod validators reject invalid hue/role inputs; valid inputs match the generated CSS file existence. It reads `src/accent/` and `src/gray/`, not `dist/`, because the build never cleans `dist/`. The file set of `src/accent/` must equal `HUES` and the file set of `src/gray/` must equal `GRAY_HUES` exactly, so a stale extra file fails the suite (AM-052). |
+| `cascade-layer.test.ts` | `bun test` (AM-058). It parses every `src/*.css` file of `line-themes`, `src/accent/*.css` and `src/gray/*.css` included, with PostCSS. It fails when a top-level node is anything other than a comment, an `@import` rule or an `@layer line { … }` block. The same test ships as `packages/line-tokens/__tests__/cascade-layer.test.ts` and `packages/line-colors/__tests__/cascade-layer.test.ts`, each over its own package's `src/*.css`. `line-colors` has no `__tests__/` directory before AM-058. `bun test` finds the new file without config, and the package `files` field (`dist` only) keeps it out of the tarball. |
 
 **C9 — auto-pair verification method (AM-015).** The `auto-pair.behaviour.test.ts` row asserts behaviour by string-matching the committed `src/defaults.css` cascade rather than reading `getComputedStyle()`, because happy-dom (and jsdom) do not resolve the `var()`/`light-dark()` chain. C9 runs on F2's happy-dom harness (§6.F.3) and must NOT provision its own DOM library. The string-assertion method was confirmed by a spike (executed 2026-06-17, AM-020): happy-dom **can** resolve a trivial hex-terminated `var()` chain via `getComputedStyle()`, but it does **not** compute the production chain, whose terminal value is `light-dark(#hex,#hex)` (returned as the literal `light-dark(...)` text, and `""` for any property consuming it) — so a computed-style read is unworkable for the real role variables and the committed-CSS string assertion is required.
 
@@ -1696,6 +1724,7 @@ Playwright runs:
 - The `line-themes` alias-scope check: every alias equals its mapped numeric step in the root and in nested `[data-accent]` / `[data-gray]` scopes (`packages/line-themes/__tests__/aliases-scope.e2e.ts`, AM-049).
 - The `line-themes` hue-role name check (§6.C.7, AM-052). It runs in the chromium, firefox and webkit projects of `playwright.config.ts` (`packages/line-themes/__tests__/hue-role-names.e2e.ts`).
 - The `line-tokens` shadow check (§6.C.2, AM-054). It runs in the chromium, firefox and webkit projects of `playwright.config.ts` (`packages/line-tokens/__tests__/shadows.e2e.ts`) and reads the built `dist/` CSS of `line-colors`, `line-themes` and `line-tokens`. Each of `--line-shadow-1..6` and `--line-shadow-inner-1..3` computes a `box-shadow` other than `none`. In light mode each layer's alpha equals `--line-shadow-strength` plus its offset. In a `color-scheme: dark` container on a light page it equals `--line-shadow-strength-dark` plus the offset. The colour equals the nearest gray role at the root, in a nested `[data-gray]` and in a nested `[data-accent]` without `data-gray`. Without `line-themes` it equals `--line-neutral-*`. Overrides of `--line-shadow-color`, `--line-shadow-strength` and `--line-shadow-strength-dark` on `<html>` reach a nested theming scope. The test reads the expected colour on a probe element in the same scope, styled `color: color-mix(in srgb, var(--line-gray-12) 100%, transparent)`, with step 1 inside the dark container and `--line-neutral-*` without `line-themes`. It compares channels and alpha to two decimals, because the mix converts the P3 palette values to sRGB and WebKit reports the resulting `color(srgb …)` with its own precision. The test fails on `0.1.0`, where every shadow token computes `none`.
+- The cascade layer check (§6.C, AM-058). It runs in the chromium, firefox and webkit projects of `playwright.config.ts` (`packages/line-themes/__tests__/cascade-layer.e2e.ts`). It loads the built `dist/` CSS of `line-tokens`, `line-colors` and `line-themes`, and the `line-tokens` `reset.css`, by path, as `aliases-scope.e2e.ts` does. (a) A consumer `:where(html)` override outside `@layer`, loaded before the packages, wins. (b) A consumer override in `@layer base` wins when the page starts with `@layer line;`. (c) A `.mt-4` utility in `@layer utilities` beats `reset.css` on a `<p>` inside `.line-card` when the page starts with `@layer line;`. The check fails against the unlayered CSS of `main` before AM-058 and passes against the layered CSS.
 - **Smoke page-render checks only** for Storybook (getting-started + theming + customisation MDX pages load without console errors; palette/role design-system stories render). The checks live in `apps/storybook/__tests__/storybook-smoke.e2e.ts`, run in the chromium, firefox and webkit projects, and load each page from the built `storybook-static` that the second `webServer` entry serves on port 4320, through `iframe.html?id=<id>&viewMode=docs|story` (AM-057). Each MDX page shows every `#` / `##` heading of its source and renders every `<Canvas>` story. Every story of `palettes.stories.ts` and `roles.stories.ts` renders the swatches the `line-schemas` lists call for, and each swatch token resolves. No page logs a console error or throws an uncaught exception, and the Storybook index lists exactly the entries the test covers. Phase 00 does **not** capture per-pixel visual-regression baselines (`toHaveScreenshot()` is not invoked). Full visual-regression infrastructure — baseline storage, per-browser diffs, update workflow — is deferred to Phase 1, aligned with PRD §5.2.1 J2 contract (no per-component visual baselines until components ship).
 
 `bunx playwright install --with-deps` runs in CI before the Playwright step.
@@ -2159,7 +2188,7 @@ Sections:
 1. `::part()` — note that Phase 00 has zero components; the doc explains the contract and shows a hand-rolled example consuming the upcoming Phase 1 surface.
 2. Custom properties — Tier 1 (global) → Tier 2 (component) → Tier 3 (consumer) cascade (PRD §9.11).
 3. Component tokens — naming convention `--line-{component}-{prop}`.
-4. Cascade strategy — `:where()` zero-specificity rule, Shadow DOM isolation, `@layer` not needed.
+4. Cascade strategy — every rule of the three CSS packages sits in `@layer line`, with zero-specificity `:where()` selectors. Shadow DOM isolates component internals, because the cascade compares the shadow context before layers. The consumer recipe reads: an override outside `@layer` wins at any specificity and in any order, and a stylesheet that declares layers starts with `@layer line;` or puts `line` first in its order statement (PRD §9.12, AM-058).
 
 #### 6.G.4 Templates & analyses (G4, G5)
 
@@ -2360,7 +2389,8 @@ Phase 00 is **complete** when **all** of the following hold. This mirrors plan �
 - [ ] `special.css` committed and built.
 - [ ] 31 `accent/*.css` + 6 `gray/*.css` files generated and committed under `packages/line-themes/src/`.
 - [ ] `semantics.css`, `aliases.css`, `defaults.css` committed.
-- [ ] `bun test` passes all CSS snapshot tests (palette, role mapping, auto-pair behaviour, schema).
+- [ ] `bun test` passes all CSS snapshot tests (palette, role mapping, auto-pair behaviour, schema) and the three `cascade-layer.test.ts` suites (AM-058).
+- [ ] Every rule in every `src/*.css` of `line-tokens`, `line-colors` and `line-themes` sits inside `@layer line`, the barrels hold only `@import` rules, and `cascade-layer.e2e.ts` passes in chromium, firefox and webkit (AM-058).
 - [ ] `scripts/validate-contrast.mjs` passes (31 hues × {light, dark} step-9 vs contrast token ≥ 3:1, with the single documented `orange` allowlist exception at 2.97:1 per AM-014).
 - [ ] `scripts/verify-palettes-fresh.mjs` passes (no drift between generator and committed CSS).
 - [ ] `aliases.css` declares exactly **54 alias variables** (9 named aliases × 6 roles), verified by a count assertion in a snapshot or unit test (PRD §9.14 T7).
