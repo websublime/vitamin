@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>line-htmx spike</title>
+    <!-- server.ts replaces the next comment with the htmx script that ?htmx=2|4 selects. -->
+    <!-- htmx -->
+    <script type="module" src="/line-htmx-counter.js"></script>
+    <script type="module">
+      document.querySelector('#htmx-version').textContent = window.htmx?.version ?? 'not loaded';
+
+      // Control without the mixin: an open shadow root that nothing ever processes.
+      customElements.define(
+        'line-htmx-baseline',
+        class extends HTMLElement {
+          connectedCallback() {
+            if (this.shadowRoot) return;
+            this.attachShadow({ mode: 'open' }).innerHTML =
+              '<button type="button" hx-post="/baseline" hx-target="#baseline-out">Baseline post</button> <output id="baseline-out"></output>';
+          }
+        },
+      );
+
+      // Every htmx 2 and htmx 4 request and swap event that reaches a counter host.
+      const events = [
+        'htmx:beforeRequest',
+        'htmx:afterRequest',
+        'htmx:afterSwap',
+        'htmx:afterSettle',
+        'htmx:before:request',
+        'htmx:after:request',
+        'htmx:after:swap',
+        'htmx:after:settle',
+      ];
+      const log = document.querySelector('#event-log');
+      for (const host of document.querySelectorAll('line-htmx-counter')) {
+        for (const type of events) {
+          host.addEventListener(type, (event) => {
+            const origin = event.composedPath()[0];
+            const line = `${host.id} ← ${type} from ${origin.id || origin.localName} (composed: ${event.composed})`;
+            log.insertAdjacentHTML('beforeend', `<li>${line}</li>`);
+            console.info(line);
+          });
+        }
+      }
+
+      document.querySelector('#reconnect').addEventListener('click', () => {
+        const counter = document.querySelector('#counter');
+        const parent = counter.parentElement;
+        const next = counter.nextSibling;
+        for (let i = 0; i < 3; i++) {
+          counter.remove();
+          parent.insertBefore(counter, next);
+        }
+        console.info('#counter reconnected 3 times');
+      });
+    </script>
+    <style>
+      body {
+        font: 14px/1.4 system-ui, sans-serif;
+        margin: 1rem;
+        max-width: 60rem;
+      }
+      section {
+        border-top: 1px solid #ccc;
+        padding-block: 0.5rem;
+      }
+      line-htmx-counter {
+        border: 1px dashed #999;
+        margin-block: 0.5rem;
+        padding: 0.5rem;
+      }
+      #event-log {
+        font-size: 12px;
+        max-height: 12rem;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>line-htmx spike</h1>
+    <p>
+      htmx <strong id="htmx-version"></strong> ·
+      <a href="/?htmx=2">htmx 2</a> ·
+      <a href="/?htmx=4">htmx 4</a>
+    </p>
+
+    <section>
+      <h2>1. Server-driven state and swap-aware lifecycle</h2>
+      <form id="page-form" hx-post="/submit" hx-target="#submit-result">
+        <line-htmx-counter id="counter" name="count"></line-htmx-counter>
+        <button id="page-submit" type="submit">Submit page form</button>
+      </form>
+      <p>Page form result: <output id="submit-result"></output></p>
+      <p><button id="reconnect" type="button">Reconnect #counter 3 times</button></p>
+      <h3>Log (<code>hx-target="global #counter-log"</code>)</h3>
+      <ol id="counter-log"></ol>
+    </section>
+
+    <section>
+      <h2>2. Consumer hx-* on the host</h2>
+      <p>
+        Forwarded <code>hx-headers</code>; <code>hx-vals</code> and <code>hx-vals:inherited</code> left to inheritance.
+        The slotted button lives in the light DOM.
+      </p>
+      <line-htmx-counter
+        id="configured"
+        hx-headers='{"X-Line-Consumer":"page"}'
+        hx-vals='{"consumer":"page"}'
+        hx-vals:inherited='{"consumer":"page"}'
+      >
+        <button id="slotted" slot="summary" type="button" hx-post="/log" hx-target="#counter-log" hx-swap="beforeend">
+          Slotted log
+        </button>
+      </line-htmx-counter>
+      <p>Host-level <code>hx-get="/host"</code> with the default click trigger.</p>
+      <line-htmx-counter id="native" hx-get="/host" hx-target="#host-result"></line-htmx-counter>
+      <p>Host request result: <output id="host-result"></output></p>
+    </section>
+
+    <section>
+      <h2>3. Baseline without the mixin</h2>
+      <line-htmx-baseline id="baseline"></line-htmx-baseline>
+    </section>
+
+    <section>
+      <h2>4. A server-rendered counter</h2>
+      <button id="fetch-element" type="button" hx-get="/element" hx-target="#element-slot">
+        Load a counter rendered by the server
+      </button>
+      <div id="element-slot"></div>
+    </section>
+
+    <section>
+      <h2>htmx events seen by counter hosts</h2>
+      <ol id="event-log"></ol>
+    </section>
+  </body>
+</html>
