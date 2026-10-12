@@ -12,9 +12,9 @@
  *       because the build never cleans `dist/`.
  *   (c) `aliases.css` declares EXACTLY 54 `--line-*` variables
  *       (ALIASES[9] × ROLES[6] = 54).
- *   (d) `semantics.css` matches SEMANTIC_MAP exactly: the declared role set
- *       equals the map's keys and each role references only its mapped hue
- *       (AM-061, plan §7.2).
+ *   (d) `semantics.css` matches SEMANTIC_MAP exactly. The declared role set
+ *       equals the map's keys, and every `--line-*` declaration is
+ *       `var(--line-<mapped hue>-<same suffix>)` (AM-061, plan §7.2).
  *
  * The line-schemas barrel resolves only from inside packages/line-themes/
  * (per-package symlink); these tests therefore live here by design
@@ -135,20 +135,42 @@ describe('aliases.css variable count', () => {
   });
 });
 
+/** Sentinel key for declarations whose name is not `--line-<role>-<suffix>`. */
+const MALFORMED = '<malformed>';
+
 /**
- * Derives role → hue from `semantics.css` declarations of the form
- * `--line-<role>-<step>: var(--line-<hue>-<step>)`. A role that references
- * more than one hue maps to the sorted hue list joined by `|`, so a mixed
- * mapping fails the equality check with a readable diff.
+ * Derives role → hue from EVERY `--line-*` custom-property declaration in
+ * `semantics.css`. A valid declaration is `--line-<role>-<suffix>:
+ * var(--line-<hue>-<suffix>)`, where the suffix is a step, an alpha step or
+ * `contrast` and matches on both sides, with no fallback and no literal.
+ * A declaration with a bad value adds `<invalid: …>` to its role's entry. A
+ * declaration with a bad name goes under the MALFORMED key. Unknown roles,
+ * hyphenated ones included, enter the role set. A role that references more
+ * than one entry maps to the sorted list joined by `|`, so any drift fails
+ * the equality check with a readable diff.
  */
 function deriveSemanticMap(css: string): Record<string, string> {
-  const huesByRole = new Map<string, Set<string>>();
-  const declaration = /--line-([a-z]+)-(?:a?\d+|contrast)\s*:\s*var\(--line-([a-z]+)-(?:a?\d+|contrast)\)/g;
-  for (const [, role, hue] of css.matchAll(declaration)) {
-    if (!huesByRole.has(role)) huesByRole.set(role, new Set());
-    huesByRole.get(role)?.add(hue);
+  const entriesByRole = new Map<string, Set<string>>();
+  const add = (role: string, entry: string) => {
+    if (!entriesByRole.has(role)) entriesByRole.set(role, new Set());
+    entriesByRole.get(role)?.add(entry);
+  };
+  for (const [, name, rawValue] of css.matchAll(/(--line-[a-z0-9-]+)\s*:\s*([^;]*);/g)) {
+    const value = rawValue.trim();
+    const nameMatch = /^--line-([a-z][a-z0-9-]*?)-(a?\d+|contrast)$/.exec(name);
+    if (!nameMatch) {
+      add(MALFORMED, `${name}: ${value}`);
+      continue;
+    }
+    const [, role, suffix] = nameMatch;
+    const valueMatch = /^var\(--line-([a-z]+)-(a?\d+|contrast)\)$/.exec(value);
+    if (valueMatch && valueMatch[2] === suffix) {
+      add(role, valueMatch[1]);
+    } else {
+      add(role, `<invalid: ${name}: ${value}>`);
+    }
   }
-  return Object.fromEntries([...huesByRole].map(([role, hues]) => [role, [...hues].sort().join('|')]));
+  return Object.fromEntries([...entriesByRole].map(([role, entries]) => [role, [...entries].sort().join('|')]));
 }
 
 describe('SEMANTIC_MAP ↔ semantics.css (AM-061)', () => {
