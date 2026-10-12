@@ -193,7 +193,9 @@ Every current `latest` carries SLSA v1 provenance (npm, 2026-10-12). The decoded
 ## Hand-off to Phase 1
 
 1. **Dependency refresh within the current majors.** Move vite to 8.3.x, the Zag.js packages to 1.46, postcss to the
-   latest 8.5.x and Biome to 2.5. TypeScript 7 is a separate decision, because spec §6.A.3 pins TypeScript to 5.x.
+   latest 8.5.x and Biome to 2.5. This task runs when Phase 1 opens, before the first component work. It does not
+   replace the agent-driven UI foundation, which stays the first stream of Phase 1 (item 3, PRD §7.3). TypeScript 7 is
+   a separate decision, because spec §6.A.3 pins TypeScript to 5.x.
 2. **Row `00-Z17` before the first component spec.** It moves to the Phase 1 ledger when that ledger is created. It
    adds the `hx-trigger` commit-event rule to the component spec template, the htmx check in the Playwright tier and
    the Storybook HTMX guide.
