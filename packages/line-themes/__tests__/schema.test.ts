@@ -12,6 +12,9 @@
  *       because the build never cleans `dist/`.
  *   (c) `aliases.css` declares EXACTLY 54 `--line-*` variables
  *       (ALIASES[9] × ROLES[6] = 54).
+ *   (d) `semantics.css` matches SEMANTIC_MAP exactly: the declared role set
+ *       equals the map's keys and each role references only its mapped hue
+ *       (AM-061, plan §7.2).
  *
  * The line-schemas barrel resolves only from inside packages/line-themes/
  * (per-package symlink); these tests therefore live here by design
@@ -34,6 +37,7 @@ import {
   HueSchema,
   ROLES,
   RoleSchema,
+  SEMANTIC_MAP,
 } from '@websublime/line-schemas';
 
 const THEMES_DIST = resolve(import.meta.dirname, '../dist');
@@ -128,5 +132,34 @@ describe('aliases.css variable count', () => {
     expect(declarations.length).toBe(54);
     // Sanity: matches the schema math ALIASES[9] × ROLES[6].
     expect(ALIASES.length * ROLES.length).toBe(54);
+  });
+});
+
+/**
+ * Derives role → hue from `semantics.css` declarations of the form
+ * `--line-<role>-<step>: var(--line-<hue>-<step>)`. A role that references
+ * more than one hue maps to the sorted hue list joined by `|`, so a mixed
+ * mapping fails the equality check with a readable diff.
+ */
+function deriveSemanticMap(css: string): Record<string, string> {
+  const huesByRole = new Map<string, Set<string>>();
+  const declaration = /--line-([a-z]+)-(?:a?\d+|contrast)\s*:\s*var\(--line-([a-z]+)-(?:a?\d+|contrast)\)/g;
+  for (const [, role, hue] of css.matchAll(declaration)) {
+    if (!huesByRole.has(role)) huesByRole.set(role, new Set());
+    huesByRole.get(role)?.add(hue);
+  }
+  return Object.fromEntries([...huesByRole].map(([role, hues]) => [role, [...hues].sort().join('|')]));
+}
+
+describe('SEMANTIC_MAP ↔ semantics.css (AM-061)', () => {
+  const css = readFileSync(resolve(THEMES_SRC, 'semantics.css'), 'utf-8');
+  const derived = deriveSemanticMap(css);
+
+  test('semantics.css declares exactly the SEMANTIC_MAP roles', () => {
+    expect(Object.keys(derived).sort()).toEqual(Object.keys(SEMANTIC_MAP).sort());
+  });
+
+  test('each semantic role references exactly the hue SEMANTIC_MAP names', () => {
+    expect(derived).toEqual({ ...SEMANTIC_MAP });
   });
 });
