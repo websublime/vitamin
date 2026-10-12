@@ -1,0 +1,42 @@
+# 00-H1 — nothing from __experimental__ ships
+# 2026-10-12T10:56Z · branch feat/00-h1-htmx-spike · bun 1.3.14 · npm 10.9.9
+
+## 0. The spike files exist in the working tree during the check
+$ find packages/line-core/__experimental__ -type f | sort
+packages/line-core/__experimental__/htmx/example/index.html
+packages/line-core/__experimental__/htmx/example/line-htmx-counter.ts
+packages/line-core/__experimental__/htmx/example/server.ts
+packages/line-core/__experimental__/htmx/line-htmx-element.ts
+
+## 1. bun run build (run right before this check)
+$ bun run build; echo $?
+0
+$ tail -3 build.log
+@websublime/line-storybook build: └  Storybook build completed successfully
+@websublime/line-storybook build: 
+@websublime/line-storybook build: Exited with code 0
+
+## 2. Build output of line-core that names htmx or the spike
+$ grep -rIl -i -E 'htmx|__experimental__|line-htmx' packages/line-core/dist; echo $?
+1 (1 = no match)
+
+## 3. Build output of every package and app that names htmx or the spike
+$ grep -rIl -i -E 'htmx|__experimental__|line-htmx' packages/*/dist apps/storybook/storybook-static apps/site/dist; echo $?
+1 (1 = no match)
+
+## 4. npm pack --dry-run in packages/line-core
+$ npm pack --dry-run 2>&1 | grep -i -E 'experimental|htmx'; echo $?
+1 (1 = no match)
+$ npm pack --dry-run 2>&1 | grep 'total files'
+npm notice total files: 56
+
+## 5. bun pm pack --dry-run in packages/line-core (the packer scripts/publish.mjs uses, AM-036)
+$ bun pm pack --dry-run 2>&1 | grep -i -E 'experimental|htmx'; echo $?
+1 (1 = no match)
+$ bun pm pack --dry-run 2>&1 | grep -E 'Total files|Unpacked size'
+Total files: 56
+Unpacked size: 112.17KB
+
+## 6. Published package manifests that mention htmx
+$ grep -l -i htmx packages/*/package.json; echo $?
+1 (1 = no match)

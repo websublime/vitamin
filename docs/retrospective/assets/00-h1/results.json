@@ -1,0 +1,530 @@
+{
+  "chromium-htmx2": {
+    "browser": "chromium 148.0.7778.96",
+    "htmx": "2.0.11",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer page (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:afterRequest, htmx:afterSettle, htmx:afterSwap, htmx:beforeRequest; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  },
+  "chromium-htmx4": {
+    "browser": "chromium 148.0.7778.96",
+    "htmx": "4.0.0",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers:inherited); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer absent (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:after:request, htmx:after:settle, htmx:after:swap, htmx:before:request; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  },
+  "firefox-htmx2": {
+    "browser": "firefox 150.0.2",
+    "htmx": "2.0.11",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer page (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:afterRequest, htmx:afterSettle, htmx:afterSwap, htmx:beforeRequest; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  },
+  "firefox-htmx4": {
+    "browser": "firefox 150.0.2",
+    "htmx": "4.0.0",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers:inherited); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer absent (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:after:request, htmx:after:settle, htmx:after:swap, htmx:before:request; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  },
+  "webkit-htmx2": {
+    "browser": "webkit 26.4",
+    "htmx": "2.0.11",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer page (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:afterRequest, htmx:afterSettle, htmx:afterSwap, htmx:beforeRequest; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  },
+  "webkit-htmx4": {
+    "browser": "webkit 26.4",
+    "htmx": "4.0.0",
+    "checks": {
+      "initialLoad": {
+        "pass": true,
+        "detail": "GET /value requests at load: 3 (3 counters)"
+      },
+      "baselineInert": {
+        "pass": true,
+        "detail": "requests after clicking the unprocessed baseline button: 0"
+      },
+      "shadowSwap": {
+        "pass": true,
+        "detail": "requests [\"POST /inc step=2\"], shadow #readout value 2"
+      },
+      "hostSwap": {
+        "pass": true,
+        "detail": "light-DOM span[slot=summary] present: true, assigned slot: summary, text: Published count 2 (#1) · POST /publish [no fields] X-Line-Consumer: none"
+      },
+      "globalSwap": {
+        "pass": true,
+        "detail": "#counter-log items: 1; settle events seen by the #counter host: 0; request events seen by the host: 1"
+      },
+      "litBoundAttribute": {
+        "pass": true,
+        "detail": "after Lit switched hx-post to /dec: [\"POST /dec\"]"
+      },
+      "litInsertedElement": {
+        "pass": true,
+        "detail": "after Lit inserted the reset button: [\"POST /reset\"]"
+      },
+      "swappedContentLive": {
+        "pass": true,
+        "detail": "server-sent Undo button inside the shadow root: [\"POST /dec\",\"POST /undo\"]"
+      },
+      "survivesRerender": {
+        "pass": true,
+        "detail": "after two Lit re-renders: shadow readout kept true, light-DOM summary kept true"
+      },
+      "formValue": {
+        "pass": true,
+        "detail": "page form POST /submit body \"count=-7\"; readout value -7"
+      },
+      "reconnect": {
+        "pass": true,
+        "detail": "after 3 reconnects, one click sent [\"POST /dec\"]; htmxSettledCallback ran 1 time(s)"
+      },
+      "forwarding": {
+        "pass": true,
+        "detail": "#configured internal POST: X-Line-Consumer page (forwarded as hx-headers:inherited); body \"step=1\" (host hx-vals and hx-vals:inherited not inherited)"
+      },
+      "slottedLightDom": {
+        "pass": true,
+        "detail": "slotted light-DOM button sent [\"POST /log\"]; body \"consumer=page\"; X-Line-Consumer absent (light-DOM inheritance from the host)"
+      },
+      "hostNative": {
+        "pass": true,
+        "detail": "click on the host sent [\"GET /host\"]; click on the internal Add button sent [\"GET /host\",\"POST /inc\"]"
+      },
+      "serverRendered": {
+        "pass": true,
+        "detail": "a <line-htmx-counter operation=\"dec\" resettable> swapped in by htmx sent [\"GET /element\",\"GET /value\",\"POST /dec\",\"POST /reset\"]"
+      },
+      "composedEvents": {
+        "pass": true,
+        "detail": "event types seen by host listeners: htmx:after:request, htmx:after:settle, htmx:after:swap, htmx:before:request; all composed: true"
+      }
+    },
+    "probes": {
+      "inFlightRerender": {
+        "pass": true,
+        "detail": "three Lit re-renders of #counter while its load request was in flight (1 s delay): 3 GET /value requests for 3 counters"
+      },
+      "litBoundSwapBreaksPart": {
+        "pass": true,
+        "detail": "htmx.ajax swapped a fragment into the Lit-bound submit label (\"0 GET /value [no fields] X-Line-Consumer: none\"); after Lit set operation=dec the label reads \"0 GET /value [no fields] X-Line-Consumer: none\"; render error Error: This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this."
+      },
+      "settleNotNeededForSwappedContent": {
+        "pass": true,
+        "detail": "mixin processing disabled: Add then the server-sent Undo sent [\"/inc\",\"/undo\"]"
+      },
+      "updatedNeededForLitInserted": {
+        "pass": true,
+        "detail": "mixin processing disabled: the Lit-inserted Reset button sent []"
+      }
+    }
+  }
+}
