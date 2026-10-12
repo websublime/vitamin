@@ -12,6 +12,9 @@
  *       because the build never cleans `dist/`.
  *   (c) `aliases.css` declares EXACTLY 54 `--line-*` variables
  *       (ALIASES[9] × ROLES[6] = 54).
+ *   (d) `semantics.css` matches SEMANTIC_MAP exactly. The declared role set
+ *       equals the map's keys, and every `--line-*` declaration is
+ *       `var(--line-<mapped hue>-<same suffix>)` (AM-061, plan §7.2).
  *
  * The line-schemas barrel resolves only from inside packages/line-themes/
  * (per-package symlink); these tests therefore live here by design
@@ -34,6 +37,7 @@ import {
   HueSchema,
   ROLES,
   RoleSchema,
+  SEMANTIC_MAP,
 } from '@websublime/line-schemas';
 
 const THEMES_DIST = resolve(import.meta.dirname, '../dist');
@@ -128,5 +132,56 @@ describe('aliases.css variable count', () => {
     expect(declarations.length).toBe(54);
     // Sanity: matches the schema math ALIASES[9] × ROLES[6].
     expect(ALIASES.length * ROLES.length).toBe(54);
+  });
+});
+
+/** Sentinel key for declarations whose name is not `--line-<role>-<suffix>`. */
+const MALFORMED = '<malformed>';
+
+/**
+ * Derives role → hue from EVERY `--line-*` custom-property declaration in
+ * `semantics.css`. A valid declaration is `--line-<role>-<suffix>:
+ * var(--line-<hue>-<suffix>)`, where the suffix is a step, an alpha step or
+ * `contrast` and matches on both sides, with no fallback and no literal.
+ * A declaration with a bad value adds `<invalid: …>` to its role's entry. A
+ * declaration with a bad name goes under the MALFORMED key. Unknown roles,
+ * hyphenated ones included, enter the role set. A role that references more
+ * than one entry maps to the sorted list joined by `|`, so any drift fails
+ * the equality check with a readable diff.
+ */
+function deriveSemanticMap(css: string): Record<string, string> {
+  const entriesByRole = new Map<string, Set<string>>();
+  const add = (role: string, entry: string) => {
+    if (!entriesByRole.has(role)) entriesByRole.set(role, new Set());
+    entriesByRole.get(role)?.add(entry);
+  };
+  for (const [, name, rawValue] of css.matchAll(/(--line-[a-z0-9-]+)\s*:\s*([^;]*);/g)) {
+    const value = rawValue.trim();
+    const nameMatch = /^--line-([a-z][a-z0-9-]*?)-(a?\d+|contrast)$/.exec(name);
+    if (!nameMatch) {
+      add(MALFORMED, `${name}: ${value}`);
+      continue;
+    }
+    const [, role, suffix] = nameMatch;
+    const valueMatch = /^var\(--line-([a-z]+)-(a?\d+|contrast)\)$/.exec(value);
+    if (valueMatch && valueMatch[2] === suffix) {
+      add(role, valueMatch[1]);
+    } else {
+      add(role, `<invalid: ${name}: ${value}>`);
+    }
+  }
+  return Object.fromEntries([...entriesByRole].map(([role, entries]) => [role, [...entries].sort().join('|')]));
+}
+
+describe('SEMANTIC_MAP ↔ semantics.css (AM-061)', () => {
+  const css = readFileSync(resolve(THEMES_SRC, 'semantics.css'), 'utf-8');
+  const derived = deriveSemanticMap(css);
+
+  test('semantics.css declares exactly the SEMANTIC_MAP roles', () => {
+    expect(Object.keys(derived).sort()).toEqual(Object.keys(SEMANTIC_MAP).sort());
+  });
+
+  test('each semantic role references exactly the hue SEMANTIC_MAP names', () => {
+    expect(derived).toEqual({ ...SEMANTIC_MAP });
   });
 });
