@@ -1,5 +1,11 @@
 # @websublime/line-colors
 
+## 0.1.3
+
+### Patch Changes
+
+- [#253](https://github.com/websublime/line-ui/pull/253) [`7be2da8`](https://github.com/websublime/line-ui/commit/7be2da84672d5a53f7dfe1d064519c523269bce8) Thanks [@miguelramos](https://github.com/miguelramos)! - The built palette CSS keeps the authored whitespace inside `--line-*` values (cssnano 8.0.10), so `getPropertyValue()` returns strings such as `light-dark(#fefdfb, #16120c)`; computed colours are unchanged.
+
 ## 0.1.2
 
 ### Patch Changes

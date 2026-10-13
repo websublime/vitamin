@@ -1,5 +1,11 @@
 # @websublime/line-core
 
+## 0.1.1
+
+### Patch Changes
+
+- [#253](https://github.com/websublime/line-ui/pull/253) [`7be2da8`](https://github.com/websublime/line-ui/commit/7be2da84672d5a53f7dfe1d064519c523269bce8) Thanks [@miguelramos](https://github.com/miguelramos)! - `@zag-js/core` and `@zag-js/vanilla` now require `^1.46.0`, so your install resolves Zag.js 1.46 or later in the 1.x line.
+
 ## 0.1.0
 
 ### Minor Changes
