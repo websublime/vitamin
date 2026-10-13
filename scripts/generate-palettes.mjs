@@ -264,12 +264,16 @@ function renderBarrel() {
  * that exceed the 120-char CSS lineWidth). Biome formatting is deterministic, so
  * this keeps regeneration byte-stable for the C4 freshness guard. Throws on a
  * non-zero exit so the generator fails loudly rather than committing unformatted
- * output.
+ * output. `--vcs-use-ignore-file=false` lets Biome 2.5.15 format an output dir
+ * outside the repo root (the freshness guard's temp dir); with the ignore-file
+ * lookup on, it panics with "path is expected to be under the root"
+ * (biomejs/biome#12158). The generated paths are never gitignored, so the lookup
+ * excluded nothing.
  * @param {string} outputDir
  */
 function formatWithBiome(outputDir) {
   const biomeBin = resolve(REPO_ROOT, 'node_modules/.bin/biome');
-  const result = spawnSync(biomeBin, ['format', '--write', outputDir], {
+  const result = spawnSync(biomeBin, ['format', '--write', '--vcs-use-ignore-file=false', outputDir], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
   });
