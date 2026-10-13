@@ -21,7 +21,7 @@ Foundation documents live in `docs/`. Read the section a task needs; only the sh
 ## Tech Stack
 
 - **Language:** TypeScript 5+ (strict, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`)
-- **Runtime / workspaces:** Bun 1.3+ (`bun --filter`), `.bun-version` pinned
+- **Runtime / workspaces:** Bun 1.4+ (`bun --filter`), `.bun-version` pinned
 - **Libraries:** Lit 3+, Zag.js (`@zag-js/core`, `@zag-js/vanilla`), Zod, `@radix-ui/colors`
 - **Build:** Vite 8 (Rolldown) for runtime packages, `tsc -b` for TS-only packages, PostCSS pipeline for CSS packages
 - **Quality:** Biome (lint + format), `scripts/lint-layers.mjs` (cross-layer dependency guard), `.githooks/` (pre-commit runs `biome check --staged`)

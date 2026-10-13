@@ -26,7 +26,7 @@ import {
   type SemanticRole,
   STEPS,
 } from '@websublime/line-schemas';
-import { expect, type Page, test } from 'playwright/test';
+import { expect, type Locator, type Page, test } from 'playwright/test';
 
 test.use({ baseURL: 'http://127.0.0.1:4320' });
 
@@ -75,6 +75,16 @@ async function expectNoErrors(page: Page, errors: string[]): Promise<void> {
   await page.waitForLoadState('networkidle');
   await expect(page.locator('body')).not.toHaveClass(/\bsb-show-(errordisplay|nopreview)\b/);
   expect(errors, 'console errors and uncaught exceptions').toEqual([]);
+}
+
+/**
+ * The docs heading at `level` whose text is exactly `text`. Storybook 10.6 puts a
+ * "Copy heading URL to address bar" link inside each heading, so the accessible
+ * name is not the heading text and the role locator filters on text instead.
+ */
+function heading(scope: Locator, level: 1 | 2, text: string): Locator {
+  const exact = new RegExp(`^${text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`);
+  return scope.getByRole('heading', { level }).filter({ hasText: exact });
 }
 
 /** Reads the `#` / `##` headings and counts the `<Canvas>` blocks of an MDX file, skipping code fences. */
@@ -166,8 +176,8 @@ for (const [id, file] of Object.entries(DOCS)) {
 
     await open(page, id, 'docs');
     const docs = page.locator('#storybook-docs');
-    for (const name of h1) await expect(docs.getByRole('heading', { level: 1, name, exact: true })).toBeVisible();
-    for (const name of h2) await expect(docs.getByRole('heading', { level: 2, name, exact: true })).toBeVisible();
+    for (const name of h1) await expect(heading(docs, 1, name)).toBeVisible();
+    for (const name of h2) await expect(heading(docs, 2, name)).toBeVisible();
 
     const stories = docs.locator('.docs-story [id^="story--"][id$="-inner"]');
     await expect(stories).toHaveCount(canvases);

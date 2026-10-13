@@ -55,9 +55,9 @@ export const swatchStyles = html`<style>
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 4px;
   }
+  /* Swatches stay block boxes because WebKit 27.2 takes about 3 s to lay out 1,488 nested-grid swatches. */
   .ds-swatch {
-    display: grid;
-    gap: 2px;
+    display: block;
     min-width: 0;
     margin: 0;
   }
@@ -66,6 +66,7 @@ export const swatchStyles = html`<style>
     border-radius: 4px;
   }
   .ds-token {
+    margin-top: 2px;
     font: 9px/1.2 ui-monospace, monospace;
     overflow-wrap: anywhere;
     color: var(--line-gray-11);

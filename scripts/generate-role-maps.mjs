@@ -133,11 +133,15 @@ function renderGray(grayHue) {
  * matches Biome's formatter. Biome formatting is deterministic, so this keeps
  * regeneration byte-stable for downstream CSS snapshots. Throws on a non-zero
  * exit so the generator fails loudly rather than committing unformatted output.
+ * `--vcs-use-ignore-file=false` lets Biome 2.5.15 format an output dir outside
+ * the repo root. With the ignore-file lookup on, Biome 2.5.15 panics with "path
+ * is expected to be under the root" (biomejs/biome#12158). The generated paths
+ * are never gitignored, so the lookup excludes nothing.
  * @param {string} outputDir
  */
 function formatWithBiome(outputDir) {
   const biomeBin = resolve(REPO_ROOT, 'node_modules/.bin/biome');
-  const result = spawnSync(biomeBin, ['format', '--write', outputDir], {
+  const result = spawnSync(biomeBin, ['format', '--write', '--vcs-use-ignore-file=false', outputDir], {
     cwd: REPO_ROOT,
     encoding: 'utf8',
   });

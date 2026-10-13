@@ -4,7 +4,7 @@
 **Author:** Ada (architect)
 **Date:** 2026-05-19
 **Phase target:** `line://ui` v0.1.0
-**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.15, APPROVED)
+**Source PRD:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/PRD.md`](../PRD.md) (v0.8.16, APPROVED)
 **Source Plan:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/plans/00-plan-design-system.md`](../plans/00-plan-design-system.md) (APPROVED)
 **Source Architecture:** [`/Users/ramosmig/Public/WS-Labs/line-ui/docs/ARCHITECTURE.md`](../ARCHITECTURE.md)
 **Source Research:**
@@ -67,9 +67,9 @@ The following are explicitly **out of scope** for Phase 00 and must not be intro
 │  └── site         — Astro 7 scaffold + Cloudflare Pages + placeholder      │
 │                                                                            │
 │  Tooling                                                                   │
-│  ├── Bun 1.3+              (runtime, package manager, test runner)         │
+│  ├── Bun 1.4+              (runtime, package manager, test runner)         │
 │  ├── Biome 2.x             (lint + format)                                 │
-│  ├── Vite 8+               (component bundler, Rolldown 1.0.x default)     │
+│  ├── Vite 8+               (component bundler, Rolldown 1.x default)       │
 │  ├── PostCSS 8.5+          (design-system CSS pipeline)                    │
 │  ├── TypeScript 5.x        (types + dual emission)                         │
 │  ├── Changesets 2.x        (versioning + publish, snapshot/canary)         │
@@ -406,9 +406,9 @@ Root `package.json` `build` script is `"bun --filter './packages/*' build && bun
 
 **A1 — Bun migration.**
 
-- Adopt Bun **≥ 1.3.14** (latest stable per R7-R2). Repo already uses Bun workspaces; this task removes residual pnpm artefacts.
+- Adopt Bun **≥ 1.4.3** (latest stable in the 1.x line, AM-064). Repo already uses Bun workspaces; this task removes residual pnpm artefacts.
 - Delete: `pnpm-lock.yaml` (if any), `pnpm-workspace.yaml` (if any), `.npmrc` directives specific to pnpm, any `engines.pnpm` pin.
-- Add `engines.bun: ">=1.3.14"` to root `package.json`.
+- Add `engines.bun: ">=1.4.3"` to root `package.json`.
 - Add `.bun-version` file (single line, pinned version) for CI/contributor parity.
 - `bunfig.toml`:
   ```toml
@@ -423,7 +423,7 @@ Root `package.json` `build` script is `"bun --filter './packages/*' build && bun
 
 **A2 — Biome migration.**
 
-- Pin `@biomejs/biome` to the **2.4.x line** (currently `^2.4.6` already installed; bump to `^2.4.15` minimum).
+- Pin `@biomejs/biome` to the **2.5.x line** at `^2.5.15` minimum (AM-064). After the bump, `bunx biome migrate --write` updates `biome.json`, so its `$schema` URL and any renamed config keys match the installed Biome version.
 - Remove ESLint, Prettier, and all related plugins (`eslint`, `prettier`, `eslint-plugin-*`, `eslint-config-*`, `@typescript-eslint/*`) — full `devDependencies` sweep.
 - Delete `.eslintrc*`, `.prettierrc*`, `.prettierignore`.
 - `biome.json` configures: lint level "recommended"; format style 2-space indent, single quotes, trailing commas "all"; `organizeImports: on`; CSS support enabled (v2 feature); ignores `dist/`, `node_modules/`, `*.generated.css`, `customElements.json`.
@@ -435,37 +435,37 @@ Root `package.json` `build` script is `"bun --filter './packages/*' build && bun
 | Package | Target | Source |
 |---|---|---|
 | `lit` | `^3.3.3` | R4 |
-| `vite` | `^8.0.13` | R5 round-2 |
-| `rolldown` | bundled with Vite 8 (hard dep `1.0.1`) | R5 round-2 |
-| `vite-plugin-dts` | `^5.0.0` (devDependency) | required by §6.F.2 `vite.config.shared.mjs` and §7.1 matrix; Vite 8 compatible (AM-005) |
+| `vite` | `^8.3.4` | R5 round-2; AM-064 |
+| `rolldown` | bundled with Vite 8 (Vite 8.3.4 depends on `~1.2.12`) | R5 round-2; AM-064 |
+| `vite-plugin-dts` | `^5.1.2` (devDependency) | required by §6.F.2 `vite.config.shared.mjs` and §7.1 matrix; Vite 8 compatible (AM-005, AM-064) |
 | `@radix-ui/colors` | `^3.0.0` | R1 |
-| `@zag-js/core` | `^1.40.0` | R3 |
-| `@zag-js/vanilla` | `^1.40.0` | R3 / C4 round-2 |
+| `@zag-js/core` | `^1.46.0` | R3; AM-064 |
+| `@zag-js/vanilla` | `^1.46.0` | R3 / C4 round-2; AM-064 |
 | `typescript` | latest 5.x | trivial |
 | `tslib` | latest 2.x | required by §7.1 `importHelpers: true` (AM-002) |
-| `postcss` | `^8.5.14` | R6 round-2 |
-| `postcss-cli` | `^11.0.0` (devDependency) | required by §6.B B4 build commands for `line-tokens` / `line-colors` / `line-themes`; PostCSS 8 compatible (AM-005) |
-| `postcss-import` | `^16.1.1` | R6 |
+| `postcss` | `^8.5.30` | R6 round-2; AM-064 |
+| `postcss-cli` | `^11.0.1` (devDependency) | required by §6.B B4 build commands for `line-tokens` / `line-colors` / `line-themes`; PostCSS 8 compatible (AM-005, AM-064) |
+| `postcss-import` | `^16.2.0` | R6; AM-064 |
 | `postcss-nested` | `^7.0.2` | R6 |
-| `postcss-preset-env` | `^11.3.0` | R6 |
-| `cssnano` | `^8.0.1` | R6 |
-| `storybook` | `^10.4.0` | R10 round-2 |
-| `@storybook/web-components-vite` | `^10.4.0` | R10 round-2 |
-| `@storybook/addon-a11y` | `^10.4.0` | accessibility checks (Phase 00 acceptance) |
-| `@storybook/addon-docs` | `^10.4.0` | compiles and renders the §6.G MDX docs and autodocs pages (AM-053) |
+| `postcss-preset-env` | `^11.6.1` | R6; AM-064 |
+| `cssnano` | `^8.0.10` | R6; AM-064 |
+| `storybook` | `^10.6.2` | R10 round-2; AM-064 |
+| `@storybook/web-components-vite` | `^10.6.2` | R10 round-2; AM-064 |
+| `@storybook/addon-a11y` | `^10.6.2` | accessibility checks (Phase 00 acceptance); AM-064 |
+| `@storybook/addon-docs` | `^10.6.2` | compiles and renders the §6.G MDX docs and autodocs pages (AM-053, AM-064) |
 | `remark-gfm` | `^4.0.1` (devDependency of `apps/storybook`) | GFM tables in the §6.G MDX docs; MDX 3 parses CommonMark only (AM-056) |
 | `@custom-elements-manifest/analyzer` | `^0.11.0` | R13 |
 | `@open-wc/testing-helpers` | `^3.0.1` | R11 |
-| `@happy-dom/global-registrator` | `^20.10.5` (devDependency) | required by §6.F.3 `bun-test-preload.ts` `GlobalRegistrator.register()`; Bun 1.3.14 compatible (AM-018) |
-| `playwright` | `^1.60.0` | R12 |
-| `@changesets/cli` | `^2.31.0` | R14 |
+| `@happy-dom/global-registrator` | `^20.14.6` (devDependency) | required by §6.F.3 `bun-test-preload.ts` `GlobalRegistrator.register()`; Bun 1.4.3 compatibility is checked by `bun test` in the `00-Z20` Verify record (AM-018, AM-064) |
+| `playwright` | `^1.64.0` | R12; AM-064 |
+| `@changesets/cli` | `^2.31.1` | R14; AM-064 |
 | `zod` | latest 3.x | trivial; consumed by `line-schemas` |
-| `astro` | `^7.3.7` | static output, no adapter; declared only in `apps/site/package.json` (AM-046) |
-| `lucide-static` | `^1.16.0` | R16 (icon validation); optional peer of `line-icons` (AM-033) |
+| `astro` | `^7.3.8` | static output, no adapter; declared only in `apps/site/package.json` (AM-046, AM-064) |
+| `lucide-static` | `^1.16.0` peer range of `line-icons`; root devDependency `^1.56.0` | R16 (icon validation); optional peer of `line-icons` (AM-033). The root devDependency moves to `^1.56.0` and the peer range stays (AM-064) |
 | `@phosphor-icons/core` | `^2.1.1` | R16 (icon validation); optional peer of `line-icons` (AM-033) |
 | `htmx.org` | `2.0.11` and `4.0.0`, exact, root devDependencies aliased `htmx2` and `htmx4` | The §6.H.1 spike and the §6.F.4 htmx harness, one entry per htmx major (AM-060, AM-063) |
 
-Vite 8 ships Rolldown 1.0.1 as a direct dependency — **no override needed for the default configuration**. Rollback path (only if a regression surfaces) is the standard npm override:
+Vite 8.3.4 depends on Rolldown `~1.2.12` (AM-064) — **no override needed for the default configuration**. Rollback path (only if a regression surfaces) is the standard npm override:
 ```jsonc
 { "overrides": { "vite": "^7.0.0" } }
 ```
@@ -538,6 +538,7 @@ This is **not active configuration**; it is documented in `docs/runbooks/bundler
 | AM-061 | 2026-10-12 | ledger `00-C18` (bug against `00-C9`; Phase 00 exit sweep, Miguel approved 2026-10-12) | The §6.C.7 `schema.test.ts` row adds that `SEMANTIC_MAP` must match `semantics.css`. The role set declared in `semantics.css` equals the keys of `SEMANTIC_MAP`, and every `--line-*` declaration in `semantics.css` must reference only its mapped hue as `var(--line-<hue>-<same suffix>)`, with no fallback and no literal. | This amendment is a factual alignment and changes no design. Plan §7.2 and the PRD §7.2 exit criteria require that `HUES`, `ACCENT_HUES`, `GRAY_HUES` and `SEMANTIC_MAP` match the generated CSS; the C9 test row covered the first three and omitted `SEMANTIC_MAP`. | Plan §7.2; PRD §7.2 exit criteria; `packages/line-schemas/src/semantic-map.ts`; `packages/line-themes/src/semantics.css`. |
 | AM-062 | 2026-10-12 | ledger `00-Z19` Phase 00 exit sweep (factual correction; Miguel approved 2026-10-12) | Two changes, no design change. (a) The §9.5 smoke-build bullet names the check that runs. The `line-core` library build (`vite build` in library mode, §6.B B4) runs inside the `checks.yml` step `bun run build` on every pull request, and it produces a non-empty `packages/line-core/dist/`. The bullet no longer asks for a separate fixture entry, and it still satisfies plan §7.2. (b) The §6.B B4 note on the `Vite+Rolldown smoke build CI step passes` AC (AM-007) names the same `checks.yml` step as the CI assertion. | The bullet asked for a smoke build against a fixture entry and offered the hello-world target as one, but `checks.yml` has no fixture build step. The hello-world fixture (§6.D.8) is served by the Vite dev server for Playwright and is never built, because it ships in no `dist/`. The `line-core` package entry goes through the same Vite 8 and Rolldown library-mode pipeline on every pull request, so it already proves what the bullet asked for. | Phase 00 exit sweep, item S9.5.6 (2026-10-12). `bun run build` exits 0. Its log shows `@websublime/line-core build: vite v8.0.14 building client environment for production`, then 7 JS files including `dist/index.js` 0.42 kB, `dist/machine/index.js` 1.27 kB and `dist/styles/index.js` 4.53 kB, then `✓ built in 2.02s`; `dist/` holds 164K. `node_modules/vite/package.json` is 8.0.14 and declares `rolldown: 1.0.2`. `.github/workflows/checks.yml:22-23` runs `bun run build` as the step "Build packages" on `pull_request`; `packages/line-core/package.json` sets `build` to `vite build`. checks run 38246314939 (PR #248) succeeded: https://github.com/websublime/line-ui/actions/runs/38246314939. |
 | AM-063 | 2026-10-12 | ledger `00-Z17` (decision — Miguel chose rule C9 in ARCHITECTURE §17.2 and the template's Agent contract table over a separate HTMX contract in ARCHITECTURE §6, a shared htmx harness now with a self-test over the rejected option of a template row only, with the harness built alongside the first value-bearing component, one Storybook MDX guide without a live demo over MDX plus a live demo against a mocked server, and one commit that aligns MANIFESTO Law 7, PRD v0.8.15 and ARCHITECTURE over leaving Law 7 to a separate decision) | Six changes. (a) The §6.A.3 `htmx.org` row widens its purpose from the §6.H.1 spike to the spike and the §6.F.4 htmx harness. The versions stay. (b) The §6.F.4 Playwright list gains the htmx harness in `packages/line-core/__tests__/integration/htmx/`. It names four behaviours with per-behaviour `n/a`, one fixture page `/htmx/` that loads `./vendor/htmx.js`, which `page.route` answers with the `dist/htmx.js` of `htmx2` or `htmx4`, the probes `<line-htmx-value-probe>` and `<line-htmx-compound-probe>` with one commit source each, the proof that `page.route` answers both majors, and an importable helper module that component suites reuse. `<line-htmx-value-probe>` replaces the `<line-form-test>` self-test that the 2026-10-12 decision recorded, and Miguel's approval of this amendment covers that change. `<line-form-test>` and §6.D.5 stay unchanged. The §6.F.4 `webServer` comment lists `/htmx/`. (c) The §6.G.4 `COMPONENT-SPEC-TEMPLATE.md` bullet states rules C1–C9 and the Tests `htmx` row. The template gains a C9 row in the Agent contract Rules table, a C9 sentence in the Events guidance, "(C9)" in the Binding map field and a Tests `htmx` row with per-behaviour `n/a`. (d) §6.G gains the HTMX guide `apps/storybook/stories/htmx.mdx` as §6.G.5, with `<Meta title="HTMX" />` and the id `htmx--docs`. The §6.F.4 Storybook smoke check lists it in its `DOCS` map, and the §6.F.1 `stories/` tree lists `htmx.mdx`. (e) §6.H.1 states the Law 7 feasibility dimensions as past fact. (f) The spec header cites PRD v0.8.15. | The H1 spike ended exploratory. It showed host-level `hx-*`, slotted light-DOM `hx-*` and a form-associated value in an htmx form working without an adapter on htmx 2.0.11 and 4.0.0 in three engines, and it showed htmx events reaching the host (`composedEvents`). H1 did not exercise a component event as `hx-trigger`, so behaviour (b) of the harness gives the first proof of that path. A host-level `click` trigger on a compound host fired for every click inside its shadow root (`hostNative`), so consumers need a named commit event. No document defined a compound component, and no test guarded the native paths. `<line-form-test>` fires no event and holds no interactive element or slot, so it cannot show behaviours (b) to (d). | `docs/context/00-z17.md`; `docs/retrospective/00-phase-00-retro.md` (00-H1 outcome, checks `hostNative`, `formValue`, `slottedLightDom`, `composedEvents`, `hostSwap`, `forwarding`); PRD v0.8.15; ARCHITECTURE v0.8.2 |
+| AM-064 | 2026-10-13 | ledger `00-Z20` (decision — retrospective hand-off item 1, Miguel, 2026-10-12; on 2026-10-13 Miguel chose every dependency at the latest version in its current major except the exact pins set by decision over only the four packages the retrospective named, Bun 1.3.14 → 1.4.3 inside Z20 in its own commit over a separate row after Z20, and every caret floor raised in the manifests and in §6.A.3 with the `line-icons` peer ranges unchanged over a lockfile-only refresh) | Eight changes. Every caret floor equals the latest version in its current major, whether or not the locked version changes. For a 0.x package the current major is 0, so it moves to the latest 0.x release when that release keeps the same dependency contract. (a) In §6.A A1 the Bun floor becomes ≥ 1.4.3, `engines.bun` becomes `">=1.4.3"`, and `.bun-version` pins 1.4.3. (b) In §6.A A2 Biome moves to the 2.5.x line at `^2.5.15`, and `bunx biome migrate --write` after the bump keeps the `biome.json` `$schema` and any renamed config keys in line with the installed Biome. (c) The §6.A.3 targets become `vite` `^8.3.4`, `vite-plugin-dts` `^5.1.2`, `@zag-js/core` and `@zag-js/vanilla` `^1.46.0`, `postcss` `^8.5.30`, `postcss-cli` `^11.0.1`, `postcss-import` `^16.2.0`, `postcss-preset-env` `^11.6.1`, `cssnano` `^8.0.10`, `storybook` and the three `@storybook/*` rows `^10.6.2`, `@happy-dom/global-registrator` `^20.14.6`, `playwright` `^1.64.0`, `@changesets/cli` `^2.31.1` and `astro` `^7.3.8`. The happy-dom row says that `bun test` in the Z20 Verify record checks Bun 1.4.3 compatibility. The `lucide-static` row keeps the `line-icons` peer range `^1.16.0` and states that the root devDependency moves to `^1.56.0`. The rows already at the latest in their major stay. (d) The `rolldown` row and the paragraph after the table say that Vite 8.3.4 depends on Rolldown `~1.2.12`. The rollback path stays. (e) The §1 diagram changes `Bun 1.3+` to `Bun 1.4+` and `Rolldown 1.0.x default` to `Rolldown 1.x default`. (f) The closed Phase 00 criterion "Rolldown 1.0.x active" in §9.5 becomes "Rolldown 1.x active", a factual correction of a closed criterion. The other §9.5 floors stay true and stay. (g) Two manifest-only moves have no §6.A.3 row. Root `@types/node` moves from `^25.4.0` to `^25.9.9`, and root `@changesets/changelog-github` moves from `^0.6.0` to `^0.7.0`. `@changesets/changelog-github` 0.7.0 declares the same dependencies as 0.6.0 (`@changesets/types ^6.1.0`, `@changesets/get-github-info ^0.8.0`, `dotenv ^8.1.0`), so it stays compatible with `@changesets/cli` 2.31.1. `@changesets/get-github-info` `^0.8.0` and `@custom-elements-manifest/analyzer` `^0.11.0` are already the latest 0.x. (h) PRD v0.8.16 rewrites the §2.1 Rolldown sentence, and the spec header cites PRD v0.8.16. Out of scope are the new majors TypeScript 6 and 7, Zod 4, Changesets 3, the 1.x lines of `@changesets/changelog-github` and `@changesets/get-github-info`, happy-dom 21, `@types/node` 26, cssnano 9, postcss-cli 12, postcss-import 17 and postcss-nested 8. `changelog-github` 1.x depends on `@changesets/types` `^7.0.0`, and `changelog-github` 0.7.0 needs `get-github-info` `^0.8.0`, so both 1.x lines stay out. The exact pins `wrangler` 4.148.0 (AM-046) and htmx 2.0.11 and 4.0.0 (AM-060, AM-063) stay. As a consequence, `line-core` gets a patch changeset for its `@zag-js/*` range, any of `line-tokens`, `line-colors` and `line-themes` whose built CSS changes gets a patch, and `security-reviewer` reviews the `bun.lock` diff, every changed manifest and the published `line-core` range. | PRD §2 requires "All dependencies — Latest stable versions", and the Phase 00 retrospective hand-off item 1 asks for the refresh before Phase 1, so Phase 1 research and spec pin the versions the repository runs. The spec text pinned Biome to the 2.4.x line, and the Rolldown note named `1.0.1` while Vite 8.0.14 already ships `1.0.2`. | `bun outdated -r` and `npm view` on 2026-10-13 (`vite@8.3.4` → `rolldown ~1.2.12`; `vite@8.0.14` → `1.0.2`; `@changesets/changelog-github@0.7.0` dependencies); `docs/context/00-z20.md`; `docs/retrospective/00-phase-00-retro.md` "Hand-off to Phase 1" item 1; PRD v0.8.16 |
 
 **A4 — npm scope.**
 
@@ -2510,7 +2511,7 @@ The exit-criteria table in [`docs/retrospective/00-phase-00-retro.md`](../retros
 
 - [x] Bun ≥ 1.3.14 declared in `engines.bun`. pnpm removed.
 - [x] Biome ≥ 2.4.15 operational; ESLint + Prettier + plugins removed.
-- [x] Vite ≥ 8.0.13 installed; Rolldown 1.0.x active (verified by checking Vite's `dependencies` post-install).
+- [x] Vite ≥ 8.0.13 installed; Rolldown 1.x active (verified by checking Vite's `dependencies` post-install).
 - [x] All deps from §6.A/A3 at the declared minimum.
 - [x] `@websublime/*` npm scope verified by at least one snapshot/canary publish.
 - [x] Vite 8 + Rolldown library-mode smoke build runs in CI and produces a non-empty `dist/` bundle. The check is the `line-core` library build (`vite build`, §6.B B4) that the `checks.yml` step `bun run build` runs on every pull request, and it emits a non-empty `packages/line-core/dist/` (AM-062). Plan §7.2 `Vite/Rolldown component bundling operational (verified by a smoke build)` is satisfied by this check.
