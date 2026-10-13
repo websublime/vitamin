@@ -48,7 +48,7 @@
     "bun": ">=1.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.15",
+    "@biomejs/biome": "^2.5.15",
     "@changesets/changelog-github": "^0.6.0",
     "@changesets/cli": "^2.31.0",
     "@changesets/get-github-info": "^0.8.0",
