@@ -27,7 +27,11 @@ const config: StorybookConfig = {
     // targets. cssTarget 'esnext' stops the build minifier from lowering it
     // again, which would rewrite light-dark() into a fallback that needs a
     // compiled color-scheme rule to resolve.
-    return { ...cfg, build: { ...cfg.build, cssTarget: 'esnext' } };
+    //
+    // chunkSizeWarningLimit is in kB. The chunks above Vite's 500 kB default are
+    // Storybook's own runtime: iframe, the addon-docs doc blocks and axe-core
+    // from addon-a11y (AM-065).
+    return { ...cfg, build: { ...cfg.build, cssTarget: 'esnext', chunkSizeWarningLimit: 1000 } };
   },
 };
 
