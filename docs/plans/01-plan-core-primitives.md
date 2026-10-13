@@ -1,6 +1,6 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** DRAFT — forks decided at the plan gate on 2026-10-13; awaiting Miguel's approval
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-13
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
