@@ -12,8 +12,8 @@
  *   (d) {@link expectSlotSwap} — server content swapped into the host's slot renders and the component picks it up.
  *
  * `page.route` answers every harness request, so no extra server runs. Request
- * counts wait on htmx itself: a count is read only once every request htmx
- * started has finished. htmx starts a queued request in the same task that
+ * counts wait on htmx itself, so the harness reads a count only once every
+ * request htmx started has finished. htmx starts a queued request in the same task that
  * finishes the previous one, so a settled count is final.
  *
  * @module __tests__/integration/htmx/htmx-harness
@@ -43,7 +43,10 @@ export interface FormValueSpec {
 export interface SlotSpec {
   /** The slot name, or `null` for the default slot. */
   readonly name: string | null;
-  /** Asserts that the component noticed `assigned` elements in the slot. */
+  /**
+   * Asserts that the component noticed `assigned` elements in the slot. `assigned`
+   * counts the children {@link HtmxFixture.content} put in the slot plus the swapped ones.
+   */
   pickedUp(host: Locator, assigned: number): Promise<void>;
 }
 
@@ -51,6 +54,13 @@ export interface SlotSpec {
 export interface HtmxFixture {
   /** The custom-element tag. */
   readonly tag: `line-${string}`;
+  /**
+   * Host attributes the component needs. The harness sets `id`, `name` and the
+   * `hx-*` attributes it tests, and those win over an entry here.
+   */
+  readonly attributes?: Readonly<Record<string, string>>;
+  /** Light-DOM markup the host holds from the start, such as child items. */
+  readonly content?: string;
   /** The commit event that ARCHITECTURE §17.2 rule C9 names. */
   readonly commitEvent: `line-${string}`;
   /** Performs commit number `n` (from 1) on the mounted host. */
@@ -164,10 +174,14 @@ export async function expectSlotSwap(page: Page, fixture: HtmxFixture): Promise<
     <button type="button" ${attributes({ 'hx-get': `${ENDPOINT}slot?fragment=${encodeURIComponent(fragment)}`, 'hx-target': `#${HOST_ID}`, 'hx-swap': 'beforeend' })}>Load</button>`,
   );
 
+  const seeded = await hostLocator(page).evaluate(
+    (element, name) => [...element.children].filter((child) => (child.getAttribute('slot') || null) === name).length,
+    spec.name,
+  );
   await page.locator(`${SECTION} > button`).click();
   expect(await settle(page), 'requests after the swap trigger').toBe(1);
   for (const text of SLOTTED) await expect(hostLocator(page).getByText(text, { exact: true })).toBeVisible();
-  await spec.pickedUp(hostLocator(page), SLOTTED.length);
+  await spec.pickedUp(hostLocator(page), seeded + SLOTTED.length);
 }
 
 /** Proves that `page.route` answers htmx's transport: XMLHttpRequest on htmx 2, fetch on htmx 4. */
@@ -204,7 +218,8 @@ function hostLocator(page: Page): Locator {
 }
 
 function host(fixture: HtmxFixture, extra: Record<string, string> = {}): string {
-  return `<${fixture.tag} ${attributes({ id: HOST_ID, ...extra })}></${fixture.tag}>`;
+  const values = { ...fixture.attributes, id: HOST_ID, ...extra };
+  return `<${fixture.tag} ${attributes(values)}>${fixture.content ?? ''}</${fixture.tag}>`;
 }
 
 function commitTriggerMarkup(fixture: HtmxFixture): string {

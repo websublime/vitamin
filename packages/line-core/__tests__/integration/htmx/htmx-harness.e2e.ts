@@ -4,7 +4,9 @@
  * Loads `/htmx/` from the Vite fixture server with htmx 2 and with htmx 4, and
  * runs every harness behaviour against both probes in each engine:
  * `<line-htmx-value-probe>` proves (a), (b), (c) and (d), and
- * `<line-htmx-compound-probe>` proves (b), (c) and (d) with (a) n/a. It also
+ * `<line-htmx-compound-probe>` proves (b), (c) and (d) with (a) n/a. A seeded
+ * value probe, mounted with fixture `attributes` and one light-DOM child from
+ * fixture `content`, proves the four behaviours again. The self-test also
  * proves that `page.route` answers htmx 2's XMLHttpRequest and htmx 4's fetch.
  *
  * @module __tests__/integration/htmx/htmx-harness.e2e
@@ -64,9 +66,26 @@ const COMPOUND_PROBE: HtmxFixture = {
   slot: DEFAULT_SLOT,
 };
 
+const SEEDED_VALUE_PROBE: HtmxFixture = {
+  ...VALUE_PROBE,
+  attributes: { 'aria-label': 'Seeded value probe' },
+  content: '<span>Seeded item</span>',
+  slot: {
+    name: null,
+    async pickedUp(host, assigned) {
+      // The seeded child plus the two swapped ones. Without `content` the count is 2.
+      expect(assigned).toBe(3);
+      await expect(host).toHaveAttribute('data-slotted', '3');
+      await expect(host.getByText('Seeded item', { exact: true })).toBeVisible();
+      await expect(host).toHaveAttribute('aria-label', 'Seeded value probe');
+    },
+  },
+};
+
 const FIXTURES = [
   ['value probe', VALUE_PROBE],
   ['compound probe', COMPOUND_PROBE],
+  ['seeded value probe', SEEDED_VALUE_PROBE],
 ] as const;
 
 for (const major of HTMX_MAJORS) {
