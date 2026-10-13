@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "astro": "^7.3.7"
+    "astro": "^7.3.8"
   },
   "devDependencies": {
     "wrangler": "4.148.0"
