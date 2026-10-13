@@ -47,7 +47,8 @@ line-ui/
 
 The ledger `docs/plans/00-tasks-design-system.md` says what exists and what is pending; read it before deciding
 what to delegate. Root scripts: `bun run lint`, `bun run build`, `bun run changeset`, `bun run status`. Tests
-run per package with `bun test packages/<name>` (root `bun run test` covers only the CSS packages).
+run per package with `bun test packages/<name>` for packages that have test files (root `bun run test` covers
+only the CSS packages); `docs/PROCESS.md` §5 defines the full Verify record.
 
 ## Agents
 

@@ -109,9 +109,11 @@ Gates are proportional to the class. A phase is not locked until its gate passes
 | **Verify** (after implement) | `bun run lint` | Verify record (below) + `reviewer` checklist | Verify record on any code + `reviewer` checklist + zero-live-hits grep (§3) | every spec §9 criterion evidenced + full review |
 
 - **Verify record.** The implementer runs `bun run lint`, `bun run build`, and `bun test packages/<name>` for
-  every touched package (root `bun run test` covers only the CSS packages), and reports the commands and their
-  results in the completion report. The record travels in the handoff to `git-workflow-manager` and into the
-  PR body. No record, no PR.
+  every touched package that has test files, and lists a touched package without test files as "no test files"
+  (root `bun run test` covers only the CSS packages). It also runs every `.github/workflows/checks.yml` step the
+  change can affect, and always the generation and validation steps (`verify-pack`, `lint-layers`,
+  `verify-palettes-fresh`, `validate-contrast`). The completion report lists each command and its result. The
+  record travels in the handoff to `git-workflow-manager` and into the PR body. No record, no PR.
 - **Reviewer checklist.** The `reviewer` receives the diff, the spec section, and the completion report, and
   answers each item: the code matches the spec section; every deviation has an `AM-nnn` row; the changeset
   entry exists when §6 requires one; `scripts/lint-layers.mjs` passes; tests cover the acceptance criteria;

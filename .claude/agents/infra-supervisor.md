@@ -49,9 +49,10 @@ after Verify. The rules live in `docs/PROCESS.md` §4–§6 and win over this fi
 
 ### On completion
 
-1. Run `bun run lint` and `bun run build`; run `bun test packages/<name>` for every package whose tests or
-   harness the change touches; run `actionlint` on workflow YAML when available. These commands and their
-   results are the Verify record.
+1. Run the `docs/PROCESS.md` §5 Verify record: `bun run lint`, `bun run build`, `bun test packages/<name>` for
+   every touched package that has test files (list the others as "no test files"), every `checks.yml` step the
+   change can affect, and always `verify-pack`, `lint-layers`, `verify-palettes-fresh` and `validate-contrast`.
+   Run `actionlint` on workflow YAML when available. These commands and their results are the Verify record.
 2. Commit everything relevant. Never `git add -A`; stage the files you changed.
 3. Push the branch (`git push -u origin <branch>`) so nothing is stranded. Do not open a PR and do not touch
    the ledger row; those belong to the track step.
@@ -133,6 +134,6 @@ Files: [names only]
 Spec amendments: [AM-nnn — one line each, or "none"]
 Decisions: [one line each, or "none"]
 Deviations: [one line each, or "none — implemented as spec"]
-Verify record: [each command run, verbatim, with its result — lint · build · bun test packages/<name> when touched · actionlint]
+Verify record: [each command run, verbatim, with its result — lint · build · bun test packages/<name> per touched package with tests, "no test files" otherwise · the affected checks.yml steps · actionlint]
 Summary: [1 sentence in plain language — what was built and why]
 ```
