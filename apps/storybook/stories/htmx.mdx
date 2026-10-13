@@ -30,7 +30,7 @@ The host and its slotted children live in your light DOM, so htmx processes thei
 
 htmx does not pass host configuration into a component's shadow root, in either major. Put every `hx-*` attribute on the host or on your own light-DOM content.
 
-The H1 spike checked all four paths on htmx 2.0.11 and htmx 4.0.0 in Chromium, Firefox and WebKit, with no adapter. A shared Playwright harness in `line-core` re-checks the form value, the commit trigger and slotted swaps for every value-bearing or compound component, on both majors and in the same three engines.
+The H1 spike checked host `hx-*`, slotted `hx-*` and the form value on htmx 2.0.11 and htmx 4.0.0 in Chromium, Firefox and WebKit, with no adapter. H1 did not check the commit event as `hx-trigger`. The self-test of the shared Playwright harness in `line-core` proves that path, and it re-checks host `hx-*`, the form value and swaps into slots on both majors in the same three engines. Each value-bearing or compound component runs the same harness in its own tests.
 
 ## Form value
 
