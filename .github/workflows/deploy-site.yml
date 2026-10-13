@@ -3,37 +3,70 @@ on:                                            # AM-045: production only; never 
   push:
     branches: [main]
     paths: ['apps/site/**', 'packages/**', '.github/workflows/deploy-site.yml', 'bun.lock', '.bun-version']
-permissions: {}                                # AM-045: the job declares its own
+permissions: {}                                # AM-068: each job declares its own
 concurrency:                                   # AM-045: a newer push to the same ref cancels the older run
   group: deploy-site-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  deploy:
+  build:                                       # AM-068: runs the build, holds no secrets
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: read
-    environment: site-production               # AM-045: main-only branch policy; holds the site token and account ID
+    permissions: { contents: read }
     steps:                                     # AM-045: every action is pinned to a full commit SHA (AM-040 pattern)
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
+        with: { persist-credentials: false }
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: .bun-version
+        with: { bun-version-file: .bun-version }
       - name: Install
         run: bun install --frozen-lockfile
       - name: Build packages, then the site       # AM-029: packages emit dist/ before the site builds
         run: bun --filter './packages/*' build && bun --filter '@websublime/line-site' build
+      - name: Upload site-dist
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site-dist
+          path: apps/site/dist
+          if-no-files-found: error
+          retention-days: 1
+  deploy:                                      # AM-068: holds the token, never runs build code
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions: { contents: read }            # the sparse checkout of the manifests
+    environment: site-production               # AM-045: main-only branch policy; holds the site token and account ID
+    steps:
+      - name: Checkout the manifests only       # AM-068: package manifests, lockfile and Bun version, no source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /package.json
+            /bun.lock
+            /.bun-version
+            /packages/*/package.json
+            /apps/*/package.json
+      - name: Set up Bun                        # AM-068: no-cache, so no restored cache reaches the token job
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with: { bun-version-file: .bun-version, no-cache: true }
+      - name: Install the locked wrangler      # AM-068: no lifecycle scripts run
+        run: bun install --frozen-lockfile --ignore-scripts
+      - name: Download site-dist
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site-dist
+          path: ${{ runner.temp }}/site-dist
       - name: Deploy to Cloudflare Pages      # AM-045: the locked wrangler from apps/site, never a runtime install
         working-directory: apps/site
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          STATIC_DIR: ${{ runner.temp }}/site-dist
           COMMIT_SHA: ${{ github.sha }}
         run: >-
-          bun x --no-install wrangler pages deploy dist
+          bun x --no-install wrangler pages deploy "$STATIC_DIR"
           --project-name=line-ui --branch=main
           --commit-hash="$COMMIT_SHA" --commit-dirty=false
