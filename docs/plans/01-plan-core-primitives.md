@@ -55,7 +55,7 @@ PRD §7.3 lists what the phase validates.
 
 ### 2.1 Agent-driven UI foundation (`@websublime/line-genui`)
 
-The 10 PRD §7.3 items:
+PRD §7.3 lists ten items.
 
 1. Choose the projection technique (ARCHITECTURE §17.4). The candidates are light-DOM adapter elements rendered through `@a2ui/web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder. This task runs first, and its outcome binds the renderer.
 2. Descriptor API, protocol-neutral Zod descriptors in `line-genui/src/catalog/` (§17.3).
@@ -68,7 +68,7 @@ The 10 PRD §7.3 items:
 9. Layer edges `line-genui -> line-core`, `line-components`, `line-icons` in the Phase 1 spec edge table and in `ALLOWED_EDGES` (§17.1).
 10. `infra-supervisor` bootstraps the npm trusted publisher for `@websublime/line-genui` in the AM-038 order (the Phase 00 spec's trusted publisher bootstrap amendment) before its first release.
 
-Surfaces and policy (PRD Appendix D):
+PRD Appendix D defines these surfaces.
 
 | Surface | Content | Status |
 |---|---|---|
@@ -77,26 +77,35 @@ Surfaces and policy (PRD Appendix D):
 | `@websublime/line-genui/a2ui` | Session and `<line-a2ui-surface>` | Preview |
 | `@websublime/line-themes/hosts/mcp-apps.css` | CSS-only MCP Apps theming bridge | Normal policy |
 
-Dependencies:
+PRD Appendix D and ARCHITECTURE §17.7 set the preview policy.
+
+- `@websublime/line-genui/a2ui` may change in any minor release.
+- `@websublime/line-genui/a2ui` sits outside the PRD §7.1 breaking-changes policy until it targets a final A2UI v1.0.
+- The agent contract, the descriptor API and both catalogs follow the normal PRD §7.1 policy.
+
+The package has four dependency rules.
 
 - `line-genui` depends on `line-core` (ARCHITECTURE §17.1).
 - `line-components` and `line-icons` are peers, loaded lazily (§17.1, §12).
 - No package depends on `line-genui` (§17.1).
 - `line-genui` pins `@a2ui/web_core` exactly, because upstream ships breaking changes in minor versions (§17.7).
 
-Renderer rules (ARCHITECTURE §17.4):
+ARCHITECTURE §17.4 sets the renderer rules.
 
 | Topic | Rule |
 |---|---|
 | Render root | Light DOM, so document `::part()` rules reach the rendered elements |
 | Loading | Lazy `import()` through each descriptor's `load()`; no eager `define()` |
+| Composition | The surface creates elements by tag and wires children through slots |
 | Events | `line-a2ui-action` and `line-a2ui-error` |
 | Errors | Every `web_core` throw is caught and replaced by an inert placeholder |
-| URLs | A policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:` |
+| Theme | Agent theme hints are ignored by default; the host owns styling |
+| Text | Plain text by default; Markdown only through an opt-in sanitising renderer |
+| URLs | A policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured |
 | Limits | Configurable maximum node count, depth and data-model size |
 | Accessibility | One live region per surface, `aria-busy` during batches, no focus moves on agent updates, stable ids, required names validated |
 
-Phase 1 rows of the basic catalog (ARCHITECTURE §17.3):
+ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 
 | A2UI basic component | line://ui target |
 |---|---|
@@ -223,7 +232,7 @@ PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs a
 
 | Task | Content | PRD §7.3 item |
 |---|---|---|
-| G1 | Projection technique; it runs first and binds the renderer | 1 |
+| G1 | Projection technique; it runs first and binds the renderer (under O2.c (a) the evidence comes from R2, see §5.4) | 1 |
 | G2 | Descriptor API | 2 |
 | G3 | `line` and `basic` catalog emitters (A2UI v0.9.1) | 3 |
 | G4 | Frontend-tool JSON Schema emitter | 4 |
@@ -259,9 +268,9 @@ PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs a
 
 ### 4.4 Stream D — cross-cutting documentation
 
-- An agent-driven UI guide.
-- A recipes index for the transport recipes.
-- Getting Started updates for `line-genui` and the Phase 1 components.
+- Stream D writes an agent-driven UI guide.
+- Stream D writes a recipes index for the transport recipes.
+- Stream D updates Getting Started for `line-genui` and the Phase 1 components.
 
 ### 4.5 Stream S — site
 
@@ -310,7 +319,7 @@ PROCESS §2 requires one research note per item, at `docs/research/01-research-<
 
 #### O1 TypeScript major
 
-Facts:
+The repo and npm supply these facts.
 
 - Root `package.json` has `typescript ^5.9.3`.
 - Phase 00 spec §6.A.3 says "latest 5.x" (spec line 444, diagram line 74).
@@ -325,7 +334,10 @@ Facts:
 | (c) | Move to TypeScript 7.x | Open — decided at the plan gate |
 
 - R11 supplies the evidence.
-- A move changes `CLAUDE.md`, spec §6.A.3 and, if the PRD states a TypeScript major, the PRD in one commit (PROCESS §3).
+- PRD §2 names no TypeScript major and sets "All dependencies — Latest stable versions".
+- Row `00-Z20` (AM-064) applied that row as the latest version within each current major.
+- Option (c) matches the literal PRD §2 row. Options (a) and (b) rely on the AM-064 reading.
+- A move still changes `CLAUDE.md` and spec §6.A.3 in one commit (PROCESS §3).
 
 #### O2 Stream order and the validating set
 
@@ -336,7 +348,7 @@ Facts:
 | O2.a Order | (c) | Interleaved; G1 and G2 first, then the four components with descriptors, then G3–G5 validated on them, then the 16 | Open — decided at the plan gate |
 | O2.b Validating set | (a) | Keep Button, Icon, Stack, Separator; each covers a Phase 1 basic-catalog type (Button, Icon, Row/Column/List, Divider) | Open — decided at the plan gate |
 | O2.b Validating set | (b) | Another set; needs a PRD revision | Open — decided at the plan gate |
-| O2.c G1 evidence | (a) | In the research stage (R2), so the spec designs one renderer | Open — decided at the plan gate |
+| O2.c G1 evidence | (a) | In the research stage (R2), so the spec designs one renderer; this moves the decision out of the stream and needs a PRD §7.3 item 1 and ARCHITECTURE §17.4 revision in the same commit as the plan (PROCESS §3) | Open — decided at the plan gate |
 | O2.c G1 evidence | (b) | As the first ledger task, so the spec states both candidates and an `AM-nnn` records the outcome | Open — decided at the plan gate |
 
 #### O3 Site scope
@@ -345,7 +357,7 @@ Facts:
 |---|---|---|
 | (a) | Landing page only (hero, value proposition, features, Storybook link), parallel and outside the exit criteria, where PRD §7.3 puts it | Open — decided at the plan gate |
 | (b) | A landing page that dogfoods the Phase 1 components (PRD §5.3 "line://ui components (dogfooding)") and counts as an exit criterion; needs a PRD revision to add the criterion | Open — decided at the plan gate |
-| (c) | The full PRD §5.3 structure (landing, docs, getting started, theming showcase, changelog, Storybook link) | Open — decided at the plan gate |
+| (c) | The full PRD §5.3 structure (landing, docs, getting started, theming showcase, changelog, Storybook link); it stays outside the exit criteria and needs a PRD §7.3 revision of the "Parallel" line, because the PRD names only a landing page | Open — decided at the plan gate |
 
 #### O4 Phase 00 residual risks
 
@@ -364,7 +376,7 @@ These questions belong to the Phase 1 spec. They are neither research items nor 
 - Should a session advertise the basic catalog id by default before basic coverage is complete (ARCHITECTURE §17.9)?
 - Which components carry `agentExposed: false`? Portal, Presence and Visually Hidden are the candidates.
 - Which MCP Apps host variables form the `mcp-apps.css` reference list (§17.9)?
-- The utility-class decision is "Deferred to Phase 1 spec" (PRD §9.14).
+- The utility-class decision is "Deferred to Phase 1 spec" (PRD §9.13).
 - The spec fixes the first `line-genui` version (§2.7).
 - Each component spec fills its htmx row (§2.4).
 - The spec decides whether DOM snapshots need a custom serializer (Phase 00 spec §6.F.3 snapshot note).
@@ -395,6 +407,7 @@ The order between G and the validating components is open (O2.a).
 
 - Every variant places C5–C20 after the validating components have descriptors.
 - Every variant places the first `line-genui` release after P4.
+- Under O2.c (a), the research stage (R2) produces the G1 evidence before every variant starts.
 
 ---
 
@@ -427,7 +440,7 @@ PRD §7.3 exit criteria keep their wording. Plan-level additions are in *italics
 ### 7.3 Documentation
 
 - [ ] Storybook holds one recipe per transport (AG-UI, A2A, MCP, SSE)
-- [ ] *The site meets its criterion per O3 (pending O3).*
+- [ ] *The site criterion exists only under O3 (b); under O3 (a) or (c) the site stays outside the exit criteria (pending O3).*
 
 ### 7.4 Platform and release
 
@@ -435,7 +448,7 @@ PRD §7.3 exit criteria keep their wording. Plan-level additions are in *italics
 - [ ] `scripts/lint-layers.mjs` carries the `line-genui` edges and passes
 - [ ] The npm trusted publisher for `@websublime/line-genui` exists before its first release
 - [ ] *CDN delivery through unpkg and jsDelivr is verified (PRD §1.7).*
-- [ ] *The Phase 1 spec records the utility-class decision (PRD §9.14).*
+- [ ] *The Phase 1 spec records the utility-class decision (PRD §9.13).*
 - [ ] *Every package is released at `0.2.0` through `release.yml` with provenance, and `line-genui` gets its first release per the spec.*
 - [ ] *A code of conduct is present before `v0.2.0` (PRD §10).*
 - [ ] *The O4 items are handled per Miguel's choice.*
@@ -448,7 +461,7 @@ PRD §7.3 exit criteria keep their wording. Plan-level additions are in *italics
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | A2UI churn; `web_core` ships breaking minors (0.12.0 → 0.13.0 within a week) | High | High | Pin exactly (ARCHITECTURE §17.7), keep a version seam in `line-genui`, re-verify in R1 |
-| Zod split; the repo and `web_core` declare `zod ^3.25.76` while Zod `latest` is 4.6.7, and descriptors share Zod types with `web_core` | Medium | High | Keep the repo on Zod 3 until `web_core` moves; R3 checks the sharing |
+| Zod split; the repo and `web_core` declare `zod ^3.25.76` while Zod `latest` is 4.6.7, and descriptors share Zod types with `web_core` | Medium | High | Keep the repo on Zod 3 until `web_core` moves (relies on the same AM-064 reading of PRD §2); R3 checks the sharing |
 | A TypeScript major move (O1) breaks the toolchain | Medium | High | R11 tests `tsc -b`, `vite-plugin-dts`, the CEM analyser and Storybook before the decision |
 | Catalog quality becomes the agent UX | High | Medium | Descriptor descriptions reviewed in each component spec; research note §7 |
 | Accessibility of agent-built trees is under-specified upstream | Medium | High | Renderer accessibility rules (§17.4), R2 screen-reader check, P7 axe tier |
