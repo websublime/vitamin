@@ -3,13 +3,14 @@
 **Date:** 2026-10-13
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.16
+**Version:** 0.8.17
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.17 (2026-10-13) — Phase 1 opens with its four validating components, and the site landing page gates the exit.** The four validating components (Button, Icon, Stack, Separator) ship first. The agent-driven UI foundation stream follows on them and adds their descriptors, and every later component ships its descriptor in the same PR. The Phase 1 research stage chooses the projection technique before the spec, and the spec designs one renderer. The choice is no longer the stream's first task. The site landing page dogfoods the Phase 1 components and is a Phase 1 exit criterion. Miguel chose components first over the foundation stream first on throwaway elements and over an interleaved order. He chose the research stage over the first ledger task for the projection evidence. He chose a dogfooding landing page that gates the exit over a landing page outside the exit criteria and over the full §5.3 site (ledger row `00-Z27`, decision by Miguel on 2026-10-13; record in `docs/plans/01-plan-core-primitives.md` §5.4). The same gate chose TypeScript 7.x for Phase 1. PRD §2 names no TypeScript major, and its "Latest stable versions" row already covers 7.x, so no PRD section changes for it. Why: Miguel's decisions at the Phase 1 plan gate. Sections touched: §7.3; ARCHITECTURE §17.4; plan §5.4.
 - **v0.8.16 (2026-10-13) — Rolldown 1.x ships with Vite 8.** §2.1 states that Rolldown 1.x is a direct dependency of Vite 8, and that Vite 8.3.4 depends on Rolldown `~1.2.12`. It no longer says that Rolldown is pinned at `1.0.x` (ledger row `00-Z20`, spec AM-064). Why: the dependency refresh moves Vite from 8.0.14 to 8.3.4, so the `1.0.x` claim becomes false. This is a factual alignment and changes no decision. Sections touched: §2.1; spec header and AM-064.
 - **v0.8.15 (2026-10-12) — line components guarantee the native htmx paths.** Components work with htmx through the native paths. These paths are host-level `hx-*`, slotted light-DOM `hx-*`, a form-associated value inside an htmx form, and a commit event as `hx-trigger`. A Playwright harness guards them on htmx 2 and htmx 4 in chromium, firefox and webkit. ARCHITECTURE §17.2 gains rule C9, which makes every value-bearing or compound component name exactly one commit event. Every value-bearing or compound component runs the harness in its Playwright tier, and a Storybook HTMX guide documents the patterns. The `LineHtmxElement` adapter stays exploratory and is deferred as a nice-to-have after 1.0. Miguel chose rule C9 in ARCHITECTURE §17.2 over a separate HTMX contract in ARCHITECTURE §6. He chose a shared harness now over the rejected option of a template row only, with the harness built alongside the first value-bearing component. He chose one MDX guide without a live demo over a guide with a live demo against a mocked server, and one aligned revision of MANIFESTO, PRD and ARCHITECTURE over leaving Law 7 to a separate decision (ledger row `00-Z17`, decision by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md` and `docs/context/00-z17.md`). Why: the H1 spike showed host-level `hx-*`, slotted light-DOM `hx-*` and a form-associated value in an htmx form working without an adapter on htmx 2.0.11 and 4.0.0 in three engines, and it showed htmx events reaching the host (`composedEvents`). H1 did not exercise a component event as `hx-trigger`, so the new harness gives the first proof of that path. No PRD §7.3 or §7.4 component needs the adapter. ARCHITECTURE, MANIFESTO Law 7 and spec AM-063 align. Sections touched: §1 differentiators and principle 4, §8.1, Appendix A, Appendix D; plan §2.8.
 - **v0.8.14 (2026-10-12) — Phase 0 closes.** Every task in the §7.2 table reads Done, and the Phase 0 status note points to the exit record in `docs/retrospective/00-phase-00-retro.md`. The §7.2 CI/CD exit criterion asks for verified Storybook preview deploys and says that the site deploys to production only. The "Update all dependencies" row names PostCSS 8 instead of "PostCSS latest", because Phase 0 held its dependencies at or above the spec §6.A.3 minimums. The §2 "Latest stable versions" row stays the standing policy, and the retrospective hands a dependency refresh within the current majors to the opening of Phase 1. Why: the Phase 0 exit sweep on 2026-10-12 found every mapped ledger row done while the §7.2 cells still read Todo or Review pending. It also found that the exit criterion still asked for a site preview deploy, which spec AM-044 and AM-045 had removed when they made the site production-only (ledger row `00-Z19`, decisions by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md`). Sections touched: §7.2; plan §2.4, §4.1 (A1–A3), §7.5 and §7.6; spec header.
@@ -844,9 +845,9 @@ Workflows:
 
 ### 7.3 Phase 1 — Core Primitives (v0.2.0)
 
-**Agent-driven UI foundation (first stream).** This stream opens Phase 1 and ships `@websublime/line-genui` (ARCHITECTURE §17, Appendix D):
+**Agent-driven UI foundation.** This stream ships `@websublime/line-genui` (ARCHITECTURE §17, Appendix D). It starts after Button, Icon, Stack and Separator ship, and it validates on them:
 
-1. Choose the projection technique. The candidates are light-DOM adapter elements rendered through `@a2ui/web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder. This task runs first, and its outcome binds the renderer.
+1. Choose the projection technique in the Phase 1 research stage, before the spec. The candidates are light-DOM adapter elements rendered through `@a2ui/web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder. The outcome binds the renderer, and the spec designs one renderer on it.
 2. Descriptor API (protocol-neutral Zod descriptors in `line-genui/src/catalog/`).
 3. `line` and `basic` catalog emitters for A2UI v0.9.1.
 4. Frontend-tool JSON Schema emitter (`{name, description, parameters}`).
@@ -857,7 +858,7 @@ Workflows:
 9. Add the layer edges `line-genui -> line-core`, `line-components`, `line-icons` to the Phase 1 spec edge table and to `ALLOWED_EDGES` in `scripts/lint-layers.mjs`. Both `dependencies` and `peerDependencies` count as edges.
 10. `infra-supervisor` bootstraps the npm trusted publisher for `@websublime/line-genui` in the spec AM-038 order before its first release.
 
-Button, Icon, Stack and Separator validate the stream. From then on, every component ships its descriptor in the same PR.
+Button, Icon, Stack and Separator ship first and validate the stream, which adds their descriptors. From then on, every component ships its descriptor in the same PR.
 
 | Component | Zag.js |
 |-----------|--------|
@@ -901,8 +902,9 @@ Button, Icon, Stack and Separator validate the stream. From then on, every compo
 - The npm trusted publisher for `@websublime/line-genui` exists before its first release
 - `<line-a2ui-surface>` renders every agent-exposed Phase 1 component from A2UI messages with zero axe-core violations, and document `::part()` rules apply to the rendered elements
 - Importing `@websublime/line-genui/catalog` defines no element; importing `@websublime/line-genui/a2ui` defines only `line-a2ui-surface`
+- The site landing page (hero, value proposition, features, Storybook link; §5.3) is built with Phase 1 line://ui components and is live at `line-ui.websublime.com`
 
-**Parallel:** Landing page for site.
+**Parallel:** The site landing page runs beside the component work and gates the exit through the criterion above.
 
 ### 7.4 Phase 2 — Essential Forms (v0.3.0)
 
