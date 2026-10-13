@@ -33,7 +33,7 @@ jobs:
             }
           "
       - name: Install
-        run: bun install --frozen-lockfile
+        run: bun install --frozen-lockfile --ignore-scripts  # AM-067: same install as snapshot-deploy.yml; no build step needs a package lifecycle script
       - name: Compute snapshot versions
         run: bun run snapshot:version          # changeset version --snapshot → <version>-<sha>-SNAPSHOT, working tree only
         env:
