@@ -1,6 +1,6 @@
 # line://ui — Architecture
 
-**Date:** 2026-10-12
+**Date:** 2026-10-13
 **Status:** APPROVED
 **Maintenance:** Living document — updated as architectural decisions evolve.
 **Source:** Extracted from PRD v0.8.3 §3 (Component Architecture) and §9 (Design System — Layered Package Model). Aligned with Manifesto Laws 2, 6, 7, 10 (revised 2026-05-19).
@@ -12,6 +12,8 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.3 (2026-10-13)** — Aligned with PRD v0.8.17 (ledger row `00-Z27`, decision by Miguel on 2026-10-13).
+  - §17.4 (Renderer) says the Phase 1 research stage decides the projection technique before the spec.
 - **v0.8.2 (2026-10-12)** — Aligned with PRD v0.8.15 (ledger row `00-Z17`, decision by Miguel on 2026-10-12).
   - §17.2 (Agent contract) gains rule C9. A value-bearing or compound component names exactly one commit event, and the rule defines a compound component. The contract now has rules C1–C9.
   - §17.3 (Descriptors and catalogs) points the binding map's commit event at rule C9.
@@ -1509,7 +1511,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 | Limits | Configurable maximum node count, depth and data-model size | Hostile or runaway agents |
 | Accessibility | One live region per surface; `aria-busy` during batches; no focus moves on agent-initiated updates; focus kept across re-renders through stable ids; required names validated | Law 3 |
 
-The first task of the Phase 1 stream decides the projection technique. The candidates are light-DOM adapter elements rendered through `web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder.
+The Phase 1 research stage decides the projection technique before the spec. The candidates are light-DOM adapter elements rendered through `web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder.
 
 Importing `@websublime/line-genui/catalog` defines no element. Importing `@websublime/line-genui/a2ui` defines only `line-a2ui-surface`.
 
