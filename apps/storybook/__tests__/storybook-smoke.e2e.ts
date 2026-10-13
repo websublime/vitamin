@@ -3,7 +3,7 @@
  *
  * Loads the built `apps/storybook/storybook-static` through the second
  * `webServer` entry of `playwright.config.ts` and checks, in each engine, that:
- *   (a) the Getting Started, Theming and Customisation MDX pages render every
+ *   (a) the Getting Started, Theming, Customisation and HTMX MDX pages render every
  *       `#` / `##` heading of their source and every `<Canvas>` story;
  *   (b) every story of the palette and role design-system stories renders the
  *       swatches the `line-schemas` lists call for, and every token they paint
@@ -38,6 +38,7 @@ const DOCS = {
   'getting-started--docs': 'getting-started.mdx',
   'theming--docs': 'theming.mdx',
   'customisation--docs': 'customisation.mdx',
+  'htmx--docs': 'htmx.mdx',
 } as const;
 
 /** Every story the palette and role stories export, by Storybook id. */

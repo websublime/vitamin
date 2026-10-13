@@ -1,0 +1,128 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="HTMX" />
+
+# HTMX
+
+line://ui components are standard custom elements, so htmx drives them through attributes, forms and events it already knows. No adapter is needed. This guide shows the markup patterns for htmx 2 and htmx 4, and the design targets htmx 4.
+
+Phase 00 ships no components, so the examples write `<line-…>` where a component tag goes. Live demos arrive with the public components.
+
+## Native paths
+
+htmx reaches a line component through four paths.
+
+| Path | Markup | Covered in |
+|---|---|---|
+| `hx-*` on the host | `<line-… hx-get="/panel" hx-target="#out">` | this section |
+| `hx-*` on slotted light-DOM children | `<line-…><button hx-post="/log">Log</button></line-…>` | this section |
+| A form-associated value inside an htmx form | `<form hx-post="/save"><line-… name="q"></line-…></form>` | Form value |
+| The commit event as `hx-trigger` | `<line-… hx-post="/save" hx-trigger="line-change">` | Commit event |
+
+The host and its slotted children live in your light DOM, so htmx processes their `hx-*` attributes like any other element's. A slotted child also inherits `hx-*` configuration from the host, by the rules of your htmx major (see htmx 2 and htmx 4 below).
+
+```html
+<!-- htmx 4 needs the :inherited suffix; htmx 2 inherits plain hx-vals -->
+<line-… hx-vals:inherited='{"source":"toolbar"}'>
+  <button hx-post="/log" hx-target="#log" hx-swap="beforeend">Log</button>
+</line-…>
+```
+
+htmx does not pass host configuration into a component's shadow root, in either major. Put every `hx-*` attribute on the host or on your own light-DOM content.
+
+The H1 spike checked all four paths on htmx 2.0.11 and htmx 4.0.0 in Chromium, Firefox and WebKit, with no adapter. A shared Playwright harness in `line-core` re-checks the form value, the commit trigger and slotted swaps for every value-bearing or compound component, on both majors and in the same three engines.
+
+## Form value
+
+A form-associated component submits its value under its `name`, as a native input does. Put it inside `<form hx-post>`, and htmx sends the value with the request.
+
+```html
+<form hx-post="/profile" hx-target="#status">
+  <line-… name="nickname"></line-…>
+  <button type="submit">Save</button>
+</form>
+<p id="status"></p>
+```
+
+The form's default trigger is `submit`, so htmx sends the request when the user submits the form.
+
+## Commit event
+
+ARCHITECTURE §17.2 rule C9 gives every value-bearing or compound component exactly one commit event.
+
+- A value-bearing component commits with `line-change`, and `detail.value` carries the value.
+- A compound component that also carries a value, such as a radio group or a select, commits with `line-change` too.
+- A compound component that carries no value names its own `line-` event, and its spec documents the name.
+
+The commit event fires on the host once per committed result. It never fires for an interaction that commits nothing, such as a focus move, arrow navigation that only moves focus, hover or opening a popup. A radio group or a tab list with automatic activation commits on arrow keys, so there the arrow keys fire it. Use the commit event as `hx-trigger`, and htmx sends one request per committed result.
+
+```html
+<line-… name="sort" hx-post="/sort" hx-trigger="line-change" hx-target="#rows"></line-…>
+```
+
+The commit event bubbles, so an ancestor such as a form can listen for it. The harness puts the trigger on the host, so the form pattern below is untested.
+
+```html
+<form hx-post="/filter" hx-trigger="line-change" hx-target="#rows">
+  <line-… name="status"></line-…>
+  <line-… name="owner"></line-…>
+</form>
+```
+
+A compound host never carries a host-level `click` trigger. `click` is composed, so a click on any element inside the shadow root reaches the host as a click on the host. htmx then sends a request for every click inside the component, including clicks that commit nothing. `click` is also htmx's default trigger for any element other than a form, an input, a select or a textarea, so a compound host with `hx-post` and no `hx-trigger` behaves the same way.
+
+```html
+<!-- Sends a request for every click inside the component -->
+<line-… hx-post="/choose" hx-target="#out"></line-…>
+
+<!-- Sends one request per committed result -->
+<line-… hx-post="/choose" hx-trigger="line-select" hx-target="#out"></line-…>
+```
+
+`line-select` stands for whatever commit event the component's spec names.
+
+## Slotted swaps
+
+A swap into the host's light DOM lands in the component's slots. A fragment element with `slot="name"` goes to that named slot, and any other element goes to the default slot. The component sees the new content through `slotchange`, as it sees any slotted content.
+
+```html
+<button hx-get="/items?page=2" hx-target="#list" hx-swap="beforeend">Load more</button>
+<line-… id="list"></line-…>
+```
+
+```html
+<!-- The fragment /items?page=2 returns -->
+<span slot="item">Item 11</span>
+<span slot="item">Item 12</span>
+```
+
+A line component inside a fragment works too. htmx inserts it, the browser upgrades it, and the component reads the attributes the server rendered.
+
+## htmx 2 and htmx 4
+
+The native paths behave the same on both majors, apart from the differences below. H1 recorded the event and inheritance rows, and the harness self-test records the transport row. Upstream keeps supporting htmx 2, and npm `latest` moves to htmx 4 in early 2027, so the harness runs on both.
+
+| Topic | htmx 2.0.11 | htmx 4.0.0 |
+|---|---|---|
+| Request transport | `XMLHttpRequest` | `fetch` |
+| Request lifecycle events | `htmx:beforeRequest`, `htmx:afterRequest`, `htmx:afterSwap`, `htmx:afterSettle` | `htmx:before:request`, `htmx:after:request`, `htmx:after:swap`, `htmx:after:settle` |
+| Inheritance into slotted children | A slotted child inherits plain host `hx-vals` and `hx-headers` | A slotted child inherits only attributes written with `:inherited`, such as `hx-vals:inherited`. Plain host `hx-headers` does not reach it |
+| Headers for a descendant | Plain `hx-headers` on an ancestor applies | The ancestor needs `hx-headers:inherited` |
+
+Both majors fire these events with `composed: true`, so a listener on the host or on the document sees them. Listen for both names while you support both majors.
+
+```js
+for (const name of ['htmx:afterSettle', 'htmx:after:settle']) {
+  document.addEventListener(name, (event) => console.info('settled', event.target));
+}
+```
+
+H1 checked `hx-headers:inherited` on an ancestor inside a shadow root, and `hx-vals:inherited` on a host with a slotted child. `hx-headers:inherited` on a host with a slotted child is untested.
+
+H1 did not test these, so they are untested on both majors:
+
+- htmx loaded as an ES module
+- out-of-band swaps and htmx 4 `<hx-partial>` aimed at content inside a shadow root
+- htmx extensions
+- closed shadow roots and declarative shadow DOM
+- a changed `hx-trigger` under htmx 4
