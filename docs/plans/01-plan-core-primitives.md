@@ -190,8 +190,8 @@ Phase 1 rows of the basic catalog (ARCHITECTURE §17.3):
 | Item | Decision | Trigger to revisit |
 |---|---|---|
 | WebMCP for form-associated elements | Defer | WebMCP spec issue #94 resolved and a second engine signals support |
-| `<line-mcp-app-frame>` | Defer | A sandbox-proxy origin and a security review exist |
-| Server-side A2UI → `<line-*>` HTML | Defer | A Phase 1+ spec takes it up |
+| `<line-mcp-app-frame>` | Defer | line://ui targets chat hosts; needs a sandbox-proxy origin and a security review |
+| Server-side A2UI → `<line-*>` HTML | Defer | A Phase 1+ spec takes it up; the H1 htmx spike informs it without deciding it |
 | Model-authored `<line-*>` markup | Reject | The Sanitizer API reaches Baseline and an allowlist story exists |
 | json-render and OpenUI renderers | Out of scope | Upstream ships a web-components renderer |
 | Headless chat primitives | Separate catalogue question | A product decision |
@@ -304,8 +304,7 @@ PROCESS §2 requires one research note per item, at `docs/research/01-research-<
 ### 5.3 Upstream facts the research must re-check
 
 - `@a2ui/web_core` moved from 0.12.0 to 0.13.0 within one week. R1 re-verifies the version before the spec pins it.
-- The repo and `web_core` both declare `zod ^3.25.76`, while Zod `latest` is 4.6.7.
-- The exact `zod` and `lit` ranges of `web_core` 0.13.0 are `[to verify in research]`.
+- `npm view @a2ui/web_core@0.13.0` on 2026-10-13 lists `lit ^3.3.3`, `zod ^3.25.76`, `@lit/context ^1.1.6` and `zod-to-json-schema ^3.25.2`. The repo also declares `zod ^3.25.76`, while Zod `latest` is 4.6.7.
 
 ### 5.4 Open decisions for the plan gate (Miguel decides; the plan does not choose)
 
@@ -356,7 +355,7 @@ Each item has two options, an own ledger row or a plan risk entry. Miguel asked 
 |---|---|---|---|---|
 | O4.a `deploy-site.yml` install scripts | The Install step runs `bun install --frozen-lockfile` without `--ignore-scripts` in the same job whose Deploy step holds `CLOUDFLARE_API_TOKEN` and runs `bun x --no-install wrangler pages deploy dist` from `node_modules`. The token sits only in the Deploy step `env`, but an install script can rewrite code that step runs. Default-trusted packages with install scripts today are `esbuild` and `workerd`. AM-067 (row `00-Z26`, Miguel's decision on 2026-10-13) applied `--ignore-scripts` to the release and snapshot workflows and rejected extending it to `deploy-site.yml`. | Own row, or plan risk entry | Own Z row, class `decision`, because it reopens an AM-067 choice and changes `.github/`. It lands before `line-genui` adds `@a2ui/web_core` and its dependencies to the workspace install. One option for that row splits build and deploy into two jobs with `--ignore-scripts` in the deploy job, the shape `deploy-storybook.yml` already uses. | Open — decided at the plan gate |
 | O4.b Biome `--vcs-use-ignore-file=false` | `scripts/generate-palettes.mjs` and `scripts/generate-role-maps.mjs` pass the flag so Biome 2.5.15 can format a temp output dir outside the repo root. Without it Biome panics (biomejs/biome#12158). PR biomejs/biome#11869 fixes it; it merged on 2026-09-21, and a maintainer wrote on 2026-10-05 "Will be available in the next release". npm `latest` is still 2.5.15 on 2026-10-13. | Own row, or plan risk entry | Keep it in the plan as a watch item with the trigger "a Biome release after 2.5.15 that contains PR #11869". The row is created when the trigger fires, because a row created now would sit blocked. | Open — decided at the plan gate |
-| O4.c Stale Bun version in the Phase 00 spec | `docs/specs/00-spec-design-system.md` line 2009 (§6.F.5 publish path, step 4) says "Bun 1.3.14 fills `workspace:` ranges from the versions in `bun.lock`". The repo runs Bun 1.4.3 (`.bun-version`, `engines.bun >=1.4.3`). Miguel reports the behaviour persists on 1.4.3 `[to verify in research]` (probe needed). | Own row, or plan risk entry | Own Z row now, class `amendment` (one factual `AM-nnn` in the Phase 00 spec, no code, a Bun 1.4.3 probe as evidence). The Phase 1 plan cannot amend the Phase 00 spec, and `CLAUDE.md` asks to fix drift in the session it is found. | Open — decided at the plan gate |
+| O4.c Stale Bun version in the Phase 00 spec | `docs/specs/00-spec-design-system.md` line 2009 (§6.F.5 publish path, step 4) says "Bun 1.3.14 fills `workspace:` ranges from the versions in `bun.lock`". The repo runs Bun 1.4.3 (`.bun-version`, `engines.bun >=1.4.3`). Miguel reports the behaviour persists on 1.4.3 (unverified; the O4.c row runs a Bun 1.4.3 probe). | Own row, or plan risk entry | Own Z row now, class `amendment` (one factual `AM-nnn` in the Phase 00 spec, no code, a Bun 1.4.3 probe as evidence). The Phase 1 plan cannot amend the Phase 00 spec, and `CLAUDE.md` asks to fix drift in the session it is found. | Open — decided at the plan gate |
 
 ### 5.5 Spec-level questions
 
@@ -381,7 +380,7 @@ P1 scaffold line-genui ──────────────► G code (G2�
 P2 layer edges ──────────────────────► line-genui declares dependencies/peers
 component spec APPROVED ─────────────► component implementation (C1–C20)
 CEM entries of real components ──────► G6 drift and coverage tests
-validating components (C1–C4) ───────► G3 catalogs, G5 surface
+C1–C4 with descriptors ──────────────► G3 and G5 count as validated (PRD §7.3)
 P4 trusted publisher ────────────────► first line-genui release
 P7 axe tier ─────────────────────────► evidence for the zero-axe criteria
 ```
