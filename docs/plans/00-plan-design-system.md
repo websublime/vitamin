@@ -89,7 +89,7 @@ Base documentation published in Storybook:
 
 ### 2.8 HTMX Integration Spike (P2)
 
-Per Manifesto Law 7 (softened) and PRD §7.2 Phase 0 exit criterion, validate `LineHtmxElement` adapter feasibility: `hx-*` attribute forwarding, server-driven state updates, swap-aware lifecycle hooks.
+Manifesto Law 7, as it read before PRD v0.8.15, and the PRD §7.2 Phase 0 exit criterion asked this spike to validate the feasibility of a `LineHtmxElement` adapter. The adapter covered `hx-*` attribute forwarding, server-driven state updates and swap-aware lifecycle hooks. The spike ended exploratory on 2026-10-12 (PRD v0.8.15, ledger row `00-Z17`).
 
 **Exit rule:** the spike **must complete** by Phase 00 exit, and its **outcome must be documented**. The outcome itself is genuine output of the spike — not pre-cravado. Two valid exits:
 
