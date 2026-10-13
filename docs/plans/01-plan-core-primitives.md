@@ -358,7 +358,7 @@ The repo and npm supply these facts.
 - PRD §2 names no TypeScript major and sets "All dependencies — Latest stable versions".
 - Row `00-Z20` (AM-064) applied that row as the latest version within each current major.
 - Option (c) matches the literal PRD §2 row. Options (a) and (b) rely on the AM-064 reading.
-- A move still changes `CLAUDE.md` and spec §6.A.3 in one commit (PROCESS §3).
+- A move still changes `CLAUDE.md`, `.claude/agents/webcomponents-supervisor.md`, and the Phase 00 spec §1 diagram and §6.A.3 (through an `AM-nnn`) in one commit (PROCESS §3).
 - PRD §2 needs no change, because its "Latest stable versions" row already covers 7.x.
 
 #### O2 Stream order and the validating set
@@ -379,7 +379,7 @@ The O2 option texts keep the task numbering of the draft, in which G1 was the pr
 
 | Option | What it decides | Resolution |
 |---|---|---|
-| (a) | Landing page only (hero, value proposition, features, Storybook link), parallel and outside the exit criteria, where PRD §7.3 puts it | Rejected |
+| (a) | Landing page only (hero, value proposition, features, Storybook link), parallel and outside the exit criteria, where PRD §7.3 put it before v0.8.17 | Rejected |
 | (b) | A landing page that dogfoods the Phase 1 components (PRD §5.3 "line://ui components (dogfooding)") and counts as an exit criterion; needs a PRD revision to add the criterion (PRD v0.8.17) | Chosen — Miguel, 2026-10-13 |
 | (c) | The full PRD §5.3 structure (landing, docs, getting started, theming showcase, changelog, Storybook link); it stays outside the exit criteria and needs a PRD §7.3 revision of the "Parallel" line, because the PRD names only a landing page | Rejected |
 
