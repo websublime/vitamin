@@ -35,7 +35,7 @@ jobs:
             }
           "
       - name: Install
-        run: bun install --frozen-lockfile
+        run: bun install --frozen-lockfile --ignore-scripts  # AM-067: the job holds write and OIDC permissions; no build step needs a package lifecycle script
       - name: Build
         run: bun --filter './packages/*' build # AM-040: packages only; the publisher and its pack checks need only packages/*/dist
       - name: Version PR or publish
