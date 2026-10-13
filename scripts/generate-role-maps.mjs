@@ -134,9 +134,9 @@ function renderGray(grayHue) {
  * regeneration byte-stable for downstream CSS snapshots. Throws on a non-zero
  * exit so the generator fails loudly rather than committing unformatted output.
  * `--vcs-use-ignore-file=false` lets Biome 2.5.15 format an output dir outside
- * the repo root; with the ignore-file lookup on, it panics with "path is expected
- * to be under the root" (biomejs/biome#12158). The generated paths are never
- * gitignored, so the lookup excluded nothing.
+ * the repo root. With the ignore-file lookup on, Biome 2.5.15 panics with "path
+ * is expected to be under the root" (biomejs/biome#12158). The generated paths
+ * are never gitignored, so the lookup excludes nothing.
  * @param {string} outputDir
  */
 function formatWithBiome(outputDir) {

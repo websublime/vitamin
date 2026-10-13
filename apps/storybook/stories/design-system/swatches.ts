@@ -55,7 +55,7 @@ export const swatchStyles = html`<style>
     grid-template-columns: repeat(12, minmax(0, 1fr));
     gap: 4px;
   }
-  /* Block, not a nested grid: WebKit 27.2 lays out 1,488 nested-grid swatches in ~3 s. */
+  /* Swatches stay block boxes because WebKit 27.2 takes about 3 s to lay out 1,488 nested-grid swatches. */
   .ds-swatch {
     display: block;
     min-width: 0;

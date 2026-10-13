@@ -265,10 +265,10 @@ function renderBarrel() {
  * this keeps regeneration byte-stable for the C4 freshness guard. Throws on a
  * non-zero exit so the generator fails loudly rather than committing unformatted
  * output. `--vcs-use-ignore-file=false` lets Biome 2.5.15 format an output dir
- * outside the repo root (the freshness guard's temp dir); with the ignore-file
- * lookup on, it panics with "path is expected to be under the root"
- * (biomejs/biome#12158). The generated paths are never gitignored, so the lookup
- * excluded nothing.
+ * outside the repo root, such as the freshness guard's temp dir. With the
+ * ignore-file lookup on, Biome 2.5.15 panics with "path is expected to be under
+ * the root" (biomejs/biome#12158). The generated paths are never gitignored, so
+ * the lookup excludes nothing.
  * @param {string} outputDir
  */
 function formatWithBiome(outputDir) {
