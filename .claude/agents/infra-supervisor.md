@@ -70,7 +70,7 @@ after Verify. The rules live in `docs/PROCESS.md` §4–§6 and win over this fi
 
 ## Tech Stack
 
-Bun 1.3+ workspaces, GitHub Actions, Changesets (canary via `snapshot:publish`, stable via `release`), Vite 8
+Bun 1.4+ workspaces, GitHub Actions, Changesets (canary via `snapshot:publish`, stable via `release`), Vite 8
 (Rolldown), `tsc -b`, PostCSS, Biome, git hooks (`.githooks/`, `core.hooksPath` set by `prepare`), Astro
 (`apps/site`), Cloudflare Pages
 
