@@ -1,30 +1,30 @@
 name: checks
 on: [pull_request]
-permissions: { contents: read }
-concurrency:
+permissions: { contents: read }               # AM-025: least-privilege token
+concurrency:                                   # AM-025: cancel superseded runs of the same ref
   group: checks-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   ci:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 30                        # AM-025
     steps:                                     # AM-067: every action is pinned to a full commit SHA (AM-040 pattern)
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with: { persist-credentials: false }
-      - name: Setup Bun
+        with: { persist-credentials: false }   # AM-025: nothing downstream needs git auth
+      - name: Setup Bun                        # AM-069: no job restores or saves the Bun executable in the Actions cache
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with: { bun-version-file: .bun-version }
+        with: { bun-version-file: .bun-version, no-cache: true }
       - name: Install dependencies
         run: bun install --frozen-lockfile
       - name: Lint (biome check)
         run: bun run lint
-      - name: Build packages
+      - name: Build packages                   # AM-029: two-phase (packages, then apps) — Bun --filter ignores devDependencies ordering
         run: bun run build
-      - name: Typecheck
+      - name: Typecheck                        # AM-025: after build — needs line-schemas dist/*.d.ts
         run: bun --filter '@websublime/*' typecheck
       - name: Pack verification (AM-036)
-        run: bun run scripts/verify-pack.mjs
+        run: bun run scripts/verify-pack.mjs    # after build — packs every publishable package offline and checks the tarballs
       - name: Zero-export smoke (§9.1, RK11, AM-007)
         run: bun -e "const m = await import('./packages/line-components/dist/index.js'); const n = Object.keys(m).length; if (n !== 0) { console.error('line-components must export nothing in Phase 00, got', n); process.exit(1); }"
       - name: Layer lint (downward-only enforcement)
@@ -33,7 +33,7 @@ jobs:
         run: bun run scripts/verify-palettes-fresh.mjs
       - name: Contrast validation
         run: bun run scripts/validate-contrast.mjs
-      - name: F2 preload-presence assertion (AM-018)
+      - name: F2 preload-presence assertion (AM-018)  # AM-025: anchored and escaped
         run: grep -qE '^preload = \["\./bun-test-preload\.ts"\]$' bunfig.toml
       - name: Unit tier
         run: bun test
@@ -43,5 +43,5 @@ jobs:
         run: bun run e2e
       - name: Storybook build
         run: bun --filter '@websublime/line-storybook' build
-      - name: Storybook analyze (CEM)
+      - name: Storybook analyze (CEM)          # AM-024: no `run`
         run: bun --filter '@websublime/line-storybook' analyze
