@@ -13,7 +13,7 @@
 > - Every reachable `web_core` throw path became a schema-valid A2UI `error` message with no page error, identically in all three engines. That covers 29 streams, 1 renderer call and 1 adapter throw.
 > - Focus survives an agent reorder in (b), because its reconciler moves the siblings around the focused element. (a) loses it, because Lit's keyed `repeat` moves the focused element itself. Both lose focus when the agent reparents the focused node.
 > - On a one-button page (Vite 8 per-page builds, gzip -9), (a) loads 88.8 KB, 80.9 KB of it before any component and Lit included. (b) loads 86.9 KB, 79.9 KB of it before any component and without Lit. Compressed alone, `web_core` and its dependencies sum to about 103 KB in both. The upstream eager idiom defines all 17 tags at startup.
-> - No catalog meta-schema exists, and both the hand-written and the emitted `line` catalog fail `client_capabilities.json#/$defs/Catalog`. The emitted catalog also lacks `$defs.anyFunction` and `$defs.theme`, which the published schemas require through `catalog.json`. Emitted catalog: 685 B gzip for four components.
+> - No catalog meta-schema exists, and both the hand-written and the emitted `line` catalog fail `client_capabilities.json#/$defs/Catalog`. The emitted catalog also lacks `$defs.anyFunction` and `$defs.theme`, which the published schemas require through `catalog.json`. The emitted four-component catalog weighs 685 B gzip.
 > - Recommended, pending Miguel's confirmation: direct projection on the `web_core` models and binder (b).
 
 ---
@@ -226,7 +226,8 @@ Recipe from `spike/README.md`, run in `mktemp -d` (`…/tmp.IS4zu33cFQ`) from `g
 | P10 | `npm pack @mdn/browser-compat-data` (8.1.6), `api.Element.moveBefore` | 0 | Chrome 133, Firefox 144, Safari no |
 | P11 | `gh issue view 1745 -R a2ui-project/a2ui` | 0 | Open, "children are unkeyed, making it impossible to move children correctly" |
 | P12 | Worktree: `bun --filter` build of `line-schemas`, `line-tokens`, `line-colors`, `line-themes`, then root `bun test` | 0 | 310 pass, 0 fail, 18 files, no file under `docs/` collected. Without the builds, 3 then 75 `line-themes` tests fail on missing `dist` (CI builds first) |
-| P13 | `bun run lint` | 0 | 288 files, no diagnostics |
+| P13 | `bun run lint` | 0 | No diagnostics |
+| P14 | Review fixes (focus-preserving (b) reconciler, prefix-slot selector, reparent step), then the full recipe in a new `mktemp -d` copy of `dcd511e` | 0 | 17 passed, 1 flaky: the first Chromium focus test timed out once on the cold dev server and passed on retry. Evidence refreshed (`b62c4be`); all numbers except focus and the `slots` row match P7 |
 
 ## 4. Fit with line://ui
 
