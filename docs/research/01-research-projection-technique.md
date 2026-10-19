@@ -177,7 +177,7 @@ Each step starts with focus on `b`. The results are identical in all three engin
 
 #### Screen-reader pass
 
-Miguel ran the VoiceOver pass on 2026-10-19 on macOS, in Safari and in Chrome. He used the script in `docs/research/assets/01-r2/spike/README.md` §"Screen-reader pass" against a clean copy of the spike at `3b7ce53`, which holds the same spike code as `fd3d270`, served on `127.0.0.1:4341`. The scope he chose was (b) S1–S10, and (a) S2 and S6 only. The page URLs used `delay=8000` instead of the README's 4000, to leave time to reach the button while VoiceOver speaks.
+Miguel ran the VoiceOver pass on 2026-10-19 on macOS, in Safari and in Chrome. He used the script in `docs/research/assets/01-r2/spike/README.md` §"Screen-reader pass" against a clean copy of the spike at `3b7ce53`, which holds the same spike code as `fd3d270`, served on `127.0.0.1:4341`. The scope he chose was (b) S1–S10, and (a) S2 and S6 only. The orchestrator set `delay=8000` in the page URLs instead of the README's 4000, to leave time to reach the button while VoiceOver speaks.
 
 | # | Safari (a) | Safari (b) | Chrome (a) | Chrome (b) |
 |---|---|---|---|---|
@@ -194,8 +194,8 @@ Miguel ran the VoiceOver pass on 2026-10-19 on macOS, in Safari and in Chrome. H
 
 "Matched" means the announcement and focus behaviour equalled the README expectation for that candidate.
 
-- S2 in (a) had no extra empty or repeated stops compared with (b). VoiceOver does not voice the 6 extra `generic` nodes that the Chromium tree of (a) holds (§2.3).
-- Where focus is lost (S6 in (a), S10 in (b)), VoiceOver landed at the start of the page, on the web area, in both browsers.
+- S2 in (a) had no extra empty or repeated stops compared with (b), in either browser. In Chrome, the 6 extra `generic` nodes of the Chromium tree of (a) (§2.3) produced no extra stop in this pass. The pass did not compare Safari against a WebKit tree count.
+- Where focus is lost (S6 in (a), S10 in (b)), VoiceOver landed at the start of the page in both browsers.
 
 ### 2.9 Weight
 
