@@ -7,10 +7,10 @@
 
 > **TL;DR**
 >
-> - **Version.** `@a2ui/web_core` 0.13.0 (published 2026-10-09) was `latest` on 2026-10-14. 0.14.0 was published on 2026-10-17 and is `latest` on 2026-10-19, with 12 entries marked BREAKING. Both declare `lit ^3.3.3`, `zod ^3.25.76`, `@lit/context ^1.1.6`, `zod-to-json-schema ^3.25.2`, `@preact/signals-core ^1.14.2`, `validate-color ^2.2.4` and `redos-detector ^6.1.4`, and no `peerDependencies`. These ranges resolve to the repo's locked `lit@3.3.3` and `zod@3.25.76` with no nested copy. Zod `latest` is 4.6.7, and upstream `main` still declares `zod ^3.25.76`.
+> - **Version.** `@a2ui/web_core` 0.13.0 (published 2026-10-09) was `latest` when the plan was written on 2026-10-13 and stayed `latest` until 0.14.0 was published on 2026-10-17. 0.14.0 is `latest` on 2026-10-19, with 12 entries marked BREAKING. Both declare `lit ^3.3.3`, `zod ^3.25.76`, `@lit/context ^1.1.6`, `zod-to-json-schema ^3.25.2`, `@preact/signals-core ^1.14.2`, `validate-color ^2.2.4` and `redos-detector ^6.1.4`, and no `peerDependencies`. These ranges resolve to the repo's locked `lit@3.3.3` and `zod@3.25.76` with no nested copy. Zod `latest` is 4.6.7, and upstream `main` still declares `zod ^3.25.76`.
 > - **Subpaths.** A catalog needs `@a2ui/web_core/catalog` (`Catalog`, `spec`, `specDef`) and `@a2ui/web_core/v0_9` (Zod 3 common types `DynamicStringSchema`, `DynamicNumberSchema`, `DynamicBooleanSchema`, `DynamicStringListSchema`, `DynamicValueSchema`, `ComponentIdSchema`, `ChildListSchema`, `ActionSchema`, `CheckableSchema`, `AccessibilityAttributesSchema`, …). A renderer needs `@a2ui/web_core/v0_9` (`MessageProcessor`, `SurfaceModel`, `NodeResolver`, `GenericBinder`, `ComponentContext`, error classes, `STRICT_VALIDATION`, `RELAXED_VALIDATION`). `renderA2uiNode` lives in `@a2ui/web_core/v0_9/universal`, and the basic catalog lives in `@a2ui/web_core/v0_9/basic_catalog`. The catalog and core imports run without a DOM and pull in no Lit.
 > - **Meta-schema.** A2UI v0.9.1 publishes no standalone catalog meta-schema. The only catalog-shaped schema is `client_capabilities.json#/$defs/Catalog`, the inline-catalog form with `additionalProperties: false`. The published v0.9.1 basic catalog document fails it, and the inline form that `web_core` generates passes it. In 0.14.0, `Catalog.toJson()` emits the catalog document, `Catalog.validationSchema` emits the bundled validator, and `Catalog.catalogSchema` is deprecated. 0.13.0 has only `catalogSchema`. The helpers `dynamicString(description)` and `componentId({description})` emit the literal text `${description}` in 0.13.0 and 0.14.0 (an upstream bug), and `.describe()` on a common type replaces its `$ref` with an inline `oneOf`.
-> - **Projection inputs for R2.** `renderA2uiNode` returns a Lit directive. It creates the element by tag and sets the `node` and `context` properties on it. It calls `customElements.define` itself only when the catalog entry carries an `element` constructor. An entry that carries only `tagName` renders an undefined element that upgrades in place when defined later (probed). The models path is `NodeResolver`. It gives a signal tree of `ComponentNode`s whose `props` hold `ResolvedBinding` and `WritableBinding` values, action functions and child nodes. Placeholder nodes carry the states `pending`, `unknown-type` and `cyclic`, and `node.id` stays stable for the node's lifetime.
+> - **Projection inputs for R2.** `renderA2uiNode` returns a Lit directive. It creates the element by tag and sets the `node` and `context` properties on it. The `renderA2uiNode(node)` form calls `customElements.define` itself when the catalog entry carries an `element` constructor, and an entry that carries only `tagName` renders an undefined element that upgrades in place when defined later (probed). The upstream adapter base class `A2uiLitElement` renders into a shadow root by default, so an adapter built on it must override `createRenderRoot()` to return `this` for document `::part()` rules to reach the `line-*` elements inside it. The models path is `NodeResolver`. It gives a signal tree of `ComponentNode`s whose `props` hold `ResolvedBinding` and `WritableBinding` values, action functions and child nodes. Placeholder nodes carry the states `pending`, `unknown-type` and `cyclic`, and `node.id` stays stable for the node's lifetime.
 > - **Throw paths.** `processMessages` throws synchronously at the first failing message. Earlier messages stay applied and later ones are skipped. One `updateComponents` message is atomic, because its validation pass runs before its mutation pass. Unknown types, dangling references, cycles and the depth limit throw only when a `validationConfig` is set. `STRICT_VALIDATION` rejects progressive streaming, and `RELAXED_VALIDATION` accepts it. Expression errors, unknown types and cycles found while resolving reach `surface.onError` instead of throwing. `web_core` knows the basic catalog only under `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, and the `v0_9_1` URL that the v0.9.1 protocol examples use throws `Catalog not found`.
 > - **v1.0 and icons.** A2UI v1.0 is a "Candidate" spec and a "release candidate" in the README. The roadmap targets Q4 2026, and the v1.0 spec still changed on 2026-10-13 and 2026-10-15. v0.9.1 catalogs do not run on v1.0 runtimes. The basic catalog `Icon.name` enum holds the same 59 names in v0.9.1 and in the v1 basic catalog of `web_core` 0.14.0 (list in §2.6).
 
@@ -43,7 +43,7 @@ All facts were retrieved on 2026-10-19 unless a row says otherwise.
 | 0.10.0 – 0.10.7 | 2026-05-12 – 2026-09-01 | — | 8 releases |
 | 0.11.0 | 2026-09-12 | 11 | |
 | 0.12.0 | 2026-09-28 | 16 | Seen by the 2026-10-06 note |
-| 0.13.0 | 2026-10-09 | 11 | `latest` on 2026-10-14 |
+| 0.13.0 | 2026-10-09 | 11 | `latest` from 2026-10-09 to 2026-10-17, so also on 2026-10-13 when the plan was written |
 | 0.14.0 | 2026-10-17 | 8 | `latest` on 2026-10-19; the only dist-tag is `latest` |
 
 - `@a2ui/lit` releases in lockstep (0.13.0 on 2026-10-09, 0.14.0 on 2026-10-17), and 0.14.0 depends on `@a2ui/web_core ^0.14.0` (P2).
@@ -82,7 +82,7 @@ All facts were retrieved on 2026-10-19 unless a row says otherwise.
 
 ### 2.3 Exports map and the subpaths each side needs
 
-The 0.13.0 and 0.14.0 maps are identical. 0.13.0 added `./universal` and `./catalogs/basic/v1` and removed `./v1_0/basic_catalog` relative to 0.12.0 (P3). The map has 27 entries.
+The 0.13.0 and 0.14.0 maps are identical. 0.13.0 added `./universal` and `./catalogs/basic/v1` and removed `./v1_0/basic_catalog` relative to 0.12.0 (P3). The map has 26 entries (`jq '.exports | keys | length'`).
 
 | Subpath | What it gives | Catalog side | Renderer side |
 |---|---|---|---|
@@ -121,7 +121,7 @@ Bun 1.4.3 `bun build --minify --target browser` weights for three import sets (P
 
 | Document | Against | Result (P5, P10, P11) |
 |---|---|---|
-| Published v0.9.1 basic catalog | `client_capabilities.json#/$defs/Catalog` | Fails on `$schema`, `$id`, `title`, `description` |
+| Published v0.9.1 basic catalog | `client_capabilities.json#/$defs/Catalog` | Fails with six errors (Ajv 2020, `allErrors`): additional properties `$schema`, `$id`, `title`, `description` and `$defs`, and `/functions` must be an array (the document writes a map) |
 | `web_core` `toJson()` of a code-defined line catalog | `client_capabilities.json#/$defs/Catalog` | Fails on `protocolVersion` and `$defs` |
 | `web_core` `getClientCapabilities({versions: ['v0.9'], includeInlineCatalogs: true})` | `client_capabilities.json` | Valid; inline catalogs carry `catalogId`, `components`, `functions` (array) |
 | Same with `versions: ['v0.9.1']` only | `client_capabilities.json` | Fails, because the schema requires the `v0.9` key |
@@ -168,10 +168,14 @@ Bun 1.4.3 `bun build --minify --target browser` weights for three import sets (P
 
 - Signatures are `renderA2uiNode(node)` and `renderA2uiNode(context, catalog)`. The result is a Lit `DirectiveResult` or `nothing`, so it renders only inside a Lit template.
 - The directive keeps one element per child position and recreates it only when the tag changes (0.13.0). It creates the element with `document.createElement(tagName)` and assigns `element.node` and `element.context`.
-- When the entry carries both `tagName` and an `element` constructor (`WebComponentImplementation`), it calls `registerUniversalElement`, an eager `customElements.define`. A different constructor already bound to the tag throws `Error("Custom element tag name collision …")` (P9).
+- The two signatures register elements differently (`src/universal/render-a2ui-node.js`).
+  - `renderA2uiNode(node)` calls `registerUniversalElement` whenever the entry carries both `tagName` and an `element` constructor (`WebComponentImplementation`). `registerUniversalElement` is idempotent for the same constructor and throws `Error("Custom element tag name collision …")` when the tag is bound to a different one (P9).
+  - `renderA2uiNode(context, catalog)` calls it only when `customElements.get(tagName)` is empty, so this form never reaches the collision throw.
 - When the entry carries only `tagName`, nothing is defined. The probe rendered `<probe-stack>` undefined, then defined it later, and the element upgraded in place (P9).
 - A placeholder, disposed or context-less node renders `nothing`. An entry without `tagName` logs `console.warn` and renders `nothing`.
-- The rendered element must accept `node` or `context`. `A2uiLitElement` is the upstream base class for that contract. It renders into light DOM by default and is marked `@experimental`.
+- The rendered element must accept `node` or `context`. `A2uiLitElement` is the upstream base class for that contract, and it is marked `@experimental`.
+- `A2uiLitElement` renders into a shadow root by default. It extends `LitElement` and does not override `createRenderRoot()`, although its JSDoc says light DOM. The package's own test `a2ui-lit-element.test.js:110` asserts a `ShadowRoot` by default, and P13 confirms it. Only the internal `BasicCatalogA2uiLitElement` returns `this`.
+- An adapter on `A2uiLitElement` that must meet ARCHITECTURE §17.4 (light-DOM render root, Law 1) overrides `createRenderRoot()` to return `this`. Without the override, the `line-*` element it renders sits inside the adapter's shadow root, where document `::part()` rules cannot reach it. P13 shows the override returns the host.
 - `@a2ui/lit` 0.14.0 `<a2ui-surface>` uses this function and renders into light DOM (`createRenderRoot() { return this; }`). Its changelog lists the move from a shadow root to light DOM as BREAKING in 0.14.0 (PR #3154).
 
 | Aspect | `renderA2uiNode` | Models and binder |
@@ -186,9 +190,14 @@ Bun 1.4.3 `bun build --minify --target browser` weights for three import sets (P
 
 ### 2.6 Basic catalog facts the wave-2 items need
 
-- Basic catalog id in `web_core`: `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, `protocolVersion` `"0.9"`.
-- Components (18): Text, Image, Icon, Video, AudioPlayer, Row, Column, List, Card, Tabs, Modal, Divider, Button, TextField, CheckBox, ChoicePicker, Slider, DateTimeInput.
-- Functions (14): `required`, `regex`, `length`, `numeric`, `email`, `formatString`, `formatNumber`, `formatCurrency`, `formatDate`, `pluralize`, `openUrl`, `and`, `or`, `not`. `openUrl` accepts only `http:` and `https:` (0.10.2) and throws `USER_ACTIVATION_REQUIRED` when evaluated passively (0.13.0).
+| Fact | Value |
+|---|---|
+| Basic catalog id in `web_core` | `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json` |
+| Basic catalog `protocolVersion` in `web_core` | `"0.9"` |
+| Components (18) | Text, Image, Icon, Video, AudioPlayer, Row, Column, List, Card, Tabs, Modal, Divider, Button, TextField, CheckBox, ChoicePicker, Slider, DateTimeInput |
+| Functions (14) | `required`, `regex`, `length`, `numeric`, `email`, `formatString`, `formatNumber`, `formatCurrency`, `formatDate`, `pluralize`, `openUrl`, `and`, `or`, `not` |
+
+- `openUrl` accepts only `http:` and `https:` (0.10.2) and throws `USER_ACTIVATION_REQUIRED` when evaluated passively (0.13.0).
 - `Icon.name` is `oneOf` a 59-name enum or a path binding. The names are accountCircle, add, arrowBack, arrowForward, attachFile, calendarToday, call, camera, check, close, delete, download, edit, event, error, fastForward, favorite, favoriteOff, folder, help, home, info, locationOn, lock, lockOpen, mail, menu, moreVert, moreHoriz, notificationsOff, notifications, pause, payment, person, phone, photo, play, print, refresh, rewind, search, send, settings, share, shoppingCart, skipNext, skipPrevious, star, starHalf, starOff, stop, upload, visibility, visibilityOff, volumeDown, volumeMute, volumeOff, volumeUp, warning.
 - The v1 basic catalog in `web_core` 0.14.0 (`./catalogs/basic/v1`) has the same 59 names, none added or removed.
 
@@ -208,7 +217,7 @@ Bun 1.4.3 `bun build --minify --target browser` weights for three import sets (P
 | `updateDataModel` | Unknown surface; forbidden segment (`__proto__` and similar); primitive in the path; non-numeric array segment; array index above the maximum | `A2uiIntegrityError`, `A2uiDataError` (`DATA_ERROR`) | None |
 | `new NodeResolver` | Catalog instance ≠ `surface.defaultCatalog` | `A2uiStateError` (`STATE_ERROR`) | — |
 | `new ComponentContext` | Component id not in the surface | `A2uiStateError` | — |
-| `registerUniversalElement` (inside `renderA2uiNode`) | Tag bound to another constructor | `Error` | — |
+| `registerUniversalElement`, reached only through `renderA2uiNode(node)` | Tag bound to another constructor | `Error` | — |
 | `A2uiLitElement` | Subclass defines no `api` and overrides no `createController()` | `Error` | — |
 | `WritableBinding.set` and binder setters | The `DataModel.set` cases above, at interaction time | `A2uiDataError` | — |
 | `new Catalog` | Empty `protocolVersion` | `A2uiCatalogError` | — |
@@ -257,7 +266,7 @@ All probes ran on 2026-10-19 under Bun 1.4.3 in `mktemp -d` (`/var/folders/…/t
 
 | # | Command | Exit | Observed |
 |---|---|---|---|
-| P1 | `npm view @a2ui/web_core version dist-tags time dependencies peerDependencies exports --json` | 0 | `latest` 0.14.0; history in §2.1; seven dependencies; no peers; 27 exports |
+| P1 | `npm view @a2ui/web_core version dist-tags time dependencies peerDependencies exports --json` | 0 | `latest` 0.14.0; history in §2.1; seven dependencies; no peers; 26 exports |
 | P2 | `npm view @a2ui/web_core@{0.12.0,0.13.0} dependencies`; `npm view @a2ui/lit …`; `npm view {zod,lit,@lit/context,zod-to-json-schema} dist-tags` | 0 | §2.2 table; `zod` `latest` 4.6.7 |
 | P3 | `curl` the 0.12.0, 0.13.0 and 0.14.0 tarballs; `diff <(jq -S .exports …)` | 0 (diff 1 for 0.12.0, 0 for 0.13.0) | §2.3 delta |
 | P4 | `bun add @a2ui/web_core@0.14.0 lit@3.3.3 zod@3.25.76 ajv@8 ajv-formats happy-dom` (and with 0.13.0) | 0 | One `zod` 3.25.76 and one `lit` 3.3.3; no nested `node_modules` |
@@ -270,14 +279,16 @@ All probes ran on 2026-10-19 under Bun 1.4.3 in `mktemp -d` (`/var/folders/…/t
 | P10 | `bun caps.mjs` (`getClientCapabilities` vs `client_capabilities.json`) | 0 | `['v0.9']` and `['v0.9','v0.9.1']` valid; `['v0.9.1']` fails the required `v0.9` key |
 | P11 | `bun meta.mjs` (v1.0 `catalog_definition.json`) | 1, then 0 | First run hit a probe bug (duplicate Ajv schema id). After the fix: both v0.9 documents fail (§2.4.2) |
 | P12 | `bun build b/{a,b,c,d}.mjs --minify --target browser [--external …]`, then `gzip -9c \| wc -c` | 0 | §2.3 weights; Lit only with `universal` or `basic_catalog` |
+| P13 | `bun root.mjs` (happy-dom; `A2uiLitElement` subclass with and without a `createRenderRoot()` override) | 0 | Default `createRenderRoot()` returns a `ShadowRoot`; the override returns the host |
+| P14 | `bun v.mjs` (Ajv 2020, `allErrors`; published v0.9.1 basic catalog against `client_capabilities.json#/$defs/Catalog`) | 0 | Six errors, listed in §2.4.2 |
 
 ## 4. Fit with line://ui
 
 - **ARCHITECTURE §17.1.** `line-genui` depending on `@a2ui/web_core` adds `zod`, `lit`, `@lit/context`, `zod-to-json-schema`, `@preact/signals-core`, `validate-color` and `redos-detector` to the consumer install. `lit` and `zod` already match the repo.
 - **ARCHITECTURE §17.3 and PRD Appendix D (`./catalog` touches no DOM).** `Catalog` and the v0.9 common types import without a DOM and pull in no Lit (P5, P12). The common types exist as named in §17.3 (`DynamicString`, `ComponentId`, `ChildList`, `Action`, `Checkable`). Their `$ref` survives only when descriptions avoid `.describe()` and the buggy helpers (§2.4.3).
 - **ARCHITECTURE §17.3 (flat schemas).** `toJson()` keeps common types as `$ref`s and adds `$defs.anyComponent`, a `oneOf` over components. R3 decides whether that union is within "the A2UI common types".
-- **ARCHITECTURE §17.4 (light DOM, Law 1).** Both techniques can render in light DOM. Upstream `A2uiLitElement` and `<a2ui-surface>` now default to light DOM.
-- **ARCHITECTURE §17.4 (Loading, Law 6).** `renderA2uiNode` defines elements eagerly only for entries that carry `element`. Entries with `tagName` only let a descriptor's `load()` define the element later (P9).
+- **ARCHITECTURE §17.4 (light DOM, Law 1).** Both techniques can render in light DOM. `<a2ui-surface>` in `@a2ui/lit` 0.14.0 defaults to light DOM. `A2uiLitElement` defaults to a shadow root, so a `renderA2uiNode` adapter must override `createRenderRoot()` (§2.5.3).
+- **ARCHITECTURE §17.4 (Loading, Law 6).** `renderA2uiNode(node)` defines an element eagerly only for an entry that carries `element`, and `renderA2uiNode(context, catalog)` defines it only when the tag is still undefined. Entries with `tagName` only let a descriptor's `load()` define the element later (P9).
 - **ARCHITECTURE §17.2 and §17.1 (components stay protocol-unaware).** `renderA2uiNode` sets `node` and `context` on the element it creates. A `line-*` element cannot be that element without importing A2UI types, so this technique needs one adapter element per node.
 - **ARCHITECTURE §17.4 (Accessibility, stable ids).** `ComponentNode.id` is stable for the node's lifetime and documented as a base for DOM ids and accessibility references.
 - **ARCHITECTURE §17.4 (Limits).** `web_core` enforces payload depth 50, function-call depth 5, expression parser limits and 10000 template children, but only with a `validationConfig` for the first two. It has no node-count or data-model-size limit, so those stay with the surface.
@@ -290,8 +301,9 @@ All probes ran on 2026-10-19 under Bun 1.4.3 in `mktemp -d` (`/var/folders/…/t
 1. **The "A2UI v0.9.1 catalog meta-schema" does not exist as an artifact.** `docs/PRD.md:896` and `docs/plans/01-plan-core-primitives.md:461` require `catalog.json` to validate against it. v0.9.1 publishes no catalog meta-schema (§2.4.1). The closest schema, `client_capabilities.json#/$defs/Catalog`, rejects the published basic catalog document. The v1.0 `catalog_definition.json` rejects every v0.9 catalog. The criterion needs a definition before the spec can test it (§6 Q2).
 2. **The release cadence and current version in the plan are stale.** `docs/plans/01-plan-core-primitives.md:336` and `:492` say 0.12.0 → 0.13.0 took "within one week". npm shows 11 days (2026-09-28 → 2026-10-09). `:316` names 0.13.0 as current, and 0.14.0 has been `latest` since 2026-10-17.
 3. **The plan's dependency list for 0.13.0 is incomplete.** `docs/plans/01-plan-core-primitives.md:337` lists four dependencies. 0.13.0 declares seven, adding `@preact/signals-core ^1.14.2`, `validate-color ^2.2.4` and `redos-detector ^6.1.4`.
-4. **The error rule assumes per-node throws.** `docs/ARCHITECTURE.md:1507` and `docs/plans/01-plan-core-primitives.md:107` say every `web_core` throw is caught and an inert placeholder replaces "the failed node". The throws come from `processMessages` and are message-scoped. A rejected `updateComponents` applies nothing, so no failed node exists to replace. Node-level problems (unknown type, pending child, cycle) produce placeholder nodes and `onError` events without throwing (§2.7). The rule can be met only after it says what a thrown message turns into.
-5. **The prior research note is outdated on two points.** These sit outside the document hierarchy and are listed because the task asks for them.
+4. **The error rule assumes per-node throws.** `docs/ARCHITECTURE.md:1507` says the surface catches every `web_core` throw and puts an inert placeholder in place of "the failed node". `docs/plans/01-plan-core-primitives.md:107` says "Every `web_core` throw is caught and replaced by an inert placeholder". The throws come from `processMessages` and are message-scoped. A rejected `updateComponents` applies nothing, so no failed node exists to replace. Node-level problems (unknown type, pending child, cycle) produce placeholder nodes and `onError` events without throwing (§2.7). Both rules can be met only after they say what a thrown message turns into.
+5. **"The A2UI basic catalog id" is ambiguous.** The basic catalog file and `web_core` use `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`. The v0.9.1 protocol examples use `https://a2ui.org/specification/v0_9_1/catalogs/basic/catalog.json` (`specification/v0_9_1/docs/a2ui_protocol.md:195`, `:288`), and `web_core` throws `Catalog not found` on that URL (P7). `docs/PRD.md:897`, `docs/plans/01-plan-core-primitives.md:462` and `docs/ARCHITECTURE.md:1472` assume one "A2UI basic catalog id" (§6 Q5).
+6. **The prior research note is outdated on two points.** These sit outside the document hierarchy and are listed because the task asks for them.
    - `docs/research/00-research-generative-ui.md:194` emits the catalog "through `web_core` `Catalog.catalogSchema`". 0.14.0 deprecates `catalogSchema`. `toJson()` gives the document and `validationSchema` gives the bundled validator.
    - `docs/research/00-research-generative-ui.md:225` says upstream `<a2ui-surface>` "keeps a shadow root". `@a2ui/lit` 0.14.0 renders it into light DOM, which changes the cost side of option (a) for R2.
 
