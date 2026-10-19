@@ -10,7 +10,7 @@
 > - **Zod lines.** `zod` 3.25.76 (2025-07-08) is the last 3.x release, and 4.6.7 (2026-10-12) is `latest`. Under 3.25.76 the bare `zod` and `zod/v3` give the Zod 3 API, and `zod/v4` gives the Zod 4.0.0 API. Under 4.6.7 the bare `zod` gives Zod 4.6.7, and `zod/v3` is a separate Zod 3 build. `zod-to-json-schema`, which `web_core` depends on, has been deprecated since November 2025.
 > - **Sharing.** Only the Zod 3 API composes with the `web_core` common types. A `zod/v4` object that holds `DynamicStringSchema` type-checks, then throws on parse. A pure Zod 4 descriptor passes into `Catalog` without error, but `toJson()` emits no props and the binder leaves `{path}` bindings unresolved. Under a root `zod` 4.6.7, `zod/v3` descriptors work at runtime but fail `tsc` with TS2589.
 > - **Zod 4 pull.** `@modelcontextprotocol/ext-apps` 2.0.3 and the MCP SDK v2 need `zod ^4.2.0`. A Vite 8.3.4 bundle of the `web_core` catalog imports plus ext-apps carries 2 to 4 Zod copies and weighs 133.9–166.8 KB gzipped, against 54.0 KB for the catalog imports alone. Upstream A2UI has no plan to move to Zod 4 and tracks a Zod-agnostic schema layer as P2 (#2160).
-> - **Provider limits.** The A2UI common types carry `oneOf`, `allOf`, recursion, open maps and a cross-document `$ref`. OpenAI strict mode, Anthropic strict tool use and Gemini `parameters` each reject some of these. OpenAI and Anthropic document no subset for non-strict tools, and Gemini's documented JSON Schema subset omits `allOf`. No provider documents a 1024-character description limit. Community error reports show OpenAI's API rejecting a function description over 1024 characters, and no source covers property descriptions.
+> - **Provider limits.** The A2UI common types carry `oneOf`, `allOf`, recursion, open maps and a cross-document `$ref`. OpenAI strict mode, Anthropic strict tool use and Gemini `parameters` each reject some of these. OpenAI and Anthropic document no subset for non-strict tools. Gemini's only JSON Schema keyword list sits on the deprecated `GenerationConfig._responseJsonSchema` field and omits `allOf`. No provider documents a 1024-character description limit. Community error reports show OpenAI's API rejecting a function description over 1024 characters, and no source covers property descriptions.
 > - **Emitters and weight.** The three Zod → JSON Schema paths produce different shapes for the same props (§2.5). The probe `line` catalog for the four validating components is 2,374 B (547 o200k tokens), plus 5,780 B (1,298 tokens) of common types. One frontend tool costs 73 tokens (Separator) to 778 tokens (Button), and the bundled common types make up most of the larger figure.
 
 ---
@@ -55,7 +55,7 @@ All facts were retrieved on 2026-10-19 unless a row says otherwise. Component sp
 - `zod-to-json-schema` 3.25.2 (2026-03-27) is `latest`. Its README says "As of November 2025, this project will no longer be actively maintained" and points to native `z.toJSONSchema`. Its peer range is `zod ^3.25.28 || ^4`, and it converts Zod 3 schemas only ("so long as you still provide v3-schemas"). It imports `zod/v3` in its ESM build.
 - No 3.x install satisfies `zod ^4.2.0`. The `zod/v4` inside 3.25.76 reports version 4.0.0 (P4).
 - The repo resolves two Zod packages today. `bun.lock` holds `zod@3.25.76` at the root and `astro/zod` 4.6.5 nested for `apps/site`. `@websublime/line-schemas` 0.1.1 lists `zod ^3.25.76` under `dependencies` and imports the bare `zod`.
-- Zod 4 builds parsers with `new Function`. Building and parsing a three-field object called `Function` 3 times under Zod 4.6.7 and under the `zod/v4` of 3.25.76, and 0 times under Zod 3 (P9). When `Function` throws, as under a CSP without `'unsafe-eval'`, Zod 4 makes one attempt and falls back to its interpreter, and parsing still succeeds. `z.config({ jitless: true })` removes the attempt (P9; zod.dev/compile, "Content Security Policy"). The MCP Apps default View CSP has no `'unsafe-eval'` (R5 §2.2).
+- Zod 4 calls the `Function` constructor to build parsers. The P9 harness wraps `globalThis.Function` before importing Zod and counts calls in each phase, using a schema with two `z.object` nodes. Under Zod 4.6.7 and under the `zod/v4` of 3.25.76, Zod makes 0 calls on import, 1 when building the schema, 2 on the first parse and 0 on the next two parses, so 3 in total. Under Zod 3 it makes 0. The first-parse count matches the two object nodes, so a one-object schema would give 2 in total [INFERENCE]. When `Function` throws, as under a CSP without `'unsafe-eval'`, Zod 4 falls back to its interpreter and parsing still succeeds. `z.config({ jitless: true })` removes every call (P9; zod.dev/compile, "Content Security Policy"). The MCP Apps default View CSP has no `'unsafe-eval'` (R5 §2.2).
 
 ### 2.2 Sharing with the `web_core` common types
 
@@ -74,7 +74,7 @@ The probe built the four descriptors in several ways and ran each through `Catal
 - `validationSchema` builds for every variant that reaches `Catalog`, V3 included, so it does not detect the empty props.
 - Under a root `zod@4.6.7`, Bun 1.4.3 nests `zod@3.25.76` under `@a2ui/web_core` (P3). Descriptors that import `zod/v3` from the root then use one Zod 3 build while `web_core` uses another. Both builds read `_def`, so the runtime works (P5).
 
-TypeScript 5.9.3 checks of three files (`strict`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, `skipLibCheck`; P6):
+P6 type-checked three files with TypeScript 5.9.3 (`strict`, `exactOptionalPropertyTypes`, `verbatimModuleSyntax`, `skipLibCheck`).
 
 | File | Root `zod@3.25.76` | Root `zod@4.6.7` (descriptor imports `zod/v3`) |
 |---|---|---|
@@ -94,7 +94,7 @@ TypeScript 5.9.3 checks of three files (`strict`, `exactOptionalPropertyTypes`, 
 | `@ag-ui/client` | 1.0.3 | `^3.25.76`, imports `zod/v4` (R6 §2.1) | dependency |
 | `@ag-ui/core` | 1.0.3 | `^3.25.18 \|\| ^4.0.0`, optional; `./schemas` imports `zod/v4` | peer |
 
-Vite 8.3.4 library builds (`minify: true`, `gzip -9`) of five import sets under two root Zod versions (P7). Zod copies come from an esbuild metafile of the same entry, grouped by package directory and API subpath, and agree with a count of `"$ZodObject"` in the Vite output.
+P7 built five import sets as Vite 8.3.4 libraries (`minify: true`, `gzip -9`) under two root Zod versions. Zod copies come from an esbuild metafile of the same entry, grouped by package directory and API subpath, and agree with a count of `"$ZodObject"` in the Vite output.
 
 | Import set | Root `zod@3.25.76`: min / gzip | Zod copies | Root `zod@4.6.7`: min / gzip | Zod copies |
 |---|---|---|---|---|
@@ -108,7 +108,7 @@ Vite 8.3.4 library builds (`minify: true`, `gzip -9`) of five import sets under 
 - Under a root Zod 3, ext-apps `.` resolves `zod/v4` to the Zod 4.0.0 API inside 3.25.76, against its `^4.2.0` peer. Importing the module and constructing `App` succeeded (P8). That covers construction only, not the 4.2 features the range asks for.
 - The copy counts reflect Bun 1.4.3's layout, which nested one `zod@4.6.7` under each MCP package when the root held 3.25.76. Another package manager may hoist them differently.
 
-Upstream A2UI on `main` (`cbaa5ee`, 2026-10-17):
+Upstream A2UI `main` (`cbaa5ee`, 2026-10-17) shows these facts.
 
 - `typescript/core/web_core/package.json` declares `zod ^3.25.76` and `zod-to-json-schema ^3.25.2`. `typescript/catalogs/mcp` also declares `zod ^3.25.76`. `docs/public/roadmap.md` does not mention Zod.
 - #1222 (open, 2026-04-17). The triage comment of 2026-06-29 says a Zod 4 upgrade "is a breaking change because we expose Zod types in our public API" and that "We do not have immediate plans to upgrade to Zod v4 in the current release cycle".
@@ -132,7 +132,7 @@ ARCHITECTURE §17.3 lists the descriptor fields: catalog name, tag, `load()`, pr
 | Element and loading | `WebComponentImplementation` `{tagName, element}`; `element` defines eagerly (R1 §2.5.3) | — | — | A separate registry maps names to React components |
 | Other | `allowedParents`, `allowedChildren` | `strict`, `inputExamples`, `needsApproval` | `render` | `catalog.prompt()` |
 
-Probe facts for the line descriptor:
+The probes give four facts for the line descriptor.
 
 - A descriptor object with `load: () => import('./button.js')` code-splits under Vite 8.3.4. The catalog chunk holds the `import()` and no `customElements.define`, and the element module lands in its own chunk (P14).
 - A V1 props object is a valid `ComponentApi.schema` as it stands, so the same Zod 3 object can feed `Catalog` and a frontend-tool emitter (P5).
@@ -162,7 +162,7 @@ The probe labels eight emitter paths, and §2.6 refers to them by letter.
 - D, E, F. Zod 4.6.7 `z.toJSONSchema` with faithful types, as `draft-2020-12` output, `draft-2020-12` input and `openapi-3.0`.
 - G, H. `z.toJSONSchema` with hand types, under Zod 4.0.0 and Zod 4.6.7.
 
-Byte and token figures for the parameter schemas (o200k_base, minified JSON):
+The table gives the parameter schemas' size in minified JSON bytes and o200k_base tokens.
 
 | Path | Button | Icon | Stack | Separator |
 |---|---|---|---|---|
@@ -180,7 +180,7 @@ H is smaller only because the hand types drop recursion and descriptions, so it 
 |---|---|---|---|---|
 | OpenAI function calling and Structured Outputs | "Must be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64" (`openai-openapi` `FunctionObject.name`, commit `33248a6`) | No limit in the guides or the OpenAPI spec. The API rejects a function description over 1024 characters with `string_above_max_length` (community reports of 2023-12-19 and 2024-12-30) | `parameters`, a JSON Schema object | With `strict: true`, every object needs `additionalProperties: false` and every property must be `required` (optional fields become `["T", "null"]`). The root must be an object and not `anyOf`. Supported types are string, number, boolean, integer, object, array, enum and `anyOf`. `$defs`, `$ref` and recursion are supported. `allOf`, `not`, `dependentRequired`, `dependentSchemas` and `if`/`then`/`else` are not. Limits are 5000 properties, 10 nesting levels, 120,000 characters of names, enum values and consts, and 1000 enum values |
 | Anthropic tool use | `^[a-zA-Z0-9_-]{1,128}$` (Messages API reference) | None documented | `input_schema`, JSON Schema 2020-12 with `type: "object"` | With `strict: true`, supported are the basic types, primitive `enum`, `const`, `anyOf`, `allOf` without `$ref`, local `$ref`/`$defs`/`definitions`, `default`, `required`, a format list, and `minItems` 0 or 1. `additionalProperties` must be `false`. Recursion, external `$ref`, numeric constraints and `minLength`/`maxLength` are not supported. Limits are 20 strict tools per request, 24 optional parameters and 16 union-typed parameters across all strict schemas |
-| Google Gemini | "Must be a-z, A-Z, 0-9, or contain underscores, colons, dots, and dashes, with a maximum length of 128" | Required; no length documented | `parameters` (OpenAPI 3.0.3 Schema subset) or `parametersJsonSchema` (JSON Schema), mutually exclusive | The `Schema` object allows `type`, `format`, `title`, `description`, `nullable`, `enum`, `items`, `properties`, `required`, `anyOf`, `propertyOrdering`, `default`, `example` and min/max keywords, with no `$ref`, `oneOf`, `allOf`, `const` or `additionalProperties`. The JSON Schema subset documented for response schemas adds `$defs`, `$ref`, `oneOf` ("interpreted the same as `anyOf`") and `additionalProperties`. A `$ref` may have no non-`$` siblings, and cycles may appear only in non-required properties. Whether that subset governs `parametersJsonSchema` is [INFERENCE] |
+| Google Gemini | "Must be a-z, A-Z, 0-9, or contain underscores, colons, dots, and dashes, with a maximum length of 128" | Required; no length documented | `parameters` (OpenAPI 3.0.3 Schema subset) or `parametersJsonSchema` (JSON Schema), mutually exclusive | The `Schema` object allows `type`, `format`, `title`, `description`, `nullable`, `enum`, `items`, `properties`, `required`, `anyOf`, `propertyOrdering`, `default`, `example` and min/max keywords, with no `$ref`, `oneOf`, `allOf`, `const` or `additionalProperties`. The `parametersJsonSchema` field documents no keyword list. The API reference gives one only for `GenerationConfig._responseJsonSchema`, which is marked deprecated ("Use `responseFormat` instead"). That list adds `$defs`, `$ref`, `oneOf` ("interpreted the same as `anyOf`") and `additionalProperties`, says a `$ref` may have no non-`$` siblings, and allows cycles only in non-required properties. The structured-output guide lists types and keywords without `$ref`, `oneOf` or `allOf`, while its examples use `anyOf` and `$ref: "#"`. Applying the `_responseJsonSchema` list to `parametersJsonSchema` is [INFERENCE] |
 | AG-UI 1.0 (`@ag-ui/core` 1.0.3 `ToolSchema`) | `string`, no pattern | `string`, no limit | `parameters`, any non-null value, optional; plus `metadata`; `looseObject` | None. The model provider behind the agent applies its own rules |
 
 - OpenAI's Responses API normalises a tool to strict mode when `strict` is omitted and falls back to non-strict if it cannot. Chat Completions stays non-strict by default.
@@ -189,7 +189,7 @@ H is smaller only because the hand types drop recursion and descriptions, so it 
 
 The probe checked every emitted parameter schema against these subsets (P11). It counts keyword violations and does not call any provider.
 
-| Common-type construct | Where it sits (v0.9 `common_types.json`) | OpenAI strict | Anthropic strict | Gemini `parameters` | Gemini `parametersJsonSchema` ([INFERENCE] subset) | OpenAI and Anthropic non-strict |
+| Common-type construct | Where it sits (v0.9 `common_types.json`) | OpenAI strict | Anthropic strict | Gemini `parameters` | Gemini `parametersJsonSchema` (deprecated `_responseJsonSchema` list, [INFERENCE]) | OpenAI and Anthropic non-strict |
 |---|---|---|---|---|---|---|
 | `oneOf` | `DynamicString`, `DynamicBoolean`, `DynamicValue`, `ChildList`, `Action`, `FunctionCall` | Not in the supported list | Not in the supported list | Absent | Read as `anyOf` | No subset documented |
 | `allOf` with `$ref` | The `FunctionCall` branch of each `Dynamic*` type | `allOf` unsupported | Unsupported | Absent | Absent from the list | No subset documented |
@@ -222,9 +222,9 @@ Measured on the probe descriptors (P12), whose descriptions are one short senten
 
 ## 3. Probes
 
-All probes ran on 2026-10-19 under Bun 1.4.3 in `mktemp -d` (`/var/folders/…/tmp.31Dld0tfZ3`) with `HOME` set to that directory. The directory was deleted afterwards. No provider API was called.
+All probes ran on 2026-10-19 under Bun 1.4.3 in `mktemp -d` (`/var/folders/…/tmp.31Dld0tfZ3`, and `tmp.XJcPH14TLp` for the P9 per-phase rerun) with `HOME` set to that directory. Each directory was deleted afterwards. No provider API was called.
 
-Probe descriptors (illustrative, not spec text):
+The probe descriptors below are illustrative and are not spec text.
 
 - Button has `child` (`ComponentId`), `variant`, `type`, `disabled` (`DynamicBoolean`) and `action` (`Action`).
 - Icon has `name` and `label` (`DynamicString`).
@@ -241,7 +241,7 @@ Probe descriptors (illustrative, not spec text):
 | P6 | `tsc --strict --noEmit … ts/{z3,z4mixed,z4api}.ts` in both layouts | 0, 0, 2 and 2, 0, 2 | §2.2 TypeScript table |
 | P7 | `bun add zod@{3.25.76,4.6.7} @a2ui/web_core@0.14.0 lit@3.3.3 @modelcontextprotocol/ext-apps@2.0.3 @modelcontextprotocol/client@2.3.1 @modelcontextprotocol/core@2.3.1 vite@8.3.4 esbuild`; `vite build` (library, ES) × 10; `node meta.mjs` (esbuild metafile) × 6 | 0 | §2.3 weight table |
 | P8 | `bun extapps.mjs` (import ext-apps `.`, `new App(…)`) in both layouts | 0, 0 | Works under the 3.25.76 `zod/v4` |
-| P9 | `bun csp.mjs {zod,zod/v4,zod/v3}`, `csp2.mjs` (`jitless`), `csp3.mjs` (throwing `Function`) | 0; one run exit 1 | `Function` calls 3 / 3 / 0, then 0 with `jitless`; parse still correct under a throwing `Function`. The exit 1 came from a probe bug that chained `.optional()` on `zod/mini` |
+| P9 | `bun csp.mjs {zod,zod/v4,zod/v3}`, `csp2.mjs` (`jitless`), `csp3.mjs` (throwing `Function`); rerun with per-phase counts | 0; one run exit 1 | `Function` calls for import / build / first parse / two more parses: 0 / 1 / 2 / 0 under Zod 4.6.7 and `zod/v4`, 0 / 0 / 0 / 0 under Zod 3; 0 with `jitless`; parse still correct under a throwing `Function`. The exit 1 came from a probe bug that chained `.optional()` on `zod/mini` |
 | P10 | `bun emit3.mjs` (`zod-to-json-schema`, `toJson()`, `validationSchema`, Zod 4.0.0); `bun from.mjs`; `bun from2.mjs`; `bun emit4h.mjs` | 0, 0, 0, 0 | §2.5; `from.mjs` reported three `External $ref is not supported` throws |
 | P11 | `bun analyze.mjs` (Ajv 2020/2019/07 strict and loose, `ToolSchema.safeParse`, subset checks) | 1, then 0 | The first run hit a probe bug (`ToolSchema` lives in `@ag-ui/core/schemas`). §2.5 and §2.6 results |
 | P12 | `bun weight.mjs`; `bun counts.mjs` | 0, 0 | §2.7 table; 16–20 optional parameters |
@@ -263,11 +263,11 @@ Probe descriptors (illustrative, not spec text):
 
 ## 5. Contradictions
 
-1. **The common-type exemption keeps the constructs that provider limits reject.** `docs/ARCHITECTURE.md:1473` gives "provider limits" as the reason schemas stay flat and exempts "the A2UI common types" from the no-`$ref`/`oneOf` rule. `docs/PRD.md:898`, `docs/plans/01-plan-core-primitives.md:318` and `:463` repeat the exemption. The v0.9 common types carry `oneOf`, `allOf` with `$ref`, recursion, open maps and a cross-document `$ref` (§2.6). OpenAI strict mode, Anthropic strict tool use and Gemini `parameters` each reject some of these. OpenAI and Anthropic document no subset for non-strict tools. Gemini documents no subset for `parametersJsonSchema`, and the subset it documents for response schemas omits `allOf`. The rule therefore meets its stated purpose only for non-strict OpenAI and Anthropic tools (§6 Q3, Q4).
+1. **The common-type exemption keeps the constructs that provider limits reject.** `docs/ARCHITECTURE.md:1473` gives "provider limits" as the reason schemas stay flat and exempts "the A2UI common types" from the no-`$ref`/`oneOf` rule. `docs/PRD.md:898`, `docs/plans/01-plan-core-primitives.md:318` and `:463` repeat the exemption. The v0.9 common types carry `oneOf`, `allOf` with `$ref`, recursion, open maps and a cross-document `$ref` (§2.6). OpenAI strict mode, Anthropic strict tool use and Gemini `parameters` each reject some of these. OpenAI and Anthropic document no subset for non-strict tools. Gemini documents no subset for `parametersJsonSchema`. Its only JSON Schema keyword list belongs to the deprecated `GenerationConfig._responseJsonSchema` field and omits `allOf`. The rule therefore meets its stated purpose only for non-strict OpenAI and Anthropic tools (§6 Q3, Q4).
 2. **The flat-schema rule has two scopes.** `docs/ARCHITECTURE.md:1473` applies it to "Schemas" inside §17.3, which covers the catalogs and the tools. `docs/PRD.md:898` and `docs/plans/01-plan-core-primitives.md:463` apply it to the frontend-tool schemas. `Catalog.toJson()` always writes `$defs.anyComponent` as a `oneOf` with a `discriminator` (§2.7), and that union is not a common type. The `line` catalog can meet only the narrower reading. This is the evidence R1 §4 asked R3 for, and the scope itself stays open (§6 Q5).
 3. **"Descriptions ≤ 1024 chars" is a provider limit for one description only.** `docs/plans/01-plan-core-primitives.md:318` lists it under "provider limits", and `docs/ARCHITECTURE.md:1473` applies it to "every description". No provider documents a 1024-character limit (§2.6). Community error reports show OpenAI's API rejecting a function description over 1024 characters, and they are the only source. No source limits property descriptions. As a self-imposed cap the rule conflicts with no provider.
 
-First-wave and prior facts this note changes:
+This note changes three first-wave and prior facts.
 
 - R5 §4 (`01-research-mcp-apps.md:245`) says "With either 2.x entry it carries two Zod copies [INFERENCE …]". Measured under Bun 1.4.3, the count is 2 to 4 (§2.3). It is 4 with the main entry under a root Zod 3, 2 with `./app-with-deps` under a root Zod 3, and 3 with either entry under a root Zod 4.
 - R1 §2.3 gives Bun weights and leaves the real build to R2 and R9. Vite 8.3.4 gives 53,991 B gzipped for the same `Catalog` plus four common types under a root Zod 3, and 67,982 B under a root Zod 4 (§2.3). This adds a figure and changes none.
@@ -342,8 +342,8 @@ Providers
 - Anthropic, structured outputs ("JSON Schema limitations", "Schema complexity limits"): https://platform.claude.com/docs/en/build-with-claude/structured-outputs
 - Anthropic, Messages API reference (`Tool.name`, `input_schema`): https://platform.claude.com/docs/en/api/messages/create
 - Gemini, function calling: https://ai.google.dev/gemini-api/docs/function-calling
-- Gemini API reference, `FunctionDeclaration` and `Schema`: https://ai.google.dev/api/generate-content
-- Gemini, structured output: https://ai.google.dev/gemini-api/docs/structured-output
+- Gemini API reference, `FunctionDeclaration`, `Schema` and `GenerationConfig._responseJsonSchema` (deprecated, "Use `responseFormat` instead"; the only JSON Schema keyword list): https://ai.google.dev/api/generate-content
+- Gemini, structured output ("JSON schema support"; lists types and keywords without `$ref`, `oneOf` or `allOf`): https://ai.google.dev/gemini-api/docs/structured-output
 
 Prior art
 - Vercel AI SDK `tool()`: https://ai-sdk.dev/docs/reference/ai-sdk-core/tool
