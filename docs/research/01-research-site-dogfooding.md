@@ -10,9 +10,9 @@
 > - Astro 7 static output passes `<line-*>` tags through as plain HTML. A processed `<script>` that imports the component module is bundled by Vite into a hashed `type="module"` file and rendered where it is declared. The browser upgrades the tags on the client. No integration and no adapter are needed (probe, Astro 7.3.8).
 > - The theme CSS imports from the Astro frontmatter by bare package specifier (`import '@websublime/line-themes'`). Astro emits one linked, minified stylesheet, and the `--line-*` properties reach the shadow DOM of an upgraded element in Chromium, Firefox and WebKit. Tokens plus indigo, slate and the full themes barrel weigh 88,051 B raw and 10,982 B gzipped.
 > - A side-effect-only `<script>import '…'</script>` is silently dropped when the imported file sits under a `package.json` whose `sideEffects` excludes it. The build exits 0, emits no chunk and no `<script>` tag, and prints no warning. The ARCHITECTURE §12 `sideEffects` list therefore decides whether the landing page registers its components at all.
-> - Lit SSR adds server-rendered declarative shadow DOM. Astro removed `@astrojs/lit` in Astro 5.0, and the community `@semantic-ui/astro-lit` 5.3.0 loads under Astro 7.3.8 but fails to prerender any line://ui element, because `line-core` builds its reset sheets with `new CSSStyleSheet()` at module load. SSR/SSG stays out of Phase 1 scope (plan §3, PRD §1.7).
+> - Lit SSR adds server-rendered declarative shadow DOM. Astro removed `@astrojs/lit` in Astro 5.0, and the community `@semantic-ui/astro-lit` 5.3.0 works under Astro 7.3.8. A `LineElement` subclass with only a Lit `css` sheet prerenders to `<template shadowrootmode="open">`. A subclass that imports `@websublime/line-core/styles` fails with `CSSStyleSheet is not defined`, because that module builds its reset sheets with `new CSSStyleSheet()` at load. Every component declares `commonReset` (ARCHITECTURE §14.6), so in practice no line://ui component prerenders today. SSR/SSG stays out of Phase 1 scope (plan §3, PRD §1.7).
 > - Before upgrade, the page paints with the element undefined (throttled probe, first paint at 20 ms, upgrade at 3,021 ms). A `:not(:defined)` rule hides that state, and the shared Lit chunk loads only after the entry chunk, because Astro emits no `modulepreload` link.
-> - `deploy-site.yml` needs no change. The build job already builds packages before the site (AM-029), and the deploy job's manifests-only `--ignore-scripts` install still succeeds and still resolves wrangler 4.148.0 once `apps/site` declares workspace devDependencies (AM-068).
+> - `deploy-site.yml` needs no change at Astro 7.3.8. The build job already builds packages before the site (AM-029), and the deploy job's manifests-only `--ignore-scripts` install still succeeds and still resolves wrangler 4.148.0 once `apps/site` declares workspace devDependencies (AM-068). Astro 7.4.0 raises its Node floor to `>=22.22.0`, and the job has no `setup-node` step. The `ubuntu-latest` image ships Node 22.23.3 on 2026-10-19, so 7.4.x also builds without a change.
 
 ---
 
@@ -37,7 +37,8 @@ Plan §5.2 R12: "Astro 7 static output with the Phase 1 components, client-side 
 - The Astro docs recommend this path for Lit after the Lit integration was removed. Their example is `<script>import "../components/MyTabs";</script>` followed by `<my-tabs>` (Astro docs, "Upgrade to v5", Removed: The Lit integration).
 - Probe 3.2 confirms the path on Astro 7.3.8 (the version locked in `bun.lock`). The HTML keeps `<line-probe id="lp">Click</line-probe>` as written. The script becomes `<script type="module" src="/_astro/probe-subclass.astro_astro_type_script_index_0_lang.<hash>.js">` at the position of the `<script>` tag, at the end of `<body>`.
 - This path matches MANIFESTO Principle 5 ("Astro … No adapters, no wrappers").
-- Versions on 2026-10-19 (registry.npmjs.org): `astro` latest 7.4.0 (2026-10-15). `apps/site` locks 7.3.8 (2026-10-08) through `^7.3.8`, and every probe ran on 7.3.8. The 7.4.0 changelog adds `--timings`, font-provider hooks and `experimental.redirectPage`; none of them touches script or CSS bundling. `astro@7.4.0` depends on `vite ^8.3.4`.
+- On 2026-10-19 npm (registry.npmjs.org) lists `astro` 7.4.0 (2026-10-15) as latest. `apps/site` locks 7.3.8 (2026-10-08) through `^7.3.8`, and every probe ran on 7.3.8. The 7.4.0 changelog adds `--timings`, font-provider hooks and `experimental.redirectPage`, and none of them touches script or CSS bundling. `astro@7.4.0` depends on `vite ^8.3.4`.
+- Astro 7.4.0 raises `engines.node` from `>=22.12.0` (7.3.8) to `>=22.22.0`. The CLI enforces the floor itself, because `bin/astro.mjs` hardcodes `const engines = '>=22.22.0'` and prints "Node.js vX is not supported by Astro!" below it. The bin runs under Node (`#!/usr/bin/env node`), and the probe's prerender stack traces show `node:internal` frames, so `bun run build` does not move Astro onto Bun's runtime. §2.6 covers the effect on CI.
 
 ### 2.2 Q1: the `sideEffects` trap
 
@@ -45,7 +46,8 @@ Plan §5.2 R12: "Astro 7 static output with the Phase 1 components, client-side 
 - Probe 3.3 imported the `line-core` hello-world fixture (`packages/line-core/__tests__/integration/hello-world/line-hello-world.ts`) from a bare side-effect `<script>` import. `line-core` declares `"sideEffects": false`. The build exited 0, emitted no JS for the page and dropped its `<script>` tag. Nothing was printed.
 - Adding the fixture path to `line-core`'s `sideEffects` in the throwaway copy restored the chunk and the tag. The cause is the `sideEffects` field, not Astro.
 - `line-components` declares `"sideEffects": []` today (Phase 00 placeholder, spec §4 manifest). ARCHITECTURE §12 (lines 438, 466) says the field will list "exactly the per-component dist files". The landing page imports exactly those files as side effects, so a file missing from the list leaves its tag unregistered on the live site, and the build stays green.
-- R9 (row `00-Z38`, branch `docs/00-z38-r9-packaging`, unmerged on 2026-10-19) reports two related facts in a peer message. Vite 8 lib mode can move a `define()` into a hashed shared chunk when one component imports another, so listing only entry files is not enough. `sideEffects: []` also drops sibling side-effect imports during the package's own build. R9's note owns these facts; this note does not re-verify them.
+- R9 (row `00-Z38`, branch `docs/00-z38-r9-packaging`) reports two related facts, and its note `docs/research/01-research-packaging.md` owns them. Vite 8 lib mode can move a `define()` into a hashed shared chunk when one component imports another, so listing only entry files is not enough. `sideEffects: []` also drops sibling side-effect imports during the package's own build. On 2026-10-19 the note was not yet pushed to that branch, and neither fact is re-verified here.
+- R9 names the trigger in a peer message. Each entry is `src/<c>/index.ts`, which re-exports `./<c>.js`, so the `define()` sits in a non-entry module (the ARCHITECTURE §10 layout). Probe 3.8 put the `define()` in entry modules, and it reproduced neither effect. R9 reports the same result for that shape, so the probe is consistent with R9 without confirming it.
 
 ### 2.3 Q2: Lit SSR and the Astro integration
 
@@ -61,9 +63,11 @@ Plan §5.2 R12: "Astro 7 static output with the Phase 1 components, client-side 
 - Lit SSR renders a component's shadow root into `<template shadowrootmode>` so the browser paints it before JavaScript runs. `lit-element-hydrate-support` then makes the element reuse that DOM instead of re-rendering it (lit.dev, SSR overview and client usage).
 - The lit.dev SSR overview still says "Declarative shadow DOM is not implemented in all major browsers yet". `web-features` contradicts that sentence, so the page is stale on this point.
 - Lit SSR runs `constructor()`, `willUpdate()` and `render()` on the server, but not `connectedCallback()`, `firstUpdated()` or a controller's `hostConnected()` (lit.dev, "Authoring components for Lit SSR").
-- Probe 3.5 added `@semantic-ui/astro-lit` 5.3.0 to the throwaway site and rendered `<LineProbe client:load>`. Astro 7.3.8 loaded the integration and reached prerender. Prerender failed with `ReferenceError: CSSStyleSheet is not defined`. The failing code is `createSheet()` in `packages/line-core/src/styles/index.ts:24–27`, which every reset sheet export calls at module load (`commonReset` at line 30 onward).
+- Probe 3.5 added `@semantic-ui/astro-lit` 5.3.0 to the throwaway site and rendered `<LineProbe client:load>`, a `LineElement` subclass with `commonReset` and `buttonReset`. Astro 7.3.8 loaded the integration and reached prerender. Prerender failed with `ReferenceError: CSSStyleSheet is not defined`. The failing code is `createSheet()` in `packages/line-core/src/styles/index.ts:24–27`, which every reset sheet export calls at module load (`commonReset` at line 30 onward).
+- The reviewer lens re-ran the probe on 2026-10-19, and probe 3.5 repeated the split. A `LineElement` subclass (`LinePlain`) with only a Lit `css` sheet, imported from `@websublime/line-core`, prerendered. Its HTML holds `<line-plain><template shadowroot="open" shadowrootmode="open"><style>:host { display: inline-block; }</style>…<button part="trigger" type="button"><slot></slot></button>…</template>Click</line-plain>` inside an `<astro-island>`, plus an inline declarative-shadow-DOM polyfill check in `<head>`. The same subclass with `commonReset` from `@websublime/line-core/styles` failed with the same `ReferenceError`.
+- The failure therefore comes from importing `@websublime/line-core/styles`, not from `LineElement` or its mixins. `InspectorMixin` also calls `new CSSStyleSheet()` (`src/mixins/inspector.ts:57`), but inside a `try` in a lazy getter that SSR did not reach.
 - The same configuration injected client scripts into every page, including the untouched placeholder. `index.html` grew from 1,122 B to 1,516 B, and `before-hydration.js` (5,768 B) and `client.js` (599 B) appeared in `dist/_astro/`.
-- Lit SSR therefore needs a `line-core` change before it can render any line://ui element. The plan keeps "SSR/SSG investigation" after Phase 1 (plan §3 line 226; PRD §1.7 line 147; MANIFESTO Out of Scope line 65).
+- ARCHITECTURE §14.6 makes every component declare its resets, and `commonReset` is one of them. Lit SSR therefore needs a `line-core` styles change before it can render a real line://ui component. The plan keeps "SSR/SSG investigation" after Phase 1 (plan §3 line 226; PRD §1.7 line 147; MANIFESTO Out of Scope line 65).
 
 ### 2.4 Q3: the window before upgrade
 
@@ -82,7 +86,7 @@ Plan §5.2 R12: "Astro 7 static output with the Phase 1 components, client-side 
 - The Astro docs say an extensionless CSS import from an npm package needs `vite.ssr.noExternal` (Astro docs, "Styling", Import a stylesheet from an npm package). Probe 3.2 imported `@websublime/line-tokens`, `@websublime/line-colors/indigo`, `@websublime/line-colors/slate` and `@websublime/line-themes` in the frontmatter without that setting, and the CSS reached the output. [INFERENCE] Vite does not externalize linked workspace packages for SSR, so the setting matters only for a registry-installed copy; the site consumes workspace links.
 - Astro merges CSS shared by pages into one chunk. It links chunks above 4 kB with `<link rel="stylesheet">` and inlines smaller ones (Astro docs, "Styling", Bundle control). The probe's theme CSS was linked from `<head>`, so it blocks render and is present at first paint.
 - The four `@layer line { … }` blocks of the inputs came out as one `@layer line { … }` block. The document had exactly one cascade layer, `line`, in all three engines. `light-dark()` (101 uses) and the `@media (color-gamut: p3)` blocks survived minification.
-- `data-accent="indigo"` on `<html>` themed the shadow DOM of the probe element. Its button background equalled `--line-accent-solid`: `rgb(62, 99, 221)` (`#3e63dd`) in Chromium and Firefox, and `color(display-p3 0.276 0.384 0.837)` in WebKit, which takes the P3 branch.
+- `data-accent="indigo"` on `<html>` themed the shadow DOM of the probe element. Its button background equalled `--line-accent-solid`, which resolved to `rgb(62, 99, 221)` (`#3e63dd`) in Chromium and Firefox and to `color(display-p3 0.276 0.384 0.837)` in WebKit, because WebKit takes the P3 branch.
 - The `line-themes` barrel holds the role maps of all 31 accent hues and the gray hues. It is 73,296 B raw and 5,890 B gzipped, against 3,975 B for one hue palette (`line-colors/indigo`). Every `data-accent` value needs its palette imported (Getting Started guide, `apps/storybook/stories/getting-started.mdx`).
 
 ### 2.6 Q6: `deploy-site.yml`
@@ -91,6 +95,7 @@ Plan §5.2 R12: "Astro 7 static output with the Phase 1 components, client-side 
 - The build job runs `bun --filter './packages/*' build && bun --filter '@websublime/line-site' build` (AM-029). Packages must emit `dist/` first, because the site imports `line-core`'s `dist/index.js` and the CSS `dist/` files. Probe 3.2 ran exactly this command.
 - The deploy job checks out `/package.json`, `/bun.lock`, `/.bun-version`, `/packages/*/package.json` and `/apps/*/package.json`, then runs `bun install --frozen-lockfile --ignore-scripts` (AM-068). Probe 3.7 replayed that install with the site's new workspace devDependencies. It exited 0, linked the four packages, and `bun x --no-install wrangler --version` in `apps/site` printed `4.148.0`.
 - `checks.yml` runs `bun run build`, which builds every app, so a pull request that breaks the site build fails checks. A dropped side-effect script (§2.2) passes it.
+- The build job has no `setup-node` step, so `astro build` runs on the runner image's default Node. GitHub's runner-images README for Ubuntu 24.04 (`ubuntu-latest`, image 20261012.334.1, retrieved 2026-10-19) lists Node.js 22.23.3 as the default and 22.23.3 and 24.21.0 as cached. 22.23.3 satisfies both 7.3.8's `>=22.12.0` and 7.4.0's `>=22.22.0`, so "no change" also holds if the spec pins 7.4.x. The workflow does not pin Node, so a runner image whose default falls below the Astro floor would fail the build job. `checks.yml` has no `setup-node` step either.
 - `playwright.config.ts` already matches `apps/**/*.e2e.ts`. An e2e test for the site needs a `webServer` entry for the built site; none exists today.
 
 ## 3. Probes
@@ -121,7 +126,7 @@ Baseline `dist/`: `index.html` 1,122 B (599 B gz), `favicon.svg` 728 B. No JS an
 | `_astro/probe-subclass…<hash>.js` (Lit + `LineElement` + 2 resets + probe) | 22,291 | 7,831 |
 | `probe-subclass/index.html` | 475 | 329 |
 
-Inputs of the CSS chunk (`dist/` files): tokens 15,654 / 3,113; indigo 3,975 / 952; slate 4,073 / 964; themes 73,296 / 5,890; the full `line-colors` barrel, not imported, 123,326 / 23,896.
+The CSS chunk's inputs are these `dist/` files, as raw / gzip bytes. Tokens 15,654 / 3,113, indigo 3,975 / 952, slate 4,073 / 964, themes 73,296 / 5,890. The full `line-colors` barrel, which the page did not import, is 123,326 / 23,896.
 
 ### 3.3 The hello-world fixture and `sideEffects`
 
@@ -158,6 +163,8 @@ Served `dist/` (the 3.3 rebuild) with `python3 -m http.server`, then loaded both
 | `bun --filter '@websublime/line-site' build` with `integrations: [lit()]` and `<LineProbe client:load>` | 1 | `[ERROR] [build] Caught error rendering /probe-ssr: ReferenceError: CSSStyleSheet is not defined` from the bundled `createSheet()` |
 | Same build with the SSR page removed and the integration still configured | 0 | `index.html` 1,516 B; `before-hydration.js` 5,768 B; `client.js` 599 B |
 | `git checkout -- apps/site/astro.config.mjs`, `bun remove …` | 0 | Integration removed; rebuild matched 3.2 |
+| Fresh copy (`r12-lens-*`, HEAD `32bfb6e`), site devDeps `@websublime/line-core` and `lit`, same integration; page `ssr-plain` with `<LinePlain client:load>` (Lit `css` only) | 0 | `<template shadowroot="open" shadowrootmode="open">` with the rendered `<button part="trigger">` |
+| Same copy, page `ssr-reset` added with `<LineReset client:load>` (`commonReset` from `@websublime/line-core/styles`) | 1 | `[ERROR] [build] Caught error rendering /ssr-reset: ReferenceError: CSSStyleSheet is not defined` |
 
 ### 3.6 Throttled upgrade (`bun probe-throttle.mjs`, exit 0)
 
@@ -176,6 +183,17 @@ Chromium, `page.route('**/_astro/*.js')` delayed 1,500 ms, on `/probe-subclass/`
 | `bun install --frozen-lockfile --ignore-scripts` | 0 | 704 packages; `apps/site/node_modules/@websublime/` links four packages |
 | `bun x --no-install wrangler --version` in `apps/site` | 0 | `4.148.0` |
 | `bun run scripts/lint-layers.mjs` on the probe copy | 0 | "lint-layers: OK" with the site devDependencies |
+
+### 3.8 Vite lib mode and `sideEffects` (minimal)
+
+This probe ran in the `r12-lens-*` copy with the repo's Vite 8.3.4. `probe-lib/src` holds `avatar.js` (defines `x-avatar`), `avatar-group.js` (`import { A } from './avatar.js'`, defines `x-avatar-group`) and `side.js` (`import './avatar.js'`, defines `x-side`). All three are lib entries with `formats: ['es']`.
+
+| `vite.config` | `package.json` `sideEffects` | Exit | Output |
+|---|---|---|---|
+| `minify: false` | the three `./dist/*.js` entries | 0 | `avatar.js`, `avatar-group.js`, `side.js`; no hashed chunk; `avatar-group.js` imports `./avatar.js` |
+| `minify: false` | `[]` | 0 | Same three files; `side.js` keeps `import "./avatar.js"` |
+| `target: 'es2022'`, `sourcemap: true`, default minify | `[]` | 0 | Same three files and imports |
+| `target: 'es2022'`, `sourcemap: true`, default minify | the three entries | 0 | Same three files and imports |
 
 ## 4. Fit with line://ui
 
@@ -199,12 +217,12 @@ None found against the plan, PRD §5.3 or ARCHITECTURE.
 
 ## 6. Open questions for the spec
 
-1. **Unupgraded state.** Options: a `:not(:defined)` rule with `visibility: hidden`, with `opacity: 0`, with reserved dimensions, or no rule. Evidence that decides: layout shift measured on the real landing page at upgrade, the content shown when JavaScript fails (Law 8), and whether the rule lives in the site or in `line-themes`.
-2. **Theme CSS scope.** Options: the `line-themes` barrel (73,296 B raw / 5,890 B gz), or `./semantics`, `./defaults`, `./aliases` plus the `./accent/<hue>` and `./gray/<hue>` maps the page uses. Evidence: whether the subset covers every role the used components read, and whether the site keeps the guide's recommended setup for dogfooding value.
-3. **Registration guard.** Options: a Playwright `apps/site/**/*.e2e.ts` test that asserts every `line-*` tag on the built page is `:defined`, a build-time check of the emitted HTML, or reliance on review. Evidence: the silent drop in §2.2, and the cost of a `webServer` entry that serves `apps/site/dist` in `checks.yml`.
-4. **Script layout and preloading.** Options: one shared module that imports every used subpath, or one `<script>` per section, with or without hand-written `<link rel="modulepreload">` for shared chunks. Evidence: the chunk graph Vite emits for the real component set and the waterfall in §2.4 measured on a throttled profile.
-5. **Stylesheet delivery.** Options: Astro's default (linked above 4 kB) or `build.inlineStylesheets: 'always'`. Evidence: first paint with an 11 kB gzipped render-blocking stylesheet versus caching across future site pages.
-6. **SSR trigger.** SSR stays out of Phase 1. If a later phase opens it, the evidence it needs is a `line-core` reset-sheet strategy that runs in Node (or a `CSSStyleSheet` shim), an Astro 7 compatible Lit integration on `@lit-labs/ssr` 4.x, and LineMachineController behaviour without `hostConnected` on the server.
+1. **Unupgraded state.** The options are a `:not(:defined)` rule with `visibility: hidden`, a rule with `opacity: 0`, a rule that reserves dimensions, and no rule. The decision needs the layout shift measured on the real landing page at upgrade and the content shown when JavaScript fails (Law 8). It also needs a choice of whether the rule lives in the site or in `line-themes`.
+2. **Theme CSS scope.** One option is the `line-themes` barrel (73,296 B raw / 5,890 B gz). The other is `./semantics`, `./defaults` and `./aliases` plus the `./accent/<hue>` and `./gray/<hue>` maps the page uses. The decision needs to know whether the subset covers every role the used components read, and whether the site should keep the guide's recommended setup for dogfooding value.
+3. **Registration guard.** The options are a Playwright `apps/site/**/*.e2e.ts` test that asserts every `line-*` tag on the built page is `:defined`, a build-time check of the emitted HTML, and reliance on review. The silent drop in §2.2 argues for a guard, and the cost of a `webServer` entry that serves `apps/site/dist` in `checks.yml` argues against the heavier one.
+4. **Script layout and preloading.** One option is a shared module that imports every used subpath, and the other is one `<script>` per section. Either can add hand-written `<link rel="modulepreload">` tags for shared chunks. The decision needs the chunk graph Vite emits for the real component set and the §2.4 waterfall measured on a throttled profile.
+5. **Stylesheet delivery.** The options are Astro's default, which links stylesheets above 4 kB, and `build.inlineStylesheets: 'always'`. The decision weighs first paint with an 11 kB gzipped render-blocking stylesheet against caching across future site pages.
+6. **SSR trigger.** SSR stays out of Phase 1. Probe 3.5 splits the blocker in two parts. `LineElement` itself prerenders, and the `line-core/styles` reset sheets do not, because they call `new CSSStyleSheet()` at module load. A later phase that opens SSR needs a reset-sheet strategy that runs in Node, such as Lit `css` results or a lazy or shimmed `CSSStyleSheet`. It also needs an Astro 7 compatible Lit integration on `@lit-labs/ssr` 4.x, because `@semantic-ui/astro-lit` 5.3.0 still depends on `^3.3.1`. Finally it needs the `LineMachineController` behaviour on the server, where `hostConnected` never runs.
 
 ## 7. Sources
 
@@ -219,5 +237,7 @@ All retrieved 2026-10-19.
 - Lit SSR overview: https://lit.dev/docs/ssr/overview/
 - Lit SSR client usage: https://lit.dev/docs/ssr/client-usage/
 - Lit SSR authoring: https://lit.dev/docs/ssr/authoring/
+- GitHub runner-images, Ubuntu 24.04 README (image 20261012.334.1): https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+- Astro 7.4.0 CLI entry (`bin/astro.mjs`, Node floor): https://unpkg.com/astro@7.4.0/bin/astro.mjs
 - `web-features` 3.43.0 `data.json` (declarative-shadow-dom, autonomous-custom-elements, cascade-layers, light-dark): https://unpkg.com/web-features/data.json
 - npm registry (`npm view <pkg> version time --registry=https://registry.npmjs.org`): `astro`, `@astrojs/lit`, `@semantic-ui/astro-lit`, `@lit-labs/ssr`, `@lit-labs/ssr-client`, `@lit-labs/ssr-dom-shim`, `lit`, `@webcomponents/template-shadowroot`
