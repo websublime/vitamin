@@ -123,7 +123,7 @@ Reference target status:
 - WebKit: standards position issue WebKit/standards-positions#356 is open with no position label (updated
   2026-04-03). Chrome Platform Status records "No signal". Safari 26 ships it behind a flag.
 - Specs: whatwg/dom PR #1353 and whatwg/html PR #10995 are both open and unmerged on 2026-10-19.
-- On 2026-10-14 the status was the same. Chrome 152+ ships it, while Firefox and Safari keep it behind flags.
+- On 2026-10-19, Chrome 152+ ships it, while Firefox and Safari keep it behind flags.
 
 Cross-root reference behaviour (probe P1, P5):
 
