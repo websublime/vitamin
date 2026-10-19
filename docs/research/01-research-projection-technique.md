@@ -12,15 +12,15 @@
 > - Document `::part()` rules reached every `line-*` part in both candidates (18/18) and none through the upstream shadow root (0/18). axe-core 4.14.0 found zero violations in both, and Playwright's `ariaSnapshot` equals the reference in all three engines. The Chromium tree of (a) holds 14 `generic` nodes against 8 for (b).
 > - Every reachable `web_core` throw path became a schema-valid A2UI `error` message with no page error, identically in all three engines. That covers 29 streams, 1 renderer call and 1 adapter throw.
 > - Focus survives an agent reorder in (b), because its reconciler moves the siblings around the focused element. (a) loses it, because Lit's keyed `repeat` moves the focused element itself. Both lose focus when the agent reparents the focused node.
-> - On a one-button page (Vite 8 per-page builds, gzip -9), (a) loads 88.8 KB, 80.9 KB of it before any component and Lit included. (b) loads 86.9 KB, 79.9 KB of it before any component and without Lit. Compressed alone, `web_core` and its dependencies sum to about 103 KB in both. The upstream eager idiom defines all 17 tags at startup.
+> - On a one-button page (Vite 8 per-page builds, gzip -9), (a) loads 88.8 KB, 80.9 KB of it before any component and Lit included. (b) loads 87.0 KB, 80.0 KB of it before any component and without Lit. Compressed alone, `web_core` and its dependencies sum to about 103 KB in both. The upstream eager idiom defines all 17 tags at startup.
 > - No catalog meta-schema exists, and both the hand-written and the emitted `line` catalog fail `client_capabilities.json#/$defs/Catalog`. The emitted catalog also lacks `$defs.anyFunction` and `$defs.theme`, which the published schemas require through `catalog.json`. The emitted four-component catalog weighs 685 B gzip.
-> - Recommended, pending Miguel's confirmation: direct projection on the `web_core` models and binder (b).
+> - Recommended, pending Miguel's confirmation, is direct projection on the `web_core` models and binder (b).
 
 ---
 
 ## 1. Question
 
-Plan §5.1 R2 reads: "The research note §6 spike exit questions cover slot assignment, layout, the accessibility tree, document `::part()` reach, Law 6 bundle analysis, throw paths, meta-schema validation, live-region/focus policy under axe and a screen reader, and gzipped weight. The research stage produces this evidence, and the note states the choice the spec builds on (O2.c (a))".
+Plan §5.1 R2 reads "The research note §6 spike exit questions cover slot assignment, layout, the accessibility tree, document `::part()` reach, Law 6 bundle analysis, throw paths, meta-schema validation, live-region/focus policy under axe and a screen reader, and gzipped weight. The research stage produces this evidence, and the note states the choice the spec builds on (O2.c (a))".
 
 The 2026-10-06 note §6 also asked whether the catalog drives "a real model to valid output". Plan R2 omits that question, the plan wins, and this note does not drive a model.
 
@@ -45,7 +45,7 @@ All runs on 2026-10-19 from a clean copy (§3). "All engines" means Chromium 156
 - The spike code lives in `docs/research/assets/01-r2/spike/`. Its README holds the versions, the clean-copy recipe and the VoiceOver script.
 - Components are throwaway `line-button` (parts `root`, `label`; slots default, `prefix`), `line-icon` (`svg`), `line-stack` (host flex container) and `line-separator` (`root`) on the real `LineElement` from `packages/line-core/dist`. Text and Image map to native elements (ARCHITECTURE §17.3). No machine was needed.
 - Both candidates share one `MessageProcessor`, one `processMessages` call per message, `RELAXED_VALIDATION` unless a fixture says otherwise, one live region, `aria-busy` per batch, lazy `load()` per type, a required-name check on buttons, `line-a2ui-error` and `line-a2ui-action`.
-- (a) mirrors upstream `<a2ui-surface>` (`@a2ui/lit` 0.14.0): the root renders through `renderA2uiNode(context, catalog)`, catalog entries carry `tagName` only, and each adapter extends `A2uiLitElement` with `createRenderRoot()` returning `this` (R1 §2.5.3). Children render through keyed `repeat`, as upstream `Row.js` does. Variant `a-contents` adds `display: contents` to every adapter; variant `a-shadow` keeps the default shadow root as a `::part()` control.
+- (a) mirrors upstream `<a2ui-surface>` (`@a2ui/lit` 0.14.0). The root renders through `renderA2uiNode(context, catalog)`, and catalog entries carry `tagName` only. Each adapter extends `A2uiLitElement` with `createRenderRoot()` returning `this` (R1 §2.5.3). Children render through keyed `repeat`, as upstream `Row.js` does. Variant `a-contents` adds `display: contents` to every adapter, and variant `a-shadow` keeps the default shadow root as a `::part()` control.
 - (b) walks `NodeResolver.rootNode`, creates one element per node and binds one `effect` per node to `node.props`.
 - The fixtures live in `src/fixtures.ts`. `showcase` covers all eight Phase 1 basic types, bound text, a template List, a Button action with bound context and a data update. `slots` uses a four-component `line` catalog with a `prefix` slot. `streaming`, `focus`, `one-button`, `missing-name`, `unknown-type` and `cycle-unvalidated` cover the rest, and 33 failing entries cover the throw paths. All valid fixtures validate against the published `server_to_client.json` (`catalog.json` → `summary`).
 - npm reports `@a2ui/web_core` `latest` 0.14.0 on 2026-10-19 (published 2026-10-17), with no newer version. Playwright `latest` is 1.64.1, and the spike uses the locked 1.64.0.
@@ -60,7 +60,7 @@ Compared against `pages/reference.html`, hand-written markup of the same final s
 | `slots`, 5 slots | 3/5 same nodes, 5/5 same ids | same as (a) | 5/5 |
 
 - In (a) every slot receives the adapter (`line-a2ui-text#sendLabel`), not the element (`p#sendLabel`). `display: contents` does not change slot assignment, so `slot.assignedElements()` and `::slotted()` rules in a `line-*` component see adapters.
-- List items in (a) are wrapper `div[role=listitem]`, as upstream `List.js` renders them; (b) puts `role="listitem"` on the item `line-stack`.
+- (a) wraps each List item in a `div`, as upstream `List.js` (0.14.0) does when `listStyle` is neither ordered nor unordered. Upstream gives that wrapper the class `a2ui-list-item-none` and no role; for ordered or unordered lists it renders `<li>` in `<ol>` or `<ul>`. The `role="listitem"` on the spike's wrapper is the spike's own addition. (b) puts `role="listitem"` on the item `line-stack`.
 - `renderA2uiNode` returns a directive, not an element, so (a) sets `slot="prefix"` on the icon adapter after render. The first spike version selected the child by an attribute the child sets on upgrade, so one Chromium run left the icon in the default slot when its module arrived late. That was a spike defect. With a selector on any child element, the icon lands in the `prefix` slot in all engines, and the reviewer's independent rerun of the first version did not show the race either. (b) sets `slot` when it creates the element.
 
 ### 2.2 Layout
@@ -84,7 +84,7 @@ Bounding boxes of each rendered element relative to the host, against the refere
 | Fixture | Reference | (a) | (a) `display: contents` | (b) |
 |---|---|---|---|---|
 | `showcase` nodes / `generic` | 29 / 4 | 45 / 14 | 38 / 7 | 39 / 8 |
-| `slots` nodes / `generic` | 11 / 3 | 22 / 8 | 20 / 6 | 21 / 7 |
+| `slots` nodes / `generic` | 11 / 3 | 23 / 9 | 20 / 6 | 21 / 7 |
 
 - The surface itself adds the page chrome, the surface element and the root container. (a) adds one `generic` per adapter that is not `display: contents`, including empty ones around `aria-hidden` icons. No extra node changed a role, a name or the list structure.
 
@@ -95,7 +95,7 @@ Bounding boxes of each rendered element relative to the host, against the refere
 | (a), (a) `display: contents`, (b) | 12/12 parts styled | 6/6 |
 | `a-shadow` control (upstream default shadow root) | 0/12 | 0/6 |
 
-The control confirms R1 §2.5.3 in real browsers: without the `createRenderRoot()` override, document rules do not reach `line-*` parts.
+The control confirms R1 §2.5.3 in real browsers. Without the `createRenderRoot()` override, document rules do not reach `line-*` parts.
 
 ### 2.5 Law 6 bundle analysis (Vite 8.3.4, one build per page)
 
@@ -107,7 +107,7 @@ A page registers both catalogs and renders one Button with a Text child. `chunks
 | (b) | `line-a2ui-surface`, `line-button` | One `import()` chunk per `line-*` component (385–621 B); Lit and `LineElement` in one shared chunk loaded with the first component |
 | (a) eager, upstream idiom (`element` on each entry) | All 17 tags at startup: the surface, 4 `line-*` components and 12 adapters | Each `import()` facade is a 73–97 B re-export; every define moved into statically imported shared chunks |
 
-- The eager build reproduces R9's finding (R9 §2.1): when a module is imported both statically and dynamically, Rolldown moves its `define()` into a shared chunk and the `import()` target registers nothing.
+- The eager build reproduces R9's finding (R9 §2.1). When a module is imported both statically and dynamically, Rolldown moves its `define()` into a shared chunk, and the `import()` target registers nothing.
 - (a) loads Lit with the surface, because `renderA2uiNode` and `A2uiLitElement` import it (R1 §2.3). (b)'s initial load holds no Lit.
 
 ### 2.6 Throw paths
@@ -130,10 +130,12 @@ A page registers both catalogs and renders one Button with a Text child. `chunks
 The 33 entries are 30 streams, 2 renderer calls and 1 adapter throw. One stream (`depth-limit-relaxed`) and one renderer call (`getRendererDataModel()`) raise nothing, so 29 streams, 1 renderer call and 1 adapter throw raise.
 
 - Each error is the generic form `{version: "v0.9.1", error: {code, surfaceId, message, …}}`. All error events, 34 in (a) and 33 in (b) per engine including the node-level ones, validate against `client_to_server.json`. No page error occurred, and later messages still applied ("After" rendered) except where `targetVersion` rejected them too.
-- Non-throwing node problems: (b) receives `UNKNOWN_COMPONENT_TYPE` and `CYCLIC_REFERENCE` from `NodeResolver` through `onError` and renders inert placeholders. (a) receives neither, because the `(context, catalog)` path has no resolver. The spike's adapters detect unknown types themselves, and a self-cycle with no `validationConfig` nests adapters until the spike's depth guard (32) stops it.
+- Some node problems do not throw. (b) receives `UNKNOWN_COMPONENT_TYPE` and `CYCLIC_REFERENCE` from `NodeResolver` through `onError` and renders inert placeholders. (a) receives neither, because the `(context, catalog)` path has no resolver. The spike's adapters detect unknown types themselves, and a self-cycle with no `validationConfig` nests adapters until the spike's depth guard (32) stops it.
 - (a) renders asynchronously, so the `A2uiLitElement` throw escapes any `try` around `processMessages`; the spike catches it by overriding `performUpdate()` in every adapter.
-- Not reachable through a stream: `new NodeResolver` with a foreign catalog and `new ComponentContext` for a missing id (both surfaces never make those calls), `registerUniversalElement` collisions (entries carry `tagName` only), `WritableBinding.set` (no Phase 1 type binds a writable value), `new Catalog` and `Catalog.fromJson` (catalog construction, outside the surface), `allowedParents` (v1.0 catalogs only). `getRendererDataModel()` did not throw with a v0.9 and a v0.9.1 surface, because a surface takes its version from the catalog (`"0.9"`).
-- New `web_core` 0.14.0 facts: a theme `primaryColor: "red"` passes, because `BasicCatalogThemeSchema` accepts any CSS colour while the published catalog requires `^#[0-9a-fA-F]{6}$`. With `allowMissingRoot: true` (as in `RELAXED_VALIDATION`), the depth walk starts at each component id in sorted order, so a five-level chain under `maxDepth: 3` passed (`depth-limit-relaxed`); with `allowMissingRoot: false` it threw.
+- Some throw paths cannot be reached through a stream. Neither surface calls `new NodeResolver` with a foreign catalog or `new ComponentContext` for a missing id. `registerUniversalElement` cannot collide, because the entries carry `tagName` only. `WritableBinding.set` stays unused, because no Phase 1 type binds a writable value. `new Catalog` and `Catalog.fromJson` belong to catalog construction, outside the surface. `allowedParents` exists in v1.0 catalogs only.
+- `getRendererDataModel()` did not throw with a v0.9 and a v0.9.1 surface, because a surface takes its version from the catalog (`"0.9"`).
+- `web_core` 0.14.0 accepts a theme with `primaryColor: "red"`. `BasicCatalogThemeSchema` accepts any CSS colour, while the published catalog requires `^#[0-9a-fA-F]{6}$`.
+- With `allowMissingRoot: true`, as in `RELAXED_VALIDATION`, the depth walk starts at each component id in sorted order. A five-level chain under `maxDepth: 3` therefore passed (`depth-limit-relaxed`). With `allowMissingRoot: false` it threw.
 
 ### 2.7 Meta-schema validation
 
@@ -141,13 +143,13 @@ The 33 entries are 30 streams, 2 renderer calls and 1 adapter throw. One stream 
 
 | Document | Against | Result |
 |---|---|---|
-| Hand-written `line` catalog, basic-catalog document form (`spike/src/catalog/line-catalog.json`) | `client_capabilities.json#/$defs/Catalog` | Fails, 6 errors: additional `$schema`, `$id`, `title`, `description`, `$defs`; `functions` must be an array |
-| `lineCatalog().toJson()` | same | Fails, 2 errors: additional `protocolVersion`, `$defs` |
+| Hand-written `line` catalog, basic-catalog document form (`spike/src/catalog/line-catalog.json`) | `client_capabilities.json#/$defs/Catalog` | Fails with 6 errors. `$schema`, `$id`, `title`, `description` and `$defs` are additional properties, and `functions` must be an array |
+| `lineCatalog().toJson()` | same | Fails with 2 errors, for the additional properties `protocolVersion` and `$defs` |
 | Published basic catalog | same | Fails, the same 6 errors as the hand-written document |
 | `slots` components | Hand-written `$defs/anyComponent` | 5/5 valid; a Button without `action` fails |
 | `Catalog.fromJson(hand-written)` | Round trip | Deep-equal, key order differs |
 | `validationSchema` (from `fromJson` and from code) | Its own `$defs/anyComponent` | 5/5 valid; Button without `action` rejected only through `$defs/anyComponent` (the document root constrains nothing) |
-| `toJson()` as `catalog.json` | `common_types.json`, `server_to_client.json` | Does not compile: no `$defs/anyFunction`, no `$defs/theme` |
+| `toJson()` as `catalog.json` | `common_types.json`, `server_to_client.json` | Does not compile, because `$defs/anyFunction` and `$defs/theme` are missing |
 | Inline line catalog from `getClientCapabilities` | `client_capabilities.json` | Valid |
 
 - `common_types.json` resolves `FunctionCall` through `catalog.json#/$defs/anyFunction`, and `server_to_client.json` resolves `createSurface.theme` through `catalog.json#/$defs/theme`. A catalog without functions or theme must still define both for the published schemas to compile; the hand-written document uses `"anyFunction": false` and an open `theme` object.
@@ -161,9 +163,9 @@ The 33 entries are 30 streams, 2 renderer calls and 1 adapter throw. One stream 
 | One live region per surface | 1 | 1 |
 | `aria-busy` covers each batch (`streaming`, 4 batches) | 44 mutations, 0 after `aria-busy="false"` | 20 mutations, 0 escaped |
 | No focus move on agent updates (focus outside the surface) | Kept, 4/4 steps | Kept, 4/4 |
-| Focus on button `b`: its label changes; a sibling is inserted before it; its own variant changes | Kept | Kept |
-| Focus on `b`: the agent moves it to the front of the same parent | Lost to `body` | Kept |
-| Focus on `b`: the agent moves it under a new Column | Lost to `body` | Lost to `body` |
+| Focus on button `b` while its label changes, a sibling is inserted before it, or its own variant changes | Kept | Kept |
+| Focus on `b` when the agent moves it to the front of the same parent | Lost to `body` | Kept |
+| Focus on `b` when the agent moves it under a new Column | Lost to `body` | Lost to `body` |
 
 Each step starts with focus on `b`. The results are identical in all three engines.
 
@@ -183,11 +185,11 @@ One-button page, sum of chunk sizes at gzip level 9 (`bundle` in `summary.json`,
 
 | Build | Before any component | Loaded | All chunks built |
 |---|---|---|---|
-| (a) | 80,867 B | 88,759 B | 91,683 B |
-| (b) | 79,869 B | 86,918 B | 88,351 B |
-| (a) eager | 88,163 B | 88,323 B | — |
+| (a) | 80,867 B | 88,750 B | 91,674 B |
+| (b) | 79,968 B | 87,017 B | 88,450 B |
+| (a) eager | 88,150 B | 88,310 B | 88,559 B |
 
-Per-package rendered bytes, compressed alone, in the loaded chunks:
+The next table gives the per-package rendered bytes in the loaded chunks, each package compressed alone.
 
 | Package | (a) | (b) |
 |---|---|---|
@@ -196,9 +198,9 @@ Per-package rendered bytes, compressed alone, in the loaded chunks:
 | `zod-to-json-schema` | 8.0 KB | 8.0 KB |
 | `@preact/signals-core`, `validate-color` | 4.2 KB | 4.1 KB |
 | Lit (`lit-html`, `lit-element`, `@lit/reactive-element`) | 8.1 KB | 7.2 KB |
-| Spike surface, session and catalogs | 9.9 KB | 9.0 KB |
+| Spike surface, session and catalogs | 9.9 KB | 9.2 KB |
 
-Emitted catalog size (`catalog.json` → `sizes`):
+The emitted catalog sizes come from `catalog.json` → `sizes`.
 
 | Document | Minified | Gzip |
 |---|---|---|
@@ -225,9 +227,9 @@ Recipe from `spike/README.md`, run in `mktemp -d` (`…/tmp.IS4zu33cFQ`) from `g
 | P9 | `bun probe p2.mjs`, `p3.mjs` (resolver identity) during development | 0 | Pending child → placeholder, then a new node; a moved child gets a new node and `id` |
 | P10 | `npm pack @mdn/browser-compat-data` (8.1.6), `api.Element.moveBefore` | 0 | Chrome 133, Firefox 144, Safari no |
 | P11 | `gh issue view 1745 -R a2ui-project/a2ui` | 0 | Open, "children are unkeyed, making it impossible to move children correctly" |
-| P12 | Worktree: `bun --filter` build of `line-schemas`, `line-tokens`, `line-colors`, `line-themes`, then root `bun test` | 0 | 310 pass, 0 fail, 18 files, no file under `docs/` collected. Without the builds, 3 then 75 `line-themes` tests fail on missing `dist` (CI builds first) |
+| P12 | In the worktree, `bun --filter` builds `line-schemas`, `line-tokens`, `line-colors` and `line-themes`, then the root `bun test` runs | 0 | 310 pass, 0 fail, 18 files, no file under `docs/` collected. Without the builds, 3 then 75 `line-themes` tests fail on missing `dist` (CI builds first) |
 | P13 | `bun run lint` | 0 | No diagnostics |
-| P14 | Review fixes (focus-preserving (b) reconciler, prefix-slot selector, reparent step), then the full recipe in a new `mktemp -d` copy of `dcd511e` | 0 | 17 passed, 1 flaky: the first Chromium focus test timed out once on the cold dev server and passed on retry. Evidence refreshed (`b62c4be`); all numbers except focus and the `slots` row match P7 |
+| P14 | Review fixes (focus-preserving (b) reconciler, prefix-slot selector, reparent step), then the full recipe in a new `mktemp -d` copy of `dcd511e` | 0 | 17 passed and 1 flaky. The first Chromium focus test timed out once on the cold dev server and passed on retry. The refreshed evidence (`b62c4be`) changed in four places. Focus now covers five steps (§2.8), and the `slots` row of (a) now assigns the prefix slot (§2.1). Every bundle size except the (a) initial load moved, and so did the chunk reports, because the (b) reconciler and the (a) Button adapter changed size (§2.9). The Chromium tree of `slots/a` grew from 22 / 8 to 23 / 9 nodes / `generic` after the slot fix (§2.3) |
 
 ## 4. Fit with line://ui
 
@@ -250,7 +252,7 @@ First-wave facts this note changes or extends:
 - R1 §4 calls `ComponentNode.id` "stable for the node's lifetime" and a base for DOM ids. The lifetime ends whenever the node's position changes, including an insertion before it, so `id` cannot key DOM elements across agent updates. `instanceId` can, within the limits of a2ui#1745 (§2.8).
 - R1 §2.7 lists `A2uiValidationError` for `createSurface` theme failures. The theme schema in 0.14.0 accepts any CSS colour, while the published catalog requires `#rrggbb` (§2.6).
 
-Agreeing evidence: the Vite 8 builds of a whole surface weigh 79.9–80.9 KB gzip before any component (§2.9). This is a new measurement on the repo's bundler and agrees with R1 §2.3's Bun figures for the same import sets.
+The Vite 8 builds of a whole surface weigh 80.0–80.9 KB gzip before any component (§2.9). This new measurement on the repo's bundler agrees with R1 §2.3's Bun figures for the same import sets, so it is agreeing evidence rather than a change.
 
 ## 5a. Recommendation
 
@@ -266,9 +268,9 @@ Evidence by target, (a) as specified, with `display: contents` noted where it ch
 | 6 | Throw paths | All caught; needs per-adapter boundary, own unknown-type and depth handling | All caught; resolver reports unknown types and cycles |
 | 7 | Meta-schema | Independent of technique (§2.7) | Same |
 | 8 | Live region, focus, axe | Pass; focus kept except on reorder and reparent; screen reader pending | Pass; focus kept on reorder with `instanceId` keying, lost on reparent; screen reader pending |
-| 9 | Weight | 80.9 KB initial, 88.8 KB loaded | 79.9 KB initial, 86.9 KB loaded |
+| 9 | Weight | 80.9 KB initial, 88.8 KB loaded | 80.0 KB initial, 87.0 KB loaded |
 
-**Recommended, pending Miguel's confirmation: (b) direct projection on the `web_core` models and binder (`NodeResolver`).** It matched hand-written markup on targets 1–4 in all three engines without adapter CSS, kept focus through an agent reorder where (a) lost it, keeps the surface free of Lit and of the `@experimental` `A2uiLitElement`, and receives unknown types and cycles from the resolver. The costs it carries are its own reconciliation (keyed by `instanceId`, focus-preserving) and its own effect lifecycle. The screen-reader pass may still change this recommendation.
+**Recommended, pending Miguel's confirmation, is (b) direct projection on the `web_core` models and binder (`NodeResolver`).** It matched hand-written markup on targets 1–4 in all three engines without adapter CSS, kept focus through an agent reorder where (a) lost it, keeps the surface free of Lit and of the `@experimental` `A2uiLitElement`, and receives unknown types and cycles from the resolver. The costs it carries are its own reconciliation (keyed by `instanceId`, focus-preserving) and its own effect lifecycle. The screen-reader pass may still change this recommendation.
 
 ## 6. Open questions for the spec
 
