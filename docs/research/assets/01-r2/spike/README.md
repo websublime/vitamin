@@ -112,10 +112,11 @@ reference page for both candidates in all three engines, apart from the live reg
 | S3 | Focus. Feed step 1. Activate "Feed next step", then Tab to "Beta" within 4 s. | "Content updated."; focus stays on the button, now "Beta 2". `VO`+F3 reads "Beta 2, button". | Same as (a). |
 | S4 | Focus. Repeat S3 for step 3, which inserts "Gamma" before "Beta 2". | Focus stays on "Beta 2"; `VO`+Left reaches "Gamma, button", then "Alpha, button". | Same as (a). |
 | S5 | Focus. Repeat S3 for step 4, which changes Beta's variant. | Focus stays on "Beta 2"; only "Content updated." is spoken. | Same as (a). |
-| S6 | Focus. Repeat S3 for step 5, which moves "Beta 2" to the front. | Focus is lost, because the focused element moves in the DOM. VoiceOver lands on the page or the web area. Note where. | Same as (a). |
+| S6 | Focus. Repeat S3 for step 5, which moves "Beta 2" to the front. | Focus is lost, because Lit's keyed `repeat` moves the focused element itself. VoiceOver lands on the page or the web area. Note where. | Focus stays on "Beta 2"; the siblings move around it. `VO`+Right reaches "Alpha, button", then "Gamma, button". |
 | S7 | Missing name. Feed step 1, then Tab into the surface. | "Some content could not be shown."; the button reads as "button" with no name. | Same as (a). |
 | S8 | Unknown type. Feed step 1, then read the surface. | "Some content could not be shown."; "Kept" is read; the placeholder is silent. | Same as (a). |
 | S9 | Streaming. Feed steps 1–4 one by one, resting the cursor on the surface. | "Content updated." after each step, and no partial content read while a batch is busy. | Same as (a). |
+| S10 | Focus. Repeat S3 for step 6, which moves "Beta 2" into a new Column. | Focus is lost, because the button gets a new parent. Note where VoiceOver lands. | Same as (a): the element moves to the new parent and blurs. |
 
 Record each observation per browser in the table below and send it to the orchestrator.
 
@@ -130,3 +131,4 @@ Record each observation per browser in the table below and send it to the orches
 | S7 | | | | |
 | S8 | | | | |
 | S9 | | | | |
+| S10 | | | | |
