@@ -66,7 +66,7 @@ The repo config (`custom-elements-manifest.config.mjs`) globs `packages/*/src/**
 
 - The output carries `schemaVersion: "1.0.0"`, hard-coded in `src/create.js:13`. It still uses fields that schema 1.0.0 lacks, such as `cssStates` and `readonly`.
 - `@cssprop {<length>} --x` writes `type.text`. Schema 2.1.0 names this field `syntax` on `CssCustomProperty`, so the value lands in a field the schema does not define.
-- The baseline manifest of today's tree (probe P2) is not empty. It holds 24 modules from `line-core`, `line-icons`, `line-schemas` and `line-utils`. `LineElement` appears with `customElement: true` and no `tagName`.
+- The baseline manifest of today's tree (probe P2) holds 24 modules from `line-components`, `line-core`, `line-icons`, `line-schemas` and `line-utils`. The `line-components` module is the `export {}` stub at `packages/line-components/src/index.ts`. `LineElement` appears with `customElement: true` and no `tagName`.
 
 ### 2.3 Superclass and mixin resolution
 
@@ -74,7 +74,7 @@ The repo config (`custom-elements-manifest.config.mjs`) globs `packages/*/src/**
 - A component that imports `LineElement` and `FormAssociated` through `@websublime/line-core` and `@websublime/line-core/mixins/form-associated` gets `superclass.package` and `mixins[].package` set to those specifiers.
 - Inheritance still applies. `applyInheritancePlugin` (`src/features/post-processing/apply-inheritance.js`) builds a map of every class and mixin in the manifest by name and walks it, so package specifiers do not block it. Two classes with the same name in different packages would collide in that map [INFERENCE from the source].
 - Every inherited item gets `inheritedFrom` with the defining module, such as `packages/line-core/src/mixins/form-associated.ts`.
-- An overriding member also gets `inheritedFrom`. `LineElement`'s own `static version` shows `inheritedFrom: MetadataMixin`. `inheritedFrom` therefore marks "also declared upstream", not "not declared here".
+- An overriding member also gets `inheritedFrom`. `LineElement`'s own `static version` shows `inheritedFrom: MetadataMixin`. `inheritedFrom` therefore marks a member that an ancestor also declares, whether or not the class redeclares it.
 - Inherited members of the probe button include the public form API (`setFormValue`, `setValidity`, `form`, `name`, `validity` and the rest), `direction` (readonly, no attribute), the protected `reflectState`, the static `version`, `docs`, `qa` and `scope`, and every `#private` member of the Inspector and Direction mixins.
 - The Lit member deny-list drops the class's own `properties` and `styles` in the module-link phase. Inheritance runs later, in the package-link phase, so the static `properties` of `DirectionMixin` reappears on every component as an inherited member.
 - `FormAssociated` defines a `name` getter, but no `name` attribute appears, because nothing declares one.
@@ -102,7 +102,7 @@ ARCHITECTURE §17.2 rule C7 lists `@summary`, `@slot`, `@csspart`, `@cssprop`, `
 | `@summary` | Yes | — | Class (read through the TypeScript JSDoc API), members | — |
 | `@slot` | Yes | — | Class; `-` or no name is the default slot (`name: ""`) | No per-slot deprecation |
 | `@csspart` | Yes | `@part` | Class | No per-part deprecation; parts in templates are not cross-checked |
-| `@cssprop` | Yes | `@cssproperty` | Class; `[--x=default]` sets `default` | `{type}` goes to `type`, not schema `syntax`; no per-property deprecation |
+| `@cssprop` | Yes | `@cssproperty` | Class; `[--x=default]` sets `default` | `{type}` goes to `type.text`, while schema 2.1.0 defines `syntax`; no per-property deprecation |
 | `@fires` | Yes | `@event` | Class; `{Type}` sets `type.text` | No per-event deprecation from the class tag |
 | `@deprecated` | Yes | — | Class, members, attributes (through the field), dispatch-site events | Inside a `@slot`/`@csspart`/`@cssprop`/`@fires` line it stays in the description text (probe P5) |
 
@@ -151,7 +151,7 @@ ARCHITECTURE §17.3 defines the drift test ("fails when a descriptor names an at
 
 | Test need | Manifest fact | Reliability |
 |---|---|---|
-| Components to cover | `modules[]` whose `path` starts with `packages/line-components/src/`, `exports[]` of kind `custom-element-definition` (`name` is the tag) | Reliable. `LineElement` is also `customElement: true` without a tag, so a filter on `tagName` or on the definition export is needed. Module paths are source `.ts` paths, not package subpaths |
+| Components to cover | `modules[]` whose `path` starts with `packages/line-components/src/`, `exports[]` of kind `custom-element-definition` (`name` is the tag) | Reliable. `LineElement` is also `customElement: true` without a tag, so a filter on `tagName` or on the definition export is needed. Module paths are source `.ts` paths under `packages/*/src/`; mapping them to package subpaths needs an extra step |
 | Attributes | `attributes[].name`, `fieldName`, `type.text`, `default`, `deprecated` | Reliable for `@property` and `static properties` |
 | Properties | `members[]` with `kind: "field"`; `attribute` present or absent tells attribute-backed from property-only | Reliable, but the list also holds private, protected, static and line-core inherited members, so the public API needs a filter on `privacy`, `static` and `inheritedFrom` |
 | Value prop and form association | Member `formAssociated` (static, default `"true"`); member `value` | Present without a plugin |
@@ -166,7 +166,7 @@ ARCHITECTURE §17.3 defines the drift test ("fails when a descriptor names an at
 
 - The analyser exposes `create({ modules, plugins, context })` and its own `ts` from the package index, and `cli({ argv, cwd, noWrite })` returns the manifest without writing it (`cli.js`). A test can build a manifest in memory with either.
 - `customElements.json` is git-ignored (`.gitignore:9`) and written only by `bun --filter '@websublime/line-storybook' analyze`. In `checks.yml` that step runs last, after "Unit tier" (`bun test`) and "Storybook build".
-- The order of `modules[]` changes from run to run. Five runs on the same tree gave five different orders, while the content sorted by `path` was identical (probe P10; R11 reported the same on 2026-10-19). `cli.js` builds the module list from the async `globby` result and never sorts it. A test that compares whole manifests, or a committed manifest, would need to sort by `path` or look up by tag. A drift test that looks up each tag is not affected.
+- The order of `modules[]` changes from run to run. Five runs on the same tree gave five different orders, while the content sorted by `path` was identical (probe P9; R11 reported the same on 2026-10-19). `cli.js` builds the module list from the async `globby` result and never sorts it. A test that compares whole manifests, or a committed manifest, would need to sort by `path` or look up by tag. A drift test that looks up each tag is not affected.
 
 ### 2.8 Storybook consumption
 
@@ -195,8 +195,8 @@ All probes ran on 2026-10-19 in a `git archive HEAD` copy at commit `29f023b` wi
 | P6 | `HOME=$V bun add ajv@8 custom-elements-manifest@2.1.0`, then a Bun script that compiles `schema.json` and validates the P2, P3 and P4 manifests | 0 | All three `valid=true`, including the custom fields |
 | P7 | `npm view @custom-elements-manifest/analyzer version dist-tags time --json` and the same for `custom-elements-manifest`, `storybook`, `@storybook/web-components`, `@wc-toolkit/*`, `cem-plugin-custom-jsdoc-tags` | 0 (one `E404` for the non-existent `@wc-toolkit/cem-deprecator`) | Versions in §2.1 and §2.6 |
 | P8 | `gh issue view 136` and `gh issue view 79 -R webcomponents/custom-elements-manifest`; `gh api repos/<repo>/commits` for both upstream repos | 0 | Issue states and commit dates in §2.1 and §2.6 |
-| P9 | `rm -rf` of every probe directory | 0 | Clean |
-| P10 | Five runs of `HOME=$T bun --filter '@websublime/line-storybook' analyze` on a fresh `git archive 29f023b` copy, hashing the `modules[].path` order and the path-sorted manifest | 0 | Five different path orders, one identical sorted hash |
+| P9 | Five runs of `HOME=$T bun --filter '@websublime/line-storybook' analyze` on a fresh `git archive 29f023b` copy, hashing the `modules[].path` order and the path-sorted manifest | 0 | Five different path orders, one identical sorted hash |
+| P10 | `rm -rf` of every probe directory, including the P9 copy | 0 | Clean |
 
 ---
 
@@ -218,12 +218,12 @@ All probes ran on 2026-10-19 in a `git archive HEAD` copy at commit `29f023b` wi
 
 ## 5. Contradictions
 
-1. **ARCHITECTURE §17.3, `docs/ARCHITECTURE.md:1465`.** It says the CEM "carries no form-association or ARIA metadata". The probes show the manifest does carry form association, as the inherited static member `formAssociated` with `default: "true"`. The schema has no dedicated flag, and the ARIA half of the sentence holds. The sentence's conclusion, that the CEM cannot be the only source, still holds because of ARIA metadata and plain-text types.
-2. **PRD §5.1, `docs/PRD.md:459–462`.** It describes "Lit source → CEM Analyzer → custom-elements.json → Storybook reads → API docs" and says Storybook "generates the API table without manual documentation". The repo does not deliver this today. `apps/storybook/.storybook/preview.ts` never calls `setCustomElementsManifest`, and `checks.yml` runs the analyser after the Storybook build. This is drift between the PRD and the repo, not a design conflict. The same false premise appears in these places.
+1. **ARCHITECTURE §17.3, `docs/ARCHITECTURE.md:1465`, and plan §5.1 R4, `docs/plans/01-plan-core-primitives.md:319`.** ARCHITECTURE says the CEM "carries no form-association or ARIA metadata", and the plan's R4 target names "the missing `formAssociated` and ARIA metadata". The probes show the manifest does carry form association, as the inherited static member `formAssociated` with `default: "true"`. The schema has no dedicated flag, and the ARIA half of both statements holds. The ARCHITECTURE conclusion, that the CEM cannot be the only source, still holds because of ARIA metadata and plain-text types.
+2. **PRD §5.1, `docs/PRD.md:459–462`.** It describes "Lit source → CEM Analyzer → custom-elements.json → Storybook reads → API docs" and says Storybook "generates the API table without manual documentation". The repo does not deliver this today. `apps/storybook/.storybook/preview.ts` never calls `setCustomElementsManifest`, and `checks.yml` runs the analyser after the Storybook build. The PRD design stands, and the repo wiring has drifted from it. The same false premise appears in these places.
    - `docs/specs/00-spec-design-system.md:1646` and `apps/storybook/.storybook/main.ts:24` ("CEM consumed automatically when customElements.json is present at the project root").
    - `docs/research/00-research-design-system-foundation.md:169` and `docs/research/00-research-design-system-foundation-round2.md:104`, `:172` ("auto-loads").
 3. **Phase 00 spec §6.F.1 and §7.3, `docs/specs/00-spec-design-system.md:1660`, `:2483`.** They say Phase 00 emits an empty manifest, and so does the comment at `custom-elements-manifest.config.mjs:4–6`. The analyser emits 24 modules today, including `LineElement` as `customElement: true` (probe P2), because the glob covers every package.
-4. **PRD §6.3, `docs/PRD.md:734`.** It says the manifest serves "Storybook, IDEs, and any tooling consuming the standard". The config sets `packagejson: false`, the output is git-ignored, and no published package ships it or declares a `customElements` field. IDE tooling that looks up installed packages cannot find it. This is a gap between the PRD and the wiring, not a research finding against the PRD.
+4. **PRD §6.3, `docs/PRD.md:734`.** It says the manifest serves "Storybook, IDEs, and any tooling consuming the standard". The config sets `packagejson: false`, the output is git-ignored, and no published package ships it or declares a `customElements` field. IDE tooling that looks up installed packages therefore cannot find it [INFERENCE from the schema README's `customElements` lookup convention; no IDE was run]. The repo falls short of the PRD intent here.
 
 ---
 
@@ -235,7 +235,7 @@ All probes ran on 2026-10-19 in a `git archive HEAD` copy at commit `29f023b` wi
 | OQ2 | Where does ARIA metadata (role, states) live? | (a) The descriptor only (ARCHITECTURE §17.3 accessibility requirements). (b) Custom JSDoc tags plus a repo plugin writing custom fields (probe P4). (c) `@wc-toolkit/jsdoc-tags` 1.2.1 as a dev dependency. | Whether any consumer besides the descriptor needs it; dev-dependency policy; tag and field naming, given that the schema names no convention |
 | OQ3 | What is the source of truth for events? | (a) `@fires` is mandatory for every event and the drift test reads only JSDoc-described events. (b) A plugin drops or fixes dispatch-detected events. (c) Accept dispatch detection and constrain how components dispatch. | The Button and Icon implementations (C1–C4): whether they dispatch from arrow fields or event classes |
 | OQ4 | Where do the G5 tests get the manifest? | (a) Read `apps/storybook/customElements.json` and move the analyse step before the unit tier in `checks.yml`. (b) Build it in memory through `create()` or `cli({ noWrite: true })`. (c) Emit it during the `line-components` build. | CI order, test runtime, whether the tests should test the same file that ships (retrospective lesson 5), and the unstable `modules[]` order (§2.7) if any test or committed file compares whole manifests |
-| OQ5 | Does a published package ship the manifest (PRD §6.3)? | (a) Storybook-only, as now. (b) A manifest scoped to `line-components` inside the package, with a `customElements` field and a `files` entry. | PRD §6.3 intent, `verify-pack` coverage, size, the need for module paths that point at `dist` rather than `src` |
+| OQ5 | Does a published package ship the manifest (PRD §6.3)? | (a) Storybook-only, as now. (b) A manifest scoped to `line-components` inside the package, with a `customElements` field and a `files` entry. | PRD §6.3 intent, `verify-pack` coverage, size, the need for module paths that point at `dist` |
 | OQ6 | Which members count as public API for the drift and coverage tests and for Storybook? | (a) Filter by `privacy`, `static` and `inheritedFrom` in the tests. (b) A plugin strips private, static and line-core internals. (c) `@internal` tags in `line-core`. | The probe member list (§2.3); Storybook argTypes after the fix of contradiction 2; the `inheritedFrom` quirk on overrides |
 | OQ7 | How is per-item deprecation written (rule C7 `@deprecated`)? | (a) Only class- and member-level deprecation. (b) A plugin parses a deprecation marker inside `@slot`, `@csspart`, `@cssprop` and `@fires` lines into the schema's `deprecated` field. | Whether the catalog must deprecate single slots or events (ARCHITECTURE §17.3 "enriches descriptions and deprecations") |
 | OQ8 | Which `schemaVersion` does the manifest claim? | (a) Keep the analyser's `1.0.0`. (b) A plugin sets `2.1.0` and maps `@cssprop {type}` to `syntax`. | Consumers that check the version (`@wc-toolkit/cem-validator` `schemaVersion` rule, Storybook 11 docgen) |
