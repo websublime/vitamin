@@ -27,8 +27,8 @@
 >   import map, but it loaded two copies of `lit-html` and `@lit/reactive-element`. Raw unpkg files need an import
 >   map with 14 entries and a `process` shim, because Zag's ESM reads `process.env.NODE_ENV`. Bare package URLs
 >   404 on both CDNs, because the `exports` maps carry no `default` condition and the manifests no `main`.
-> - Lit alone weighs 5.9 KB gzipped and Zag core + vanilla 5.4 KB, so a per-component target under 5 KB holds
->   only when the shared runtime is excluded. Component-only weights in the probe were 0.2–0.5 KB.
+> - Lit alone weighs 5943 B gzipped and Zag core + vanilla 5390 B (`gzip -9 -n`), so a per-component target under
+>   5 KB holds only when the shared runtime is excluded. Component-only weights in the probe were 219–473 B.
 > - npm trusted publishing still needs the package to exist, and an unvalidated configuration expires after
 >   48 hours. Since 2026-10-02, `npm stage publish` from a local session can create a new package without a
 >   token. A `minor` changeset on `line-genui@0.0.0` yields `0.1.0`, and on `0.1.0` it yields `0.2.0`.
@@ -206,8 +206,11 @@ The probe ran four checks, each cheap enough for CI.
 
 ### 2.4 Per-component size (Q4)
 
-**Measurements** (esbuild 0.28.2 `--bundle --minify --format=esm --target=es2022`, Node zlib gzip level 9 and
-brotli quality 11, probe components from §2.1 with `@websublime/*` external).
+**Measurements.** esbuild 0.28.2 bundled each case with `--bundle --minify --format=esm --target=es2022`. Python 3
+`gzip.compress(data, 9, mtime=0)` produced the gzip column, which matches the CLI `gzip -9 -n`. Node
+`zlib.gzipSync` at level 9 gives slightly larger numbers (5974 B for Lit, 5401 B for Zag core + vanilla, per the
+reviewer lens). Node `zlib.brotliCompressSync` at quality 11 produced the brotli column. The probe components come
+from §2.1, with `@websublime/*` external.
 
 | Bundle | Minified B | gzip-9 B | brotli-11 B |
 |---|---|---|---|
@@ -227,7 +230,7 @@ brotli quality 11, probe components from §2.1 with `@websublime/*` external).
 - Lit alone exceeds 5 KB gzipped, so every component fails the target once the shared runtime counts. The
   second component adds only its own bytes (button + toggle is 41 B more than toggle alone).
 - The Vite build report lists gzip per emitted file and excludes externals and shared chunks. Its 0.58 kB for
-  `dist/toggle.js` matched zlib on the same file (582 B).
+  `dist/toggle.js` matched `gzip -9 -n` on the same file (582 B).
 - size-limit 14.2.0 (`@size-limit/esbuild`, `@size-limit/file`) uses brotli quality 11 by default and gzip level 9
   with `gzip: true`; `ignore` takes package names. It reported 312 B for the button and 555 B for the toggle
   (component only, gzip), against 219 B and 473 B from plain esbuild + gzip on the same files. Each tool needs its
@@ -236,15 +239,15 @@ brotli quality 11, probe components from §2.1 with `@websublime/*` external).
 
 ### 2.5 Trusted publishing for a new package (Q5)
 
-- **The package must exist.** `npm trust` docs (npm 12.2.0, last edited 2026-06-02): "The package you're
+- **The package must exist.** The `npm trust` docs (npm 12.2.0, last edited 2026-06-02) say "The package you're
   configuring must already exist on the npm registry." The website flow starts at the package's settings page
   (trusted-publishers docs, last commit 2026-10-06). Neither describes a pending publisher.
 - **48-hour expiry.** Since 2026-10-02 an unvalidated configuration "expire[s] 48 hours after creation", and its
   first successful publish validates it (GitHub changelog). The docs add that it binds the configuration "to the
   repository's immutable identity". The change answers a slug-reclaim attack reported by Bloom Security (The
   Hacker News, 2026-10-13).
-- **Staged publishing can now create a package.** GitHub changelog 2026-10-02: "You can now create a new npm
-  package with `npm stage publish`, using a local session or a granular access token, including a stage-only
+- **Staged publishing can now create a package.** The GitHub changelog of 2026-10-02 says "You can now create a
+  new npm package with `npm stage publish`, using a local session or a granular access token, including a stage-only
   token." The first version waits in the staged queue until a maintainer approves it with 2FA. "After package
   creation, you can manage its settings and configure trusted publishing."
 - Staging a package that does not exist publishes a public placeholder `0.0.0-stage` (staged-publishing docs, last
@@ -347,18 +350,21 @@ All probes ran on 2026-10-19 in `/tmp/r9probe.2VJm` (a `git archive HEAD` copy o
 - **Internal tension, Phase 3 — `docs/ARCHITECTURE.md:438` vs `docs/ARCHITECTURE.md:481`.** §12 says "Importing one
   component never imports or executes another". §13.1 says SplitButton "bundles both internally". Phase 1 is
   unaffected unless AvatarGroup imports Avatar.
+- **Bootstrap paths B and C — `docs/PRD.md:859`, `docs/plans/01-plan-core-primitives.md:75`.** Both lines fix the
+  `line-genui` trusted-publisher bootstrap "in the AM-038 order", which is path A (§2.5). Paths B and C depart from
+  that order. Choosing either needs a PRD and plan revision before the spec.
 
 ## 6. Open questions for the spec
 
-1. **`sideEffects` value for `line-components` (and `line-genui`).** Options:
-   (a) field absent;
-   (b) `["./dist/**/*.js"]` plus a source glob for the package's own build;
-   (c) an explicit list with deterministic chunk names (`chunkFileNames`), checked by the §2.2 static check;
+1. **`sideEffects` value for `line-components` (and `line-genui`).** The spec chooses one of four values.
+   (a) The field is absent.
+   (b) `["./dist/**/*.js"]` plus a source glob for the package's own build.
+   (c) An explicit list with deterministic chunk names (`chunkFileNames`), checked by the §2.2 static check.
    (d) `[]` with a documented "named import or `import()` only" rule.
-   Evidence: the §2.1 matrices. A barrel-free root makes (a) and (b) register every documented tag.
-2. **Chunk layout.** Options: (a) default Rolldown chunks; (b) `preserveModules`; (c) a rule that no component
-   module imports another, with families in one module tree. Evidence: §2.1 other build shapes, ARCHITECTURE §13.1
-   SplitButton.
+   The §2.1 matrices decide it. A barrel-free root makes (a) and (b) register every documented tag.
+2. **Chunk layout.** The candidates are default Rolldown chunks, `preserveModules`, or a rule that no component
+   module imports another, with families in one module tree. The §2.1 other build shapes and ARCHITECTURE §13.1
+   SplitButton decide it.
 3. **Externalise `@websublime/*` in the `line-components` and `line-genui` builds.** Evidence: duplicate mixins
    and `instanceof` `false` (§2.1). This needs an `AM-nnn` to Phase 00 spec §6.F.2 or a Phase 1 spec section.
 4. **Bundle-splitting verification.** Which of the four §2.2 checks run, on which artifact (packed tarball or
@@ -366,17 +372,19 @@ All probes ran on 2026-10-19 in `/tmp/r9probe.2VJm` (a `git archive HEAD` copy o
 5. **CDN contract.** Which delivery path the docs promise (jsDelivr `+esm`, esm.unpkg.com, raw files plus an import
    map), whether manifests gain a `default` condition, `main`, `jsdelivr` or `unpkg`, how the `process` shim is
    documented or avoided, and whether two Lit copies under `+esm` are acceptable. Evidence: §2.3 tables.
-6. **What the < 5 KB counts.** Options: (a) component only, runtime external; (b) first-component cost with
-   everything bundled; (c) marginal cost over a baseline of Lit + `line-core`. Also the tool (esbuild + zlib,
-   size-limit, the Vite report) and gzip level. Evidence: §2.4. Option (b) fails for every component, because Lit
-   alone is 5943 B.
+6. **What the < 5 KB counts.** The target can count the component only with the runtime external, the
+   first-component cost with everything bundled, or the marginal cost over a baseline of Lit + `line-core`. The
+   spec also names the tool (esbuild + `gzip -9 -n`, size-limit, the Vite report) and the gzip level. §2.4 decides
+   it. The first-component cost fails for every component, because Lit alone is 5943 B.
 7. **Per-sheet tree-shaking of `line-core/styles`.** Whether the sheets gain `/* @__PURE__ */` or per-file
    entries. Evidence: all 11 sheets (1161 B gzipped) ride with any one import (§2.1).
-8. **`line-genui` bootstrap path.** Paths A, B or C (§2.5). Evidence: what each leaves behind, and whether a
-   `0.0.0-stage` placeholder or a version without provenance is acceptable.
-9. **First `line-genui` version** (plan §5.5). Options: `0.1.0` (`0.0.0` + `minor`); `0.2.0` (manifest seeded at
-   `0.1.0` + `minor`, aligned with the other packages at `v0.2.0`); a canary first, which per AM-042 sets `latest`
-   to the snapshot until a stable ships. Evidence: §2.6, PROCESS §6, PRD §7.1.
+8. **`line-genui` bootstrap path.** The spec picks path A, B or C (§2.5). Only path A matches the current PRD
+   (`docs/PRD.md:859`) and plan (§2.1 item 10); B and C need a PRD and plan revision first (§5). What each path
+   leaves behind decides it, and so does whether a `0.0.0-stage` placeholder or a version without provenance is
+   acceptable.
+9. **First `line-genui` version** (plan §5.5). The candidates are `0.1.0` (`0.0.0` + `minor`), `0.2.0` (manifest
+   seeded at `0.1.0` + `minor`, aligned with the other packages at `v0.2.0`), or a canary first. Per AM-042 a canary
+   first sets `latest` to the snapshot until a stable ships. §2.6, PROCESS §6 and PRD §7.1 decide it.
 
 ## 7. Sources
 
