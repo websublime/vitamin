@@ -34,7 +34,7 @@ Plan §5.2 R11 sets the target as "Verify `tsc -b`, `vite-plugin-dts` 5.1.2 (thr
 | `typescript` dist-tag `latest` | 7.0.2, published 2026-07-08T15:55Z | `npm view typescript dist-tags time` |
 | Other 7.0 versions on `typescript` | 7.0.1-rc (2026-06-18) only; the 7.0 beta shipped as `@typescript/native-preview` | `npm view typescript time` |
 | Last 6.x and 5.x | 6.0.3 (2026-04-16), 5.9.3 (2025-09-30) | same |
-| `next` tag | 7.1.0-dev.20261019.1, one of 96 `7.1.0-dev.*` nightlies since 2026-07-08 | `npm view typescript versions` |
+| `next` tag | 7.1.0-dev.20261019.1, published 2026-10-19T08:21Z, one of 96 `7.1.0-dev.*` nightlies since 2026-07-08 | `npm view typescript dist-tags versions time --prefer-online`; `https://registry.npmjs.org/typescript/7.1.0-dev.20261019.1` returns HTTP 200 |
 | Stale tags | `beta` is 6.0.0-beta and `rc` is 7.0.1-rc | `npm view typescript dist-tags` |
 | GitHub release | `v7.0.2` on microsoft/TypeScript, published there 2026-08-20 and marked latest, copied from typescript-go | `gh release list --repo microsoft/TypeScript` |
 | 7.1 schedule | Beta 2026-10-06, RC 2026-11-10, stable 2026-11-24; "Stabilize API" is the first item | microsoft/TypeScript#63703 (updated 2026-10-16) |
@@ -61,7 +61,7 @@ Plan §5.2 R11 sets the target as "Verify `tsc -b`, `vite-plugin-dts` 5.1.2 (thr
 - The 7.0 announcement states "While TypeScript 7.0 is here, it does not ship with an API" and expects 7.1 to ship "a new (and different) API".
 - `typescript@7.0.2` exports `.` as `./lib/version.cjs`, which exports only `version` and `versionMajorMinor`. Any tool that calls `ts.createProgram`, `ts.sys` or another compiler function gets `undefined` (probe P-C3).
 - 7.0.2 also exports `./unstable/sync`, `./unstable/async`, `./unstable/ast` and related subpaths. They are labelled unstable, and the package vendors `vscode-jsonrpc` for them.
-- The 7.1 nightly `7.1.0-dev.20261019.1` still maps `.` to `./lib/version.cjs` and moves the API to `./sync`, `./async`, `./ast` and others. A tool written against the 5.x/6.x API needs new code for 7.1 as well.
+- The 7.1 nightlies `7.1.0-dev.20261016.1` and `7.1.0-dev.20261019.1` still map `.` to `./lib/version.cjs` and move the API to `./sync`, `./async`, `./ast` and others. A tool written against the 5.x/6.x API needs new code for 7.1 as well.
 - typescript-go merged the emit API (microsoft/typescript-go#4699) on 2026-07-24. The 7.1 iteration plan lists it under "Stabilize API".
 - The TypeScript team's bridge is `@typescript/typescript6` (latest 6.0.2, 2026-07-06). It has one bin, `tsc6`, and depends on `@typescript/old: npm:typescript@^6`, which resolved to 6.0.3. Its entry re-exports the 6.0 API.
 - The announcement recommends npm aliases, `typescript: npm:@typescript/typescript6@^6.0.2` together with `@typescript/native: npm:typescript@^7.0.2`, because tools such as typescript-eslint import `typescript` through peer dependencies.
@@ -128,7 +128,7 @@ Defaults the base config does not set:
 | Per-package `tsc --noEmit` (`typecheck`) | CLI | exit 1 (TS2882 and errors caused by the missing `line-core` dist) | exit 1 (TS2882 only) |
 | `vite-plugin-dts` 5.1.2 | Re-exports `unplugin-dts/vite` | Throws at config load | `.d.ts` built by TS 6.0.3 |
 | `unplugin-dts` 1.1.2 | `require('typescript')`, needs `createProgram`; falls back to `@typescript/typescript6`; uses `@volar/typescript` 2.4.28 | Fails (B1) | exit 0 |
-| `@microsoft/api-extractor` | Optional peer of `unplugin-dts`, loaded only with `bundleTypes` | Not installed, not in `bun.lock` | Not installed |
+| `@microsoft/api-extractor` | Optional peer of `unplugin-dts` and `vite-plugin-dts`, loaded only with `bundleTypes` | Listed in `bun.lock` only in the `optionalPeers` of `unplugin-dts` (`:1708`) and `vite-plugin-dts` (`:1726`); no package entry, not installed | Not installed |
 | `@custom-elements-manifest/analyzer` 0.11.0 | Own dependency `typescript ~5.4.2`, resolved to 5.4.5 | exit 0 | exit 0 |
 | `storybook` 10.6.2 build | Reads the installed `typescript` version and its presence in `package.json` (language detection, telemetry); no compiler API | exit 1, because `@websublime/line-core` has no dist | exit 0 |
 | `astro` 7.3.8 build | `astro build` names `typescript` only in a package-name list; `astro check`, unused here, loads `typescript` and `@astrojs/check` | Not reached; the build chain stops after `packages/*` | exit 0 |
@@ -192,7 +192,9 @@ The plan (§2.9 line 202, §5.4 line 361) names `CLAUDE.md` Tech Stack, `.claude
 | `package.json:79`, `bun.lock:36`, `:1674` | `typescript ^5.9.3` / 5.9.3 | Any move (code) |
 | `docs/specs/00-spec-design-system.md` §6.A.3 table (`:440` area) | No `@typescript/typescript6` row | Set-up C or D |
 | `docs/specs/00-spec-design-system.md:2411-2438` (§7.1 canonical `tsconfig.base.json`) | No `noUncheckedSideEffectImports` | RC1 fixed in the base config |
-| `docs/specs/00-spec-design-system.md:608`, `:2462-2463` | `.d.ts` via `vite-plugin-dts` | Declarations move to `tsc` |
+| `docs/specs/00-spec-design-system.md:608`, `:2462-2463` | `.d.ts` via `vite-plugin-dts` | Declarations move to `tsc` (OQ1 option d) |
+| `docs/specs/00-spec-design-system.md:1667-1668` (§6.F.2 `vite.config.shared.mjs` block) | `import dts from 'vite-plugin-dts'` | Declarations move to `tsc` (OQ1 option d) |
+| `docs/specs/00-spec-design-system.md:440` (§6.A.3 `vite-plugin-dts` row) | `vite-plugin-dts` `^5.1.2` (devDependency) | Declarations move to `tsc` (OQ1 option d) |
 | `docs/context/00-z20.md:49` | "`typescript` 5.9.3" as latest in its major | PROCESS §3 does not exclude `docs/context/`; the P8 author decides whether this dated record is live |
 
 - `docs/plans/00-plan-design-system.md:137`, `:318` and `docs/retrospective/00-phase-00-retro.md:53` keep "TypeScript 5.x" and 5.9.3 as Phase 00 record (plan §2.9 line 204, PROCESS §3).
@@ -273,8 +275,13 @@ All probes ran on 2026-10-19 on darwin 25.6.0 arm64 with Bun 1.4.3 and Node 22.2
 
 - **C-1. The plan §7.4 exit criterion does not hold for the Vite-built packages.** `docs/plans/01-plan-core-primitives.md:479` says "The workspace builds, type-checks and emits declarations on TypeScript 7.x (O1)." With `typescript@7.0.2` alone the build fails (B1). With a TS 6.0 API beside it, the build passes, but `line-core` and `line-components` declarations are emitted by TypeScript 6.0.3. Only the three `tsc -b` packages emit on 7.x.
 - **C-2. The move is more than a version change.** `docs/plans/01-plan-core-primitives.md:200` ("moves the workspace from `typescript ^5.9.3` to 7.x") and `:273` (P8 "TypeScript 7.x upgrade") describe a version change. A working 7.x workspace also needs a second TypeScript package or a new declaration route (B1), and a tsconfig or source change for TS2882 (RC1). Neither is in P8's scope today.
-- **C-3. `@microsoft/api-extractor` is not part of the toolchain.** `docs/plans/01-plan-core-primitives.md:331` says `vite-plugin-dts` 5.1.2 runs "through `unplugin-dts` 1.1.2 and `@microsoft/api-extractor`". `api-extractor` is an optional peer that is not installed and not in `bun.lock`. `unplugin-dts` loads it only with `bundleTypes`, which `vite.config.shared.mjs` does not set.
-- **C-4. The P8 document list misses files.** `docs/plans/01-plan-core-primitives.md:202` and `:361` list the documents P8 changes. Depending on the fixes chosen, P8 also changes the Phase 00 spec §6.A.3 table, §7.1 `tsconfig.base.json` block (`:2411-2438`), §6.B (`:608`) and the §7.1 matrix (`:2462-2463`). `docs/context/00-z20.md:49` is a further grep hit (§2.10).
+- **C-3. `@microsoft/api-extractor` is not part of the toolchain.** `docs/plans/01-plan-core-primitives.md:331` says `vite-plugin-dts` 5.1.2 runs "through `unplugin-dts` 1.1.2 and `@microsoft/api-extractor`". `bun.lock` names `api-extractor` only in the `optionalPeers` of `unplugin-dts` (`:1708`) and `vite-plugin-dts` (`:1726`). It has no package entry and is not installed. `unplugin-dts` loads it only with `bundleTypes`, which `vite.config.shared.mjs` does not set.
+- **C-4. The P8 document list misses files.** `docs/plans/01-plan-core-primitives.md:202` and `:361` list the documents P8 changes. Depending on the fixes chosen, P8 also changes the places below (§2.10).
+  - Phase 00 spec §6.A.3 table, for a `@typescript/typescript6` row (OQ1 options a and b) or the `vite-plugin-dts` row at `:440` (OQ1 option d)
+  - Phase 00 spec §6.F.2 `vite.config.shared.mjs` block at `:1667-1668` (OQ1 option d)
+  - Phase 00 spec §6.B at `:608` and the §7.1 matrix at `:2462-2463` (OQ1 option d)
+  - Phase 00 spec §7.1 `tsconfig.base.json` block at `:2411-2438` (OQ2 option a in the base config)
+  - `docs/context/00-z20.md:49`, a further grep hit for 5.9.3
 
 No contradiction found with the PRD, ARCHITECTURE or MANIFESTO.
 
@@ -309,7 +316,7 @@ All retrieved 2026-10-19.
 - Release v7.0.2: https://github.com/microsoft/TypeScript/releases/tag/v7.0.2
 - typescript-go emit API, PR #4699: https://github.com/microsoft/typescript-go/pull/4699
 - typescript-go decorators transpile, issue #914: https://github.com/microsoft/typescript-go/issues/914
-- npm registry: `npm view typescript`, `typescript@7.0.2`, `typescript@7.1.0-dev.20261019.1`, `@typescript/typescript6`, `@typescript/native-preview`, `@typescript/typescript-darwin-arm64@7.0.2`, `@typescript/typescript-linux-x64@7.0.2`, `vite-plugin-dts`, `unplugin-dts`, `@microsoft/api-extractor`, `@custom-elements-manifest/analyzer`, `storybook`, `astro`, `vite` — https://www.npmjs.com/package/typescript
+- npm registry: `npm view typescript`, `typescript@7.0.2`, `typescript@7.1.0-dev.20261016.1`, `typescript@7.1.0-dev.20261019.1` (https://registry.npmjs.org/typescript/7.1.0-dev.20261019.1), `@typescript/typescript6`, `@typescript/native-preview`, `@typescript/typescript-darwin-arm64@7.0.2`, `@typescript/typescript-linux-x64@7.0.2`, `vite-plugin-dts`, `unplugin-dts`, `@microsoft/api-extractor`, `@custom-elements-manifest/analyzer`, `storybook`, `astro`, `vite` — https://www.npmjs.com/package/typescript
 - `typescript@7.0.2` tarball contents (`lib/tsc.js`, `lib/getExePath.js`, `lib/version.cjs`): `npm pack typescript@7.0.2`
 - unplugin-dts releases (1.0.0 fallback, 1.1.2): https://github.com/qmhc/unplugin-dts/releases
 - unplugin-dts#465, TS 7.0 and the future of unplugin-dts: https://github.com/qmhc/unplugin-dts/issues/465
