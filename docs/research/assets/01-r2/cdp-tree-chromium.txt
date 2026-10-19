@@ -1,0 +1,312 @@
+## showcase / reference
+main
+  heading "R2 spike reference"
+    StaticText "R2 spike reference"
+  generic
+    heading "Inbox"
+      StaticText "Inbox"
+    paragraph
+      StaticText "Grace"
+    image "Avatar of the user"
+    separator
+    list
+      listitem
+        paragraph
+          StaticText "Draft saved"
+      listitem
+        paragraph
+          StaticText "Reply sent"
+    generic
+      button "Send"
+        paragraph
+          StaticText "Send"
+    separator
+    generic
+      button "Close"
+        image "Close"
+    generic
+      button "Full width"
+        paragraph
+          StaticText "Full width"
+
+## showcase / a
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      heading "Inbox"
+        StaticText "Inbox"
+      generic
+      paragraph
+        StaticText "Grace"
+      generic
+        image "Avatar of the user"
+      separator
+      list
+        listitem
+          generic
+          paragraph
+            StaticText "Draft saved"
+        listitem
+          generic
+          paragraph
+            StaticText "Reply sent"
+      generic
+        generic
+          button "Send"
+            paragraph
+              StaticText "Send"
+      separator
+      generic
+        generic
+          button "Close"
+            image "Close"
+      generic
+        generic
+          button "Full width"
+            paragraph
+              StaticText "Full width"
+
+## showcase / a-contents
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      heading "Inbox"
+        StaticText "Inbox"
+      paragraph
+        StaticText "Grace"
+      image "Avatar of the user"
+      separator
+      list
+        listitem
+          paragraph
+            StaticText "Draft saved"
+        listitem
+          paragraph
+            StaticText "Reply sent"
+      generic
+        button "Send"
+          paragraph
+            StaticText "Send"
+      separator
+      generic
+        button "Close"
+          image "Close"
+      generic
+        button "Full width"
+          paragraph
+            StaticText "Full width"
+
+## showcase / b
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    generic
+      status
+        StaticText "Content updated."
+      generic
+        heading "Inbox"
+          StaticText "Inbox"
+        paragraph
+          StaticText "Grace"
+        image "Avatar of the user"
+        separator
+        list
+          listitem
+            paragraph
+              StaticText "Draft saved"
+          listitem
+            paragraph
+              StaticText "Reply sent"
+        generic
+          button "Send"
+            paragraph
+              StaticText "Send"
+        separator
+        generic
+          button "Close"
+            image "Close"
+        generic
+          button "Full width"
+            paragraph
+              StaticText "Full width"
+
+## showcase / a-shadow
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      heading "Inbox"
+        StaticText "Inbox"
+      generic
+      paragraph
+        StaticText "Grace"
+      generic
+        image "Avatar of the user"
+      separator
+      list
+        listitem
+          generic
+          paragraph
+            StaticText "Draft saved"
+        listitem
+          generic
+          paragraph
+            StaticText "Reply sent"
+      generic
+        generic
+          button "Send"
+            paragraph
+              StaticText "Send"
+      separator
+      generic
+        generic
+          button "Close"
+            image "Close"
+      generic
+        generic
+          button "Full width"
+            paragraph
+              StaticText "Full width"
+
+## slots / reference
+main
+  heading "R2 spike reference"
+    StaticText "R2 spike reference"
+  generic
+    generic
+      button "Send"
+        StaticText "Send"
+    separator
+    generic
+      button "Continue"
+        StaticText "Continue"
+
+## slots / a
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      generic
+        generic
+          button "Send"
+            StaticText "Send"
+      separator
+      generic
+        generic
+          button "Continue"
+            StaticText "Continue"
+
+## slots / a-contents
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      generic
+        button "Send"
+          StaticText "Send"
+      separator
+      generic
+        button "Continue"
+          StaticText "Continue"
+
+## slots / b
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    generic
+      status
+        StaticText "Content updated."
+      generic
+        generic
+          button "Send"
+            StaticText "Send"
+        separator
+        generic
+          button "Continue"
+            StaticText "Continue"
+
+## slots / a-shadow
+main
+  heading "R2 spike surface"
+    StaticText "R2 spike surface"
+  paragraph
+    LabelText
+      StaticText "Notes "
+      textbox "Notes"
+        generic
+    generic
+  generic
+    status
+      StaticText "Content updated."
+    generic
+      generic
+        generic
+          button "Send"
+            StaticText "Send"
+      separator
+      generic
+        generic
+          button "Continue"
+            StaticText "Continue"
+

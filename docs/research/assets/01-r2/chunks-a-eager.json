@@ -1,0 +1,315 @@
+[
+  {
+    "file": "assets/bundle-a-eager-DvKsdyfS.js",
+    "entry": true,
+    "dynamicEntry": false,
+    "facade": "spike:pages/bundle-a-eager.html",
+    "imports": [
+      "assets/adapter-q7mqlLj6.js",
+      "assets/stack-DWL3qwNL.js",
+      "assets/button-BhkV01N0.js",
+      "assets/icon-BUmjyuse.js",
+      "assets/native-DemFRm56.js",
+      "assets/separator-BimxG4uM.js"
+    ],
+    "dynamicImports": [
+      "assets/native-CQPqFQHK.js",
+      "assets/stack-BH5Gd47W.js",
+      "assets/icon-DJrYWZis.js",
+      "assets/separator-CuYTZ4qV.js",
+      "assets/button-B5gk9yNn.js"
+    ],
+    "bytes": 86835,
+    "gzip": 23547,
+    "defines": ["line-a2ui-surface"],
+    "owners": {
+      "spike:vite/modulepreload-polyfill.js": {
+        "rendered": 1205,
+        "gzipAlone": 533
+      },
+      "spike:src/define-log.ts": {
+        "rendered": 291,
+        "gzipAlone": 189
+      },
+      "@a2ui/web_core": {
+        "rendered": 122374,
+        "gzipAlone": 25846
+      },
+      "spike:src/catalog/basic.ts": {
+        "rendered": 242,
+        "gzipAlone": 190
+      },
+      "spike:src/catalog/line.ts": {
+        "rendered": 1707,
+        "gzipAlone": 653
+      },
+      "spike:src/session.ts": {
+        "rendered": 2901,
+        "gzipAlone": 1001
+      },
+      "spike:src/surface-base.ts": {
+        "rendered": 3932,
+        "gzipAlone": 1506
+      },
+      "spike:vite/preload-helper.js": {
+        "rendered": 2998,
+        "gzipAlone": 1213
+      },
+      "spike:src/surface-a/surface.ts": {
+        "rendered": 1776,
+        "gzipAlone": 763
+      },
+      "spike:src/surface-a/tags.ts": {
+        "rendered": 481,
+        "gzipAlone": 249
+      },
+      "spike:src/bundle/app.ts": {
+        "rendered": 783,
+        "gzipAlone": 443
+      },
+      "spike:src/bundle/a-eager.ts": {
+        "rendered": 457,
+        "gzipAlone": 304
+      },
+      "spike:pages/bundle-a-eager.html": {
+        "rendered": 0,
+        "gzipAlone": null
+      }
+    }
+  },
+  {
+    "file": "assets/adapter-q7mqlLj6.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": [],
+    "dynamicImports": [],
+    "bytes": 221866,
+    "gzip": 59400,
+    "defines": [],
+    "owners": {
+      "zod": {
+        "rendered": 100240,
+        "gzipAlone": 16967
+      },
+      "@a2ui/web_core": {
+        "rendered": 213291,
+        "gzipAlone": 46338
+      },
+      "zod-to-json-schema": {
+        "rendered": 39615,
+        "gzipAlone": 8004
+      },
+      "@preact/signals-core": {
+        "rendered": 7179,
+        "gzipAlone": 2096
+      },
+      "@lit/reactive-element": {
+        "rendered": 10786,
+        "gzipAlone": 3528
+      },
+      "lit-html": {
+        "rendered": 10098,
+        "gzipAlone": 3759
+      },
+      "lit-element": {
+        "rendered": 980,
+        "gzipAlone": 465
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      },
+      "spike:src/surface-a/adapter.ts": {
+        "rendered": 2694,
+        "gzipAlone": 1152
+      }
+    }
+  },
+  {
+    "file": "assets/button-B5gk9yNn.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/button.ts",
+    "imports": ["assets/button-BhkV01N0.js"],
+    "dynamicImports": [],
+    "bytes": 76,
+    "gzip": 79,
+    "defines": [],
+    "owners": {}
+  },
+  {
+    "file": "assets/button-BhkV01N0.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js", "assets/dist-CfUcQMba.js"],
+    "dynamicImports": [],
+    "bytes": 1559,
+    "gzip": 679,
+    "defines": ["line-button", "line-a2ui-button", "line-a2ui-line-button"],
+    "owners": {
+      "spike:src/components/line-button.ts": {
+        "rendered": 663,
+        "gzipAlone": 398
+      },
+      "spike:src/surface-a/adapters/button.ts": {
+        "rendered": 1212,
+        "gzipAlone": 482
+      }
+    }
+  },
+  {
+    "file": "assets/dist-CfUcQMba.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js"],
+    "dynamicImports": [],
+    "bytes": 3071,
+    "gzip": 1224,
+    "defines": [],
+    "owners": {
+      "@websublime/line-core": {
+        "rendered": 4135,
+        "gzipAlone": 1445
+      }
+    }
+  },
+  {
+    "file": "assets/icon-BUmjyuse.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js", "assets/dist-CfUcQMba.js"],
+    "dynamicImports": [],
+    "bytes": 1567,
+    "gzip": 783,
+    "defines": ["line-icon", "line-a2ui-icon", "line-a2ui-line-icon"],
+    "owners": {
+      "spike:src/components/line-icon.ts": {
+        "rendered": 1240,
+        "gzipAlone": 673
+      },
+      "spike:src/surface-a/adapters/icon.ts": {
+        "rendered": 668,
+        "gzipAlone": 325
+      }
+    }
+  },
+  {
+    "file": "assets/icon-DJrYWZis.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/icon.ts",
+    "imports": ["assets/icon-BUmjyuse.js"],
+    "dynamicImports": [],
+    "bytes": 70,
+    "gzip": 79,
+    "defines": [],
+    "owners": {}
+  },
+  {
+    "file": "assets/native-CQPqFQHK.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/native.ts",
+    "imports": ["assets/native-DemFRm56.js"],
+    "dynamicImports": [],
+    "bytes": 69,
+    "gzip": 81,
+    "defines": [],
+    "owners": {}
+  },
+  {
+    "file": "assets/native-DemFRm56.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js"],
+    "dynamicImports": [],
+    "bytes": 1215,
+    "gzip": 487,
+    "defines": ["line-a2ui-text", "line-a2ui-image"],
+    "owners": {
+      "spike:src/surface-a/adapters/native.ts": {
+        "rendered": 1628,
+        "gzipAlone": 573
+      }
+    }
+  },
+  {
+    "file": "assets/separator-BimxG4uM.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js", "assets/dist-CfUcQMba.js"],
+    "dynamicImports": [],
+    "bytes": 1038,
+    "gzip": 500,
+    "defines": ["line-separator", "line-a2ui-divider", "line-a2ui-line-separator"],
+    "owners": {
+      "spike:src/components/line-separator.ts": {
+        "rendered": 727,
+        "gzipAlone": 403
+      },
+      "spike:src/surface-a/adapters/separator.ts": {
+        "rendered": 512,
+        "gzipAlone": 286
+      }
+    }
+  },
+  {
+    "file": "assets/separator-CuYTZ4qV.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/separator.ts",
+    "imports": ["assets/separator-BimxG4uM.js"],
+    "dynamicImports": [],
+    "bytes": 59,
+    "gzip": 73,
+    "defines": [],
+    "owners": {}
+  },
+  {
+    "file": "assets/stack-BH5Gd47W.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/stack.ts",
+    "imports": ["assets/stack-DWL3qwNL.js"],
+    "dynamicImports": [],
+    "bytes": 103,
+    "gzip": 97,
+    "defines": [],
+    "owners": {}
+  },
+  {
+    "file": "assets/stack-DWL3qwNL.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/adapter-q7mqlLj6.js", "assets/dist-CfUcQMba.js"],
+    "dynamicImports": [],
+    "bytes": 4010,
+    "gzip": 1543,
+    "defines": ["line-stack", "line-a2ui-row", "line-a2ui-column", "line-a2ui-list", "line-a2ui-line-stack"],
+    "owners": {
+      "lit-html": {
+        "rendered": 3050,
+        "gzipAlone": 1300
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      },
+      "spike:src/components/line-stack.ts": {
+        "rendered": 1125,
+        "gzipAlone": 440
+      },
+      "spike:src/surface-a/adapters/stack.ts": {
+        "rendered": 1603,
+        "gzipAlone": 499
+      }
+    }
+  }
+]

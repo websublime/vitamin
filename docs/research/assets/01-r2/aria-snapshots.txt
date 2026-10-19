@@ -1,0 +1,369 @@
+## chromium / showcase / reference
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## chromium / showcase / a
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## chromium / showcase / a-contents
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## chromium / showcase / b
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## chromium / showcase / a-shadow
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## chromium / slots / reference
+- button "Send"
+- separator
+- button "Continue"
+
+## chromium / slots / a
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## chromium / slots / a-contents
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## chromium / slots / b
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## chromium / slots / a-shadow
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## firefox / showcase / reference
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## firefox / showcase / a
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## firefox / showcase / a-contents
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## firefox / showcase / b
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## firefox / showcase / a-shadow
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## firefox / slots / reference
+- button "Send"
+- separator
+- button "Continue"
+
+## firefox / slots / a
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## firefox / slots / a-contents
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## firefox / slots / b
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## firefox / slots / a-shadow
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## webkit / showcase / reference
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## webkit / showcase / a
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## webkit / showcase / a-contents
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## webkit / showcase / b
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## webkit / showcase / a-shadow
+- status: Content updated.
+- heading "Inbox" [level=2]
+- paragraph: Grace
+- img "Avatar of the user"
+- separator
+- list:
+  - listitem:
+    - paragraph: Draft saved
+  - listitem:
+    - paragraph: Reply sent
+- button "Send":
+  - paragraph: Send
+- separator
+- button "Close":
+  - img "Close"
+- button "Full width":
+  - paragraph: Full width
+
+## webkit / slots / reference
+- button "Send"
+- separator
+- button "Continue"
+
+## webkit / slots / a
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## webkit / slots / a-contents
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## webkit / slots / b
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
+## webkit / slots / a-shadow
+- status: Content updated.
+- button "Send"
+- separator
+- button "Continue"
+
