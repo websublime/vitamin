@@ -7,8 +7,8 @@
 
 > **TL;DR**
 >
-> - MCP Apps (SEP-1865, extension id `io.modelcontextprotocol/ui`) has a stable spec dated 2026-01-26. The SDK `@modelcontextprotocol/ext-apps` is at 2.0.3 (2026-09-25), which was also `latest` on 2026-10-14. It implements protocol version `2026-01-26` and needs `zod ^4.2.0` and `@modelcontextprotocol/client ^2.0.0` as peers.
-> - A View is one HTML5 document of MIME type `text/html;profile=mcp-app`, served from a `ui://` resource and rendered in a sandboxed iframe. The default CSP allows inline script and inline style only. A probe in Chromium 156, Firefox 157 and WebKit 27.2 rendered a Lit 3.3.3 element under that CSP and blocked `data:`, `blob:` and CDN imports. A CDN works once its origin is in `_meta.ui.csp.resourceDomains`.
+> - MCP Apps (SEP-1865, extension id `io.modelcontextprotocol/ui`) has a stable spec dated 2026-01-26. The SDK `@modelcontextprotocol/ext-apps` 2.0.3 is `latest` on 2026-10-19, and npm lists no publish since 2026-09-25. It implements protocol version `2026-01-26`. Its main entry needs `zod ^4.2.0` and `@modelcontextprotocol/client ^2.0.0` as peers, while `./app-with-deps` bundles both.
+> - A View is one HTML5 document of MIME type `text/html;profile=mcp-app`, served from a `ui://` resource and rendered in a sandboxed iframe. The default CSP allows inline script and inline style only. A probe in Chromium 156, Firefox 157 and WebKit 27.2 rendered a generic inlined Lit 3.3.3 element under that CSP and blocked `data:`, `blob:` and CDN imports. A CDN works once its origin is in `_meta.ui.csp.resourceDomains`.
 > - The published host variable list has 76 keys. 37 are colours, 28 are typography, 6 are border radii, 1 is a border width and 4 are shadows. The stable spec, the draft spec and the SDK 2.0.3 type and JSON schema agree on all 76.
 > - `line-themes` has aliases for colour roles only. Every font, radius, border-width, shadow and focus-ring target is a `line-tokens` primitive. So the primitive fallback question covers the 39 non-colour keys, plus the 7 ring keys if they map onto `--line-focus-ring-color`.
 > - A primitive bridge rule that falls back to itself resolves to the guaranteed-invalid value when the host omits the variable. The probe confirmed this in all three engines. The same row declared on `body` with `var(--host-var, inherit)` inherited the `line-tokens` value in all three engines.
@@ -42,7 +42,7 @@ All retrievals and probes ran on 2026-10-19.
 | Official extension | Listed under "Official Extension Repositories" on modelcontextprotocol.io | extensions overview |
 | npm package | `@modelcontextprotocol/ext-apps`, `latest` and `release-2.0` both 2.0.3 | `npm view` (P1) |
 | Release dates | 1.0.0 on 2026-01-26, 1.7.5 on 2026-07-23, 2.0.0 on 2026-09-08, 2.0.3 on 2026-09-25 | `npm view … time` (P1) |
-| Version on 2026-10-14 | 2.0.3; npm lists no publish between 2026-09-25 and 2026-10-19 | `npm view … time` (P1) |
+| Version on 2026-10-19 | 2.0.3 is `latest`; npm lists no publish since 2026-09-25 | `npm view … time` (P1) |
 | Subpath exports | `.`, `./react`, `./server`, `./app-bridge`, `./schema.json`, `./app-with-deps`, `./react-with-deps` | `npm view … exports` (P1) |
 | Runtime dependency | `@standard-schema/spec ^1.1.0` only | `npm view` (P1) |
 | Peers (2.0.3) | `@modelcontextprotocol/client ^2.0.0`, `@modelcontextprotocol/core ^2.0.0`, `@modelcontextprotocol/server ^2.0.0` (server helpers only), `zod ^4.2.0`, `react`/`react-dom` 17–19 | `npm view` (P1); 2.0.0 release notes |
@@ -57,14 +57,14 @@ All retrievals and probes ran on 2026-10-19.
 
 ### 2.2 View delivery and loading line://ui
 
-Resource and sandbox:
+#### Resource and sandbox
 
 - The resource URI MUST start with `ui://`. The content MUST be one valid HTML5 document with `mimeType` `text/html;profile=mcp-app`, sent as `text` or base64 `blob` (stable spec lines 265–270). The SDK exports the MIME type as `RESOURCE_MIME_TYPE` (`dist/src/constants.d.ts`).
 - A tool links to its View through `_meta.ui.resourceUri`. The flat `_meta["ui/resourceUri"]` key is deprecated and "will be removed before GA" (stable spec lines 335–347).
 - Every View renders in a sandboxed iframe (stable spec line 1698). A web host MUST put a sandbox proxy on a different origin between itself and the View. The proxy needs `allow-scripts` and `allow-same-origin` (stable spec lines 472–475).
 - The reference host `examples/basic-host/src/sandbox.ts` gives the inner iframe `sandbox="allow-scripts allow-same-origin allow-forms"`. It writes the View HTML with `document.write`, falls back to `srcdoc`, and sets CSP as an HTTP header on the proxy page.
 
-CSP:
+#### CSP
 
 - If `_meta.ui.csp` is absent, the host MUST apply this policy (stable spec lines 275–284). The draft adds `object-src 'none'` (draft lines 281–294, commit #715 of 2026-07-17).
 
@@ -81,7 +81,9 @@ CSP:
 - The default policy has no `font-src`, so fonts fall back to `default-src 'none'`. Remote fonts that the host sends in `styles.css.fonts` load only if the server declares their origin in `resourceDomains` (reading of stable spec lines 275–284 and 920–957; not probed).
 - In the draft, `_meta.ui` may sit on the `resources/list` entry, on the `resources/read` content item, or on both. The content item wins (draft lines 263–272).
 
-Loading line://ui (probe P6, all three engines):
+#### Loading line://ui
+
+Probe P6 ran these checks in all three engines.
 
 | Check | Default CSP | CSP with `https://cdn.jsdelivr.net` in `resourceDomains` |
 |---|---|---|
@@ -107,7 +109,7 @@ Loading line://ui (probe P6, all three engines):
 - Hosts "can provide any subset of standardized variables, or not pass `styles` at all". They should use `light-dark()` for theme-aware values. Views "should set default fallback values" for the variables they use (stable spec lines 891–906).
 - The rationale says spacing is "intentionally excluded". It also says "No UI component library — no single library works across all host environments" (stable spec lines 1640–1644).
 
-SDK helpers in 2.0.3 (read from `dist/src/app.js`, P4):
+The SDK 2.0.3 helpers behave as follows. The bodies were read from `dist/src/app.js` (P4).
 
 | Helper | Effect |
 |---|---|
@@ -116,7 +118,12 @@ SDK helpers in 2.0.3 (read from `dist/src/app.js`, P4):
 | `applyHostFonts(css)` | Appends `<style id="__mcp-host-fonts">` to `<head>` once |
 | `getDocumentTheme()` | Reads `data-theme`, else the `.dark` class |
 
-- The helpers come only from the main entry `.`. A Vite 8.3.4 library build that imports the three helpers alone produced 343,098 bytes minified and 81,457 bytes gzipped, and it still contained Zod (P8). Bun 1.4.3 produced 102,015 bytes gzipped. A View that already uses the `App` class pays this cost once.
+- Four entries export the helpers (P11). `.` and `./react` import `zod/v4`, `@modelcontextprotocol/client` and `@modelcontextprotocol/core` as externals, so they need those peers. `./app-with-deps` has no external imports. It bundles Zod 4 and the MCP client, and `dist/src/app-with-deps.js` contains `ZodError`. `./react-with-deps` imports only `react`, so it bundles the same code [INFERENCE from its import list; its contents were not grepped].
+- The helpers carry the weight of the `App` client and Zod 4 under either entry, because the bundlers did not tree-shake that code away.
+  - Unbundled files. `app-with-deps.js` is 98,441 B gzipped; `app.js` is 9,627 B gzipped plus its peers (P11).
+  - Main entry `.`, helpers only (P8). Vite 8.3.4 library build 343,098 B minified and 81,457 B gzipped, with Zod present; Bun 1.4.3 102,015 B gzipped.
+  - `./app-with-deps`, helpers only (P11). Vite 8.3.4 389,281 B minified and 80,897 B gzipped, with `ZodError` present; Bun 1.4.3 93,017 B gzipped.
+  - A View that already uses the `App` class pays this cost once.
 
 The complete published list has 76 keys. The stable spec (lines 797–889), the draft spec, `McpUiStyleVariableKey` in `dist/src/spec.types.d.ts` and `dist/src/generated/schema.json` in 2.0.3 agree (P4, P5).
 
@@ -139,7 +146,7 @@ The complete published list has 76 keys. The stable spec (lines 797–889), the 
 - Plan §7.2 (line 464) names "colour, font and border-radius" variables. Those groups hold 37 + 28 + 6 = 71 keys. Border width and shadows (5 keys) fall outside that wording.
 - The reference host `basic-host/src/host-styles.ts` sends every key. Its radii are 2, 4, 6, 8, 12 and 9999 px. Its text sizes run from 0.75 to 1.125 rem, and its heading sizes from 0.75 to 2.25 rem.
 
-Where each group could land in line://ui today:
+The table below shows where each group could land in line://ui today.
 
 | Host group | Keys | Existing line target | Layer |
 |---|---|---|---|
@@ -183,7 +190,7 @@ The probe (P6) ran each rule in a View under the default CSP, with and without h
 - Host values set by `applyHostStyleVariables` sit in the inline style of `<html>`, so they beat every `:where(html)` rule in `@layer line` and inherit into `body` and into shadow trees.
 - The prefix audit in `lint-layers` checks declarations only (`scripts/lint-layers.mjs` lines 21–22, 255–292). A bridge that reads `--color-*` and declares only `--line-*` passes it.
 
-Strategies the spec can choose from (evidence only; the choice belongs to the spec, §6 Q2):
+The spec can choose among the four strategies below. The table records evidence only, and the choice belongs to the spec (§6 Q2).
 
 | Option | Mechanism | Evidence for | Evidence against |
 |---|---|---|---|
@@ -222,9 +229,10 @@ All probes ran on 2026-10-19 in `mktemp -d` directories with `HOME=<tmpdir>`. Ea
 | P5 | `diff` of the "Current Standardized Variables" to "Custom Fonts" sections, stable vs draft | 0 | Identical |
 | P6 | `bun build el.ts --minify --format esm` (a Lit 3.3.3 element, 28.96 KB), then `bun probe.mjs`. The harness serves a host page, a sandbox proxy on another origin with the CSP as an HTTP header, and an inner iframe `sandbox="allow-scripts allow-same-origin allow-forms"` filled by `document.write`, as in basic-host. It runs Playwright 1.64.0 with Chromium 156.0.8078.4, Firefox 157.0 and WebKit 27.2. | 0 | Results in §2.2 and §2.4b. The first two runs returned no data, because an unescaped `</script>` in the harness ended the proxy script early. The third run escaped it. Chromium logged each blocked load as a `script-src` or `style-src` violation |
 | P7 | `bun add @modelcontextprotocol/ext-apps@2.0.3 zod@3.25.76`; `bun add @modelcontextprotocol/client@^2 @modelcontextprotocol/core@^2`; `npm view @modelcontextprotocol/ext-apps@1.7.5 peerDependencies` | 0, 0, 0 | `warn: incorrect peer dependency "zod@3.25.76"`; client and core 2.3.1; 1.7.5 accepts `zod ^3.25.0 \|\| ^4.0.0` |
-| P8 | `bun build helpers.js --minify` and `vite build` (Vite 8.3.4, library mode) on an entry that imports only `applyHostStyleVariables`, `applyDocumentTheme` and `applyHostFonts` | 0, 0 | Bun 0.38 MB, 102,015 B gzipped. Vite 343,098 B, 81,457 B gzipped, with `ZodError` present |
+| P8 | `bun build helpers.js --minify` and `vite build` (Vite 8.3.4, library mode) on an entry that imports only `applyHostStyleVariables`, `applyDocumentTheme` and `applyHostFonts` from `.` | 0, 0 | Bun 0.38 MB, 102,015 B gzipped. Vite 343,098 B, 81,457 B gzipped, with `ZodError` present |
 | P9 | `npm pack vite-plugin-singlefile@2.3.4`, grep `dist/esm/index.js` and `README.md`; `npm view vite-plugin-singlefile time` | 0 | `codeSplitting: false` on Vite ≥ 8; 2.3.4 published 2026-10-17, 2.3.3 before it on 2026-04-17 |
 | P10 | `npm view @websublime/line-themes version dist-tags`; `npm view @websublime/line-tokens version` | 0 | `line-themes` 0.1.2 and `line-tokens` 0.1.3 on npm; jsDelivr served the `line-themes` CSS in P6 |
+| P11 | `npm pack @modelcontextprotocol/ext-apps@2.0.3`; grep the `from"…"` imports and the `export{…}` lists of `app.js`, `app-with-deps.js`, `react/index.js` and `react/react-with-deps.js`; `gzip -c … \| wc -c`; `bun build` and `vite build` (8.3.4) of the three helpers imported from `app-with-deps.js` | 0, 0, 0, 0 | All four entries export the helpers. `app.js` and `react/index.js` import `zod/v4`, `@modelcontextprotocol/client` and `@modelcontextprotocol/core`; `app-with-deps.js` imports nothing; `react-with-deps.js` imports only `react`. Gzipped sizes: `app-with-deps.js` 98,441 B, `app.js` 9,627 B, helpers-only builds as in §2.3 |
 
 ## 4. Fit with line://ui
 
@@ -234,7 +242,7 @@ All probes ran on 2026-10-19 in `mktemp -d` directories with `HOME=<tmpdir>`. Ea
 - **Law 10.** `line-themes` has no `line-tokens` edge (`lint-layers.mjs` line 63). Options (a) and (c) of §2.4b make `line-themes` declare `line-tokens` property names without a package edge. Law 10 names "palette values inside themes" as leakage, so option (a) copies `line-tokens` values into `line-themes` as well. Whether either counts as leakage is a reading for the spec, and this note does not decide it.
 - **PRD v0.8.12 and ARCHITECTURE §4.** `color-scheme` is the only mode switch. `applyDocumentTheme` sets it, and the host colours arrive as `light-dark()` values that resolve per element (P6).
 - **ARCHITECTURE §17.1 theming scopes.** `aliases.css` re-declares every alias in `:where(html, [data-accent], [data-gray])`. A bridge that maps aliases only on `html` would be overridden inside any nested `[data-accent]` or `[data-gray]` scope (from the selector in `aliases.css` lines 7–28; not probed).
-- **A2UI inside a View (ARCHITECTURE §17.1, plan §5.3).** ext-apps 2.x wants `zod ^4.2.0`. `@a2ui/web_core` 0.13.0 and the repo declare `zod ^3.25.76` (plan §5.3). A View that bundles `line-genui` with ext-apps 2.x gets a peer warning (P7) and two Zod copies [INFERENCE from the two ranges]. ext-apps 1.7.5 accepts either Zod major but is the superseded major. R1 and R3 own the Zod question.
+- **A2UI inside a View (ARCHITECTURE §17.1, plan §5.3).** ext-apps 2.x wants `zod ^4.2.0` through its main entry and bundles Zod 4 in `./app-with-deps`. `@a2ui/web_core` 0.13.0 and the repo declare `zod ^3.25.76` (plan §5.3). A View that bundles `line-genui` with the 2.x main entry gets a peer warning (P7). With either 2.x entry it carries two Zod copies [INFERENCE from the two ranges and the bundled copy]. ext-apps 1.7.5 accepts either Zod major but is the superseded major. R1 and R3 own the Zod question.
 - **ARCHITECTURE §17.8.** The deferred host element `<line-mcp-app-frame>` would build on the `./app-bridge` export. Nothing in this note changes its trigger.
 
 ## 5. Contradictions
@@ -242,17 +250,23 @@ All probes ran on 2026-10-19 in `mktemp -d` directories with `HOME=<tmpdir>`. Ea
 ### 5.1 With ARCHITECTURE, the plan or the PRD
 
 - **C1. Bridge targets.** `docs/ARCHITECTURE.md:1534` says the bridge "maps the standard MCP host variables onto line theme aliases". `line-themes` declares aliases for colour roles only (`packages/line-themes/src/aliases.css`). The 28 font keys, 6 radius keys, 1 border-width key, 4 shadow keys and the focus-ring target have no `line-themes` alias. They can map only onto `line-tokens` primitives. `docs/plans/01-plan-core-primitives.md:464` and `docs/PRD.md:899` already say "alias or token", and `docs/ARCHITECTURE.md:1536` names the primitive case. So the plan and PRD are consistent with the source, and the alias-only wording of ARCHITECTURE line 1534 is narrower than both.
+- **C2. Bridge scope.** `docs/ARCHITECTURE.md:1534` maps "the standard MCP host variables", which reads as all 76 keys. `docs/ARCHITECTURE.md:1561`, `docs/plans/01-plan-core-primitives.md:464` and `docs/PRD.md:899` limit the reference list to colour, font and border-radius variables, which hold 71 keys (§2.3). The 5 remaining keys, `--border-width-regular` and `--shadow-{hairline,sm,md,lg}`, fall inside the ARCHITECTURE line 1534 wording and outside the other three.
 
 ### 5.2 Conditions ARCHITECTURE leaves unstated
 
 These are not contradictions, because the statements hold under conditions the text does not name.
 
-- `docs/ARCHITECTURE.md:1533` says line://ui "works unchanged inside an MCP Apps View". Components render unchanged (P6). The lazy loading of `docs/ARCHITECTURE.md:1504` needs inlined chunks or a declared CDN origin.
-- `docs/ARCHITECTURE.md:1535` has the app apply host styles "with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`)". The helpers behave as stated in 2.0.3. They ship only from the main entry, which carries the whole `App` client and Zod 4 (81,457 B gzipped in a Vite 8 build, P8), and they need the `zod ^4.2.0` and `@modelcontextprotocol/client ^2` peers.
+- `docs/ARCHITECTURE.md:1533` says line://ui "works unchanged inside an MCP Apps View". P6 supports a narrower fact. A generic Lit 3.3.3 element, inlined in a module script, rendered with its shadow styles and adopted stylesheet under the default CSP, and `light-dark()` followed `color-scheme`. The `line-themes` CSS loaded only in the CDN check. P6 ran no line://ui component, no `line-core` mixin and no Zag machine. The lazy loading of `docs/ARCHITECTURE.md:1504` needs inlined chunks or a declared CDN origin.
+- `docs/ARCHITECTURE.md:1535` has the app apply host styles "with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`)". The helpers behave as stated in 2.0.3. Four entries export them (§2.3, P11). The main entry `.` needs the `zod ^4.2.0` and `@modelcontextprotocol/client ^2` peers, while `./app-with-deps` is self-contained. A helpers-only Vite 8 build weighs about 81 KB gzipped under either entry (81,457 B from `.`, 80,897 B from `./app-with-deps`), because the `App` client and Zod 4 come along.
 
 ### 5.3 With the prior research note
 
-`00-research-generative-ui.md` is evidence, not a rule, so these are corrections to record, not contradictions to send back. §2.5 lists them: the licence wording, the 30-of-76 draft mapping that targets primitives, the radius scale mismatch, and the missing third fallback option.
+`00-research-generative-ui.md` is evidence, not a rule, so these findings are corrections to record, not contradictions to send back. §2.5 records four of them.
+
+- The SDK licence is not plain MIT.
+- The draft mapping covers 30 of the 76 keys and routes several of them to `line-tokens` primitives.
+- The host and line radius scales do not match.
+- A third primitive fallback option exists, the `body`-scoped `inherit` rule.
 
 ## 6. Open questions for the spec
 
@@ -270,7 +284,11 @@ These are not contradictions, because the statements hold under conditions the t
   - Plan line 464 for (d).
 - **Q3. Scale alignment.** The host and line scales differ in step count and value. Radius has 6 host keys against 6 numbered line steps plus `round`, with 2–12 px against 2px–8rem. Font size has 11 against 9, line height 11 against 6, weight 4 named against 9 numeric, and shadow 4 against 6. Options are a positional map, a nearest-value map, or new line roles. The evidence is the reference host values (§2.3) and the values real hosts send, which this note did not capture.
 - **Q4. Nested theming scopes.** Options are to declare the bridge in `:where(html, [data-accent], [data-gray])` so host colours win inside nested scopes, or on `html` only so nested `data-*` scopes revert to line steps. The evidence is a browser test of both against `aliases.css` and the PRD §9.4 intent for nested scopes.
-- **Q5. SDK major in docs and recipes.** Options are ext-apps 2.x (`zod ^4.2`, client 2.x peers), 1.7.5 (accepts Zod 3), or inline helper equivalents with no SDK. The evidence is R1 and R3 on the Zod major of `line-genui`, and the R6 MCP recipe pins.
+- **Q5. SDK entry and major in docs and recipes.** The options are listed below. The evidence is R1 and R3 on the Zod major of `line-genui`, the R6 MCP recipe pins, and a helpers-only weight budget (§2.3).
+  - (a) ext-apps 2.x main entry `.`, with the `zod ^4.2` and client 2.x peers.
+  - (b) ext-apps 2.x `./app-with-deps`, self-contained with Zod 4 and the client bundled (about 81 KB gzipped for the helpers alone).
+  - (c) ext-apps 1.7.5, which accepts Zod 3.
+  - (d) Inline equivalents of the helpers with no SDK.
 - **Q6. Delivery recipe.** Options are one inlined file (`vite-plugin-singlefile`, `codeSplitting: false`), a CDN in `resourceDomains` (jsDelivr verified in P6), or both. The evidence is R9 on CDN delivery and a build of a View with a `line-genui` lazy `load()` under both.
 - **Q7. Fonts.** Should the docs tell server authors to list the host font origins in `resourceDomains`, given that the default CSP has no `font-src`? The evidence is a capture of the `styles.css.fonts` value that real hosts send (not captured here).
 
