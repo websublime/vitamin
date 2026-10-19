@@ -7,9 +7,9 @@
 
 > **TL;DR**
 >
-> - Every Zag.js package Phase 1 can touch was at 1.46.0 on npm `latest` on 2026-10-14 (published 2026-10-11) and
->   still is on 2026-10-19. The repo floor `^1.46.0` equals it. `2.0.0-next.3` sits on the `next` tag (2026-09-14)
->   and is a prerelease.
+> - Every Zag.js package Phase 1 can touch is at 1.46.0 on npm `latest` on 2026-10-19. 1.46.0 was published on
+>   2026-10-11, and no `@zag-js/*` version has been published since. The repo floor `^1.46.0` equals it.
+>   `2.0.0-next.3` sits on the `next` tag (2026-09-14) and is a prerelease.
 > - Presence is the only Phase 1 component with a pre-built machine (`@zag-js/presence` 1.46.0). It has three states,
 >   no anatomy and no prop getters. Its `connect` returns `skip`, `present`, `setNode` and `unmount`, and the
 >   machine reacts to `present` through `watch`.
@@ -34,7 +34,7 @@ Button, IconButton, AvatarGroup (ARCHITECTURE §13.1–§13.2)". The task splits
 
 | # | Sub-question |
 |---|---|
-| Q1 | Which Zag.js packages does each of the 20 Phase 1 components (plan §2.2) use, at which version on 2026-10-14, against the repo floor? |
+| Q1 | Which Zag.js packages does each of the 20 Phase 1 components (plan §2.2) use, at which version on npm `latest`, against the repo floor? |
 | Q2 | What is the `@zag-js/presence` machine API? |
 | Q3 | How does Presence run through `LineMachineController`? |
 | Q4 | What does `createMachine` require, how do other Zag-based libraries treat Button, IconButton and AvatarGroup, and what state does each need? |
@@ -44,13 +44,13 @@ Button, IconButton, AvatarGroup (ARCHITECTURE §13.1–§13.2)". The task splits
 
 ### 2.1 Q1 — Packages and versions
 
-All dates come from `npm view <pkg> time --json`, retrieved 2026-10-19. No `@zag-js/*` package was published between
-2026-10-11 and 2026-10-19, so the 2026-10-14 `latest` equals today's.
+All dates come from `npm view <pkg> time --json`, retrieved 2026-10-19. Version 1.46.0 was published on 2026-10-11,
+and no `@zag-js/*` version has been published since.
 
-| Package | `latest` on 2026-10-14 | Published | Repo declaration | Role in Phase 1 |
+| Package | `latest` on 2026-10-19 | Published | Repo declaration | Role in Phase 1 |
 |---|---|---|---|---|
-| `@zag-js/core` | 1.46.0 | 2026-10-11T18:40Z | `^1.46.0` (root and `line-core` `dependencies`) | `createMachine` for Button, IconButton, AvatarGroup |
-| `@zag-js/vanilla` | 1.46.0 | 2026-10-11 | `^1.46.0` (root and `line-core`) | `VanillaMachine` inside `LineMachineController` |
+| `@zag-js/core` | 1.46.0 | 2026-10-11T18:40Z | `^1.46.0` (`line-core` `dependencies`, root `devDependencies`) | `createMachine` for Button, IconButton, AvatarGroup |
+| `@zag-js/vanilla` | 1.46.0 | 2026-10-11 | `^1.46.0` (`line-core` `dependencies`, root `devDependencies`) | `VanillaMachine` inside `LineMachineController` |
 | `@zag-js/presence` | 1.46.0 | 2026-10-11T18:41Z | not declared | Presence |
 | `@zag-js/types`, `dom-query`, `utils`, `store` | 1.46.0 | 2026-10-11 | transitive | Pulled in by core, vanilla and presence |
 | `@zag-js/popover` | 1.46.0 | 2026-10-11 | not declared | Candidate for the AvatarGroup overflow popover (§2.4) |
@@ -60,9 +60,10 @@ All dates come from `npm view <pkg> time --json`, retrieved 2026-10-19. No `@zag
 - `bun.lock` resolves `@zag-js/core` and `@zag-js/vanilla` to 1.46.0.
 - Zag packages pin their siblings exactly. `@zag-js/presence@1.46.0` depends on `@zag-js/core`, `types` and
   `dom-query` at `1.46.0`, and `@zag-js/vanilla@1.46.0` pins `core` at `1.46.0` the same way.
-- The `next` tag carries `2.0.0-next.3` (2026-09-14). The `v2` branch changelog adds a `defaultPropKey` schema field
-  (custom schemas without it keep the old behaviour) and `watchEffect` for effects. Several machines rename `prev`
-  to `previous`. No Phase 1 package is named in those breaking renames.
+- The `next` tag carries `2.0.0-next.3` (2026-09-14). The `v2` branch `@zag-js/core` changelog adds a
+  `defaultPropKey` schema field in 2.0.0-next.2 (zag#3252; custom schemas without it keep the old behaviour) and
+  `watchEffect` for effects (zag#3304). A `v2` changeset renames `prev` to `previous` in several machines. No Phase 1
+  package is named in that breaking rename.
 
 Per-component map (tiers from PRD §7.3 and plan §2.2):
 
@@ -95,7 +96,8 @@ Read from the published `dist` and the Zag docs page (both 2026-10-19).
 | `connect` result | `skip` (true until the first presence change), `present` (`mounted` or `unmountSuspended`), `setNode(node)`, `unmount()` |
 | Exit signal | `onExitComplete()` plus a non-bubbling `exitcomplete` `CustomEvent` dispatched on the node |
 
-- Exit logic. When `present` turns false and the document is hidden, the machine sends `UNMOUNT` at once.
+- The exit logic branches on the document and the node. When `present` turns false and the document is hidden, the
+  machine sends `UNMOUNT` at once.
   Otherwise it waits one animation frame and reads `animationName` from the node's computed style. It unmounts
   directly when the name is `none`, equals the previous name, `display` is `none`, the duration is `0s`, or
   `getAnimations()` shows no running animation. Otherwise it enters `unmountSuspended` and waits for `animationend`
@@ -159,7 +161,8 @@ Read from the published `dist` and the Zag docs page (both 2026-10-19).
   `react`, `solid`, `svelte`, `vanilla` and `vue`. That PR's controller started the machine in `hostUpdated`, after
   the first render.
 
-**Size data** (`bun build --minify --external lit`, then `gzip -9`, 2026-10-19). R9 owns the budget question.
+The size figures below come from `bun build --minify --external lit`, then `gzip -9`, on 2026-10-19. R9 owns the
+budget question.
 
 | Entry | Raw | Gzipped |
 |---|---|---|
@@ -316,7 +319,8 @@ All retrieved 2026-10-19.
 - Zag presence machine source: https://github.com/chakra-ui/zag/tree/main/packages/machines/presence
 - Zag vanilla adapter source: https://github.com/chakra-ui/zag/tree/main/packages/frameworks/vanilla
 - Zag vanilla changelog (1.44.0 `toStyleString`): https://github.com/chakra-ui/zag/blob/main/packages/frameworks/vanilla/CHANGELOG.md
-- Zag `v2` branch changesets: https://github.com/chakra-ui/zag/tree/v2/.changeset
+- Zag `v2` core changelog (`defaultPropKey` zag#3252, `watchEffect` zag#3304): https://github.com/chakra-ui/zag/blob/v2/packages/core/CHANGELOG.md
+- Zag `v2` changeset renaming `prev` to `previous`: https://github.com/chakra-ui/zag/blob/v2/.changeset/previous-naming.md
 - Zag docs, Presence: https://zagjs.com/components/react/presence
 - Zag docs, Building Machines: https://zagjs.com/guides/building-machines
 - Zag docs, Building a Framework Adapter: https://zagjs.com/guides/framework-adapters
