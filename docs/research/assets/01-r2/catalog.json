@@ -1,0 +1,445 @@
+{
+  "hand-written vs client_capabilities.json#/$defs/Catalog": {
+    "compiled": true,
+    "valid": false,
+    "errors": [
+      "/ must NOT have additional properties ($schema)",
+      "/ must NOT have additional properties ($id)",
+      "/ must NOT have additional properties (title)",
+      "/ must NOT have additional properties (description)",
+      "/ must NOT have additional properties ($defs)",
+      "/functions must be array"
+    ],
+    "errorCount": 6
+  },
+  "toJson() vs client_capabilities.json#/$defs/Catalog": {
+    "compiled": true,
+    "valid": false,
+    "errors": [
+      "/ must NOT have additional properties (protocolVersion)",
+      "/ must NOT have additional properties ($defs)"
+    ],
+    "errorCount": 2
+  },
+  "published basic catalog vs client_capabilities.json#/$defs/Catalog": {
+    "compiled": true,
+    "valid": false,
+    "errors": [
+      "/ must NOT have additional properties ($schema)",
+      "/ must NOT have additional properties ($id)",
+      "/ must NOT have additional properties (title)",
+      "/ must NOT have additional properties (description)",
+      "/ must NOT have additional properties ($defs)",
+      "/functions must be array"
+    ],
+    "errorCount": 6
+  },
+  "slots components vs hand-written anyComponent": [
+    {
+      "compiled": true,
+      "valid": true,
+      "errors": [],
+      "errorCount": 0
+    },
+    {
+      "compiled": true,
+      "valid": true,
+      "errors": [],
+      "errorCount": 0
+    },
+    {
+      "compiled": true,
+      "valid": true,
+      "errors": [],
+      "errorCount": 0
+    },
+    {
+      "compiled": true,
+      "valid": true,
+      "errors": [],
+      "errorCount": 0
+    },
+    {
+      "compiled": true,
+      "valid": true,
+      "errors": [],
+      "errorCount": 0
+    }
+  ],
+  "Button without action vs hand-written anyComponent": {
+    "compiled": true,
+    "valid": false,
+    "errors": [
+      "/ must have required property 'action'",
+      "/ must have required property 'name'",
+      "/component must be equal to constant",
+      "/ must have required property 'children'",
+      "/component must be equal to constant",
+      "/ must NOT have unevaluated properties",
+      "/component must be equal to constant",
+      "/ must NOT have unevaluated properties"
+    ],
+    "errorCount": 9
+  },
+  "slots components vs toJson() anyComponent": {
+    "compiled": false,
+    "error": "Error: can't resolve reference catalog.json#/$defs/anyFunction from id https://a2ui.org/specification/v0_9/common_types.json"
+  },
+  "Catalog.fromJson(hand-written)": {
+    "roundTripDeepEqual": true,
+    "roundTripSameKeyOrder": false,
+    "validationSchema": [
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      }
+    ],
+    "buttonWithoutAction": {
+      "compiled": true,
+      "valid": false,
+      "errors": [
+        "/ must have required property 'action'",
+        "/ must have required property 'name'",
+        "/component must be equal to constant",
+        "/ must have required property 'children'",
+        "/component must be equal to constant",
+        "/ must NOT have unevaluated properties",
+        "/component must be equal to constant",
+        "/ must NOT have unevaluated properties"
+      ],
+      "errorCount": 9
+    }
+  },
+  "lineCatalog().validationSchema": {
+    "slotsComponents": [
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      },
+      {
+        "compiled": true,
+        "valid": true,
+        "errors": [],
+        "errorCount": 0
+      }
+    ],
+    "buttonWithoutAction": {
+      "compiled": true,
+      "valid": false,
+      "errors": [
+        "/ must have required property 'action'",
+        "/ must have required property 'name'",
+        "/component must be equal to constant",
+        "/ must have required property 'children'",
+        "/component must be equal to constant",
+        "/ must NOT have unevaluated properties",
+        "/component must be equal to constant",
+        "/ must NOT have unevaluated properties"
+      ],
+      "errorCount": 9
+    }
+  },
+  "getClientCapabilities inline line catalog vs client_capabilities.json": {
+    "compiled": true,
+    "valid": true,
+    "errors": [],
+    "errorCount": 0
+  },
+  "fixture messages vs server_to_client.json": {
+    "showcase": {
+      "messages": 4,
+      "invalid": 0
+    },
+    "slots": {
+      "messages": 3,
+      "invalid": 0
+    },
+    "streaming": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "focus": {
+      "messages": 8,
+      "invalid": 0
+    },
+    "one-button": {
+      "messages": 2,
+      "invalid": 0
+    },
+    "missing-name": {
+      "messages": 2,
+      "invalid": 0
+    },
+    "unknown-type": {
+      "messages": 2,
+      "invalid": 1,
+      "first": {
+        "index": 1,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "cycle-unvalidated": {
+      "messages": 2,
+      "invalid": 0
+    },
+    "version-missing": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'version'", " must have required property 'updateComponents'"]
+      }
+    },
+    "version-unsupported": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "two-operations": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "envelope-invalid": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "surface-id-not-string": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "payload-depth": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "function-call-depth": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "pointer-syntax": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "target-version": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "allowed-messages": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "catalog-unknown": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "surface-exists": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "catalog-version": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [
+          "/version must be equal to one of the allowed values",
+          " must have required property 'updateComponents'"
+        ]
+      }
+    },
+    "theme-invalid": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [
+          "/createSurface/theme/primaryColor must match pattern \"^#[0-9a-fA-F]{6}$\"",
+          " must have required property 'updateComponents'"
+        ]
+      }
+    },
+    "components-unknown-surface": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "duplicate-id": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "missing-id": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "missing-type": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "schema-invalid": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "unknown-type-strict": {
+      "messages": 5,
+      "invalid": 1,
+      "first": {
+        "index": 3,
+        "errors": [" must have required property 'createSurface'", " must NOT have additional properties"]
+      }
+    },
+    "dangling-strict": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "cycle-relaxed": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "depth-limit": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "depth-limit-relaxed": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "data-unknown-surface": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "data-forbidden-segment": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "data-primitive-in-path": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "data-array-segment": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "data-array-index": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "missing-root-strict": {
+      "messages": 3,
+      "invalid": 0
+    },
+    "capabilities-empty": {
+      "messages": 4,
+      "invalid": 0
+    },
+    "data-model-mixed-versions": {
+      "messages": 5,
+      "invalid": 0
+    },
+    "adapter-without-api": {
+      "messages": 4,
+      "invalid": 0
+    }
+  },
+  "slots stream vs server_to_client.json with toJson() as catalog.json": {
+    "compiled": false,
+    "error": "Error: can't resolve reference catalog.json#/$defs/theme from id https://a2ui.org/specification/v0_9/server_to_client.json"
+  },
+  "sizes": {
+    "hand-written line catalog (4 components)": {
+      "fileBytes": 4592,
+      "minifiedBytes": 3262,
+      "gzipBytes": 944
+    },
+    "lineCatalog().toJson() (4 components)": {
+      "minifiedBytes": 2265,
+      "gzipBytes": 685
+    },
+    "lineCatalog().validationSchema": {
+      "minifiedBytes": 7173,
+      "gzipBytes": 1834
+    },
+    "basicCatalog().toJson() (8 Phase 1 types)": {
+      "minifiedBytes": 8674,
+      "gzipBytes": 2320
+    },
+    "basicCatalog().validationSchema (8 Phase 1 types)": {
+      "minifiedBytes": 16600,
+      "gzipBytes": 3552
+    },
+    "published v0.9.1 basic catalog (18 types)": {
+      "minifiedBytes": 29240,
+      "gzipBytes": 5399
+    }
+  }
+}

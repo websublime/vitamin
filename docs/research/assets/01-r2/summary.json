@@ -1,0 +1,1485 @@
+{
+  "browsers": {
+    "chromium": "156.0.8078.4",
+    "firefox": "157.0",
+    "webkit": "27.2"
+  },
+  "render": {
+    "showcase/a": {
+      "sameIn": ["chromium"],
+      "value": {
+        "slots": "3/12 same nodes, 11/12 same ids",
+        "slotMismatches": [
+          "line-stack#root default: h2#title line-stack#profile line-separator#rule[role=separator] line-stack#items[role=list] line-stack#actions line-button#wide → line-a2ui-text#title line-a2ui-row#profile line-a2ui-divider#rule line-a2ui-list#items line-a2ui-row#actions line-a2ui-button#wide",
+          "line-stack#profile default: line-icon#mailIcon p#name img#avatar → line-a2ui-icon#mailIcon line-a2ui-text#name line-a2ui-image#avatar",
+          "line-stack#items default: line-stack#item[role=listitem] line-stack#item[role=listitem] → div[role=listitem] div[role=listitem]",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#actions default: line-button#send line-separator#split[role=separator] line-button#close → line-a2ui-button#send line-a2ui-divider#split line-a2ui-button#close",
+          "line-button#send default: p#sendLabel → line-a2ui-text#sendLabel",
+          "line-button#close default: line-icon#closeIcon[role=img] → line-a2ui-icon#closeIcon",
+          "line-button#wide default: p#wideLabel → line-a2ui-text#wideLabel"
+        ],
+        "layoutDiffs": [
+          "root:1 <line-stack> dx=0 dy=0 dw=0 dh=5.5",
+          "profile:1 <line-stack> dx=0 dy=0 dw=0 dh=5.5",
+          "name:1 <p> dx=0 dy=2.5 dw=0 dh=0",
+          "rule:1 <line-separator> dx=0 dy=5.5 dw=0 dh=0",
+          "items:1 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+          "item:1 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+          "itemIcon:1 <line-icon> dx=0 dy=3 dw=0 dh=0",
+          "itemText:1 <p> dx=0 dy=5.5 dw=0 dh=0",
+          "item:2 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+          "itemIcon:2 <line-icon> dx=0 dy=3.5 dw=0 dh=0",
+          "itemText:2 <p> dx=0 dy=5.5 dw=0 dh=0",
+          "actions:1 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+          "send:1 <line-button> dx=0 dy=5.5 dw=0 dh=0",
+          "sendLabel:1 <p> dx=0 dy=5.5 dw=0 dh=0",
+          "split:1 <line-separator> dx=0 dy=5.5 dw=0 dh=-28.5",
+          "close:1 <line-button> dx=0 dy=5.5 dw=0 dh=0",
+          "closeIcon:1 <line-icon> dx=0 dy=5.5 dw=0 dh=0",
+          "wide:1 <line-button> dx=0 dy=5 dw=-394.5 dh=0",
+          "wideLabel:1 <p> dx=0 dy=5 dw=0 dh=0"
+        ],
+        "partsApplied": "12/12",
+        "ariaSnapshotEqualsReference": true
+      },
+      "differing": {
+        "firefox": {
+          "slots": "3/12 same nodes, 11/12 same ids",
+          "slotMismatches": [
+            "line-stack#root default: h2#title line-stack#profile line-separator#rule[role=separator] line-stack#items[role=list] line-stack#actions line-button#wide → line-a2ui-text#title line-a2ui-row#profile line-a2ui-divider#rule line-a2ui-list#items line-a2ui-row#actions line-a2ui-button#wide",
+            "line-stack#profile default: line-icon#mailIcon p#name img#avatar → line-a2ui-icon#mailIcon line-a2ui-text#name line-a2ui-image#avatar",
+            "line-stack#items default: line-stack#item[role=listitem] line-stack#item[role=listitem] → div[role=listitem] div[role=listitem]",
+            "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+            "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+            "line-stack#actions default: line-button#send line-separator#split[role=separator] line-button#close → line-a2ui-button#send line-a2ui-divider#split line-a2ui-button#close",
+            "line-button#send default: p#sendLabel → line-a2ui-text#sendLabel",
+            "line-button#close default: line-icon#closeIcon[role=img] → line-a2ui-icon#closeIcon",
+            "line-button#wide default: p#wideLabel → line-a2ui-text#wideLabel"
+          ],
+          "layoutDiffs": [
+            "root:1 <line-stack> dx=0 dy=0 dw=0 dh=5.5",
+            "profile:1 <line-stack> dx=0 dy=0 dw=0 dh=5",
+            "name:1 <p> dx=0 dy=2.5 dw=0 dh=0",
+            "rule:1 <line-separator> dx=0 dy=5.5 dw=0 dh=0",
+            "items:1 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+            "item:1 <line-stack> dx=0 dy=5.5 dw=0 dh=0",
+            "itemIcon:1 <line-icon> dx=0 dy=3 dw=0 dh=0",
+            "itemText:1 <p> dx=0 dy=5.5 dw=0 dh=0",
+            "item:2 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "itemIcon:2 <line-icon> dx=0 dy=3.5 dw=0 dh=0",
+            "itemText:2 <p> dx=0 dy=5 dw=0 dh=0",
+            "actions:1 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "send:1 <line-button> dx=0 dy=5 dw=0 dh=0",
+            "sendLabel:1 <p> dx=0 dy=5 dw=0 dh=0",
+            "split:1 <line-separator> dx=0 dy=5 dw=0 dh=-28.5",
+            "close:1 <line-button> dx=0 dy=5 dw=0 dh=0",
+            "closeIcon:1 <line-icon> dx=0 dy=5.5 dw=0 dh=0",
+            "wide:1 <line-button> dx=0 dy=5 dw=-398.5 dh=0",
+            "wideLabel:1 <p> dx=0 dy=5 dw=0 dh=0"
+          ],
+          "partsApplied": "12/12",
+          "ariaSnapshotEqualsReference": true
+        },
+        "webkit": {
+          "slots": "3/12 same nodes, 11/12 same ids",
+          "slotMismatches": [
+            "line-stack#root default: h2#title line-stack#profile line-separator#rule[role=separator] line-stack#items[role=list] line-stack#actions line-button#wide → line-a2ui-text#title line-a2ui-row#profile line-a2ui-divider#rule line-a2ui-list#items line-a2ui-row#actions line-a2ui-button#wide",
+            "line-stack#profile default: line-icon#mailIcon p#name img#avatar → line-a2ui-icon#mailIcon line-a2ui-text#name line-a2ui-image#avatar",
+            "line-stack#items default: line-stack#item[role=listitem] line-stack#item[role=listitem] → div[role=listitem] div[role=listitem]",
+            "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+            "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+            "line-stack#actions default: line-button#send line-separator#split[role=separator] line-button#close → line-a2ui-button#send line-a2ui-divider#split line-a2ui-button#close",
+            "line-button#send default: p#sendLabel → line-a2ui-text#sendLabel",
+            "line-button#close default: line-icon#closeIcon[role=img] → line-a2ui-icon#closeIcon",
+            "line-button#wide default: p#wideLabel → line-a2ui-text#wideLabel"
+          ],
+          "layoutDiffs": [
+            "root:1 <line-stack> dx=0 dy=0 dw=0 dh=5.5",
+            "profile:1 <line-stack> dx=0 dy=0 dw=0 dh=5",
+            "name:1 <p> dx=0 dy=2.5 dw=0 dh=0",
+            "rule:1 <line-separator> dx=0 dy=5 dw=0 dh=0",
+            "items:1 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "item:1 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "itemIcon:1 <line-icon> dx=0 dy=3 dw=0 dh=0",
+            "itemText:1 <p> dx=0 dy=5 dw=0 dh=0",
+            "item:2 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "itemIcon:2 <line-icon> dx=0 dy=3.5 dw=0 dh=0",
+            "itemText:2 <p> dx=0 dy=5 dw=0 dh=0",
+            "actions:1 <line-stack> dx=0 dy=5 dw=0 dh=0",
+            "send:1 <line-button> dx=0 dy=5 dw=0 dh=0",
+            "sendLabel:1 <p> dx=0 dy=5 dw=0 dh=0",
+            "split:1 <line-separator> dx=0 dy=5 dw=0 dh=-27.5",
+            "close:1 <line-button> dx=0 dy=5 dw=0 dh=0",
+            "closeIcon:1 <line-icon> dx=0 dy=5.5 dw=0 dh=0",
+            "wide:1 <line-button> dx=0 dy=5 dw=-394.5 dh=0",
+            "wideLabel:1 <p> dx=0 dy=5 dw=0 dh=0"
+          ],
+          "partsApplied": "12/12",
+          "ariaSnapshotEqualsReference": true
+        }
+      }
+    },
+    "showcase/a-contents": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "3/12 same nodes, 11/12 same ids",
+        "slotMismatches": [
+          "line-stack#root default: h2#title line-stack#profile line-separator#rule[role=separator] line-stack#items[role=list] line-stack#actions line-button#wide → line-a2ui-text#title line-a2ui-row#profile line-a2ui-divider#rule line-a2ui-list#items line-a2ui-row#actions line-a2ui-button#wide",
+          "line-stack#profile default: line-icon#mailIcon p#name img#avatar → line-a2ui-icon#mailIcon line-a2ui-text#name line-a2ui-image#avatar",
+          "line-stack#items default: line-stack#item[role=listitem] line-stack#item[role=listitem] → div[role=listitem] div[role=listitem]",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#actions default: line-button#send line-separator#split[role=separator] line-button#close → line-a2ui-button#send line-a2ui-divider#split line-a2ui-button#close",
+          "line-button#send default: p#sendLabel → line-a2ui-text#sendLabel",
+          "line-button#close default: line-icon#closeIcon[role=img] → line-a2ui-icon#closeIcon",
+          "line-button#wide default: p#wideLabel → line-a2ui-text#wideLabel"
+        ],
+        "layoutDiffs": [],
+        "partsApplied": "12/12",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "showcase/b": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "12/12 same nodes, 12/12 same ids",
+        "slotMismatches": [],
+        "layoutDiffs": [],
+        "partsApplied": "12/12",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "showcase/a-shadow": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "3/12 same nodes, 11/12 same ids",
+        "slotMismatches": [
+          "line-stack#root default: h2#title line-stack#profile line-separator#rule[role=separator] line-stack#items[role=list] line-stack#actions line-button#wide → line-a2ui-text#title line-a2ui-row#profile line-a2ui-divider#rule line-a2ui-list#items line-a2ui-row#actions line-a2ui-button#wide",
+          "line-stack#profile default: line-icon#mailIcon p#name img#avatar → line-a2ui-icon#mailIcon line-a2ui-text#name line-a2ui-image#avatar",
+          "line-stack#items default: line-stack#item[role=listitem] line-stack#item[role=listitem] → div[role=listitem] div[role=listitem]",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#item default: line-icon#itemIcon p#itemText → line-a2ui-icon#itemIcon line-a2ui-text#itemText",
+          "line-stack#actions default: line-button#send line-separator#split[role=separator] line-button#close → line-a2ui-button#send line-a2ui-divider#split line-a2ui-button#close",
+          "line-button#send default: p#sendLabel → line-a2ui-text#sendLabel",
+          "line-button#close default: line-icon#closeIcon[role=img] → line-a2ui-icon#closeIcon",
+          "line-button#wide default: p#wideLabel → line-a2ui-text#wideLabel"
+        ],
+        "partsApplied": "0/12",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "slots/a": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "3/5 same nodes, 5/5 same ids",
+        "slotMismatches": [
+          "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
+          "line-button#send prefix: line-icon#sendIcon → line-a2ui-line-icon#sendIcon"
+        ],
+        "layoutDiffs": ["sendIcon:1 <line-icon> dx=0 dy=-2 dw=0 dh=0", "sep:1 <line-separator> dx=0 dy=0 dw=-480 dh=0"],
+        "partsApplied": "6/6",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "slots/a-contents": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "3/5 same nodes, 5/5 same ids",
+        "slotMismatches": [
+          "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
+          "line-button#send prefix: line-icon#sendIcon → line-a2ui-line-icon#sendIcon"
+        ],
+        "layoutDiffs": [],
+        "partsApplied": "6/6",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "slots/b": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "5/5 same nodes, 5/5 same ids",
+        "slotMismatches": [],
+        "layoutDiffs": [],
+        "partsApplied": "6/6",
+        "ariaSnapshotEqualsReference": true
+      }
+    },
+    "slots/a-shadow": {
+      "sameIn": ["chromium", "firefox", "webkit"],
+      "value": {
+        "slots": "2/5 same nodes, 3/5 same ids",
+        "slotMismatches": [
+          "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
+          "line-button#send prefix: line-icon#sendIcon → (empty)",
+          "line-button#send default: \"Send\" → line-a2ui-line-icon#sendIcon \"Send\""
+        ],
+        "partsApplied": "0/6",
+        "ariaSnapshotEqualsReference": true
+      }
+    }
+  },
+  "cdpChromium": {
+    "showcase/reference": 29,
+    "showcase/a": {
+      "nodes": 45,
+      "generic": 14
+    },
+    "showcase/a-contents": {
+      "nodes": 38,
+      "generic": 7
+    },
+    "showcase/b": {
+      "nodes": 39,
+      "generic": 8
+    },
+    "showcase/a-shadow": {
+      "nodes": 45,
+      "generic": 14
+    },
+    "slots/reference": 11,
+    "slots/a": {
+      "nodes": 23,
+      "generic": 9
+    },
+    "slots/a-contents": {
+      "nodes": 20,
+      "generic": 6
+    },
+    "slots/b": {
+      "nodes": 21,
+      "generic": 7
+    },
+    "slots/a-shadow": {
+      "nodes": 22,
+      "generic": 8
+    }
+  },
+  "a11y": {
+    "axeVersion": "4.14.0",
+    "sameIn": ["chromium", "firefox", "webkit"],
+    "value": {
+      "reference/showcase": {
+        "violations": [],
+        "incomplete": []
+      },
+      "reference/slots": {
+        "violations": [],
+        "incomplete": []
+      },
+      "a/showcase": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a/slots": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a/streaming": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a/focus": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a/missing-name": {
+        "violations": ["button-name (critical) ×1"],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["MISSING_ACCESSIBLE_NAME"]
+      },
+      "a/unknown-type": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["UNKNOWN_COMPONENT_TYPE"]
+      },
+      "a-contents/showcase": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a-contents/slots": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a-contents/streaming": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a-contents/focus": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "a-contents/missing-name": {
+        "violations": ["button-name (critical) ×1"],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["MISSING_ACCESSIBLE_NAME"]
+      },
+      "a-contents/unknown-type": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["UNKNOWN_COMPONENT_TYPE"]
+      },
+      "b/showcase": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "b/slots": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "b/streaming": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "b/focus": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Content updated.",
+        "busyAfter": "false",
+        "errors": []
+      },
+      "b/missing-name": {
+        "violations": ["button-name (critical) ×1"],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["MISSING_ACCESSIBLE_NAME"]
+      },
+      "b/unknown-type": {
+        "violations": [],
+        "incomplete": [],
+        "liveRegions": 1,
+        "liveText": "Some content could not be shown.",
+        "busyAfter": "false",
+        "errors": ["UNKNOWN_COMPONENT_TYPE"]
+      }
+    }
+  },
+  "focus": {
+    "sameIn": ["chromium", "firefox", "webkit"],
+    "value": {
+      "a/focus-on-b": [
+        {
+          "step": "label text",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "sibling inserted before",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "own variant",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "reordered first",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
+        },
+        {
+          "step": "reparented",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
+        }
+      ],
+      "a/focus-outside": ["outside", "outside", "outside", "outside"],
+      "a-contents/focus-on-b": [
+        {
+          "step": "label text",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "sibling inserted before",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "own variant",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "reordered first",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
+        },
+        {
+          "step": "reparented",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
+        }
+      ],
+      "a-contents/focus-outside": ["outside", "outside", "outside", "outside"],
+      "b/focus-on-b": [
+        {
+          "step": "label text",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "sibling inserted before",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "own variant",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "reordered first",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "reparented",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
+        }
+      ],
+      "b/focus-outside": ["outside", "outside", "outside", "outside"]
+    }
+  },
+  "busy": {
+    "sameIn": ["chromium", "firefox", "webkit"],
+    "value": {
+      "a": {
+        "mutations": 44,
+        "escapedMutations": 0,
+        "batches": 4
+      },
+      "a-contents": {
+        "mutations": 44,
+        "escapedMutations": 0,
+        "batches": 4
+      },
+      "b": {
+        "mutations": 20,
+        "escapedMutations": 0,
+        "batches": 4
+      }
+    }
+  },
+  "throws": {
+    "sameIn": ["chromium", "firefox", "webkit"],
+    "value": {
+      "a/version-missing": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "[VersionAdapterFactory] Message payload is missing a valid 'version' string.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/version-unsupported": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "[VersionAdapterFactory] Unsupported protocol version 'v0.7'. Supported versions: v0.8, v0.9, v0.9.1, v1.0.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/two-operations": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Message contains multiple conflicting update actions: deleteSurface, updateDataModel.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/envelope-invalid": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Invalid v0.9 message: createSurface: Expected object, received undefined; root: Unrecognized key(s) in object: 'updateComponents'; updateComponents.components: ",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/surface-id-not-string": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "surfaceId must be a string",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/payload-depth": {
+        "row": "validateRecursionAndPaths",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Global recursion limit exceeded: Depth > 50",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/function-call-depth": {
+        "row": "validateRecursionAndPaths",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Recursion limit exceeded: functionCall depth > 5",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/pointer-syntax": {
+        "row": "validateRecursionAndPaths",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Invalid path syntax: '/a/~2'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/target-version": {
+        "row": "targetVersion",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages", "VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Message version 'v0.9.1' does not match expected target version 'v0.9'",
+        "pageErrors": 0,
+        "textAfter": "Before",
+        "placeholders": []
+      },
+      "a/allowed-messages": {
+        "row": "allowedMessages",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Operation 'deleteSurface' is not permitted by ValidationConfig.allowedMessages",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/catalog-unknown": {
+        "row": "createSurface",
+        "expected": "CATALOG_ERROR",
+        "raised": ["CATALOG_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Catalog not found: https://a2ui.org/specification/v0_9_1/catalogs/basic/catalog.json",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/surface-exists": {
+        "row": "createSurface",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface main already exists.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/catalog-version": {
+        "row": "createSurface",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface 'x' catalog 'https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json' specification version (0.9) does not match message protocol version (v1.0)",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/theme-invalid": {
+        "row": "createSurface",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Validation failed for theme on surface 'x': primaryColor: primaryColor must be a valid CSS color (e.g. '#00BFFF', '#17e', 'red', 'rgb(255, 0, 0)')",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/components-unknown-surface": {
+        "row": "updateComponents",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface not found for message: nope",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/duplicate-id": {
+        "row": "updateComponents",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Duplicate component ID: 'd'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/missing-id": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'Text' is missing an 'id'; entries require a valid string 'id'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/missing-type": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot create component fresh without a type.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/schema-invalid": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Validation failed for component 'Button' (bad): variant: Invalid enum value. Expected default | primary | borderless, received 'huge'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/unknown-type-strict": {
+        "row": "updateComponents (allowUnknownElements: false)",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Unknown component type 'Chart' not found in catalog 'https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/dangling-strict": {
+        "row": "Candidate topology",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'root' references non-existent component 'ghost' in field 'children[1]' (Dangling reference 'ghost' in component 'root')",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/cycle-relaxed": {
+        "row": "Candidate topology",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Circular reference detected: Component 'loop' references itself in field 'children[0]' (Self-reference detected)",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/depth-limit": {
+        "row": "Candidate topology",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Global recursion limit exceeded: logical depth > 3",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/depth-limit-relaxed": {
+        "row": "Candidate topology (allowMissingRoot: true)",
+        "expected": "none",
+        "raised": [],
+        "allValidA2uiErrors": true,
+        "firstMessage": null,
+        "pageErrors": 0,
+        "textAfter": "Deep",
+        "placeholders": []
+      },
+      "a/data-unknown-surface": {
+        "row": "updateDataModel",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface not found for message: nope",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/data-forbidden-segment": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Forbidden path segment '__proto__' in path '/__proto__/polluted'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/data-primitive-in-path": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot set path '/msg/sub': segment 'msg' is a primitive value.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/data-array-segment": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot use non-numeric segment 'abc' on an array in path '/items/abc'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/data-array-index": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot set path '/items/10001': array index '10001' exceeds maximum supported index (10000).",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/missing-root-strict": {
+        "row": "Candidate topology",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Missing root component: No component has id='root'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/capabilities-empty": {
+        "row": "MessageProcessor.getClientCapabilities",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via getClientCapabilities"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "At least one protocol version must be provided in CapabilitiesOptions to generate renderer capabilities.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/data-model-mixed-versions": {
+        "row": "MessageProcessor.getRendererDataModel",
+        "expected": "none",
+        "raised": [],
+        "allValidA2uiErrors": true,
+        "firstMessage": null,
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "a/adapter-without-api": {
+        "row": "A2uiLitElement",
+        "expected": "UNKNOWN_ERROR",
+        "raised": ["UNKNOWN_ERROR via adapter"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "[A2uiLitElement] Either define 'protected readonly api = ...' on TextAdapter or override 'createController()'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": ["error"]
+      },
+      "a/unknown-type": {
+        "row": "node-level (onError)",
+        "expected": null,
+        "raised": ["UNKNOWN_COMPONENT_TYPE via undefined"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'chart' has unknown type.",
+        "pageErrors": 0,
+        "textAfter": "Kept",
+        "placeholders": ["unknown-type"]
+      },
+      "a/cycle-unvalidated": {
+        "row": "node-level (onError)",
+        "expected": null,
+        "raised": ["DEPTH_LIMIT via undefined"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'loop' exceeds depth 32.",
+        "pageErrors": 0,
+        "textAfter": "Kept",
+        "placeholders": ["depth"]
+      },
+      "b/version-missing": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "[VersionAdapterFactory] Message payload is missing a valid 'version' string.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/version-unsupported": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "[VersionAdapterFactory] Unsupported protocol version 'v0.7'. Supported versions: v0.8, v0.9, v0.9.1, v1.0.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/two-operations": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Message contains multiple conflicting update actions: deleteSurface, updateDataModel.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/envelope-invalid": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Invalid v0.9 message: createSurface: Expected object, received undefined; root: Unrecognized key(s) in object: 'updateComponents'; updateComponents.components: ",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/surface-id-not-string": {
+        "row": "Version adapter",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "surfaceId must be a string",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/payload-depth": {
+        "row": "validateRecursionAndPaths",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Global recursion limit exceeded: Depth > 50",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/function-call-depth": {
+        "row": "validateRecursionAndPaths",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Recursion limit exceeded: functionCall depth > 5",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/pointer-syntax": {
+        "row": "validateRecursionAndPaths",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Invalid path syntax: '/a/~2'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/target-version": {
+        "row": "targetVersion",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages", "VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Message version 'v0.9.1' does not match expected target version 'v0.9'",
+        "pageErrors": 0,
+        "textAfter": "Before",
+        "placeholders": []
+      },
+      "b/allowed-messages": {
+        "row": "allowedMessages",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Operation 'deleteSurface' is not permitted by ValidationConfig.allowedMessages",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/catalog-unknown": {
+        "row": "createSurface",
+        "expected": "CATALOG_ERROR",
+        "raised": ["CATALOG_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Catalog not found: https://a2ui.org/specification/v0_9_1/catalogs/basic/catalog.json",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/surface-exists": {
+        "row": "createSurface",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface main already exists.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/catalog-version": {
+        "row": "createSurface",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface 'x' catalog 'https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json' specification version (0.9) does not match message protocol version (v1.0)",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/theme-invalid": {
+        "row": "createSurface",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Validation failed for theme on surface 'x': primaryColor: primaryColor must be a valid CSS color (e.g. '#00BFFF', '#17e', 'red', 'rgb(255, 0, 0)')",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/components-unknown-surface": {
+        "row": "updateComponents",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface not found for message: nope",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/duplicate-id": {
+        "row": "updateComponents",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Duplicate component ID: 'd'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/missing-id": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'Text' is missing an 'id'; entries require a valid string 'id'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/missing-type": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot create component fresh without a type.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/schema-invalid": {
+        "row": "updateComponents",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Validation failed for component 'Button' (bad): variant: Invalid enum value. Expected default | primary | borderless, received 'huge'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/unknown-type-strict": {
+        "row": "updateComponents (allowUnknownElements: false)",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Unknown component type 'Chart' not found in catalog 'https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/dangling-strict": {
+        "row": "Candidate topology",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'root' references non-existent component 'ghost' in field 'children[1]' (Dangling reference 'ghost' in component 'root')",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/cycle-relaxed": {
+        "row": "Candidate topology",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Circular reference detected: Component 'loop' references itself in field 'children[0]' (Self-reference detected)",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/depth-limit": {
+        "row": "Candidate topology",
+        "expected": "RECURSION_ERROR",
+        "raised": ["RECURSION_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Global recursion limit exceeded: logical depth > 3",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/depth-limit-relaxed": {
+        "row": "Candidate topology (allowMissingRoot: true)",
+        "expected": "none",
+        "raised": [],
+        "allValidA2uiErrors": true,
+        "firstMessage": null,
+        "pageErrors": 0,
+        "textAfter": "Deep",
+        "placeholders": []
+      },
+      "b/data-unknown-surface": {
+        "row": "updateDataModel",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Surface not found for message: nope",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/data-forbidden-segment": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Forbidden path segment '__proto__' in path '/__proto__/polluted'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/data-primitive-in-path": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot set path '/msg/sub': segment 'msg' is a primitive value.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/data-array-segment": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot use non-numeric segment 'abc' on an array in path '/items/abc'.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/data-array-index": {
+        "row": "updateDataModel",
+        "expected": "DATA_ERROR",
+        "raised": ["DATA_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Cannot set path '/items/10001': array index '10001' exceeds maximum supported index (10000).",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/missing-root-strict": {
+        "row": "Candidate topology",
+        "expected": "INTEGRITY_ERROR",
+        "raised": ["INTEGRITY_ERROR via processMessages"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Missing root component: No component has id='root'",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/capabilities-empty": {
+        "row": "MessageProcessor.getClientCapabilities",
+        "expected": "VALIDATION_ERROR",
+        "raised": ["VALIDATION_ERROR via getClientCapabilities"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "At least one protocol version must be provided in CapabilitiesOptions to generate renderer capabilities.",
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/data-model-mixed-versions": {
+        "row": "MessageProcessor.getRendererDataModel",
+        "expected": "none",
+        "raised": [],
+        "allValidA2uiErrors": true,
+        "firstMessage": null,
+        "pageErrors": 0,
+        "textAfter": "After",
+        "placeholders": []
+      },
+      "b/unknown-type": {
+        "row": "node-level (onError)",
+        "expected": null,
+        "raised": ["UNKNOWN_COMPONENT_TYPE via onError"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'chart' has type 'Chart', which is not in catalog 'https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json'.",
+        "pageErrors": 0,
+        "textAfter": "Kept",
+        "placeholders": ["unknown-type"]
+      },
+      "b/cycle-unvalidated": {
+        "row": "node-level (onError)",
+        "expected": null,
+        "raised": ["CYCLIC_REFERENCE via onError"],
+        "allValidA2uiErrors": true,
+        "firstMessage": "Component 'loop' at '/' is referenced by one of its own descendants; rendering a placeholder instead.",
+        "pageErrors": 0,
+        "textAfter": "Kept",
+        "placeholders": ["cyclic"]
+      }
+    }
+  },
+  "bundle": {
+    "sameIn": ["chromium", "firefox", "webkit"],
+    "value": {
+      "a": {
+        "defined": [
+          "line-a2ui-button",
+          "line-a2ui-image",
+          "line-a2ui-line-button",
+          "line-a2ui-surface",
+          "line-a2ui-text",
+          "line-button"
+        ],
+        "initialGzip": 80867,
+        "loadedGzip": 88750,
+        "builtGzip": 91674,
+        "chunks": [
+          "assets/bundle-a-C1dqjUIZ.js 25940 B initial loaded defines line-a2ui-surface",
+          "assets/adapter-C7slv157.js 5433 B loaded",
+          "assets/button-DGPZQFvO.js 700 B loaded import() defines line-button,line-a2ui-button,line-a2ui-line-button",
+          "assets/dist-DMrkTXn9.js 1229 B loaded",
+          "assets/icon-BiP4zGNQ.js 815 B import() defines line-icon,line-a2ui-icon,line-a2ui-line-icon",
+          "assets/native-CLcPNyeF.js 521 B loaded import() defines line-a2ui-text,line-a2ui-image",
+          "assets/render-a2ui-node-Dy6mwFb5.js 54927 B initial loaded",
+          "assets/separator-BJpxHWHb.js 526 B import() defines line-separator,line-a2ui-divider,line-a2ui-line-separator",
+          "assets/stack-DaFBc_wI.js 1583 B import() defines line-stack,line-a2ui-row,line-a2ui-column,line-a2ui-list,line-a2ui-line-stack"
+        ],
+        "owners": {
+          "spike: surface, session, catalogs": {
+            "rendered": 23614,
+            "gzipAlone": 9870
+          },
+          "@a2ui/web_core": {
+            "rendered": 337148,
+            "gzipAlone": 73398
+          },
+          "validate-color": {
+            "rendered": 7114,
+            "gzipAlone": 2146
+          },
+          "@lit/reactive-element": {
+            "rendered": 10782,
+            "gzipAlone": 3838
+          },
+          "lit": {
+            "rendered": 0,
+            "gzipAlone": 0
+          },
+          "spike: line-* components": {
+            "rendered": 663,
+            "gzipAlone": 398
+          },
+          "@websublime/line-core": {
+            "rendered": 4135,
+            "gzipAlone": 1445
+          },
+          "zod": {
+            "rendered": 100240,
+            "gzipAlone": 16967
+          },
+          "zod-to-json-schema": {
+            "rendered": 39615,
+            "gzipAlone": 8004
+          },
+          "@preact/signals-core": {
+            "rendered": 7179,
+            "gzipAlone": 2093
+          },
+          "lit-html": {
+            "rendered": 10086,
+            "gzipAlone": 3751
+          },
+          "lit-element": {
+            "rendered": 976,
+            "gzipAlone": 463
+          }
+        }
+      },
+      "b": {
+        "defined": ["line-a2ui-surface", "line-button"],
+        "initialGzip": 79968,
+        "loadedGzip": 87017,
+        "builtGzip": 88450,
+        "chunks": [
+          "assets/bundle-b-ZO8WLZz7.js 79968 B initial loaded defines line-a2ui-surface",
+          "assets/dist-kAdE2vfX.js 6664 B loaded",
+          "assets/line-button-B9BoLlaf.js 385 B loaded import() defines line-button",
+          "assets/line-icon-MQT0rCzm.js 621 B import() defines line-icon",
+          "assets/line-separator-CTuzEh0F.js 387 B import() defines line-separator",
+          "assets/line-stack-DoxXu5GL.js 425 B import() defines line-stack"
+        ],
+        "owners": {
+          "spike: surface, session, catalogs": {
+            "rendered": 23718,
+            "gzipAlone": 9169
+          },
+          "zod": {
+            "rendered": 100240,
+            "gzipAlone": 16967
+          },
+          "@a2ui/web_core": {
+            "rendered": 347050,
+            "gzipAlone": 73701
+          },
+          "zod-to-json-schema": {
+            "rendered": 39615,
+            "gzipAlone": 8004
+          },
+          "@preact/signals-core": {
+            "rendered": 6905,
+            "gzipAlone": 1996
+          },
+          "validate-color": {
+            "rendered": 7114,
+            "gzipAlone": 2146
+          },
+          "@lit/reactive-element": {
+            "rendered": 9592,
+            "gzipAlone": 3226
+          },
+          "lit-html": {
+            "rendered": 9506,
+            "gzipAlone": 3529
+          },
+          "lit-element": {
+            "rendered": 976,
+            "gzipAlone": 463
+          },
+          "lit": {
+            "rendered": 0,
+            "gzipAlone": 0
+          },
+          "@websublime/line-core": {
+            "rendered": 4135,
+            "gzipAlone": 1445
+          },
+          "spike: line-* components": {
+            "rendered": 663,
+            "gzipAlone": 398
+          }
+        }
+      },
+      "a-eager": {
+        "defined": [
+          "line-a2ui-button",
+          "line-a2ui-column",
+          "line-a2ui-divider",
+          "line-a2ui-icon",
+          "line-a2ui-image",
+          "line-a2ui-line-button",
+          "line-a2ui-line-icon",
+          "line-a2ui-line-separator",
+          "line-a2ui-line-stack",
+          "line-a2ui-list",
+          "line-a2ui-row",
+          "line-a2ui-surface",
+          "line-a2ui-text",
+          "line-button",
+          "line-icon",
+          "line-separator",
+          "line-stack"
+        ],
+        "initialGzip": 88150,
+        "loadedGzip": 88310,
+        "builtGzip": 88559,
+        "chunks": [
+          "assets/bundle-a-eager-CZFaTP-G.js 23545 B initial loaded defines line-a2ui-surface",
+          "assets/adapter-q7mqlLj6.js 59400 B initial loaded",
+          "assets/button-BMtDZAIc.js 668 B initial loaded defines line-button,line-a2ui-button,line-a2ui-line-button",
+          "assets/button-XigSFs0Q.js 79 B loaded import()",
+          "assets/dist-CfUcQMba.js 1224 B initial loaded",
+          "assets/icon-BUmjyuse.js 783 B initial loaded defines line-icon,line-a2ui-icon,line-a2ui-line-icon",
+          "assets/icon-DJrYWZis.js 79 B import()",
+          "assets/native-CQPqFQHK.js 81 B loaded import()",
+          "assets/native-DemFRm56.js 487 B initial loaded defines line-a2ui-text,line-a2ui-image",
+          "assets/separator-BimxG4uM.js 500 B initial loaded defines line-separator,line-a2ui-divider,line-a2ui-line-separator",
+          "assets/separator-CuYTZ4qV.js 73 B import()",
+          "assets/stack-BH5Gd47W.js 97 B import()",
+          "assets/stack-DWL3qwNL.js 1543 B initial loaded defines line-stack,line-a2ui-row,line-a2ui-column,line-a2ui-list,line-a2ui-line-stack"
+        ],
+        "owners": {
+          "spike: surface, session, catalogs": {
+            "rendered": 25067,
+            "gzipAlone": 10351
+          },
+          "@a2ui/web_core": {
+            "rendered": 335665,
+            "gzipAlone": 72184
+          },
+          "zod": {
+            "rendered": 100240,
+            "gzipAlone": 16967
+          },
+          "zod-to-json-schema": {
+            "rendered": 39615,
+            "gzipAlone": 8004
+          },
+          "@preact/signals-core": {
+            "rendered": 7179,
+            "gzipAlone": 2096
+          },
+          "@lit/reactive-element": {
+            "rendered": 10786,
+            "gzipAlone": 3528
+          },
+          "lit-html": {
+            "rendered": 13148,
+            "gzipAlone": 5059
+          },
+          "lit-element": {
+            "rendered": 980,
+            "gzipAlone": 465
+          },
+          "lit": {
+            "rendered": 0,
+            "gzipAlone": 0
+          },
+          "spike: line-* components": {
+            "rendered": 3755,
+            "gzipAlone": 1914
+          },
+          "@websublime/line-core": {
+            "rendered": 4135,
+            "gzipAlone": 1445
+          }
+        }
+      }
+    }
+  },
+  "screenshotSha256": {
+    "reference": "2d517494a34ba54c",
+    "a": "bbcd0585f0a72117",
+    "a-contents": "2d517494a34ba54c",
+    "b": "2d517494a34ba54c"
+  }
+}

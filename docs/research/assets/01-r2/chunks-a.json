@@ -1,0 +1,281 @@
+[
+  {
+    "file": "assets/bundle-a-C1dqjUIZ.js",
+    "entry": true,
+    "dynamicEntry": false,
+    "facade": "spike:pages/bundle-a.html",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js"],
+    "dynamicImports": [
+      "assets/native-CLcPNyeF.js",
+      "assets/stack-DaFBc_wI.js",
+      "assets/icon-BiP4zGNQ.js",
+      "assets/separator-BJpxHWHb.js",
+      "assets/button-DGPZQFvO.js"
+    ],
+    "bytes": 93515,
+    "gzip": 25940,
+    "defines": ["line-a2ui-surface"],
+    "owners": {
+      "spike:rolldown/runtime.js": {
+        "rendered": 1162,
+        "gzipAlone": 567
+      },
+      "spike:vite/modulepreload-polyfill.js": {
+        "rendered": 1205,
+        "gzipAlone": 533
+      },
+      "spike:src/define-log.ts": {
+        "rendered": 291,
+        "gzipAlone": 189
+      },
+      "@a2ui/web_core": {
+        "rendered": 123861,
+        "gzipAlone": 26244
+      },
+      "validate-color": {
+        "rendered": 7114,
+        "gzipAlone": 2146
+      },
+      "spike:src/catalog/basic.ts": {
+        "rendered": 490,
+        "gzipAlone": 319
+      },
+      "spike:src/catalog/line.ts": {
+        "rendered": 1910,
+        "gzipAlone": 757
+      },
+      "spike:src/session.ts": {
+        "rendered": 2901,
+        "gzipAlone": 1001
+      },
+      "spike:src/surface-base.ts": {
+        "rendered": 3932,
+        "gzipAlone": 1506
+      },
+      "spike:vite/preload-helper.js": {
+        "rendered": 2992,
+        "gzipAlone": 1209
+      },
+      "spike:src/surface-a/surface.ts": {
+        "rendered": 1776,
+        "gzipAlone": 766
+      },
+      "spike:src/surface-a/tags.ts": {
+        "rendered": 481,
+        "gzipAlone": 249
+      },
+      "spike:src/bundle/app.ts": {
+        "rendered": 783,
+        "gzipAlone": 443
+      },
+      "spike:src/bundle/a.ts": {
+        "rendered": 180,
+        "gzipAlone": 134
+      },
+      "spike:pages/bundle-a.html": {
+        "rendered": 0,
+        "gzipAlone": null
+      }
+    }
+  },
+  {
+    "file": "assets/adapter-C7slv157.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js"],
+    "dynamicImports": [],
+    "bytes": 16635,
+    "gzip": 5433,
+    "defines": [],
+    "owners": {
+      "@a2ui/web_core": {
+        "rendered": 23747,
+        "gzipAlone": 6154
+      },
+      "@lit/reactive-element": {
+        "rendered": 1190,
+        "gzipAlone": 619
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      },
+      "spike:src/surface-a/adapter.ts": {
+        "rendered": 2694,
+        "gzipAlone": 1152
+      }
+    }
+  },
+  {
+    "file": "assets/button-DGPZQFvO.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/button.ts",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js", "assets/dist-DMrkTXn9.js"],
+    "dynamicImports": [],
+    "bytes": 1608,
+    "gzip": 700,
+    "defines": ["line-button", "line-a2ui-button", "line-a2ui-line-button"],
+    "owners": {
+      "spike:src/components/line-button.ts": {
+        "rendered": 663,
+        "gzipAlone": 398
+      },
+      "spike:src/surface-a/adapters/button.ts": {
+        "rendered": 1189,
+        "gzipAlone": 472
+      }
+    }
+  },
+  {
+    "file": "assets/dist-DMrkTXn9.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js"],
+    "dynamicImports": [],
+    "bytes": 3080,
+    "gzip": 1229,
+    "defines": [],
+    "owners": {
+      "@websublime/line-core": {
+        "rendered": 4135,
+        "gzipAlone": 1445
+      }
+    }
+  },
+  {
+    "file": "assets/icon-BiP4zGNQ.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/icon.ts",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js", "assets/dist-DMrkTXn9.js"],
+    "dynamicImports": [],
+    "bytes": 1635,
+    "gzip": 815,
+    "defines": ["line-icon", "line-a2ui-icon", "line-a2ui-line-icon"],
+    "owners": {
+      "spike:src/components/line-icon.ts": {
+        "rendered": 1240,
+        "gzipAlone": 673
+      },
+      "spike:src/surface-a/adapters/icon.ts": {
+        "rendered": 668,
+        "gzipAlone": 325
+      }
+    }
+  },
+  {
+    "file": "assets/native-CLcPNyeF.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/native.ts",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js"],
+    "dynamicImports": [],
+    "bytes": 1280,
+    "gzip": 521,
+    "defines": ["line-a2ui-text", "line-a2ui-image"],
+    "owners": {
+      "spike:src/surface-a/adapters/native.ts": {
+        "rendered": 1628,
+        "gzipAlone": 573
+      }
+    }
+  },
+  {
+    "file": "assets/render-a2ui-node-Dy6mwFb5.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": [],
+    "dynamicImports": [],
+    "bytes": 205376,
+    "gzip": 54927,
+    "defines": [],
+    "owners": {
+      "zod": {
+        "rendered": 100240,
+        "gzipAlone": 16967
+      },
+      "@a2ui/web_core": {
+        "rendered": 189540,
+        "gzipAlone": 41000
+      },
+      "zod-to-json-schema": {
+        "rendered": 39615,
+        "gzipAlone": 8004
+      },
+      "@preact/signals-core": {
+        "rendered": 7179,
+        "gzipAlone": 2093
+      },
+      "@lit/reactive-element": {
+        "rendered": 9592,
+        "gzipAlone": 3219
+      },
+      "lit-html": {
+        "rendered": 10086,
+        "gzipAlone": 3751
+      },
+      "lit-element": {
+        "rendered": 976,
+        "gzipAlone": 463
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      }
+    }
+  },
+  {
+    "file": "assets/separator-BJpxHWHb.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/separator.ts",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js", "assets/dist-DMrkTXn9.js"],
+    "dynamicImports": [],
+    "bytes": 1097,
+    "gzip": 526,
+    "defines": ["line-separator", "line-a2ui-divider", "line-a2ui-line-separator"],
+    "owners": {
+      "spike:src/components/line-separator.ts": {
+        "rendered": 727,
+        "gzipAlone": 403
+      },
+      "spike:src/surface-a/adapters/separator.ts": {
+        "rendered": 512,
+        "gzipAlone": 286
+      }
+    }
+  },
+  {
+    "file": "assets/stack-DaFBc_wI.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/stack.ts",
+    "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js", "assets/dist-DMrkTXn9.js"],
+    "dynamicImports": [],
+    "bytes": 4106,
+    "gzip": 1583,
+    "defines": ["line-stack", "line-a2ui-row", "line-a2ui-column", "line-a2ui-list", "line-a2ui-line-stack"],
+    "owners": {
+      "lit-html": {
+        "rendered": 3050,
+        "gzipAlone": 1300
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      },
+      "spike:src/components/line-stack.ts": {
+        "rendered": 1125,
+        "gzipAlone": 440
+      },
+      "spike:src/surface-a/adapters/stack.ts": {
+        "rendered": 1603,
+        "gzipAlone": 499
+      }
+    }
+  }
+]

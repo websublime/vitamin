@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://line-ui.websublime.com/a2ui/spike/catalog.json",
+  "title": "line://ui catalog (R2 spike)",
+  "description": "Hand-written four-component line catalog in the document form of the A2UI v0.9.1 basic catalog. Spike only.",
+  "catalogId": "https://line-ui.websublime.com/a2ui/spike/catalog.json",
+  "components": {
+    "Button": {
+      "type": "object",
+      "description": "A button. The label goes in the default slot and the optional icon in the prefix slot.",
+      "allOf": [
+        { "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentCommon" },
+        {
+          "type": "object",
+          "properties": {
+            "component": { "const": "Button" },
+            "label": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Visible label, placed in the default slot."
+            },
+            "icon": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentId",
+              "description": "Optional Icon, placed in the prefix slot."
+            },
+            "variant": { "type": "string", "enum": ["default", "primary"], "description": "Semantic variant hint." },
+            "action": { "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/Action" }
+          },
+          "required": ["component", "label", "action"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "Icon": {
+      "type": "object",
+      "description": "An icon by name. Without a label it is decorative.",
+      "allOf": [
+        { "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentCommon" },
+        {
+          "type": "object",
+          "properties": {
+            "component": { "const": "Icon" },
+            "name": {
+              "type": "string",
+              "enum": ["check", "close", "mail", "send", "star"],
+              "description": "Icon name."
+            },
+            "label": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/DynamicString",
+              "description": "Accessible name; omit for a decorative icon."
+            }
+          },
+          "required": ["component", "name"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "Stack": {
+      "type": "object",
+      "description": "Lays out its children in a row or a column.",
+      "allOf": [
+        { "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentCommon" },
+        {
+          "type": "object",
+          "properties": {
+            "component": { "const": "Stack" },
+            "children": {
+              "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ChildList",
+              "description": "Stack items, in order."
+            },
+            "direction": { "type": "string", "enum": ["row", "column"], "description": "Main axis." },
+            "justify": {
+              "type": "string",
+              "enum": ["start", "center", "end", "spaceBetween"],
+              "description": "Main-axis distribution."
+            },
+            "align": {
+              "type": "string",
+              "enum": ["start", "center", "end", "stretch"],
+              "description": "Cross-axis alignment."
+            }
+          },
+          "required": ["component", "children"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "Separator": {
+      "type": "object",
+      "description": "A horizontal or vertical rule.",
+      "allOf": [
+        { "$ref": "https://a2ui.org/specification/v0_9/common_types.json#/$defs/ComponentCommon" },
+        {
+          "type": "object",
+          "properties": {
+            "component": { "const": "Separator" },
+            "orientation": {
+              "type": "string",
+              "enum": ["horizontal", "vertical"],
+              "description": "Orientation of the rule."
+            }
+          },
+          "required": ["component"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  },
+  "functions": {},
+  "$defs": {
+    "anyFunction": false,
+    "theme": { "type": "object", "description": "No theme properties; the host owns styling." },
+    "anyComponent": {
+      "oneOf": [
+        { "$ref": "#/components/Button" },
+        { "$ref": "#/components/Icon" },
+        { "$ref": "#/components/Stack" },
+        { "$ref": "#/components/Separator" }
+      ],
+      "discriminator": { "propertyName": "component" }
+    }
+  }
+}

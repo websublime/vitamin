@@ -1,0 +1,128 @@
+{
+  "protocolVersion": "0.9",
+  "catalogId": "https://line-ui.websublime.com/a2ui/spike/catalog.json",
+  "components": {
+    "Button": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "const": "Button"
+        },
+        "accessibility": {
+          "$ref": "common_types.json#/$defs/AccessibilityAttributes"
+        },
+        "label": {
+          "$ref": "common_types.json#/$defs/DynamicString",
+          "description": "Visible label, placed in the default slot."
+        },
+        "icon": {
+          "$ref": "common_types.json#/$defs/ComponentId",
+          "description": "Optional Icon, placed in the prefix slot."
+        },
+        "variant": {
+          "type": "string",
+          "enum": ["default", "primary"],
+          "description": "Semantic variant hint."
+        },
+        "action": {
+          "$ref": "common_types.json#/$defs/Action"
+        }
+      },
+      "required": ["component", "label", "action"],
+      "unevaluatedProperties": false
+    },
+    "Icon": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "const": "Icon"
+        },
+        "accessibility": {
+          "$ref": "common_types.json#/$defs/AccessibilityAttributes"
+        },
+        "name": {
+          "type": "string",
+          "enum": ["check", "close", "mail", "send", "star"],
+          "description": "Icon name."
+        },
+        "label": {
+          "$ref": "common_types.json#/$defs/DynamicString",
+          "description": "Accessible name; omit for a decorative icon."
+        }
+      },
+      "required": ["component", "name"],
+      "unevaluatedProperties": false
+    },
+    "Stack": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "const": "Stack"
+        },
+        "accessibility": {
+          "$ref": "common_types.json#/$defs/AccessibilityAttributes"
+        },
+        "children": {
+          "$ref": "common_types.json#/$defs/ChildList",
+          "description": "Stack items, in order."
+        },
+        "direction": {
+          "type": "string",
+          "enum": ["row", "column"],
+          "description": "Main axis."
+        },
+        "justify": {
+          "type": "string",
+          "enum": ["start", "center", "end", "spaceBetween"],
+          "description": "Main-axis distribution."
+        },
+        "align": {
+          "type": "string",
+          "enum": ["start", "center", "end", "stretch"],
+          "description": "Cross-axis alignment."
+        }
+      },
+      "required": ["component", "children"],
+      "unevaluatedProperties": false
+    },
+    "Separator": {
+      "type": "object",
+      "properties": {
+        "component": {
+          "const": "Separator"
+        },
+        "accessibility": {
+          "$ref": "common_types.json#/$defs/AccessibilityAttributes"
+        },
+        "orientation": {
+          "type": "string",
+          "enum": ["horizontal", "vertical"],
+          "description": "Orientation of the rule."
+        }
+      },
+      "required": ["component"],
+      "unevaluatedProperties": false
+    }
+  },
+  "$defs": {
+    "anyComponent": {
+      "oneOf": [
+        {
+          "$ref": "#/components/Button"
+        },
+        {
+          "$ref": "#/components/Icon"
+        },
+        {
+          "$ref": "#/components/Stack"
+        },
+        {
+          "$ref": "#/components/Separator"
+        }
+      ],
+      "discriminator": {
+        "propertyName": "component"
+      }
+    }
+  }
+}

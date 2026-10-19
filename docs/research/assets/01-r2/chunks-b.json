@@ -1,0 +1,189 @@
+[
+  {
+    "file": "assets/bundle-b-ZO8WLZz7.js",
+    "entry": true,
+    "dynamicEntry": false,
+    "facade": "spike:pages/bundle-b.html",
+    "imports": [],
+    "dynamicImports": [
+      "assets/line-button-B9BoLlaf.js",
+      "assets/line-icon-MQT0rCzm.js",
+      "assets/line-stack-DoxXu5GL.js",
+      "assets/line-separator-CTuzEh0F.js"
+    ],
+    "bytes": 304621,
+    "gzip": 79968,
+    "defines": ["line-a2ui-surface"],
+    "owners": {
+      "spike:rolldown/runtime.js": {
+        "rendered": 1162,
+        "gzipAlone": 567
+      },
+      "spike:vite/modulepreload-polyfill.js": {
+        "rendered": 1205,
+        "gzipAlone": 533
+      },
+      "spike:src/define-log.ts": {
+        "rendered": 291,
+        "gzipAlone": 189
+      },
+      "zod": {
+        "rendered": 100240,
+        "gzipAlone": 16967
+      },
+      "@a2ui/web_core": {
+        "rendered": 347050,
+        "gzipAlone": 73701
+      },
+      "zod-to-json-schema": {
+        "rendered": 39615,
+        "gzipAlone": 8004
+      },
+      "@preact/signals-core": {
+        "rendered": 6905,
+        "gzipAlone": 1996
+      },
+      "validate-color": {
+        "rendered": 7114,
+        "gzipAlone": 2146
+      },
+      "spike:src/catalog/basic.ts": {
+        "rendered": 490,
+        "gzipAlone": 319
+      },
+      "spike:src/catalog/line.ts": {
+        "rendered": 1910,
+        "gzipAlone": 757
+      },
+      "spike:src/session.ts": {
+        "rendered": 2901,
+        "gzipAlone": 1001
+      },
+      "spike:src/surface-base.ts": {
+        "rendered": 4127,
+        "gzipAlone": 1575
+      },
+      "spike:vite/preload-helper.js": {
+        "rendered": 2992,
+        "gzipAlone": 1209
+      },
+      "spike:src/surface-b/surface.ts": {
+        "rendered": 7774,
+        "gzipAlone": 2484
+      },
+      "spike:src/bundle/app.ts": {
+        "rendered": 783,
+        "gzipAlone": 443
+      },
+      "spike:src/bundle/b.ts": {
+        "rendered": 83,
+        "gzipAlone": 92
+      },
+      "spike:pages/bundle-b.html": {
+        "rendered": 0,
+        "gzipAlone": null
+      }
+    }
+  },
+  {
+    "file": "assets/dist-kAdE2vfX.js",
+    "entry": false,
+    "dynamicEntry": false,
+    "facade": null,
+    "imports": [],
+    "dynamicImports": [],
+    "bytes": 17921,
+    "gzip": 6664,
+    "defines": [],
+    "owners": {
+      "@lit/reactive-element": {
+        "rendered": 9592,
+        "gzipAlone": 3226
+      },
+      "lit-html": {
+        "rendered": 9506,
+        "gzipAlone": 3529
+      },
+      "lit-element": {
+        "rendered": 976,
+        "gzipAlone": 463
+      },
+      "lit": {
+        "rendered": 0,
+        "gzipAlone": null
+      },
+      "@websublime/line-core": {
+        "rendered": 4135,
+        "gzipAlone": 1445
+      }
+    }
+  },
+  {
+    "file": "assets/line-button-B9BoLlaf.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/components/line-button.ts",
+    "imports": ["assets/dist-kAdE2vfX.js"],
+    "dynamicImports": [],
+    "bytes": 613,
+    "gzip": 385,
+    "defines": ["line-button"],
+    "owners": {
+      "spike:src/components/line-button.ts": {
+        "rendered": 663,
+        "gzipAlone": 398
+      }
+    }
+  },
+  {
+    "file": "assets/line-icon-MQT0rCzm.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/components/line-icon.ts",
+    "imports": ["assets/dist-kAdE2vfX.js"],
+    "dynamicImports": [],
+    "bytes": 1076,
+    "gzip": 621,
+    "defines": ["line-icon"],
+    "owners": {
+      "spike:src/components/line-icon.ts": {
+        "rendered": 1240,
+        "gzipAlone": 673
+      }
+    }
+  },
+  {
+    "file": "assets/line-separator-CTuzEh0F.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/components/line-separator.ts",
+    "imports": ["assets/dist-kAdE2vfX.js"],
+    "dynamicImports": [],
+    "bytes": 659,
+    "gzip": 387,
+    "defines": ["line-separator"],
+    "owners": {
+      "spike:src/components/line-separator.ts": {
+        "rendered": 727,
+        "gzipAlone": 403
+      }
+    }
+  },
+  {
+    "file": "assets/line-stack-DoxXu5GL.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/components/line-stack.ts",
+    "imports": ["assets/dist-kAdE2vfX.js"],
+    "dynamicImports": [],
+    "bytes": 1058,
+    "gzip": 425,
+    "defines": ["line-stack"],
+    "owners": {
+      "spike:src/components/line-stack.ts": {
+        "rendered": 1123,
+        "gzipAlone": 438
+      }
+    }
+  }
+]
