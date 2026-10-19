@@ -1,13 +1,13 @@
 [
   {
-    "file": "assets/bundle-a-eager-DvKsdyfS.js",
+    "file": "assets/bundle-a-eager-CZFaTP-G.js",
     "entry": true,
     "dynamicEntry": false,
     "facade": "spike:pages/bundle-a-eager.html",
     "imports": [
       "assets/adapter-q7mqlLj6.js",
       "assets/stack-DWL3qwNL.js",
-      "assets/button-BhkV01N0.js",
+      "assets/button-BMtDZAIc.js",
       "assets/icon-BUmjyuse.js",
       "assets/native-DemFRm56.js",
       "assets/separator-BimxG4uM.js"
@@ -17,10 +17,10 @@
       "assets/stack-BH5Gd47W.js",
       "assets/icon-DJrYWZis.js",
       "assets/separator-CuYTZ4qV.js",
-      "assets/button-B5gk9yNn.js"
+      "assets/button-XigSFs0Q.js"
     ],
     "bytes": 86835,
-    "gzip": 23547,
+    "gzip": 23545,
     "defines": ["line-a2ui-surface"],
     "owners": {
       "spike:vite/modulepreload-polyfill.js": {
@@ -127,26 +127,14 @@
     }
   },
   {
-    "file": "assets/button-B5gk9yNn.js",
-    "entry": false,
-    "dynamicEntry": true,
-    "facade": "spike:src/surface-a/adapters/button.ts",
-    "imports": ["assets/button-BhkV01N0.js"],
-    "dynamicImports": [],
-    "bytes": 76,
-    "gzip": 79,
-    "defines": [],
-    "owners": {}
-  },
-  {
-    "file": "assets/button-BhkV01N0.js",
+    "file": "assets/button-BMtDZAIc.js",
     "entry": false,
     "dynamicEntry": false,
     "facade": null,
     "imports": ["assets/adapter-q7mqlLj6.js", "assets/dist-CfUcQMba.js"],
     "dynamicImports": [],
-    "bytes": 1559,
-    "gzip": 679,
+    "bytes": 1536,
+    "gzip": 668,
     "defines": ["line-button", "line-a2ui-button", "line-a2ui-line-button"],
     "owners": {
       "spike:src/components/line-button.ts": {
@@ -154,10 +142,22 @@
         "gzipAlone": 398
       },
       "spike:src/surface-a/adapters/button.ts": {
-        "rendered": 1212,
-        "gzipAlone": 482
+        "rendered": 1189,
+        "gzipAlone": 472
       }
     }
+  },
+  {
+    "file": "assets/button-XigSFs0Q.js",
+    "entry": false,
+    "dynamicEntry": true,
+    "facade": "spike:src/surface-a/adapters/button.ts",
+    "imports": ["assets/button-BMtDZAIc.js"],
+    "dynamicImports": [],
+    "bytes": 76,
+    "gzip": 79,
+    "defines": [],
+    "owners": {}
   },
   {
     "file": "assets/dist-CfUcQMba.js",

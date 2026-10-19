@@ -1,6 +1,6 @@
 [
   {
-    "file": "assets/bundle-b-CgpL4KrA.js",
+    "file": "assets/bundle-b-ZO8WLZz7.js",
     "entry": true,
     "dynamicEntry": false,
     "facade": "spike:pages/bundle-b.html",
@@ -11,8 +11,8 @@
       "assets/line-stack-DoxXu5GL.js",
       "assets/line-separator-CTuzEh0F.js"
     ],
-    "bytes": 304352,
-    "gzip": 79869,
+    "bytes": 304621,
+    "gzip": 79968,
     "defines": ["line-a2ui-surface"],
     "owners": {
       "spike:rolldown/runtime.js": {
@@ -68,8 +68,8 @@
         "gzipAlone": 1209
       },
       "spike:src/surface-b/surface.ts": {
-        "rendered": 7321,
-        "gzipAlone": 2343
+        "rendered": 7774,
+        "gzipAlone": 2484
       },
       "spike:src/bundle/app.ts": {
         "rendered": 783,

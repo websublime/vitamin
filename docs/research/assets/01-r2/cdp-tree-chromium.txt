@@ -234,6 +234,7 @@ main
       generic
         generic
           button "Send"
+            generic
             StaticText "Send"
       separator
       generic

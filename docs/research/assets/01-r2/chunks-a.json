@@ -1,6 +1,6 @@
 [
   {
-    "file": "assets/bundle-a-CmXqw7QZ.js",
+    "file": "assets/bundle-a-C1dqjUIZ.js",
     "entry": true,
     "dynamicEntry": false,
     "facade": "spike:pages/bundle-a.html",
@@ -10,7 +10,7 @@
       "assets/stack-DaFBc_wI.js",
       "assets/icon-BiP4zGNQ.js",
       "assets/separator-BJpxHWHb.js",
-      "assets/button-BKNHjl4F.js"
+      "assets/button-DGPZQFvO.js"
     ],
     "bytes": 93515,
     "gzip": 25940,
@@ -108,14 +108,14 @@
     }
   },
   {
-    "file": "assets/button-BKNHjl4F.js",
+    "file": "assets/button-DGPZQFvO.js",
     "entry": false,
     "dynamicEntry": true,
     "facade": "spike:src/surface-a/adapters/button.ts",
     "imports": ["assets/render-a2ui-node-Dy6mwFb5.js", "assets/adapter-C7slv157.js", "assets/dist-DMrkTXn9.js"],
     "dynamicImports": [],
-    "bytes": 1631,
-    "gzip": 709,
+    "bytes": 1608,
+    "gzip": 700,
     "defines": ["line-button", "line-a2ui-button", "line-a2ui-line-button"],
     "owners": {
       "spike:src/components/line-button.ts": {
@@ -123,8 +123,8 @@
         "gzipAlone": 398
       },
       "spike:src/surface-a/adapters/button.ts": {
-        "rendered": 1212,
-        "gzipAlone": 482
+        "rendered": 1189,
+        "gzipAlone": 472
       }
     }
   },

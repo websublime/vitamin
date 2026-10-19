@@ -171,49 +171,16 @@
       }
     },
     "slots/a": {
-      "sameIn": ["chromium"],
+      "sameIn": ["chromium", "firefox", "webkit"],
       "value": {
-        "slots": "2/5 same nodes, 3/5 same ids",
+        "slots": "3/5 same nodes, 5/5 same ids",
         "slotMismatches": [
           "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
-          "line-button#send prefix: line-icon#sendIcon → (empty)",
-          "line-button#send default: \"Send\" → line-a2ui-line-icon#sendIcon \"Send\""
+          "line-button#send prefix: line-icon#sendIcon → line-a2ui-line-icon#sendIcon"
         ],
-        "layoutDiffs": [
-          "send:1 <line-button> dx=0 dy=0 dw=-4 dh=0",
-          "sendIcon:1 <line-icon> dx=0 dy=-2 dw=0 dh=0",
-          "sep:1 <line-separator> dx=0 dy=0 dw=-480 dh=0"
-        ],
+        "layoutDiffs": ["sendIcon:1 <line-icon> dx=0 dy=-2 dw=0 dh=0", "sep:1 <line-separator> dx=0 dy=0 dw=-480 dh=0"],
         "partsApplied": "6/6",
         "ariaSnapshotEqualsReference": true
-      },
-      "differing": {
-        "firefox": {
-          "slots": "3/5 same nodes, 5/5 same ids",
-          "slotMismatches": [
-            "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
-            "line-button#send prefix: line-icon#sendIcon → line-a2ui-line-icon#sendIcon"
-          ],
-          "layoutDiffs": [
-            "sendIcon:1 <line-icon> dx=0 dy=-2 dw=0 dh=0",
-            "sep:1 <line-separator> dx=0 dy=0 dw=-480 dh=0"
-          ],
-          "partsApplied": "6/6",
-          "ariaSnapshotEqualsReference": true
-        },
-        "webkit": {
-          "slots": "3/5 same nodes, 5/5 same ids",
-          "slotMismatches": [
-            "line-stack#root default: line-button#send line-separator#sep[role=separator] line-button#next → line-a2ui-line-button#send line-a2ui-line-separator#sep line-a2ui-line-button#next",
-            "line-button#send prefix: line-icon#sendIcon → line-a2ui-line-icon#sendIcon"
-          ],
-          "layoutDiffs": [
-            "sendIcon:1 <line-icon> dx=0 dy=-2 dw=0 dh=0",
-            "sep:1 <line-separator> dx=0 dy=0 dw=-480 dh=0"
-          ],
-          "partsApplied": "6/6",
-          "ariaSnapshotEqualsReference": true
-        }
       }
     },
     "slots/a-contents": {
@@ -273,8 +240,8 @@
     },
     "slots/reference": 11,
     "slots/a": {
-      "nodes": 22,
-      "generic": 8
+      "nodes": 23,
+      "generic": 9
     },
     "slots/a-contents": {
       "nodes": 20,
@@ -478,6 +445,13 @@
           "sameElement": false,
           "innerButtonFocused": false,
           "label": null
+        },
+        {
+          "step": "reparented",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
         }
       ],
       "a/focus-outside": ["outside", "outside", "outside", "outside"],
@@ -509,6 +483,13 @@
           "sameElement": false,
           "innerButtonFocused": false,
           "label": null
+        },
+        {
+          "step": "reparented",
+          "active": "body",
+          "sameElement": false,
+          "innerButtonFocused": false,
+          "label": null
         }
       ],
       "a-contents/focus-outside": ["outside", "outside", "outside", "outside"],
@@ -536,6 +517,13 @@
         },
         {
           "step": "reordered first",
+          "active": "line-button",
+          "sameElement": true,
+          "innerButtonFocused": true,
+          "label": "Beta 2"
+        },
+        {
+          "step": "reparented",
           "active": "body",
           "sameElement": false,
           "innerButtonFocused": false,
@@ -1273,12 +1261,12 @@
           "line-button"
         ],
         "initialGzip": 80867,
-        "loadedGzip": 88759,
-        "builtGzip": 91683,
+        "loadedGzip": 88750,
+        "builtGzip": 91674,
         "chunks": [
-          "assets/bundle-a-CmXqw7QZ.js 25940 B initial loaded defines line-a2ui-surface",
+          "assets/bundle-a-C1dqjUIZ.js 25940 B initial loaded defines line-a2ui-surface",
           "assets/adapter-C7slv157.js 5433 B loaded",
-          "assets/button-BKNHjl4F.js 709 B loaded import() defines line-button,line-a2ui-button,line-a2ui-line-button",
+          "assets/button-DGPZQFvO.js 700 B loaded import() defines line-button,line-a2ui-button,line-a2ui-line-button",
           "assets/dist-DMrkTXn9.js 1229 B loaded",
           "assets/icon-BiP4zGNQ.js 815 B import() defines line-icon,line-a2ui-icon,line-a2ui-line-icon",
           "assets/native-CLcPNyeF.js 521 B loaded import() defines line-a2ui-text,line-a2ui-image",
@@ -1288,8 +1276,8 @@
         ],
         "owners": {
           "spike: surface, session, catalogs": {
-            "rendered": 23637,
-            "gzipAlone": 9880
+            "rendered": 23614,
+            "gzipAlone": 9870
           },
           "@a2ui/web_core": {
             "rendered": 337148,
@@ -1339,11 +1327,11 @@
       },
       "b": {
         "defined": ["line-a2ui-surface", "line-button"],
-        "initialGzip": 79869,
-        "loadedGzip": 86918,
-        "builtGzip": 88351,
+        "initialGzip": 79968,
+        "loadedGzip": 87017,
+        "builtGzip": 88450,
         "chunks": [
-          "assets/bundle-b-CgpL4KrA.js 79869 B initial loaded defines line-a2ui-surface",
+          "assets/bundle-b-ZO8WLZz7.js 79968 B initial loaded defines line-a2ui-surface",
           "assets/dist-kAdE2vfX.js 6664 B loaded",
           "assets/line-button-B9BoLlaf.js 385 B loaded import() defines line-button",
           "assets/line-icon-MQT0rCzm.js 621 B import() defines line-icon",
@@ -1352,8 +1340,8 @@
         ],
         "owners": {
           "spike: surface, session, catalogs": {
-            "rendered": 23265,
-            "gzipAlone": 9028
+            "rendered": 23718,
+            "gzipAlone": 9169
           },
           "zod": {
             "rendered": 100240,
@@ -1421,14 +1409,14 @@
           "line-separator",
           "line-stack"
         ],
-        "initialGzip": 88163,
-        "loadedGzip": 88323,
-        "builtGzip": 88572,
+        "initialGzip": 88150,
+        "loadedGzip": 88310,
+        "builtGzip": 88559,
         "chunks": [
-          "assets/bundle-a-eager-DvKsdyfS.js 23547 B initial loaded defines line-a2ui-surface",
+          "assets/bundle-a-eager-CZFaTP-G.js 23545 B initial loaded defines line-a2ui-surface",
           "assets/adapter-q7mqlLj6.js 59400 B initial loaded",
-          "assets/button-B5gk9yNn.js 79 B loaded import()",
-          "assets/button-BhkV01N0.js 679 B initial loaded defines line-button,line-a2ui-button,line-a2ui-line-button",
+          "assets/button-BMtDZAIc.js 668 B initial loaded defines line-button,line-a2ui-button,line-a2ui-line-button",
+          "assets/button-XigSFs0Q.js 79 B loaded import()",
           "assets/dist-CfUcQMba.js 1224 B initial loaded",
           "assets/icon-BUmjyuse.js 783 B initial loaded defines line-icon,line-a2ui-icon,line-a2ui-line-icon",
           "assets/icon-DJrYWZis.js 79 B import()",
@@ -1441,8 +1429,8 @@
         ],
         "owners": {
           "spike: surface, session, catalogs": {
-            "rendered": 25090,
-            "gzipAlone": 10361
+            "rendered": 25067,
+            "gzipAlone": 10351
           },
           "@a2ui/web_core": {
             "rendered": 335665,
