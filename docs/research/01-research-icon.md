@@ -18,15 +18,15 @@
 >   means the outline glyph, not a slashed one.
 > - All 59 names map to canonical icons in the locked `lucide-static` 1.56.0 and `@phosphor-icons/core` 2.1.1 (P4).
 >   Lucide has no filled glyphs, so `favorite`/`favoriteOff` and `star`/`starOff` collapse to one glyph each.
->   Phosphor covers all 59, but `favorite`, `star` and `starHalf` need the `fill` weight. 11 names are mirrored in RTL
->   by Material (P5).
+>   Phosphor covers all 59, but `favorite`, `star` and `starHalf` need the `fill` weight. Material mirrors 9 names in
+>   RTL and leaves the other 50 unmirrored (P5).
 > - The Phase 00 reference resolvers do not survive a Vite 8 production build. Vite leaves
 >   `` import(`lucide-static/icons/${name}.svg?raw`) `` as an unresolved bare specifier, and no icon reaches `dist`
 >   (P6). Today's tests run only under Bun.
 > - A per-name `import()` map of the 59 Lucide icons builds into 56 chunks of 268–423 B gzipped each (P7). A static
->   map of all 59 costs 4.0 KB gzipped for Lucide and 7.2 KB for Phosphor (P7).
+>   map of all 59 costs 4.0 KB gzipped for Lucide and 7.3 KB for Phosphor (P7).
 > - `line-icons` exposes only `"."` today. Plan §2.5 names `./registry` and `./resolvers/*`. `<line-icon>` itself is
->   the `./icon` subpath of `line-components` (plan §2.2).
+>   the `./icon` subpath of `line-components` (plan §2.2, the components table).
 
 ---
 
@@ -58,7 +58,10 @@ All facts were retrieved on 2026-10-19 unless a row says otherwise.
   hold the same 59, with no name added or removed (P2). R1 §2.6 lists them.
 - `Icon.name` is `oneOf` three branches (P2):
   1. the 59-name string enum;
-  2. `{ "svgPath": string }`, `additionalProperties: false`;
+  2. `{ "svgPath": string }`, `additionalProperties: false`. The `web_core` 0.14.0 v0.9 catalog types `svgPath` as
+     `z.string()` (`src/v0_9/basic_catalog/components/basic_components.js:147`). The v1 catalog types it as
+     `DynamicStringSchema` (`src/catalogs/basic/v1/components/basic_components.js:129`), so under v1 the path itself
+     can be a binding;
   3. `DataBinding` from `common_types.json`.
 - `component` and `name` are the only required properties. The schema describes `name` only as "The name of the icon
   to display." and says nothing about glyph style (P2).
@@ -126,13 +129,13 @@ All facts were retrieved on 2026-10-19 unless a row says otherwise.
 
 ### 2.3 Mapping of the 59 names (Q3)
 
-Method: every proposed name was checked in the locked tarballs (P4). Lucide names must be keys of
+Every proposed name was checked in the locked tarballs (P4). Lucide names must be keys of
 `icon-nodes.json`, so none is an alias. Phosphor names must exist in all six weights. All 59 rows pass, and 59
 Phosphor names exist in all six weights. "Material" is the glyph `web_core` renders (§2.1). "Mirror" means the
 Material Symbols Android drawable sets `android:autoMirrored="true"` (P5).
 
-Match: **exact** means the same glyph concept. **near** means the same meaning with a visibly different glyph. **none**
-means no icon carries the meaning.
+The match column uses three grades. **exact** means the same glyph concept, **near** means the same meaning with a
+visibly different glyph, and **none** means no icon carries the meaning.
 
 | # | A2UI name | Material | Lucide | L match | Phosphor (weight) | P match | Mirror | Notes |
 |---|---|---|---|---|---|---|---|---|
@@ -196,7 +199,7 @@ means no icon carries the meaning.
 | 58 | volumeUp | `volume_up` | `volume-2` | exact | `speaker-high` | exact | yes | |
 | 59 | warning | `warning` | `triangle-alert` | exact | `warning` | exact | | |
 
-Summary:
+The table below counts the grades and the glyph collisions per set.
 
 | Set | exact | near | none | Unique files | Collisions |
 |---|---|---|---|---|---|
@@ -208,8 +211,8 @@ Summary:
 - **Filled versus outline.** Material Icons draws filled glyphs. Lucide 1.56.0 SVGs set `fill="none"` and
   `stroke="currentColor"`, so every Lucide glyph is an outline. Phosphor `regular` is an outline, and `fill` is solid.
   A Phosphor map needs a weight per name (rows 17, 48, 49). `IconResolverOptions.weight` already carries it.
-- **RTL.** 11 names carry `autoMirrored` in Material: `arrowBack`, `arrowForward`, `help`, `send`, `starHalf` and the
-  four `volume*`. The other 48 do not (P5). The media names (`play`, `fastForward`, `rewind`, `skipNext`,
+- **RTL.** 9 names carry `autoMirrored` in Material: `arrowBack`, `arrowForward`, `help`, `send`, `starHalf` and the
+  four `volume*`. The other 50 do not (P5). The media names (`play`, `fastForward`, `rewind`, `skipNext`,
   `skipPrevious`) are not mirrored. Neither Lucide nor Phosphor marks mirroring in its files.
 - `IconRegistry` has no per-name metadata today, so a mirror flag or a weight per name has no place in the contract.
 
@@ -234,32 +237,33 @@ Summary:
 
 ### 2.5 Bundle weight and Law 6 (Q5)
 
-Raw files from the tarballs, mapping of §2.3 (P7):
+The table below measures the raw SVG files of the §2.3 mapping, taken from the tarballs (P7).
 
 | Set | Files | Raw bytes | Sum of per-file gzip | One gzip of all files |
 |---|---|---|---|---|
 | Lucide 1.56.0 | 56 | 24 707 | 15 724 | 2 972 |
 | Phosphor 2.1.1 (55 regular, 3 fill) | 58 | 24 451 | 15 486 | 6 170 |
 
-Vite 8.3.4 production builds (P6, P7):
+The next table measures Vite 8.3.4 production builds (P6, P7). Vite reports the Phase 00 entry chunk as 1.45 kB
+gzipped; the figures here come from `gzip -9c`.
 
-| Build | Chunks | Gzipped |
-|---|---|---|
-| Phase 00 resolvers, Lucide and Phosphor registered, `house` resolved | 1 | 3 081 B raw entry; no SVG in `dist`, and both `import()` calls stay as bare specifiers |
-| Static `?raw` imports of the 59 Lucide names | 1 | 4 017 B |
-| Static `?raw` imports of the 59 Phosphor names | 1 | 7 257 B |
-| One `import()` per name, Lucide | 57 | entry 2 173 B; 56 icon chunks of 268–423 B |
+| Build | Chunks | Raw | Gzipped | Observed |
+|---|---|---|---|---|
+| Phase 00 resolvers, Lucide and Phosphor registered, `house` resolved | 1 | 3 081 B | 1 486 B | No SVG in `dist`; both `import()` calls stay as bare specifiers |
+| Static `?raw` imports of the 59 Lucide names | 1 | | 4 017 B | |
+| Static `?raw` imports of the 59 Phosphor names | 1 | | 7 257 B | |
+| One `import()` per name, Lucide | 57 | | entry 2 173 B; 56 icon chunks of 268–423 B | |
 
 - The Phase 00 resolvers rely on `@vite-ignore` with a bare package prefix. Vite keeps the expression verbatim, so a
   browser receives `` import(`lucide-static/icons/house.svg?raw`) ``. [INFERENCE] Without an import map a browser
   rejects that bare specifier, and the `?raw` query has no meaning outside Vite.
 - A per-name `import()` map gives one chunk per icon. A page that shows one icon loads the map plus one chunk of
   under 0.5 KB gzipped. A static map makes every page that renders an A2UI `Icon` load all 59.
-- The static Phosphor map (7.2 KB) is above the PRD §1.7 soft target of 5 KB per component, and the static Lucide map
+- The static Phosphor map (7.3 KB) is above the PRD §1.7 soft target of 5 KB per component, and the static Lucide map
   (4.0 KB) is under it.
-- Law 6 is about `line-components` subpaths: "a button must not drag in a dialog". A map inside `line-icons` or
-  `line-genui` reaches the Button bundle only if Button imports it. ARCHITECTURE §11 says Button exposes a slot and
-  does not import `<line-icon>`.
+- Law 6 governs `line-components` subpaths, and it states that "a button must not drag in a dialog". A map inside
+  `line-icons` or `line-genui` reaches the Button bundle only if Button imports it. ARCHITECTURE §11 says Button
+  exposes a slot and does not import `<line-icon>`.
 
 ## 3. Probes
 
@@ -271,8 +275,8 @@ Run in `mktemp -d` with `HOME=<tmpdir>`, deleted afterwards. Exit codes are 0 un
 | P2 | `npm pack @a2ui/web_core@0.14.0`; `curl` of `specification/v0_9_1/catalogs/basic/catalog.json` at `cbaa5ee`; Node script extracting the enum containing `visibilityOff` from the three sources, then `diff` of the sorted lists | 0, 0, 0, 0 | 59 names in each; both diffs empty; `name.oneOf` has enum, `{svgPath}`, `DataBinding`; `required` is `component`, `name` |
 | P3 | Read `src/universal/basic_catalog/components/Icon.js` in the 0.14.0 tarball | 0 | `ICON_NAME_OVERRIDES` of four names; `material-icons` class; `svgPath` rendered as one `<path>` |
 | P4 | `npm pack lucide-static@1.56.0 @phosphor-icons/core@2.1.1`; Node script checking each Lucide name in `icon-nodes.json` and `icons/`, and each Phosphor name in all six weight folders | 0, 0 | First pass: `trash-2` not canonical, Phosphor `star-off` absent in all weights. Final table: 59 rows, 0 missing; 59 Phosphor names in all six weights; `diff trash-2.svg trash.svg` differs only in `class` |
-| P5 | `curl` of `symbols/android/<name>/materialsymbolsoutlined/<name>_24px.xml` at `google/material-design-icons` `49d4db3` (2026-10-09) for the 59 ligatures; the 4 absent from Symbols (`favorite_border`, `star_border`, `payment`, `phone`) fetched from `android/<category>/<name>/materialicons/black/res/drawable/baseline_<name>_24.xml` | 0 | 11 files contain `autoMirrored`; the 4 classic files do not |
-| P6 | Vite 8.3.4 `vite build` of an app importing a copy of `packages/line-icons/src`, registering both resolvers and resolving `house` | 0 | One 3 081 B chunk; it contains `` import(`lucide-static/icons/${e}.svg?raw`) `` and `` import(`@phosphor-icons/core/assets/${i}/${a}.svg?raw`) ``; no SVG asset or chunk |
+| P5 | `curl` of `symbols/android/<name>/materialsymbolsoutlined/<name>_24px.xml` at `google/material-design-icons` `49d4db3` (2026-10-09) for the 59 ligatures; the 4 absent from Symbols (`favorite_border`, `star_border`, `payment`, `phone`) fetched from `android/<category>/<name>/materialicons/black/res/drawable/baseline_<name>_24.xml` | 0 | 9 files contain `autoMirrored`; the other 50, the 4 classic files included, do not |
+| P6 | Vite 8.3.4 `vite build` of an app importing a copy of `packages/line-icons/src`, registering both resolvers and resolving `house`; rerun for the review with `wc -c` and `gzip -9c` | 0, 0 | One chunk of 3 081 B raw, 1 486 B with `gzip -9c` (Vite reports 1.45 kB); it contains `` import(`lucide-static/icons/${e}.svg?raw`) `` and `` import(`@phosphor-icons/core/assets/${i}/${a}.svg?raw`) ``; no SVG asset or chunk |
 | P7 | Node `zlib.gzipSync(level 9)` over the mapped files; three Vite builds (static Lucide map, static Phosphor map, per-name `import()` Lucide map); `gzip -9c` of each chunk | 0 ×4 | Figures in §2.5 |
 | P8 | `npm pack lucide-static@1.16.0 lucide-static@1.59.0`; check the 56 mapped names in each `icons/` | 0 | 1960 and 2159 files; no mapped name missing in either |
 
@@ -293,10 +297,11 @@ Run in `mktemp -d` with `HOME=<tmpdir>`, deleted afterwards. Exit codes are 0 un
 
 ## 5. Contradictions
 
-- **C1 (new).** ARCHITECTURE §17.3 (`docs/ARCHITECTURE.md:1481`) and plan §2.2 (`docs/plans/01-plan-core-primitives.md:120`)
-  map the basic `Icon` as "A2UI icon names mapped to a `line-icons` resolver". The v0.9.1 schema and `web_core`
-  0.14.0 also accept `{ "svgPath": string }` (§2.1, P2, P3), which no name resolver covers. The documents do not
-  say how that branch renders.
+- **C1 (new).** ARCHITECTURE §17.3 (`docs/ARCHITECTURE.md:1481`) and plan §2.1 (`docs/plans/01-plan-core-primitives.md:120`)
+  map the basic `Icon` as "A2UI icon names mapped to a `line-icons` resolver"; plan §2.5 (line 172) repeats it. The
+  v0.9.1 schema and `web_core` 0.14.0 also accept `{ "svgPath": … }` (§2.1, P2, P3), which no name resolver covers.
+  The v0.9 catalog types the path as a string, and the v1 catalog as a `DynamicString` that may be bound. The
+  documents do not say how that branch renders.
 - **C2 (new).** Plan §1.2 (`docs/plans/01-plan-core-primitives.md:53`) lists "Icon resolvers | Exist | `line-icons`",
   and plan §2.5 builds on them. P6 shows that the reference resolvers emit no icon in a Vite 8 production build and
   leave a bare `?raw` specifier in the output. They work under Bun, which is the only environment the Phase 00 tests
@@ -325,11 +330,12 @@ Run in `mktemp -d` with `HOME=<tmpdir>`, deleted afterwards. Exit codes are 0 un
    with `"."` kept; (b) the same with `"."` removed; (c) a `./resolvers/*` pattern. Evidence: R9 §2.1 packaging
    checks, and the Phase 00 consumers of `"."` (README, tests).
 5. **Where do per-name weight and RTL mirroring live?** (a) In the map entry (`{ lucide, phosphor, weight, mirror }`);
-   (b) in `<line-icon>` attributes; (c) not handled. Evidence: the 11 mirrored names (P5), the 3 fill names, and
+   (b) in `<line-icon>` attributes; (c) not handled. Evidence: the 9 mirrored names (P5), the 3 fill names, and
    R8 for RTL.
 6. **How does the basic `Icon` render `svgPath` and an unknown bound name?** Options: inline SVG path, inert
    placeholder plus `line-a2ui-error` (ARCHITECTURE §17.3 for unmapped types), or a fallback icon. Evidence: R1 §2.7
-   throw paths, R2's renderer choice and Law 9.
+   throw paths, R2's renderer choice, Law 9, and the `svgPath` type per version (`z.string()` in v0.9,
+   `DynamicStringSchema` in v1, which a renderer must resolve before drawing).
 7. **Do the Lucide collisions matter?** `favorite`/`favoriteOff` and `star`/`starOff` render the same Lucide glyph.
    Options: accept, apply `fill: currentColor` to the filled names, or use the drifted `heart-off` and `star-off`.
    Evidence: §2.3, and how `<line-icon>` styles an injected SVG.
