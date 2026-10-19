@@ -1,0 +1,40 @@
+/* Document rules for the `::part()` reach check (target 4). */
+line-button::part(root) {
+  outline: 3px solid rgb(255, 0, 0);
+}
+
+line-button::part(label) {
+  text-decoration-line: underline;
+}
+
+line-separator::part(root) {
+  background-color: rgb(0, 128, 0);
+}
+
+line-icon::part(svg) {
+  color: rgb(0, 0, 255);
+}
+
+body {
+  margin: 0;
+  font:
+    16px / 1.4 system-ui,
+    sans-serif;
+}
+
+main {
+  padding: 16px;
+}
+
+#host {
+  inline-size: 480px;
+}
+
+#host img {
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+#host :is(h2, p) {
+  margin: 0;
+}
