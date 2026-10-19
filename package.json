@@ -23,7 +23,7 @@
     "build": "bun --filter './packages/*' build && bun --filter './apps/*' build",
     "test": "bun --filter '@websublime/line-schemas' --filter '@websublime/line-tokens' --filter '@websublime/line-colors' --filter '@websublime/line-themes' build && bun test packages/line-themes/__tests__/",
     "e2e": "playwright test --pass-with-no-tests",
-    "version": "changeset version",
+    "version": "changeset version && bun install --ignore-scripts",
     "release": "bun run scripts/publish.mjs",
     "status": "changeset status --since=main",
     "empty": "changeset --empty",
