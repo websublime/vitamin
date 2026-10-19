@@ -134,6 +134,13 @@ export const focus: Fixture = {
     ],
     [components([{ id: 'b', component: 'Button', variant: 'primary', child: 'bLabel', action: action('b') }])],
     [components([{ id: 'root', component: 'Row', children: ['b', 'a', 'c'] }])],
+    // Reparent: `b` moves under a new Column.
+    [
+      components([
+        { id: 'root', component: 'Row', children: ['a', 'c', 'wrap'] },
+        { id: 'wrap', component: 'Column', children: ['b'] },
+      ]),
+    ],
   ],
 };
 

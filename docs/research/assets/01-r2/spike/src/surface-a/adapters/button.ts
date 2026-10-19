@@ -40,7 +40,8 @@ export class LineButtonAdapter extends ButtonAdapter {
 
   updated() {
     super.updated();
-    for (const el of this.querySelectorAll(':scope > line-button > [data-line-a2ui-adapter]')) el.slot = 'prefix';
+    // The icon adapter may not be upgraded yet, so the selector matches any child element.
+    for (const el of this.querySelectorAll(':scope > line-button > *')) el.slot = 'prefix';
   }
 }
 

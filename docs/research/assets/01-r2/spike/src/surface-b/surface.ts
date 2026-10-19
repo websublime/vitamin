@@ -268,10 +268,20 @@ export class DirectSurface extends SurfaceBase {
     for (const child of [...parent.childNodes]) {
       if (!desired.includes(child)) child.remove();
     }
-    desired.forEach((child, index) => {
-      const current = parent.childNodes[index] ?? null;
-      if (current !== child) parent.insertBefore(child, current);
-    });
+    // The anchor never moves: the child that holds focus, else the first desired child already in place.
+    const focused = desired.findIndex((child) => child.parentNode === parent && child.contains(document.activeElement));
+    const anchor = Math.max(
+      focused,
+      desired.findIndex((child) => child.parentNode === parent),
+      0,
+    );
+    if (desired[anchor] && desired[anchor].parentNode !== parent) parent.append(desired[anchor]);
+    for (let i = anchor - 1; i >= 0; i--) {
+      if (desired[i].nextSibling !== desired[i + 1]) parent.insertBefore(desired[i], desired[i + 1]);
+    }
+    for (let i = anchor + 1; i < desired.length; i++) {
+      if (desired[i].previousSibling !== desired[i - 1]) parent.insertBefore(desired[i], desired[i - 1].nextSibling);
+    }
   }
 }
 

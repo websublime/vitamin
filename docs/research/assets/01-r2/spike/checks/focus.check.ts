@@ -3,31 +3,34 @@ import { openSurface, type Spike, VARIANTS, writeResult } from './support.ts';
 
 /** Target 8 (automated part): no focus moves on agent updates, focus kept through stable ids, honest `aria-busy`. */
 
-const STEPS = ['label text', 'sibling inserted before', 'own variant', 'reordered first'];
+const STEPS = ['label text', 'sibling inserted before', 'own variant', 'reordered first', 'reparented'];
 
 test('focus under agent updates', async ({ page }) => {
   const results: Record<string, unknown> = {};
   for (const variant of VARIANTS) {
     await openSurface(page, variant, 'focus', false);
     await page.evaluate(() => (globalThis as unknown as { spike: Spike }).spike.next());
-    await page.locator('[data-a2ui-id="b"] button').focus();
-    await page.evaluate(() => {
-      Object.assign(document.activeElement as Element, { focusMark: 'b' });
-    });
     const steps = [];
+    // Each step starts with focus on `b`, so one lost focus does not decide the later steps.
     for (const name of STEPS) {
+      await page.locator('[data-a2ui-id="b"] button').focus();
+      await page.evaluate(() => {
+        Object.assign(document.activeElement as Element, { focusMark: 'b' });
+      });
       await page.evaluate(() => (globalThis as unknown as { spike: Spike }).spike.next());
       steps.push({
         step: name,
         ...(await page.evaluate(() => {
           const active = document.activeElement as (Element & { focusMark?: string }) | null;
           const inner = active?.shadowRoot?.activeElement;
-          return {
+          const result = {
             active: active?.localName ?? null,
             sameElement: active?.focusMark === 'b',
             innerButtonFocused: inner?.localName === 'button',
             label: active?.localName === 'line-button' ? (active.textContent?.trim() ?? null) : null,
           };
+          if (active) delete active.focusMark;
+          return result;
         })),
       });
     }
