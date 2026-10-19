@@ -14,7 +14,7 @@
 > - Focus survives an agent reorder in (b), because its reconciler moves the siblings around the focused element. (a) loses it, because Lit's keyed `repeat` moves the focused element itself. Both lose focus when the agent reparents the focused node.
 > - On a one-button page (Vite 8 per-page builds, gzip -9), (a) loads 88.8 KB, 80.9 KB of it before any component and Lit included. (b) loads 87.0 KB, 80.0 KB of it before any component and without Lit. Compressed alone, `web_core` and its dependencies sum to about 103 KB in both. The upstream eager idiom defines all 17 tags at startup.
 > - No catalog meta-schema exists, and both the hand-written and the emitted `line` catalog fail `client_capabilities.json#/$defs/Catalog`. The emitted catalog also lacks `$defs.anyFunction` and `$defs.theme`, which the published schemas require through `catalog.json`. The emitted four-component catalog weighs 685 B gzip.
-> - Recommended, pending Miguel's confirmation, is direct projection on the `web_core` models and binder (b).
+> - Miguel confirmed (b), direct projection on the `web_core` models and binder (`NodeResolver`), on 2026-10-19 after the VoiceOver pass. Every check in that pass matched its expected announcement in Safari and Chrome.
 
 ---
 
@@ -177,7 +177,25 @@ Each step starts with focus on `b`. The results are identical in all three engin
 
 #### Screen-reader pass
 
-Pending: Miguel's manual pass (2026-10-19). The script is in `docs/research/assets/01-r2/spike/README.md` §"Screen-reader pass" (VoiceOver in Safari and Chrome, checks S1–S10, expected announcement per check and candidate).
+Miguel ran the VoiceOver pass on 2026-10-19 on macOS, in Safari and in Chrome. He used the script in `docs/research/assets/01-r2/spike/README.md` §"Screen-reader pass" against a clean copy of the spike at `3b7ce53`, which holds the same spike code as `fd3d270`, served on `127.0.0.1:4341`. The scope he chose was (b) S1–S10, and (a) S2 and S6 only. The page URLs used `delay=8000` instead of the README's 4000, to leave time to reach the button while VoiceOver speaks.
+
+| # | Safari (a) | Safari (b) | Chrome (a) | Chrome (b) |
+|---|---|---|---|---|
+| S1 | Not run | Matched | Not run | Matched |
+| S2 | Matched | Matched | Matched | Matched |
+| S3 | Not run | Matched | Not run | Matched |
+| S4 | Not run | Matched | Not run | Matched |
+| S5 | Not run | Matched | Not run | Matched |
+| S6 | Matched | Matched | Matched | Matched |
+| S7 | Not run | Matched | Not run | Matched |
+| S8 | Not run | Matched | Not run | Matched |
+| S9 | Not run | Matched | Not run | Matched |
+| S10 | Not run | Matched | Not run | Matched |
+
+"Matched" means the announcement and focus behaviour equalled the README expectation for that candidate.
+
+- S2 in (a) had no extra empty or repeated stops compared with (b). VoiceOver does not voice the 6 extra `generic` nodes that the Chromium tree of (a) holds (§2.3).
+- Where focus is lost (S6 in (a), S10 in (b)), VoiceOver landed at the start of the page, on the web area, in both browsers.
 
 ### 2.9 Weight
 
@@ -267,10 +285,10 @@ Evidence by target, (a) as specified, with `display: contents` noted where it ch
 | 5 | Law 6 | Lazy works; adapters add tags; Lit in the initial load; eager idiom defines all | One chunk per component; Lit with the first component |
 | 6 | Throw paths | All caught; needs per-adapter boundary, own unknown-type and depth handling | All caught; resolver reports unknown types and cycles |
 | 7 | Meta-schema | Independent of technique (§2.7) | Same |
-| 8 | Live region, focus, axe | Pass; focus kept except on reorder and reparent; screen reader pending | Pass; focus kept on reorder with `instanceId` keying, lost on reparent; screen reader pending |
+| 8 | Live region, focus, axe | Pass; focus kept except on reorder and reparent; VoiceOver S2 and S6 matched | Pass; focus kept on reorder with `instanceId` keying, lost on reparent; VoiceOver S1–S10 matched |
 | 9 | Weight | 80.9 KB initial, 88.8 KB loaded | 80.0 KB initial, 87.0 KB loaded |
 
-**Recommended, pending Miguel's confirmation, is (b) direct projection on the `web_core` models and binder (`NodeResolver`).** It matched hand-written markup on targets 1–4 in all three engines without adapter CSS, kept focus through an agent reorder where (a) lost it, keeps the surface free of Lit and of the `@experimental` `A2uiLitElement`, and receives unknown types and cycles from the resolver. The costs it carries are its own reconciliation (keyed by `instanceId`, focus-preserving) and its own effect lifecycle. The screen-reader pass may still change this recommendation.
+**Miguel confirmed (b), direct projection on the `web_core` models and binder (`NodeResolver`), on 2026-10-19 after the screen-reader pass.** It matched hand-written markup on targets 1–4 in all three engines without adapter CSS, kept focus through an agent reorder where (a) lost it, keeps the surface free of Lit and of the `@experimental` `A2uiLitElement`, and receives unknown types and cycles from the resolver. The costs it carries are its own reconciliation (keyed by `instanceId`, focus-preserving) and its own effect lifecycle. The VoiceOver pass matched every expectation in scope (§2.8).
 
 ## 6. Open questions for the spec
 
