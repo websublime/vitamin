@@ -12,10 +12,11 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
-- **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review round 5 (ledger row `00-Z48`).
+- **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review rounds 5 and 6 (ledger row `00-Z48`).
   - §17.1 (Layers) says `line-components` is a peer loaded lazily through descriptor `load()`, and `line-icons` is a peer for the `A2uiIconMap` and `A2uiIconName` types only (`import type`; the shipped `.d.ts` references `@websublime/line-icons/a2ui`), never loaded at run time. The peer stays (Phase 1 spec §10 SD9, AM-008, AM-009; finding L3R5-01).
   - §11 (Icon System) says the global slot is created on first access (`setIconRegistry`, the `LineIcon.registry` getter or setter, or a `<line-icon>` connect), never at module load, so `define()` stays the only module-top side effect of `./icon` and the root defines and creates nothing (§12). The event on the slot's `events` target is `line-icon-registry-change` (Law 2 prefix), because it is a cross-copy, cross-version contract (Phase 1 spec AM-010; findings L3R5-02, L3R5-03).
   - §17.4 (Renderer) defines `A2uiIconName` as the union of the 59 A2UI v0.9.1 `Icon.name` enum values, kept in `packages/line-icons/src/a2ui/` and exported from `./a2ui` beside `A2uiIconEntry`, `A2uiIconMap` and `a2uiIconMap` (R10 §2.1, P2; R1 §2.6; Phase 1 spec AM-010; finding L3R5-04).
+  - §17.7 (Stability) names the `A2uiIconName`, `A2uiIconEntry` and `A2uiIconMap` types and the `a2uiIconMap` helper as what feeds the preview property `iconMap` (Phase 1 spec AM-011; finding L3R6-03).
 - **v0.8.9 (2026-10-20)** — Aligned with PRD v0.8.23, with coherence review round 4 (ledger row `00-Z48`).
   - §11 (Icon System) says the global slot `globalThis[Symbol.for('line.icon-registry')]` holds `{ registry, events }`, where `events` is an `EventTarget`. `setIconRegistry` and the `LineIcon.registry` setter write `registry` and dispatch `change` on `events`; every `<line-icon>` copy subscribes through the slot while connected and resolves again on `change`, so an element that connects before the registry is set still renders (Phase 1 spec AM-008).
   - §17.3 (Descriptors and catalogs) and §17.4 (Renderer) give the `iconMap` shape: `A2uiIconMap`, a null-prototype frozen object keyed by A2UI name, which the surface reads with `Object.hasOwn`. Setting or replacing `iconMap` projects every Icon node of the surface again (Phase 1 spec AM-008).
@@ -1610,7 +1611,7 @@ Recipes pin the middleware version, as the documented server convention or in a 
 
 - The agent contract (§17.2), the descriptor API and both catalogs follow the PRD §7.1 breaking-changes policy.
 - The A2UI renderer (`@websublime/line-genui/a2ui`) ships as a preview. It may change in any minor release and sits outside the PRD §7.1 policy until it targets a final A2UI v1.0.
-- `@websublime/line-icons/a2ui` follows the same preview status until A2UI v1.0, because its `A2uiIconMap` type and `a2uiIconMap` helper feed the preview property `iconMap` (Phase 1 spec AM-008).
+- `@websublime/line-icons/a2ui` follows the same preview status until A2UI v1.0, because its `A2uiIconName`, `A2uiIconEntry` and `A2uiIconMap` types and its `a2uiIconMap` helper feed the preview property `iconMap` (Phase 1 spec AM-008, AM-011).
 - `line-genui` pins `@a2ui/web_core` exactly, because upstream ships breaking changes in minor versions.
 
 ### 17.8 Deferred and rejected

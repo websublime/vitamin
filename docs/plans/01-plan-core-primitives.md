@@ -82,14 +82,14 @@ PRD Appendix D defines these surfaces.
 | `@websublime/line-genui/catalog.json` | Emitted JSON of the `line` catalog | Normal policy |
 | `@websublime/line-genui/a2ui` | Session and `<line-a2ui-surface>` | Preview |
 | `@websublime/line-genui/custom-elements.json` | Custom Elements Manifest of `<line-a2ui-surface>` (spec §10) | Preview, with the surface |
-| `@websublime/line-icons/a2ui` | `A2uiIconMap` type and `a2uiIconMap` helper that feed the surface property `iconMap` (spec AM-008) | Preview, with the surface |
+| `@websublime/line-icons/a2ui` | The `A2uiIconName`, `A2uiIconEntry` and `A2uiIconMap` types and the `a2uiIconMap` helper that feed the surface property `iconMap` (spec AM-008, AM-010, AM-011) | Preview, with the surface |
 | `@websublime/line-themes/hosts/mcp-apps.css` | CSS-only MCP Apps theming bridge | Normal policy |
 
 PRD Appendix D and ARCHITECTURE §17.7 set the preview policy.
 
 - `@websublime/line-genui/a2ui` may change in any minor release.
 - `@websublime/line-genui/a2ui` sits outside the PRD §7.1 breaking-changes policy until it targets a final A2UI v1.0.
-- `@websublime/line-icons/a2ui` follows the same preview status until A2UI v1.0, because its type and helper feed the preview property `iconMap` (ARCHITECTURE §17.7; spec AM-008).
+- `@websublime/line-icons/a2ui` follows the same preview status until A2UI v1.0, because its types and helper feed the preview property `iconMap` (ARCHITECTURE §17.7; spec AM-008, AM-011).
 - The agent contract, the descriptor API and both catalogs follow the normal PRD §7.1 policy.
 
 The package has four dependency rules.
