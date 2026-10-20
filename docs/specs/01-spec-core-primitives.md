@@ -1,12 +1,12 @@
 # SPEC: Phase 1 — Core Primitives
 
-**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-020 (§12)
+**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-021 (§12)
 **Author:** line://ui orchestrator (row 00-Z46)
 **Date:** 2026-10-20
 **Phase target:** line://ui v0.2.0
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.24, APPROVED; approved against v0.8.19; amended by AM-001–AM-020)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.24, APPROVED; approved against v0.8.19; amended by AM-001–AM-021)
 **Source Plan:** [`docs/plans/01-plan-core-primitives.md`](../plans/01-plan-core-primitives.md) (APPROVED, revision 00-Z45, factual corrections 00-Z46, coherence revision 00-Z48)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.10; approved against v0.8.5; amended by AM-001–AM-020)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.10; approved against v0.8.5; amended by AM-001–AM-021)
 **Source Research:**
 - R1 — [`docs/research/01-research-a2ui-web-core.md`](../research/01-research-a2ui-web-core.md)
 - R2 — [`docs/research/01-research-projection-technique.md`](../research/01-research-projection-technique.md)
@@ -127,6 +127,8 @@ const ALLOWED_EDGES = Object.freeze({
 ## 4. Package Inventory & Exports
 
 Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`, `line-schemas` and `line-utils` keep their Phase 00 manifests except for the `version` bump (§7.2) and the build-script change of P8 for the `tsc -b` packages (§7.1). Blocks are JSONC. Comments name the task and the decision.
+
+Every row that adds its own subpath entry to an `exports` map keeps that entry with webcomponents-supervisor, although `.claude/agents/infra-supervisor.md:97` names per-package `exports` maps: C1–C20 in `line-components` (§4.2, "Each C task adds its own `exports` key"), C22 `./registry`, `./resolvers/lucide` and `./resolvers/phosphor` and G2 `./a2ui` in `line-icons` (§4.3), G2 `./catalog.json` and G4 `./custom-elements.json` in `line-genui` (§4.1), and G6 `./hosts/mcp-apps.css` in `line-themes` (§4.4). P1 adds the `line-genui` `./catalog` and `./a2ui` keys, so G1 and G4 add neither (§4.1; §10 SD23). infra-supervisor owns the other build wiring that a C or G row adds to a manifest (§6.C.0, §6.G.0; plan §4.0; §12 AM-021).
 
 ### 4.1 `@websublime/line-genui` (new)
 
@@ -403,24 +405,24 @@ README.md                                            ~ Z1 (code of conduct link)
 CLAUDE.md                                            ~ P8 Tech Stack
 .claude/agents/webcomponents-supervisor.md           ~ P8 (lines 15, 72)
 .gitignore                                           ~ P10 (drops `customElements.json` and the `analyze` reference in the line 7 comment; §12 AM-019, R13-L1-01)
-package.json                                         ~ P5 or C22 esbuild (whichever lands first), P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack, G2 or G3 ajv and ajv-formats (whichever lands first), G3 gpt-tokenizer (§12 AM-016; §12 AM-017, L3R11-01)
+package.json                                         ~ P5 or C22 esbuild (whichever lands first), P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack, G2 or G3 ajv and ajv-formats (whichever lands first), G3 gpt-tokenizer (§12 AM-016; §12 AM-017, L3R11-01); infra-supervisor owns the C22, G2 and G3 entries (§12 AM-021)
 playwright.config.ts                                 ~ S1 (webServer for apps/site); C22, owned by infra-supervisor (testIgnore of **/*cdn.e2e.ts unless LINE_E2E_CDN is set; §6.P.6; §12 AM-016, L3R10-04; §12 AM-017, L3R11-03)
 biome.json                                           ~ P10 (files.includes drops `!**/customElements.json`; §12 AM-019, L3R13-03); G2 (files.includes excludes the vendored A2UI schema fixtures; §6.G.2; §12 AM-017, L3R11-02)
 custom-elements-manifest.config.mjs                  - P10 (removed; replaced by the package config)
 vite.config.shared.mjs                               ~ P8 (dts removed, watch keeps dist; §12 AM-008, L2R4-05), P9 (derived externals)
-bun-test-preload.ts                                  ~ C23 (fake `attachInternals` from the line-core mock, because happy-dom has none; §7.8; §12 AM-020, L3R14-01)
+bun-test-preload.ts                                  ~ C23, owned by infra-supervisor (fake `attachInternals` from the line-core mock, because happy-dom has none; §7.8; §12 AM-020, L3R14-01; §12 AM-021, L3R15-01)
 scripts/lint-layers.mjs                              ~ P2 (ALLOWED_EDGES, header)
 scripts/verify-pack.mjs                              ~ P10 (customElements target check, both packages)
 scripts/report-size.mjs                              + P5 (size report, §10 SD21)
 scripts/emit-catalog.mjs                             + G2 (writes packages/line-genui/dist/catalog.json after vite build; §6.G.2; §12 AM-016, L3R10-02)
-docs/specs/00-spec-design-system.md                  ~ AM rows of P1, P5, P8, P9, P10, G2
+docs/specs/00-spec-design-system.md                  ~ AM rows of P1, P5, P8, P9, P10, G2, C23 (§12 AM-021, m3)
 docs/retrospective/01-<slug>.md                      + Z3
 apps/site/package.json                               ~ S1 (@websublime/* devDependencies)
 apps/site/src/pages/index.astro                      ~ S1
 apps/site/__tests__/landing.e2e.ts                   + S1
-apps/storybook/package.json                          ~ P10 (analyze script removed); G4 (@websublime/line-genui devDependency); G7 (@ag-ui/a2ui-middleware, @ag-ui/client, rxjs and @a2a-js/sdk devDependencies; §12 AM-016, L3R10-05)
+apps/storybook/package.json                          ~ P10 (analyze script removed); G4 (@websublime/line-genui devDependency); G7 (@ag-ui/a2ui-middleware, @ag-ui/client, rxjs and @a2a-js/sdk devDependencies; §12 AM-016, L3R10-05); infra-supervisor owns the G4 and G7 entries (§12 AM-021)
 apps/storybook/.storybook/main.ts                    ~ P10 (comment at :24)
-apps/storybook/.storybook/preview.ts                 ~ P10 (setCustomElementsManifest, merged manifest); G4 (line-genui import)
+apps/storybook/.storybook/preview.ts                 ~ P10 (setCustomElementsManifest, merged manifest); G4 (line-genui import), owned by infra-supervisor (§12 AM-021)
 apps/storybook/types/line-css.d.ts                   + P8 (ambient CSS module declarations)
 apps/storybook/tsconfig.json                         ~ P8 (includes types/)
 apps/storybook/stories/agent-driven-ui-samples/      + D1 (typechecked guide samples; §6.D.1; §12 AM-016, L3R10-08)
@@ -452,8 +454,8 @@ packages/line-components/__tests__/registry.types.ts  + C2 (LineIconRegistry typ
 packages/line-components/__tests__/a11y/*.e2e.ts     + P7 harness, one file per component from C1 on
 packages/line-components/__tests__/cdn.e2e.ts        + P6 (cdn-check.yml only; §6.P.6)
 packages/line-genui/                                 + P1
-  package.json  tsconfig.json  vite.config.mjs  README.md  LICENSE   (package.json devDependencies on line-components and line-icons for build order; §4.1; §12 AM-016, L3R10-03; LICENSE §12 AM-020, L3R14-08)
-  src/catalog/index.ts                               + P1 (G1–G3 fill it)
+  package.json  tsconfig.json  vite.config.mjs  README.md  LICENSE   (package.json devDependencies on line-components and line-icons for build order; §4.1; §12 AM-016, L3R10-03; LICENSE §12 AM-020, L3R14-08; infra-supervisor owns the later G2 `emit-catalog` build step and the G4 `analyze` step, `customElements` field and `files` entry, §12 AM-021)
+  src/catalog/index.ts                               + P1 (G1–G3 fill it; C10 adds the `Image` `variant: "avatar"` route to the `basic` map, §6.C.4; §12 AM-021, L3R15-02)
   src/a2ui/index.ts                                  + P1 (G4 fills it)
   custom-elements-manifest.config.mjs                + G4 (surface manifest, §10 SD94)
   __tests__/                                         + G tasks
@@ -702,7 +704,8 @@ export default {
 
 #### 6.C.0 Overview and order
 
-- Owner of every C task: `webcomponents-supervisor`, and infra-supervisor for the C22 CDN gate files `playwright.config.ts` (`testIgnore`) and `.github/workflows/cdn-check.yml` (plan §4.0; §12 AM-017, L3R11-03; §12 AM-018, L3R12-01).
+- Owner of every C task: `webcomponents-supervisor`; infra-supervisor for the C22 CDN gate files `playwright.config.ts` (`testIgnore`) and `.github/workflows/cdn-check.yml`, the C22 root `package.json` `devDependencies` and the C23 `bun-test-preload.ts` change (plan §4.0; §12 AM-017, L3R11-03; §12 AM-018, L3R12-01; §12 AM-021, L3R15-01).
+- A C row's own `exports` entries stay with webcomponents-supervisor, by the rule in §4 (§12 AM-021).
 - Stream C ships the 20 core primitives of PRD §4.1 (plan §2.2) and three `line-core`/`line-icons` prerequisites: C21, C22 and C23 (plan §4.3; §10 SD19).
 - C21–C23 take numbers after the 20 component rows, so C1–C20 keep their component mapping (plan §4.3).
 
@@ -756,15 +759,16 @@ export default {
 
 #### 6.C.2 C23 — `LineElement` attaches `ElementInternals`
 
-- **Owner:** `webcomponents-supervisor`.
+- **Owner:** `webcomponents-supervisor`; infra-supervisor for `bun-test-preload.ts` (plan §4.0; §12 AM-021, L3R15-01).
 - **Deps:** spec APPROVED. Blocks C1 (§10 SD19).
 - **Changes**
   - `packages/line-core/src/line-element.ts`: attach internals once per element, keep them in an ES `#private` field and expose them through a Symbol-keyed accessor (§10 SD19; §12 AM-002; R8 §2.5 option (c)).
   - `packages/line-core/src/internals.ts` (+): defines `export const INTERNALS = Symbol('line.internals')` and imports nothing. `line-element.ts` and `mixins/form-associated.ts` import it, and `index.ts` re-exports it, so no import cycle forms (§10 SD19; §12 AM-002; §12 AM-004, L3R2-02).
   - `packages/line-core/src/line-element.ts:30-32`: replace the empty `reflectState` with a body that writes `data-*` and `:state()` (R8 §2.5).
   - `packages/line-core/src/mixins/form-associated.ts:77-82`: drop its own `attachInternals()` call and reuse the base accessor through the Symbol key (§10 SD19).
-  - `bun-test-preload.ts` gives happy-dom a fake `HTMLElement.prototype.attachInternals` after `GlobalRegistrator.register()`, built from `FakeInternals` in `packages/line-core/__tests__/mocks/element-internals.ts`. happy-dom has none (`packages/line-core/__tests__/mocks/element-internals.ts:3`), and without it every unit test that builds a `LineElement` subclass throws, for example `packages/line-core/__tests__/direction.test.ts:45` and `line-machine-controller.test.ts:63` (§7.8; §12 AM-020, L3R14-01).
+  - `bun-test-preload.ts` gives happy-dom a fake `HTMLElement.prototype.attachInternals` after `GlobalRegistrator.register()`, built from `FakeInternals` in `packages/line-core/__tests__/mocks/element-internals.ts`. happy-dom has none (`packages/line-core/__tests__/mocks/element-internals.ts:3`), and without it every unit test that builds a `LineElement` subclass throws, for example `packages/line-core/__tests__/direction.test.ts:45` and `line-machine-controller.test.ts:63` (§7.8; §12 AM-020, L3R14-01). infra-supervisor owns this file (§12 AM-021, L3R15-01).
   - `installElementInternals()` in `packages/line-core/__tests__/mocks/element-internals.ts` keeps the `attachInternals` it finds, and its `restore()` puts that function back instead of deleting it (`:39`), so the preload fake survives tests that install the mock (§12 AM-020, L3R14-01).
+  - AM row to Phase 00 spec §6.F.3, whose `bun-test-preload.ts` block (`docs/specs/00-spec-design-system.md:1694-1720`) has no `attachInternals` fake (§7.8; §12 AM-021, m3).
 
 **Contract**
 
@@ -789,7 +793,7 @@ export default {
 
 #### 6.C.3 C22 — `line-icons` resolvers for consumer bundles
 
-- **Owner:** `webcomponents-supervisor`; infra-supervisor for the CDN gate files `playwright.config.ts` (`testIgnore`) and `.github/workflows/cdn-check.yml` (plan §4.0; §6.P.6; §12 AM-017, L3R11-03; §12 AM-018, L3R12-01).
+- **Owner:** `webcomponents-supervisor`; infra-supervisor for the CDN gate files `playwright.config.ts` (`testIgnore`) and `.github/workflows/cdn-check.yml` and for the root `package.json` `devDependencies` (plan §4.0; §6.P.6; §12 AM-017, L3R11-03; §12 AM-018, L3R12-01; §12 AM-021).
 - **Deps:** spec APPROVED. R10 round 2 is delivered (row `00-Z47`). Blocks C2 (plan §6).
 - **Problem:** the reference resolvers use a template `import()` with a Vite-only `?raw` query (`packages/line-icons/src/resolvers/lucide.ts:8`, `phosphor.ts:16`). It renders no icon in Vite 8.3.4 or esbuild 0.28.2 output. webpack 5.112.0 does not build today's resolvers without a `?raw` rule, and the Phosphor resolver also needs an alias (R10 round 2 §2.2, P3, P4).
 - **Changes**
@@ -797,10 +801,10 @@ export default {
   - `createLucideResolver` and `createPhosphorResolver` gain a required `base` option (§10 SD90).
   - The resolver docs in `packages/line-icons/README.md` show the base URLs, the CSP note and the in-bundle recipe below.
   - C22 adds the consumer matrix test in two files: `packages/line-icons/__tests__/consumer-matrix.e2e.ts` for the bundler pages and `packages/line-icons/__tests__/consumer-matrix.cdn.e2e.ts` for the CDN-base pages (§10 SD96; §12 AM-016, L3R10-04).
-  - Root `devDependencies` gain `"webpack": "^5.112.0"` for the matrix (R10 round 2 §2.1; §10 SD96). esbuild is the P5 entry, `"esbuild": "^0.28.2"`; whichever of P5 and C22 lands first adds it (§12 AM-016).
+  - Root `devDependencies` gain `"webpack": "^5.112.0"` for the matrix (R10 round 2 §2.1; §10 SD96). esbuild is the P5 entry, `"esbuild": "^0.28.2"`; whichever of P5 and C22 lands first adds it (§12 AM-016). infra-supervisor owns the root `package.json` edit (§12 AM-021).
   - C22 adds the CDN gate of §6.P.6, `testIgnore` in `playwright.config.ts` and `.github/workflows/cdn-check.yml`; infra-supervisor owns those two files, as in §6.S.1 (§12 AM-016, L3R10-04; §12 AM-017, L3R11-03).
   - C22 adds `packages/line-icons/src/registry.ts` and the `./registry`, `./resolvers/lucide` and `./resolvers/phosphor` export keys of §4.3 (plan §2.5; §12 AM-002, L3-09).
-  - `packages/line-icons/__tests__/registry.test.ts`, `resolvers.lucide.test.ts` and `resolvers.phosphor.test.ts` call `createLucideResolver()` and `createPhosphorResolver()` without `base` (`registry.test.ts:7-8`, `resolvers.lucide.test.ts:15`, `resolvers.phosphor.test.ts:18`). C22 makes those tests pass a `base` and mock `fetch` (§10 SD90; §12 AM-020, L3R14-11).
+  - `packages/line-icons/__tests__/registry.test.ts`, `resolvers.lucide.test.ts` and `resolvers.phosphor.test.ts` call `createLucideResolver()` and `createPhosphorResolver()` without `base` at `registry.test.ts:7, :8, :19, :30, :37`, `resolvers.lucide.test.ts:15` and `resolvers.phosphor.test.ts:18, :24, :28, :32, :37, :41, :45, :51`. C22 makes every call without `base` pass a `base`, and the tests mock `fetch` (§10 SD90; §12 AM-020, L3R14-11; §12 AM-021, m2).
 
 **Mechanism (§10 SD89)**
 
@@ -962,6 +966,8 @@ Column notes:
 - Every descriptor MUST carry `agentExposed` with a recorded reason (ARCH §17.2; §10 SD38).
 - Roles set only through internals MUST get a screen-reader pass in their component spec (R8 §6 Q5; §10 SD39).
 - Chip and AvatarGroup take the `common` and `button` reset modules, because each renders an inner native `<button>` (§10 SD31, SD84; ARCH §14.7). ButtonGroup and Presence keep `common` only (ARCH §14.7; §12 AM-002).
+- C10 adds the `Image` `variant: "avatar"` route to the G2 `basic` map, so that variant renders `<line-avatar>` (ARCH §17.3; §6.G.2). Acceptance: on `<line-a2ui-surface>`, a message with the v0_9 basic id and an `Image` node with `variant: "avatar"` renders `<line-avatar>` (§12 AM-021, L3R15-02).
+- C12, C13 and C16 carry `agentExposed: false` (§10 SD38). Acceptance for each: its tag is absent from the built `catalog.json` and from the G3 tool output (§6.G.2, §6.G.3; §12 AM-021, L3R15-03).
 
 #### 6.C.5 Button, IconButton, ButtonGroup and Chip semantics
 
@@ -1022,7 +1028,7 @@ Column notes:
 
 #### 6.G.0 Stream overview and order
 
-- Owner of every G task is webcomponents-supervisor (plan §4.0).
+- Owner of every G task is webcomponents-supervisor; infra-supervisor owns the G2 and G3 root `package.json` `devDependencies`, the G2 `emit-catalog` step of the `line-genui` `build` script, the G4 `analyze` script and `build` step and the G4 `customElements` field and `custom-elements.json` `files` entry in `packages/line-genui/package.json` (§4.1), the G4 `apps/storybook` devDependency and `preview.ts` manifest import, and the G7 `apps/storybook` devDependencies (`.claude/agents/infra-supervisor.md:97, :104`; plan §4.0; §12 AM-021). A G row's own `exports` entries stay with webcomponents-supervisor, by the rule in §4.
 - Stream G has no projection task. Miguel chose direct projection on `NodeResolver` on 2026-10-19 (plan §4.1, §5.6 PT; R2 §5a).
 - G code MUST NOT start before P1 scaffolds `line-genui` and P2 adds its layer edges (plan §6).
 - Stream G validates on C1–C4 (Button, Icon, Stack, Separator). It starts after they ship without descriptors (PRD §7.3; plan §6 step 5–6).
@@ -1089,13 +1095,13 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 
 #### 6.G.2 G2 — Catalog emitters
 
-- **Owner:** webcomponents-supervisor.
+- **Owner:** webcomponents-supervisor; infra-supervisor for the root `package.json` `devDependencies` and for the `emit-catalog` step of the `line-genui` `build` script; the `./catalog.json` export entry stays with webcomponents-supervisor by the rule in §4 (`.claude/agents/infra-supervisor.md:97`; plan §4.0; §12 AM-021).
 - **Deps:** G1.
 - **Changes:** the `line` catalog emitter, `@websublime/line-genui/catalog.json`, the `basic` implementation map that the G4 session registers under the v0_9 id (§6.G.4; §12 AM-019, L3R13-02), the inline projection function, and `packages/line-icons/src/a2ui/` with its `./a2ui` export key. `./a2ui` holds the per-set map and exports the types `A2uiIconName` (the 59 A2UI v0.9.1 `Icon.name` values; R10 §2.1, P2), `A2uiIconMap` and `A2uiIconEntry`, and the helper `a2uiIconMap(set, { library })` that returns a null-prototype frozen `A2uiIconMap` for the surface `iconMap`, with `library` copied into each entry. The per-set map is not a public export (§4.3; ARCH §17.7; §12 AM-012, L3R7-02). `packages/line-icons/README.md` states the preview status of `./a2ui` (ARCH §17.7) (§6.C.3; §10 SD14; §12 AM-002, L3-09; §12 AM-006, D-M; §12 AM-008, L3R4-03, L3R4-05; §12 AM-010, L3R5-04, L3R5-05).
 - **Catalog file:** `scripts/emit-catalog.mjs` writes `packages/line-genui/dist/catalog.json`. The `line-genui` `build` script runs it right after `vite build` and before `tsc`, because `vite build` empties `dist/` first (§4.1; §7.1; §6.P.9 `emptyOutDir`; §10 SD23). The script imports the emitter from the built `dist/catalog/index.js` and writes the document form of the `line` catalog. It sits beside the other repository scripts, as `scripts/validate-contrast.mjs` does for the `line-colors` build (§12 AM-016, L3R10-02).
 - **Test inputs:** the five A2UI v0.9.1 schema files `client_capabilities.json`, `client_to_server.json`, `common_types.json`, `server_to_client.json` and `basic_catalog.json` (upstream `specification/v0_9_1/catalogs/basic/catalog.json`, the spike's name) are vendored into `packages/line-genui/__tests__/fixtures/a2ui-v0_9_1/`. They are copied once from `a2ui-project/a2ui` at commit `cbaa5ee62c737b50d0695c1e5794d0f648b61dca` (`specification/v0_9_1/json/` and `specification/v0_9_1/catalogs/basic/`), the commit and files the R2 spike fetched (R2 P3 and Sources; `docs/research/assets/01-r2/spike/scripts/fetch-spec.ts`; §12 AM-017, L2R11-03). A `SOURCE.md` beside them records the commit and the upstream paths. `@a2ui/web_core` 0.14.0 ships `src/v0_9/schemas/` and no `v0_9_1` folder [`npm pack @a2ui/web_core@0.14.0 --dry-run`, 2026-10-20; the two sets were not compared], so the tests do not read the schemas from it. G4 reuses the same files (§12 AM-016, L3R10-01).
 - **Lint exclusion:** four of the five upstream files fail the Biome formatter, so the "Lint (biome check)" step (`.github/workflows/checks.yml:20-21`) would fail on them. G2 adds `"!**/__tests__/fixtures/a2ui-v0_9_1"` to the `biome.json` `files.includes` list (`biome.json:91`) (§12 AM-017, L3R11-02). G2 then runs `bun run lint:fix`; Biome wraps the array if the line exceeds 120 columns (`biome.json` `lineWidth`) (§12 AM-018, L2R12-01; §12 AM-019, L3R13-03). G2 carries an AM row to Phase 00 spec §6.A A2, whose Biome ignore list (`docs/specs/00-spec-design-system.md:429`) does not name the fixture folder (§12 AM-020, L2R14-01).
-- **Test dependencies:** root `devDependencies` gain `"ajv": "^8.20.0"` and `"ajv-formats": "^3.0.1"` (R2 P2; spike `README.md:32`). The root manifest already holds the shared test tooling, for example `@happy-dom/global-registrator`, `@open-wc/testing-helpers` and `playwright` (`package.json:50-83`; §12 AM-017, L2R11-04). G3 also runs Ajv, so whichever of G2 and G3 lands first adds both (§12 AM-016, L3R10-01).
+- **Test dependencies:** root `devDependencies` gain `"ajv": "^8.20.0"` and `"ajv-formats": "^3.0.1"` (R2 P2; spike `README.md:32`). The root manifest already holds the shared test tooling, for example `@happy-dom/global-registrator`, `@open-wc/testing-helpers` and `playwright` (`package.json:50-83`; §12 AM-017, L2R11-04). G3 also runs Ajv, so whichever of G2 and G3 lands first adds both (§12 AM-016, L3R10-01). infra-supervisor owns the root `package.json` edit (§12 AM-021).
 
 **`line` catalog**
 
@@ -1115,6 +1121,7 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - line MUST NOT re-emit the basic JSON Schema (ARCH §17.3).
 - Client capabilities MUST list the basic id only when the consumer opts in. This holds until basic coverage is complete (§10 SD44).
 - Phase 1 maps 10 of 18 basic types (ARCH §17.3 table). They are Text, Image, Icon, Video, AudioPlayer, Row, Column, List, Divider and Button.
+- G2 maps `Image` to native `<img>` for every `variant` until C10 adds the `variant: "avatar"` route to `<line-avatar>` (ARCH §17.3; §6.C.4; §12 AM-021, L3R15-02).
 - An unmapped basic type MUST render an inert placeholder and raise `line-a2ui-error` (ARCH §17.3).
 
 **Versions**
@@ -1128,15 +1135,15 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - The inline projection of `catalog.json` validates against the A2UI v0.9.1 `client_capabilities.json#/$defs/Catalog` (plan §5.6 D2; plan §7.2).
 - `web_core` reads the catalog back with `Catalog.fromJson`, and its `validationSchema` compiles (plan §7.2).
 - Ajv 2020 compiles `common_types.json` and `server_to_client.json` against the shipped `catalog.json` (R2 §2.7; §12 AM-003, L2R2-08).
-- Flagged descriptors are absent from `catalog.json`.
+- A fixture descriptor with `agentExposed: false` is absent from the `line` catalog that the emitter writes. The Phase 1 flagged descriptors land with C12, C13 and C16, which check their own tags (§6.C.4; §12 AM-021, L3R15-03).
 - The `basic` implementation map holds the 10 Phase 1 types listed above and no other, and a lookup by the v0_9 basic id returns it (§10 SD43; §12 AM-019, L3R13-02).
 - The capabilities object validates against `client_capabilities.json` with and without the basic opt-in.
 
 #### 6.G.3 G3 — Frontend-tool emitter
 
-- **Owner:** webcomponents-supervisor.
+- **Owner:** webcomponents-supervisor; infra-supervisor for the root `package.json` `devDependencies` (plan §4.0; §12 AM-021).
 - **Deps:** G1.
-- **Changes:** the tool emitter in `packages/line-genui/src/catalog/`, its tests, the CI subset checks. Root `devDependencies` gain `"gpt-tokenizer": "^4.1.0"` for the o200k count (R3 §2.7), and `ajv` and `ajv-formats` as in §6.G.2 if G3 lands before G2 (§12 AM-016, L3R10-01). The subset checks and the per-tool byte and o200k print are `bun test` files in `packages/line-genui`, so the existing "Unit tier" step (`bun test`, `.github/workflows/checks.yml:38-39`) runs them on every PR (§12 AM-018, L3R12-03).
+- **Changes:** the tool emitter in `packages/line-genui/src/catalog/`, its tests, the CI subset checks. Root `devDependencies` gain `"gpt-tokenizer": "^4.1.0"` for the o200k count (R3 §2.7), and `ajv` and `ajv-formats` as in §6.G.2 if G3 lands before G2 (§12 AM-016, L3R10-01); infra-supervisor owns the root `package.json` edit (§12 AM-021). The subset checks and the per-tool byte and o200k print are `bun test` files in `packages/line-genui`, so the existing "Unit tier" step (`bun test`, `.github/workflows/checks.yml:38-39`) runs them on every PR (§12 AM-018, L3R12-03).
 
 **Contract**
 
@@ -1167,11 +1174,11 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - Every PR runs the offline R3 P11 subset checks for each provider in CI (R3 §3; §10 SD46, SD49).
 - Every tool description is at or under 1024 characters, and every tool name matches the pattern.
 - Before each release, a maintainer calls each provider live with the emitted tools and records the result in the release PR (§10 SD49).
-- Flagged descriptors produce no tool.
+- A fixture descriptor with `agentExposed: false` produces no tool. The Phase 1 flagged descriptors land with C12, C13 and C16, which check their own tags (§6.C.4; §12 AM-021, L3R15-03).
 
 #### 6.G.4 G4 — Surface `<line-a2ui-surface>`
 
-- **Owner:** webcomponents-supervisor.
+- **Owner:** webcomponents-supervisor; infra-supervisor for the `analyze` script and `build` step, the `customElements` field and the `custom-elements.json` `files` entry in `packages/line-genui/package.json` (§4.1), the `apps/storybook` devDependency and the `preview.ts` manifest import (`.claude/agents/infra-supervisor.md:97, :104`; plan §4.0; §12 AM-021).
 - **Deps:** G1, G2, P5 (its registration harness, §10 SD40); R2 decided (plan §6).
 - **Changes:**
   - `packages/line-genui/src/a2ui/` (session, surface, reconciler); the `@websublime/line-genui/a2ui` export; `line-genui` `dependencies`.
@@ -1249,7 +1256,7 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - The docs MUST state the template-list limit. `instanceId` is unstable across template-array insertions and reorders (R2 §2.8; §10 SD60), so a kept element may rebind to another item [INFERENCE: not stated in R2].
 - The revisit trigger for that limit is a2ui#1745 (R2 §6 Q1; §10 SD60).
 
-**Basic mapping.** The Phase 1 targets follow the ARCH §17.3 table. Icon has the extra rules below (§10 SD15, SD33).
+**Basic mapping.** The Phase 1 targets follow the ARCH §17.3 table, except the `Image` `variant: "avatar"` route, which C10 adds (§6.G.2; §6.C.4; §12 AM-021, L3R15-02). Icon has the extra rules below (§10 SD15, SD33).
 
 - An `{ "svgPath": … }` value MUST render through `<line-icon>` with its new `path` property (R10 §2.1; §10 SD33).
 - `<line-icon>` then draws `<svg viewBox="0 0 24 24"><path>` and sets `d` through `setAttribute('d')` (§10 SD33).
@@ -1498,7 +1505,7 @@ Reference host values come from `examples/basic-host/src/host-styles.ts` in `mod
 
 #### 6.G.7 G7 — Transport recipes
 
-- **Owner:** webcomponents-supervisor.
+- **Owner:** webcomponents-supervisor; infra-supervisor for the `apps/storybook` devDependencies (`.claude/agents/infra-supervisor.md:104`; plan §4.0; §12 AM-021).
 - **Deps:** G4.
 - **Changes:** Storybook stories and MDX under `apps/storybook`; the Bun test `apps/storybook/__tests__/ag-ui-middleware.test.ts`, which the existing "Unit tier" step (`bun test`, `.github/workflows/checks.yml:38-39`) runs, because the `bunfig.toml` `[test]` table ignores only `temp/**` (§12 AM-019, L3R13-04); and these `apps/storybook` devDependencies (§12 AM-016, L3R10-05). Vite bundles the client packages into the static Storybook (R6 §6 Q2). The middleware is server code (R6 TL;DR), and only the Bun test loads it (§12 AM-017, L2R11-07):
   - `@ag-ui/a2ui-middleware`, pinned as below.
@@ -1889,8 +1896,8 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
   - Task: G2.
   - Check: the G2 tests listed in §6.G.2 Acceptance.
 - [ ] The Phase 1 subset of the `basic` catalog is registered under the A2UI basic catalog id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, and unmapped basic types render an inert placeholder and raise `line-a2ui-error`
-  - Tasks: G2, G4.
-  - Check: a message with the v0_9 basic id renders mapped types and raises `line-a2ui-error` for each unmapped type (§6.G.4).
+  - Tasks: G2, G4, C10 (the `Image` `variant: "avatar"` route; §12 AM-021, L3R15-02).
+  - Check: a message with the v0_9 basic id renders mapped types and raises `line-a2ui-error` for each unmapped type (§6.G.4); an `Image` with `variant: "avatar"` renders `<line-avatar>` (§6.C.4).
 - [ ] The frontend-tool schemas validate as JSON Schema and use literal, flat parameters without the A2UI common types or dynamic bindings. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and every tool description stays at or under the self-imposed cap of 1024 characters
   - Task: G3.
   - Check: Ajv validation and the offline R3 P11 subset checks run in CI on every PR; the live provider calls are recorded in the release PR (§6.G.3).
@@ -1972,7 +1979,7 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD15 | Q49: What does the A2UI icon map hold? | No default set (the consumer registers one); each entry carries weight and the RTL mirror flag per name; the consumer passes `a2uiIconMap(set, { library })` to the surface property `iconMap`, and on the agent path the surface sets `<line-icon>` `library`, `name`, `weight` and `mirror` from the entry (AM-004, AM-006); `A2uiIconMap` is `Readonly<Record<A2uiIconName, A2uiIconEntry>>` keyed by A2UI name, with `library` copied into each entry, returned null-prototype and frozen, looked up with `Object.hasOwn`, and re-projected when `iconMap` changes (AM-008); `A2uiIconName` is the union of the 59 A2UI v0.9.1 `Icon.name` enum values, exported from `./a2ui` (AM-010); the three Lucide collisions are accepted and documented | Lucide or Phosphor as default; fill or drifted glyphs for the collisions; a fixed `iconSet` property whose value doubles as the `library` key (AM-006) | R10 §2.1, P2, §2.3, §2.5, §6 Q2, Q5, Q7; R1 §2.6; ARCH §11, §17.4 | Fork R2 | Approved 2026-10-20 |
 | SD16 | Does the `line-themes` barrel import the MCP Apps bridge? | No; consumers import `./hosts/mcp-apps.css` on its own | Importing it from `src/index.css` | PRD Appendix D "Tiers" | Drafting | Approved 2026-10-20 |
 | SD17 | Q30: How does `mcp-apps.css` handle `line-tokens` primitives? | A `body`-scoped `var(--host, inherit)` with no copied literals; Miguel approved the Law 10 reading that `line-themes` may name a token without copying its value; the bridge redeclares the composed `--line-focus-ring` on `body` by name (AM-004) | Copied literals; a second sheet in `line-tokens`; colour aliases only | R5 §2.4b; `packages/line-tokens/src/focus-ring.css:19`; MANIFESTO Law 10 | Fork R4 | Approved 2026-10-20 |
-| SD18 | Q20: How does C21 bound the cost of repeated `updateProps` calls? | C21 measures the host update rate per component and sets a budget; an upstream issue is filed; past the budget only, a `line-core` `VanillaMachine` subclass replaces the props source. C21 sets the budget on a fixture machine; each machine row records its own rate, and the first row past the budget adds the subclass (AM-020) | Skip `updateProps` on shallow-equal props; wait for an upstream fix alone | R7 §2.3 P4, §6 OQ1; plan §5.6 D7 | Fork R1 | Approved 2026-10-20 |
+| SD18 | Q20: How does C21 bound the cost of repeated `updateProps` calls? | C21 ships the update-rate harness and sets a budget on a fixture machine; each machine row measures its component's rate; an upstream issue is filed; past the budget only, a `line-core` `VanillaMachine` subclass, added by the first row past the budget, replaces the props source (AM-020, AM-021) | Skip `updateProps` on shallow-equal props; wait for an upstream fix alone | R7 §2.3 P4, §6 OQ1; plan §5.6 D7 | Fork R1 | Approved 2026-10-20 |
 | SD19 | Q31: How do components reach `ElementInternals`? | `LineElement` attaches internals for every component and keeps them in an ES `#private` field; subclasses reach them as `this[INTERNALS]`, a prototype accessor keyed by a plain `Symbol('line.internals')` that `line-core` exports from `src/internals.ts`; the description is neither `internals` nor `privateInternals`, so axe's WCCG lookup does not find it (AM-004); no public `internals` property; `FormAssociated` reuses it; no `globalThis` registration; a `line-core` task before C1 measures the per-element cost (AM-002) | A public-at-runtime `internals` property; an accessor on `FormAssociated` only; an opt-in controller; `globalThis` registration | R8 §2.4, §2.5, §6 Q2; ARCH §14.8 | Fork R1 | Approved 2026-10-20 |
 | SD20 | Q43: Does `line-core/styles` tree-shake per sheet? | `/* @__PURE__ */` on each `createSheet()` call [INFERENCE: per-sheet shaking not probed; §6.P.5 acceptance measures it] | Leave as is; one subpath per sheet | R9 §2.1; Phase 00 spec §6.D.7 | Default R1 | Approved 2026-10-20 |
 | SD21 | Q42: What does the < 5 KB soft target count? | The component alone with Lit, `line-core` and Zag external, measured with esbuild and `gzip -9 -n` on the packed tarball, reported per component, not gating | First-component cost; marginal cost over a baseline; size-limit with brotli | R9 §2.4, §6 Q6; PRD §1.6–§1.7 | Default R1 | Approved 2026-10-20 |
@@ -2087,5 +2094,6 @@ PROCESS §3 requires that any change to this spec after approval lands as a row 
 | AM-018 | 2026-10-20 | ledger 00-Z48 (factual corrections, coherence review round 12) | R12-L1-01/L3R12-01: the §6.C.0 owner bullet and the C22 Owner line name infra-supervisor for the C22 CDN gate files `playwright.config.ts` (`testIgnore`) and `.github/workflows/cdn-check.yml`, as plan §4.0 and §6.S.1 do; this completes the owner split of AM-017 (L3R11-03). L3R12-02: P5 adds a "Size report" step after "Pack verification (AM-036)" that runs `bun run scripts/report-size.mjs` and gates nothing; the §5 `checks.yml` line names it. L3R12-03: G3 runs the subset checks and the per-tool byte and o200k print as `bun test` files in `packages/line-genui`, through the "Unit tier" step. L3R12-04: P10 and G4 add no `.gitignore` line, because the unanchored `custom-elements.json` line covers both package manifests; P10 drops the `customElements.json` line, whose producer it removes; the §5 `.gitignore` line names P10 only. L3R12-05: ARCH §17.3 names the `line-components` `custom-elements.json` as the drift test source (ARCH v0.8.10 note). L2R12-01: the G2 Lint exclusion states that Biome wraps the `files.includes` array one entry per line. The header names AM-001–AM-018 | The round-12 coherence review found an owner split that AM-017 left in two C lines, a size report with no CI step, G3 checks with no named CI step, `.gitignore` additions that the existing line already covers, a stale manifest name in ARCH §17.3, and a `biome.json` edit that fails the Lint step unless wrapped | agent R12bLensPlanPRD (R12-L1-01); agent R12bLensSpecArch (L3R12-01 to L3R12-05); agent R12bLensSpecResearch (L2R12-01); agent R12Fix (`biome check` on a `/tmp` copy of `biome.json` with the exclusion added: "Formatter would have printed the following content", one entry per line; after `biome check --write`, "No fixes applied"); `.gitignore:9-10`; `.github/workflows/checks.yml:26-27, :38-39`; `apps/storybook/package.json:9`; plan §4.0 |
 | AM-019 | 2026-10-20 | ledger 00-Z48 (factual corrections and orchestrator defaults, coherence review round 13; the C2 → P5 ordering of L3R13-01 as an orchestrator default for Miguel's review at the 00-Z48 PR) | L3R13-01: C2 depends on P5, so P5 removes the "Zero-export smoke" step before C2 makes the `line-components` root export `setIconRegistry`; the C2 row of §6.C.4, the P5 Deps line, §6.C.0 order step 3, the §6.C.6 stream acceptance and plan §4.2 and §6 state it; SD24 stays. L3R13-02: the G2 acceptance item "a message with the v0_9 basic id renders mapped types and raises `line-a2ui-error` for each unmapped type" moves to G4; G2 keeps a registry-contents and catalog-id lookup check, its Changes name the `basic` implementation map that the G4 session registers, and §9.2 points to §6.G.4. L3R13-03/R13-L1-01: P10 also drops `"!**/customElements.json"` from `biome.json` `files.includes` and the `analyze` reference in the `.gitignore` line 7 comment; the §5 `biome.json` line names P10 and G2; the G2 Biome sentence becomes conditional on the 120-column `lineWidth`. L3R13-04: G7 names its test `apps/storybook/__tests__/ag-ui-middleware.test.ts`, which the "Unit tier" step runs, and §5 lists it. L3R13-05: D1 keeps samples that import CSS as uncompiled MDX code blocks; §7.1 does not describe D1 samples and stays. L2R13-01: the Phase 00 AM rows of P5 and P10 also name Phase 00 spec §6.F.5. L2R13-02: in AM-018, "as plan §4.0 and §6.S.1 do" means spec §6.S.1; the AM-018 row stays as written. The header names AM-001–AM-019 | The round-13 coherence review found that C2's root export would fail the zero-export step if C2 landed before P5, a G2 acceptance item that needs the G4 surface, a `biome.json` exclusion and a `.gitignore` comment left behind by the P10 removal, a G2 Biome sentence that wraps unconditionally, an unnamed G7 test file, CSS-importing D1 samples with no rule, Phase 00 §6.F.5 missing from two AM-row notes, and an ambiguous reference in AM-018 | agent R13LensSpecArch (L3R13-01 to L3R13-05); agent R13LensSpecResearch (L2R13-01, L2R13-02); agent R13LensPlanPRD (R13-L1-01); agent R13Fix (C1 adds no root export: §5 names only C2 for `packages/line-components/src/index.ts`); `.github/workflows/checks.yml:28-29` ("Zero-export smoke", `if (n !== 0)`), `:38-39` ("Unit tier", `bun test`); `biome.json:20` (`"lineWidth": 120`), `:91` (`"!**/customElements.json"`); `.gitignore:7` ("(regenerated by `analyze`)"); `bunfig.toml` `[test]` (`pathIgnorePatterns = ["temp/**"]`); `docs/specs/00-spec-design-system.md:1819-1822, :1839-1840` |
 | AM-020 | 2026-10-20 | ledger 00-Z48 (merge-order corrections and orchestrator defaults, coherence review round 14; as orchestrator defaults for Miguel's review at the 00-Z48 PR: P1 as a P5 Dep (L3R14-02), the C21 split of SD18 and SD28 (L3R14-04) and G4 as a C5–C20 Dep (L3R14-05)) | L3R14-01: C23 gives happy-dom a fake `attachInternals` in `bun-test-preload.ts` from the `line-core` mock, and the mock's `restore()` puts the previous function back instead of deleting it; §5 and §7.8 state it. L3R14-02: the three P9 acceptance items (bare `line-core` imports in `line-components` `dist/`, the undeclared-specifier scan, the identity test) and the identity test file move to P5, and P5 gains P1 as a Dep so the scan covers `line-genui`; P9 checks the derived externals of `line-core` `dist/`; §5, §7.5, §8 and §9.4 follow. L3R14-03: the C1 autodocs item moves from P10 to the §6.C.6 stream acceptance; P10 checks that `preview.ts` calls `setCustomElementsManifest` and the Storybook build passes. L3R14-04: C21 ships the harness, the budget and its unit on a fixture machine; each machine row (C1, C5, C6, C8, C11, C16) records its own rate in its PR, and the first row past the budget adds the `line-core` `VanillaMachine` subclass, owned by webcomponents-supervisor; SD18, SD28, §4.5, §5, §6.C.6, §8 and plan §4.3 and §8 follow. L3R14-05: C5–C20 depend on G4; the §6.C.4 Deps column, §6.C.0 step 5, SD86 and plan §6 state it. L3R14-06: G4 tests the required-name rule with a fixture descriptor, and the IconButton case moves to C5 (§6.C.5). L3R14-07: the G1 description item checks `Catalog.toJson()` output. L3R14-08: P1 adds `packages/line-genui/LICENSE`, a copy of `packages/line-core/LICENSE`. L3R14-09: P5's first size report covers the rows merged before it (§6.C.6, §7.6). L3R14-10: the §4.1 factory call passes `root: import.meta.dirname`. L3R14-11: C22 updates the three `line-icons` unit tests that call the resolvers without `base`. L3R14-12: P5 drops the zero-export comment of `packages/line-components/vite.config.mjs`, and C1 updates `packages/line-components/README.md:3`. L2R14-01: the P10 Phase 00 AM row names §6.A A2, and G2 carries the same AM row for its fixture exclusion; §5 names G2. L2R14-02: the §7.8 Unit row cites Phase 00 spec §6.F.3. R14-L1-01: in the AM-019 Source cell, "the C2 → P5 ordering" means P5 lands before C2, as plan §6 draws it; the AM-019 row stays as written. L2R14-03: the SD65 Source cites R6 §2.1 and §6 Q3, whose options (b), (a) and (c) are the SD65 choice and alternatives. The header names AM-001–AM-020 | The round-14 merge-order walk found acceptance items that their task cannot meet with only its Deps (P9, P10, C21, G4), C5–C20 rows that could merge before the surface they extend, a unit tier that C23 breaks under happy-dom, a missing `LICENSE`, a factory call that fails if P1 lands after P9, unit tests and Phase 00 statements that C22, P5 and C1 leave stale, and four citation gaps | agent R14LensSpecArch (L3R14-01 to L3R14-12); agent R14LensSpecResearch (L2R14-01 to L2R14-03); agent R14LensPlanPRD (R14-L1-01); agent R14Fix (grep of `node_modules/.bun/happy-dom@20.14.6/node_modules/happy-dom/lib` for `attachInternals` or `ElementInternals`: 0 files; `bun.lock:1094` happy-dom 20.14.6); `packages/line-core/__tests__/mocks/element-internals.ts:3, :39`; `bun-test-preload.ts:40`; `packages/line-core/__tests__/direction.test.ts:45`; `packages/line-core/__tests__/line-machine-controller.test.ts:63`; `packages/line-core/dist/index.js:4`; `packages/line-core/dist/machine/index.js:1`; `vite.config.shared.mjs:10-16`; `packages/*/LICENSE` (8 files); `docs/plans/00-tasks-design-system.md:119` (Z5); `packages/line-icons/__tests__/registry.test.ts:7-8`, `resolvers.lucide.test.ts:15`, `resolvers.phosphor.test.ts:18`; `packages/line-components/vite.config.mjs:3-4`; `packages/line-components/README.md:3`; `docs/specs/00-spec-design-system.md:429, :1692-1694`; `docs/research/01-research-transports.md:78` (R6 §2.1, no error channel), `:255` (R6 §6 Q3 options) |
+| AM-021 | 2026-10-20 | ledger 00-Z48 (owner and acceptance corrections, coherence review round 15; the G2, G4 and G7 build and Storybook owner splits and the C `exports` rule as orchestrator defaults for Miguel's review at the 00-Z48 PR) | L3R15-01: infra-supervisor owns the C23 `bun-test-preload.ts` change; the C23 Owner line and Changes, the §6.C.0 owner bullet, the §5 `bun-test-preload.ts` line and plan §4.0 C row state it. Sweep A (owner split by file): infra-supervisor also owns the root `package.json` `devDependencies` that C22 (webpack, esbuild), G2 (ajv, ajv-formats) and G3 (gpt-tokenizer, ajv, ajv-formats) add; the C22, G2 and G3 Owner lines and Changes, the §6.C.0 and §6.G.0 owner bullets, the §5 `package.json` line and plan §4.0 C and G rows state it. Orchestrator default: infra-supervisor also owns the G2 `emit-catalog` step of the `line-genui` `build` script, the G4 `analyze` script and `build` step and the G4 `customElements` field and `custom-elements.json` `files` entry in `packages/line-genui/package.json`, the G4 `apps/storybook` devDependency and `preview.ts` manifest import, and the G7 `apps/storybook` devDependencies (`.claude/agents/infra-supervisor.md:97, :104`); the G2, G4 and G7 Owner lines, §6.G.0, §5 and plan §4.0 G row state it. Orchestrator default: every row that adds its own subpath entry to an `exports` map keeps it with webcomponents-supervisor (C1–C20; C22; G2 `./catalog.json` and `line-icons` `./a2ui`; G4 `./custom-elements.json`; G6 `./hosts/mcp-apps.css`); P1 adds the `line-genui` `./catalog` and `./a2ui` keys (§4.1, SD23); §4 states the rule, §6.C.0 and §6.G.0 cite it, and plan §4.0 C and G rows state it. `biome.json` (G2) and `scripts/emit-catalog.mjs` (G2) stay unsplit: the infra-supervisor scope list (`.claude/agents/infra-supervisor.md:96-104`) names neither, and webcomponents-supervisor lists `biome.json` (`webcomponents-supervisor.md:87`) and generator scripts and the catalogs (`:95-96`, `:99`). L3R15-02: C10 adds the `Image` `variant: "avatar"` route to the `basic` map, with an acceptance item that a v0_9 basic `Image` with that variant renders `<line-avatar>` (§6.C.4); §6.G.2 says G2 maps `Image` to native `<img>` until C10; the §6.G.4 Basic mapping, the §5 `src/catalog/index.ts` line and §9.2 follow. L3R15-03: the G2 and G3 flagged-descriptor items test the emitters with a fixture descriptor that has `agentExposed: false`, and C12, C13 and C16 each check that their tag is absent from the built `catalog.json` and from the G3 tool output (§6.C.4). m1/L2R15-02/R15-L1-02: the SD18 Decision opens with the fixture-machine wording. m2/L2R15-01: the C22 test bullet lists every call without `base`; the AM-020 Evidence locators `registry.test.ts:7-8`, `resolvers.lucide.test.ts:15` and `resolvers.phosphor.test.ts:18` named one call per file only. m3: C23 carries an AM row to Phase 00 spec §6.F.3, and the §5 Phase 00 line names C23. R15-L1-01 is plan only (§6 graph line `G1, G4, G5 ────────► C5–C20`). R15-L1-03: the AM-020 L3R14-02 follow list should also name plan §4.2 P5 and §6. L2R15-03: the AM-020 L3R14-04 follow list should also name §6.C.1. The AM-020 row stays as written. The header names AM-001–AM-021 | The round-15 coherence review found a C23 file that the supervisor definitions give to infra-supervisor under a webcomponents-only owner, an ARCH §17.3 avatar route that no task owned, two flagged-descriptor acceptance items with nothing to check at merge, a stale SD18 clause, a partial locator list, a Phase 00 statement that C23 leaves stale, and three gaps in the AM-020 lists and the plan graph | agent R15LensSpecArch (L3R15-01 to L3R15-03, m1 to m3); agent R15LensSpecResearch (L2R15-01 to L2R15-03); agent R15LensPlanPRD (R15-L1-01 to R15-L1-03); agent R15Fix (owner sweep and acceptance sweep); `.claude/agents/infra-supervisor.md:88` (`package.json # root scripts`), `:97` ("Bun workspace topology, root scripts"), `:104` ("Test harness plumbing (`bun-test-preload.ts`, Playwright config)"); `docs/ARCHITECTURE.md:1552` (ARCH §17.3 Image row, "`variant: "avatar"` → Avatar"); §10 SD38; `packages/line-icons/__tests__/registry.test.ts:7, :8, :19, :30, :37`; `resolvers.lucide.test.ts:15`; `resolvers.phosphor.test.ts:18, :24, :28, :32, :37, :41, :45, :51`; `docs/specs/00-spec-design-system.md:1692-1720` (§6.F.3 preload block, no `attachInternals`); `bun-test-preload.ts:40` |
 
 *End of spec.*
