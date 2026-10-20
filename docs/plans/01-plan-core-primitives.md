@@ -283,7 +283,7 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 ### 4.3 Stream C — core primitives
 
 - C1–C4 cover the validating components Button, Icon, Stack and Separator (O2.b (a)). They ship first, before stream G, without descriptors, and stream G adds their descriptors.
-- C21 changes `LineMachineController` in `line-core` so it calls `updateProps` on every host update, and a component declares its machine props as a function of its properties (D7). It lands before C1.
+- C21 changes `LineMachineController` in `line-core` so it calls `updateProps` on every host update, and a component declares its machine props as a function of its properties (D7). The same task corrects the "four public" wording in `packages/line-core/README.md:10` and the code comment at `packages/line-core/src/machine/index.ts:2`, which list re-exports the module does not match (`mergeProps`, `normalizeProps`, `spreadProps`, `VanillaMachine`, type `Attrs`; AM-073). It lands before C1.
 - C22 fixes the `line-icons` resolvers for consumer bundlers (R10 P6). The spec picks the loading mechanism (§5.5). It lands before C2 (Icon).
 - C21 and C22 are prerequisites. They take numbers after the 20 component rows, so C1–C20 keep their component mapping.
 - C5–C20 cover the remaining 16 components. Each ships its descriptor in the same PR.
@@ -427,8 +427,8 @@ These questions belong to the Phase 1 spec. They are neither research items nor 
 - Which version does `line-genui` release first (§2.7)? Options: `0.1.0`, `0.2.0`, or a canary first. The trusted-publisher bootstrap stays on path A, the AM-038 order (PRD §7.3 item 10). Evidence: R9 §2.5, §2.6, §6 Q9.
 - Which `@a2ui/web_core` version does `line-genui` pin, 0.13.0, 0.14.0 or `latest` on the spec date? Evidence: R1 §2.1, §6 Q1.
 - How is the IconButton name checked? Options: a runtime dev warning, a descriptor-level required-name check (§17.4), a DOM check after render, or axe only. Does IconButton join the §7 form-associated list? Evidence: R8 §6 Q12 and Q13, R2 §6 Q5.
-- Which machine drives the ButtonGroup toolbar (D5)? The options are a custom roving-focus machine or another option, such as `@zag-js/toolbar` once it leaves pre-release 2.0.0-next.3. Evidence: R8 §2.2, §6 Q6; R7 §2.1.
-- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? Evidence: R8 §2.2, §6 Q7.
+- Which machine drives the ButtonGroup toolbar (D5)? The options are a custom roving-focus machine or another option, such as `@zag-js/toolbar` once it leaves pre-release 2.0.0-next.3. The choice also settles the tier label, which reads "Pre-built or Custom" in PRD §4.1, §4.11 and §7.3 and in §2.2 until then. Evidence: R8 §2.2, §6 Q6; R7 §2.1.
+- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? The machine choice also settles the tier label, which reads "Pre-built or Custom" until then. Evidence: R8 §2.2, §6 Q7.
 - What do Button's `pressed`, `loading` and `disabled` mean, now that D7 passes host props to the machine? Evidence: R7 §6 OQ4, R8 §2.2.
 - Which tool runs the axe gate (P7)? Options: Playwright with `@axe-core/playwright`, the Storybook addon with the Vitest addon, or both. Evidence: R8 §2.4, §6 Q3.
 - Where do the G5 tests read the manifest? Options: the file, with the analyse step moved before the unit tier; a manifest built in memory; the manifest the `line-components` build emits (D8). Evidence: R4 §2.7, §6 OQ4.
