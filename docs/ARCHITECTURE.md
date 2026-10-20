@@ -13,15 +13,15 @@ This document captures the **cross-cutting architectural decisions** that apply 
 ## Revision Notes
 
 - **v0.8.4 (2026-10-20)** — Aligned with PRD v0.8.18 (ledger row `00-Z45`, decisions by Miguel on 2026-10-19 (projection technique) and 2026-10-20 (D1–D8)).
-  - §6 (Base Class — LineElement) says a component declares its tier by composing a `LineMachineController`, lists what `line-core/machine` re-exports, and adds that the controller calls `updateProps` on every host update.
+  - §6 (Base Class — LineElement) says a component declares its tier by composing a `LineMachineController`, draws the controller outside the `LineElement` tree, lists what `line-core/machine` re-exports, and adds that the controller calls `updateProps` on every host update.
   - §8 (State Management) corrects the computed-state and controller wording, adds `initialState` to the Input example, and notes the pre-built PasswordInput and DateInput machines.
   - §9 (Field Architecture) records that a host ID reference does not reach an inner native element in Firefox or Safari, and leaves the labelling mechanism to the Field spec.
   - §12 (Bundle Splitting Rule) says isolation comes from having no barrel, leaves the `sideEffects` value to the Phase 1 spec, and keeps `@websublime/*` external in the library builds.
   - §13.1 (Button Ecosystem) drops "TypeScript enforced" for IconButton, makes ButtonGroup a toolbar with roving focus, and adds Chip as a toggle button.
-  - §13.6 (Editable) names the `@zag-js/editable` states. §14.8 gives the `:state()` support range.
+  - §13.6 (Editable) names the `@zag-js/editable` states. §14.7 gives Chip its own reset row, which the Phase 1 spec settles. §14.8 gives the `:state()` support range.
   - §17.3 (Descriptors and catalogs) sets the catalog validation, names the basic catalog id in full, limits the flat-schema rule to frontend-tool parameters, corrects the form-association note, and leaves `svgPath` to the spec.
   - §17.4 (Renderer) states the projection technique, the error path and the focus rule.
-  - §17.5 (Transports) corrects the A2A payload and the SSE framing, and says how recipes pin the middleware. §17.6 (MCP Apps) names the bridge targets.
+  - §17.5 (Transports) states the A2A payload shapes upstream uses and leaves the accepted shape to the spec, splits the SSE framing, and says how recipes pin the middleware. §17.6 (MCP Apps) names the bridge targets.
 - **v0.8.3 (2026-10-13)** — Aligned with PRD v0.8.17 (ledger row `00-Z27`, decision by Miguel on 2026-10-13).
   - §17.4 (Renderer) says the Phase 1 research stage decides the projection technique before the spec.
 - **v0.8.2 (2026-10-12)** — Aligned with PRD v0.8.15 (ledger row `00-Z17`, decision by Miguel on 2026-10-12).
@@ -247,18 +247,19 @@ LitElement
         ├── Inspector mixin (feature flag via localStorage)
         ├── Metadata mixin (version, docs, qa)
         ├── Direction mixin (LTR/RTL)
-        ├── FormAssociated mixin (opt-in, ElementInternals)
-        └── Machine connection via `LineMachineController` (Lit `ReactiveController`, exported from `@websublime/line-core/machine`, wraps `@zag-js/vanilla`)
+        └── FormAssociated mixin (opt-in, ElementInternals)
               │
-              ├── Pre-built machine components
+              ├── Pre-built machine components — compose a `LineMachineController`
               │     ├── LineDialog (uses @zag-js/dialog)
               │     └── ...
-              ├── Custom machine components
+              ├── Custom machine components — compose a `LineMachineController`
               │     ├── LineInput (uses custom createMachine)
               │     └── ...
               └── Static components (no machine)
                     ├── LineBadge
                     └── ...
+
+LineMachineController — Lit `ReactiveController`, exported from `@websublime/line-core/machine`, wraps `@zag-js/vanilla`
 ```
 
 A component declares its tier by composing a `LineMachineController` with a pre-built Zag.js machine or a custom `createMachine()` result, or by composing none (static). `LineElement` holds no machine. Each component owns its controller, and static components carry no machine overhead.
@@ -495,10 +496,10 @@ Architectural decisions for specific components that were debated and resolved. 
 
 - **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default, states: idle/pressed/loading/disabled. Loading state is headless (state only, no bundled spinner).
 - **IconButton** — Separate component, `aria-label` required, same machine as Button. TypeScript cannot check the name in markup or on elements the A2UI surface creates by tag at run time, so the Phase 1 spec picks the check.
-- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. It has a machine. `@zag-js/toolbar` exists only as the pre-release 2.0.0-next.3, so the Phase 1 spec picks a custom roving-focus machine or another option. Border collapse, slot-based (does NOT import Button).
+- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. It has a machine. `npm view @zag-js/toolbar` on 2026-10-20 shows only pre-release versions (`latest` and `next` are 2.0.0-next.x), so the Phase 1 spec picks a custom roving-focus machine or another option. Border collapse, slot-based (does NOT import Button).
 - **SplitButton** — Custom, Phase 3 (depends on Button + Menu), bundles both internally.
 - **ToggleButton** — NOT a separate component; use ToggleGroup with single item or Button with `pressed` state.
-- **Chip** — A toggle button with `aria-pressed`, Phase 1. It has a machine; `@zag-js/toggle` 1.46.0 is the candidate pre-built machine, and the Phase 1 spec picks it.
+- **Chip** — A toggle button with `aria-pressed`, Phase 1. It has a machine. `@zag-js/toggle` 1.46.0 is a candidate, and the Phase 1 spec picks the machine.
 
 ### 13.2 Avatar Group
 
@@ -1059,7 +1060,8 @@ Which modules each component category uses:
 | Progress, Gauge/Meter | x | | | | | | x | | | | |
 | Table, DataGrid | x | | | | | | | | | x | |
 | ScrollArea | x | | | | | | | | | | x |
-| Badge, Alert, Chip, Avatar, Separator, Skeleton, Spinner, Card, Empty State, all Static | x | | | | | | | | | | |
+| Chip (the Phase 1 spec settles its modules; a toggle may need `button`) | x | | | | | | | | | | |
+| Badge, Alert, Avatar, Separator, Skeleton, Spinner, Card, Empty State, all Static | x | | | | | | | | | | |
 | Dialog, Sheet, Popover, Tooltip, Toast | x | | | | | | | | | | |
 | Editable | x | x | | | | | | | | | |
 | FileUpload | x | x | | | | | | | | | |
@@ -1130,7 +1132,7 @@ protected reflectState(name: string, active: boolean) {
 
 **Note on `:valid` / `:invalid`:** These two are special — they work natively on form-associated custom elements via `ElementInternals.setValidity()`. We still reflect them as data attributes and CustomStateSet for consistency, but the native pseudo-classes also work. A consumer can use EITHER `line-input:invalid` OR `line-input[data-invalid]` OR `line-input:state(invalid)`.
 
-**Note on `:state()` browser support:** Chrome 125+, Firefox 126+, Safari 17.4+. Chrome 90–124 support only the older `:--foo` syntax. Both ranges are within line://ui's target. The `data-*` attributes provide a universal fallback that works everywhere.
+**Note on `:state()` browser support:** Chrome 125+, Firefox 126+, Safari 17.4+. Chrome 90–124 support only the older `:--foo` syntax. line://ui's latest-2 browser target (PRD §1.7) lies inside the `:state()` range. The `data-*` attributes provide a universal fallback that works everywhere.
 
 ### 14.9 Focus Management
 
@@ -1490,7 +1492,7 @@ Every component spec states these rules in its Agent contract section (PRD §8.1
   - The `line` catalog carries the full vocabulary under its own versioned `catalogId`. Any incompatible change gets a new id. `@websublime/line-genui/catalog.json` holds its emitted JSON.
   - A2UI v0.9.1 publishes no standalone catalog meta-schema, so the `line` catalog is checked against published artifacts. Its inline form validates against `client_capabilities.json#/$defs/Catalog`, `web_core` reads it back with `Catalog.fromJson`, and its `validationSchema` compiles.
   - The `basic` catalog registers line components under the A2UI basic catalog id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, so agents that know only the basic catalog render with line://ui. Its JSON Schema is A2UI's own, so line://ui registers implementations under the upstream id and does not re-emit it. The v0.9.1 protocol examples and `@ag-ui/a2ui-middleware` use other ids, and the Phase 1 spec decides which of them the catalog also answers to.
-- Frontend-tool parameters are literal and flat, so OpenAI, Anthropic and Gemini accept them in strict mode. They carry no `$ref`, `oneOf`, `allOf`, recursion or open maps, and no A2UI common types or dynamic bindings. The catalogs keep the common types and dynamic bindings, and the flat rule does not cover them.
+- Frontend-tool parameters are literal and flat, so OpenAI and Anthropic accept them in strict mode, and Gemini accepts them through its `parameters` schema subset. They carry no `$ref`, `oneOf`, `allOf`, recursion or open maps, and no A2UI common types or dynamic bindings. The catalogs keep the common types and dynamic bindings, and the flat rule does not cover them.
 - Every tool description stays at or under 1024 characters. This is a self-imposed cap that matches OpenAI's observed function-description limit; no provider documents it.
 
 Coverage of the `basic` catalog grows by phase. An unmapped basic type renders an inert placeholder and raises `line-a2ui-error`.
@@ -1543,7 +1545,7 @@ The app owns the transport. line://ui documents each one as a Storybook recipe a
 | Transport | Inbound | Outbound |
 |-----------|---------|----------|
 | AG-UI 1.0, `@ag-ui/a2ui-middleware` convention | `ACTIVITY_SNAPSHOT` with `activityType: "a2ui-surface"` and `content.a2ui_operations` | `forwardedProps.a2uiAction` on the next run |
-| A2A | DataPart holding one A2UI message, with `mimeType: application/a2ui+json` in the part `metadata`. The A2UI extension spec also allows an array, and the Python implementation still sends `application/json+a2ui` for v0.8 and v0.9; the Phase 1 spec decides which shapes and which A2A version the recipe accepts | DataPart with `[action]`; capabilities in message metadata |
+| A2A | DataPart with `mimeType: application/a2ui+json` in the part `metadata`. The A2UI v0.9.1 extension spec requires `data` to be an array of messages. The v0.9.1 protocol text and both reference implementations send one message per part, and the Python implementation still sends `application/json+a2ui` for v0.8 and v0.9. The Phase 1 spec decides which shapes and which A2A version the recipe accepts | DataPart with `[action]`; capabilities in message metadata |
 | MCP | Tool result `EmbeddedResource` with `application/a2ui+json` | `tools/call` of `a2ui_action` or `a2ui_error` |
 | SSE | One message per SSE event | POST |
 | WebSocket, `fetch` streams | JSONL | POST |
