@@ -3,13 +3,14 @@
 **Date:** 2026-10-20
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.18
+**Version:** 0.8.19
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.19 (2026-10-20) — The Phase 1 spec picks the ButtonGroup and Chip machines, and `line-genui` ships a manifest.** ButtonGroup runs on a custom roving-focus machine, because `@zag-js/toolbar` ships only pre-release versions, and those pin `@zag-js/core` 2.x while the repo runs Zag 1.46.0. Chip runs on the pre-built `@zag-js/toggle` 1.46.0 machine and carries no remove button. `@websublime/line-genui` ships a Custom Elements Manifest for `<line-a2ui-surface>` beside the one `@websublime/line-components` ships. Miguel chose the custom machine over the `@zag-js/toolbar` pre-release, `@zag-js/toggle` over a custom Chip machine and over a Chip with a remove button, and a `line-genui` manifest over hand-written Storybook docs for the surface (ledger row `00-Z46`, decisions by Miguel on 2026-10-20; record in Phase 1 spec §10). Why: plan §5.5 left both machines to the spec, and the choice settles their tier labels; the manifest that D8 ships covers `line-components` only, so the surface had no API source. The §4.11 tier counts are recounted from the §4 rows, because the earlier Custom 46 and Static 37 did not match them. Sections touched: §4.1 ButtonGroup and Chip rows; §4.11 tier counts (Pre-built 47, Custom 45, Static 39); §6.3; §7.3 Phase 1 component table; Appendix D surfaces table. ARCHITECTURE v0.8.5 §13.1 and the Phase 1 plan §2.1 and §2.2 and §5.5 are aligned in the same commit.
 - **v0.8.18 (2026-10-20) — The PRD, ARCHITECTURE and the Phase 1 plan follow the Phase 1 research stage.** The A2UI renderer projects directly on the `@a2ui/web_core` models and binder (`NodeResolver`). ButtonGroup becomes a toolbar with roving focus, and Chip becomes a toggle button with `aria-pressed`, so both leave the Static tier and gain a machine in Phase 1. The `line` catalog criterion uses only published artifacts. The inline form of the catalog validates against `client_capabilities.json#/$defs/Catalog`, `web_core` reads the catalog back with `Catalog.fromJson`, and its `validationSchema` compiles. Frontend-tool parameters are literal and flat. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and the Phase 1 spec decides how the emitter reaches each provider. The A2UI common types and dynamic bindings stay in the catalogs, and the 1024-character limit is a self-imposed cap on tool descriptions. Storybook loads the Custom Elements Manifest in Phase 1, and `@websublime/line-components` ships the manifest with a `customElements` field. The revision also corrects facts that the research disproved. §1.7 names the CDN endpoints that rewrite bare specifiers. §4.1 describes Icon by its registry attributes. §4.2 notes the pre-built PasswordInput and DateInput machines and leaves their tier to Phase 2. §5.2 moves keyboard checks to the Interaction row and names `storybook/test`. §2.1 and §6.2 list what `line-core/machine` re-exports, and §6.2 no longer says that the `sideEffects` field isolates subpaths. §7.3 names the A2UI basic catalog id in full. Miguel chose direct projection over light-DOM adapter elements rendered through `renderA2uiNode`. For the Vite-built packages he chose TypeScript 7.x `tsc --emitDeclarationOnly` for every `.d.ts` over the TypeScript 6.0 API beside 7.x and over waiting for TypeScript 7.1. He chose the published artifacts for catalog validation over a line-maintained schema and over the `web_core` round-trip alone. He chose literal flat tool schemas over common types in non-strict tools and over both variants per descriptor. He chose to keep focus on the same component across a reparent over accepting the loss and over a batch-end return without `moveBefore()`. He chose a toolbar ButtonGroup over a Static `group`, and a toggle Chip over a display-only Chip and over deferring selection to Phase 2. He chose a controller that calls `updateProps` on every host update over a per-component call and over events from `updated()`. He chose a manifest that Storybook loads and `line-components` ships over Storybook only and over waiting for Storybook 11 (ledger row `00-Z45`, decisions by Miguel on 2026-10-19 (projection technique) and 2026-10-20 (D1–D8); record in `docs/context/00-z45.md` and plan §5.6). Why: the twelve Phase 1 research notes contradicted statements in the PRD, ARCHITECTURE and the plan, and PROCESS §2 sends such research back to a plan and PRD revision before spec work. The forks the notes leave to the spec move to plan §5.5. Sections touched: §1.7, §2.1, §4.1, §4.2, §4.11, §5.1, §5.2, §6.2, §6.3, §7.3; ARCHITECTURE §6, §8, §9, §12, §13.1, §13.6, §14.7, §14.8, §17.3–§17.6; plan header, §1.2, §2, §4–§8, §10, §11; Phase 00 spec AM-073 in its own commit.
 - **v0.8.17 (2026-10-13) — Phase 1 opens with its four validating components, and the site landing page gates the exit.** The four validating components (Button, Icon, Stack, Separator) ship first. The agent-driven UI foundation stream follows on them and adds their descriptors, and every later component ships its descriptor in the same PR. The Phase 1 research stage chooses the projection technique before the spec, and the spec designs one renderer. The choice is no longer the stream's first task. The site landing page dogfoods the Phase 1 components and is a Phase 1 exit criterion. Miguel chose components first over the foundation stream first on throwaway elements and over an interleaved order. He chose the research stage over the first ledger task for the projection evidence. He chose a dogfooding landing page that gates the exit over a landing page outside the exit criteria and over the full §5.3 site (ledger row `00-Z27`, decision by Miguel on 2026-10-13; record in `docs/plans/01-plan-core-primitives.md` §5.4). The same gate chose TypeScript 7.x for Phase 1. PRD §2 names no TypeScript major, and its "Latest stable versions" row already covers 7.x, so no PRD section changes for it. Why: Miguel decided the forks the Phase 1 plan left open (§5.4). With these choices the descriptor API, the emitters and the renderer are designed against real components, the spec designs one renderer, and the public site shows the Phase 1 components. Sections touched: §7.3; ARCHITECTURE §17.4; plan §1, §2, §4–§8, §11.
 - **v0.8.16 (2026-10-13) — Rolldown 1.x ships with Vite 8.** §2.1 states that Rolldown 1.x is a direct dependency of Vite 8, and that Vite 8.3.4 depends on Rolldown `~1.2.12`. It no longer says that Rolldown is pinned at `1.0.x` (ledger row `00-Z20`, spec AM-064). Why: the dependency refresh moves Vite from 8.0.14 to 8.3.4, so the `1.0.x` claim becomes false. This is a factual alignment and changes no decision. Sections touched: §2.1; spec header and AM-064.
@@ -231,11 +232,11 @@ Each component has a product-level description below and a detailed technical sp
 |-----------|------|-------------|------|
 | Button | Custom | Primary interactive element for triggering actions. Supports form submit/reset | [spec](./specs/0002-button.md) |
 | IconButton | Custom | Icon-only action button. Requires accessible label for screen readers | [spec](./specs/0003-icon-button.md) |
-| ButtonGroup | Pre-built or Custom | Groups related buttons as a toolbar with border collapse and roving focus; arrow keys move between the buttons (APG Toolbar). The Phase 1 spec picks the machine | [spec](./specs/0004-button-group.md) |
+| ButtonGroup | Custom | Groups related buttons as a toolbar with border collapse and roving focus; arrow keys move between the buttons (APG Toolbar). A custom roving-focus machine drives it | [spec](./specs/0004-button-group.md) |
 | SplitButton | Custom | Primary action with dropdown for alternatives. Composes Button + Menu internally | [spec](./specs/0005-split-button.md) |
 | Alert | Static | Inline persistent feedback for info, warnings, errors, or success states | [spec](./specs/0006-alert.md) |
 | Badge | Static | Small status indicator — count, dot, or label variant | [spec](./specs/0007-badge.md) |
-| Chip | Pre-built or Custom | Toggle button with `aria-pressed` for categories, filters and selections. `@zag-js/toggle` is a candidate, and the Phase 1 spec picks the machine | [spec](./specs/0008-chip.md) |
+| Chip | Pre-built | Toggle button with `aria-pressed` for categories, filters and selections, on the `@zag-js/toggle` machine | [spec](./specs/0008-chip.md) |
 | Avatar | Static | User or entity representation with image, initials fallback, and status | [spec](./specs/0009-avatar.md) |
 | AvatarGroup | Custom | Stacked avatars with overflow counter. Expands on hover, popover on overflow click | [spec](./specs/0010-avatar-group.md) |
 | Separator | Static | Visual divider between content sections. Horizontal or vertical | [spec](./specs/0011-separator.md) |
@@ -428,10 +429,9 @@ Each component has a product-level description below and a detailed technical sp
 
 | Tier | Count | Description |
 |------|-------|-------------|
-| Pre-built | 46 | Uses existing `@zag-js/*` machine |
-| Custom | 46 | Custom machine via `createMachine()` |
-| Static | 37 | Purely presentational |
-| Pre-built or Custom | 2 | ButtonGroup and Chip; the Phase 1 spec picks the machine |
+| Pre-built | 47 | Uses existing `@zag-js/*` machine |
+| Custom | 45 | Custom machine via `createMachine()` |
+| Static | 39 | Purely presentational |
 | **Total** | **131** |
 
 ---
@@ -733,7 +733,7 @@ Each package ships its own granular exports. Example (`@websublime/line-themes`)
 Dual generation:
 
 1. **TypeScript declarations** (`.d.ts`) — Type safety in imports.
-2. **Custom Elements Manifest** (`custom-elements.json`) — Storybook loads it, and `@websublime/line-components` ships it with a `customElements` field and a `files` entry, for IDEs and any tooling consuming the standard.
+2. **Custom Elements Manifest** (`custom-elements.json`) — Storybook loads it. `@websublime/line-components` ships one for the components, and `@websublime/line-genui` ships one for `<line-a2ui-surface>`, each with a `customElements` field and a `files` entry, for IDEs and any tooling consuming the standard.
 
 ### 6.4 Release — Changesets
 
@@ -866,9 +866,9 @@ Button, Icon, Stack and Separator ship first and validate the stream, which adds
 |-----------|--------|
 | Button | Custom |
 | IconButton | Custom |
-| ButtonGroup | Pre-built or Custom (spec picks the toolbar machine) |
+| ButtonGroup | Custom |
 | Alert | Static |
-| Chip | Pre-built or Custom (spec picks; `@zag-js/toggle` is a candidate) |
+| Chip | Pre-built |
 | Badge | Static |
 | Avatar | Static |
 | AvatarGroup | Custom |
@@ -1778,6 +1778,7 @@ Agent-driven UI lets an AI agent compose an interface from line://ui components 
 | `@websublime/line-genui/catalog` | Descriptors, the `line` catalog, the `basic` catalog implementations, emitters; touches no DOM | Normal policy (§7.1) |
 | `@websublime/line-genui/catalog.json` | Emitted JSON of the `line` catalog for agents and prompts; the `basic` catalog keeps A2UI's own schema and id | Normal policy (§7.1) |
 | `@websublime/line-genui/a2ui` | Session and `<line-a2ui-surface>` | Preview |
+| `@websublime/line-genui/custom-elements.json` | Custom Elements Manifest of `<line-a2ui-surface>` | Preview, with the surface |
 | `@websublime/line-themes/hosts/mcp-apps.css` | CSS-only MCP Apps theming bridge | Normal policy (§7.1) |
 
 ### Preview policy

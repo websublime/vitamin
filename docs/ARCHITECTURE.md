@@ -12,6 +12,13 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.5 (2026-10-20)** — Aligned with PRD v0.8.19, with corrections from the Phase 1 spec work (ledger row `00-Z46`, decisions by Miguel on 2026-10-20).
+  - §13.1 (Button Ecosystem) separates the two meanings of "pressed". The machine models the press itself as `active`, `pressed` is an opt-in toggle with `aria-pressed`, and `loading` and `disabled` are props that the machine's guards read (R7 §2.4, R8 §2.2).
+  - §13.1 (Button Ecosystem) records the machines the Phase 1 spec picks. ButtonGroup runs on a custom roving-focus machine, and Chip on the pre-built `@zag-js/toggle` 1.46.0 machine.
+  - §14.7 (Reset Module to Component Mapping) gives Chip and AvatarGroup the `common` and `button` modules, because each renders an inner native `<button>` (Phase 1 spec §10).
+  - §14.8 (State Reflection) says `LineElement` attaches `ElementInternals` for every component behind a protected `internals` accessor that `FormAssociated` reuses, so every component reflects `:state()` (R8 §2.5).
+  - §17.4 (Renderer) corrects the error path. A missing child stays a pending placeholder until it arrives and raises no error. An unknown type reaches the surface as a resolver error. Whether a cycle rejects its message or reaches the resolver depends on the `validationConfig` preset, which the Phase 1 spec sets (R1 §2.5.2, §2.7).
+  - §17.6 (MCP Apps) states when line://ui works unchanged in a View. The lazy component chunks must be inlined into the View, or load from a CDN origin that the View declares (R5 §2.2, §5.2).
 - **v0.8.4 (2026-10-20)** — Aligned with PRD v0.8.18 (ledger row `00-Z45`, decisions by Miguel on 2026-10-19 (projection technique) and 2026-10-20 (D1–D8)).
   - §6 (Base Class — LineElement) says a component declares its tier by composing a `LineMachineController`, draws the controller outside the `LineElement` tree, lists what `line-core/machine` re-exports, and adds that the controller calls `updateProps` on every host update.
   - §8 (State Management) corrects the computed-state and controller wording, adds `initialState` to the Input example, and notes the pre-built PasswordInput and DateInput machines.
@@ -494,12 +501,12 @@ Architectural decisions for specific components that were debated and resolved. 
 
 ### 13.1 Button Ecosystem
 
-- **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default, states: idle/pressed/loading/disabled. Loading state is headless (state only, no bundled spinner).
+- **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default. The machine models the press itself as `idle → active`. `pressed` is an opt-in toggle that sets `aria-pressed`. `loading` and `disabled` are props that the machine's guards read. All four reflect as `data-*` attributes and `:state()` (§14.8). Loading state is headless (state only, no bundled spinner).
 - **IconButton** — Separate component, `aria-label` required, same machine as Button. TypeScript cannot check the name in markup or on elements the A2UI surface creates by tag at run time, so the Phase 1 spec picks the check.
-- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. It has a machine. `npm view @zag-js/toolbar` on 2026-10-20 shows only pre-release versions (`latest` and `next` are 2.0.0-next.x), so the Phase 1 spec picks a custom roving-focus machine or another option. Border collapse, slot-based (does NOT import Button).
+- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. A custom roving-focus machine drives it, because `@zag-js/toolbar` ships only pre-release versions (`latest` and `next` are 2.0.0-next.x on 2026-10-20). Border collapse, slot-based (does NOT import Button).
 - **SplitButton** — Custom, Phase 3 (depends on Button + Menu), bundles both internally.
 - **ToggleButton** — NOT a separate component; use ToggleGroup with single item or Button with `pressed` state.
-- **Chip** — A toggle button with `aria-pressed`, Phase 1. It has a machine. `@zag-js/toggle` 1.46.0 is a candidate, and the Phase 1 spec picks the machine.
+- **Chip** — A toggle button with `aria-pressed`, Phase 1. It runs on the pre-built `@zag-js/toggle` 1.46.0 machine and carries no remove button.
 
 ### 13.2 Avatar Group
 
@@ -1060,7 +1067,7 @@ Which modules each component category uses:
 | Progress, Gauge/Meter | x | | | | | | x | | | | |
 | Table, DataGrid | x | | | | | | | | | x | |
 | ScrollArea | x | | | | | | | | | | x |
-| Chip (the Phase 1 spec settles its modules; a toggle may need `button`) | x | | | | | | | | | | |
+| Chip, AvatarGroup | x | | x | | | | | | | | |
 | Badge, Alert, Avatar, Separator, Skeleton, Spinner, Card, Empty State, all Static | x | | | | | | | | | | |
 | Dialog, Sheet, Popover, Tooltip, Toast | x | | | | | | | | | | |
 | Editable | x | x | | | | | | | | | |
@@ -1088,20 +1095,18 @@ line-input:state(disabled) { /* disabled state */ }
 line-input:state(invalid) { /* invalid state */ }
 ```
 
-**Both APIs reflect the same machine state simultaneously.** The base class handles the wiring:
+**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and exposes it through a protected `internals` accessor, which the `FormAssociated` mixin reuses (Phase 1 spec, task C23). The base class handles the wiring:
 
 ```typescript
-// In LineElement or FormAssociated mixin
+// In LineElement
 protected reflectState(name: string, active: boolean) {
   // Data attribute (universal)
   if (active) this.dataset[name] = '';
   else delete this.dataset[name];
 
   // CustomStateSet (modern)
-  if (this.#internals?.states) {
-    if (active) this.#internals.states.add(name);
-    else this.#internals.states.delete(name);
-  }
+  if (active) this.internals.states.add(name);
+  else this.internals.states.delete(name);
 }
 ```
 
@@ -1527,14 +1532,14 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 | Loading | Lazy `import()` through each descriptor's `load()`; no eager `define()` | Custom elements upgrade when their module arrives (Law 6) |
 | Composition | The surface creates elements by tag and wires children through slots | Orchestrator pattern (Law 4) |
 | Events | `line-a2ui-action` carries the resolved A2UI `action` message; `line-a2ui-error` carries an A2UI `error` message | The app sends both through its transport. AG-UI defines no error channel, so the Phase 1 spec decides what the AG-UI recipe does with an error |
-| Errors | A `processMessages` throw rejects its whole message, and a rejected `updateComponents` applies nothing. The surface catches every `web_core` throw. Node faults (unknown type, pending child, cycle) reach the surface as resolver errors, and the surface renders an inert placeholder for that node | Law 9 |
+| Errors | A `processMessages` throw rejects its whole message, and a rejected `updateComponents` applies nothing. The surface catches every `web_core` throw. An unknown type reaches the surface as a resolver error, and the surface renders an inert placeholder for that node. A missing child stays a pending placeholder until it arrives and raises no error. Whether a cycle rejects its message or reaches the resolver depends on the `validationConfig` preset, which the Phase 1 spec sets | Law 9 |
 | Theme | Agent theme hints are ignored by default | The host owns styling |
 | Text | Plain text by default; Markdown only through an opt-in sanitising renderer | Agent strings are untrusted |
 | URLs | A URL policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured | Upstream does not check media URLs |
 | Limits | Configurable maximum node count, depth and data-model size | Hostile or runaway agents |
 | Accessibility | One live region per surface; `aria-busy` during batches; required names validated. The surface never moves focus to another component. Its reconciler keeps focus across reorders. On a reparent the surface uses `moveBefore()` where the browser has it, and otherwise returns focus to the same `instanceId` at the end of the batch | Law 3 |
 
-The surface projects directly on the `web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The surface keeps its own reconciliation, keyed by `instanceId` and preserving focus, and its own effect lifecycle. It loads no Lit and no `@experimental` `A2uiLitElement`. Unknown types and cycles reach it from the resolver.
+The surface projects directly on the `web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The surface keeps its own reconciliation, keyed by `instanceId` and preserving focus, and its own effect lifecycle. It loads no Lit and no `@experimental` `A2uiLitElement`. Unknown types reach it from the resolver, and so do cycles when no `validationConfig` is set.
 
 Importing `@websublime/line-genui/catalog` defines no element. Importing `@websublime/line-genui/a2ui` defines only `line-a2ui-surface`.
 
@@ -1554,7 +1559,7 @@ Recipes pin the middleware version, as the documented server convention or in a 
 
 ### 17.6 MCP Apps
 
-- line://ui works unchanged inside an MCP Apps View, which is one HTML document in a sandboxed iframe.
+- line://ui works unchanged inside an MCP Apps View, which is one HTML document in a sandboxed iframe, when the lazy component chunks are inlined into the View or load from a CDN origin that the View declares. The Phase 1 spec documents the delivery.
 - `@websublime/line-themes/hosts/mcp-apps.css` is a CSS-only bridge. It maps the standard MCP host colour, font and border-radius variables on the reference list (§17.9) onto line theme aliases or `line-tokens` primitives, so `line-themes` gains no runtime (Law 10).
 - The app applies `hostContext.styles.variables` and `hostContext.theme` with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`). The theme call sets `color-scheme` for `light-dark()`.
 - The Phase 1 spec decides how the bridge handles `line-tokens` primitives, because a primitive cannot fall back to itself.
