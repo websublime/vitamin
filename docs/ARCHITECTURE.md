@@ -15,6 +15,7 @@ This document captures the **cross-cutting architectural decisions** that apply 
 - **v0.8.5 (2026-10-20)** — Aligned with PRD v0.8.19, with corrections from the Phase 1 spec work (ledger row `00-Z46`, decisions by Miguel on 2026-10-20).
   - §13.1 (Button Ecosystem) separates the two meanings of "pressed". The machine models the press itself as `active`, `pressed` is an opt-in toggle with `aria-pressed`, and `loading` and `disabled` are props that the machine's guards read (R7 §2.4, R8 §2.2).
   - §13.1 (Button Ecosystem) records the machines the Phase 1 spec picks. ButtonGroup runs on a custom roving-focus machine, and Chip on the pre-built `@zag-js/toggle` 1.46.0 machine.
+  - §14.7 (Reset Module to Component Mapping) gives Chip and AvatarGroup the `common` and `button` modules, because each renders an inner native `<button>` (Phase 1 spec §10).
   - §14.8 (State Reflection) says `LineElement` attaches `ElementInternals` for every component behind a protected `internals` accessor that `FormAssociated` reuses, so every component reflects `:state()` (R8 §2.5).
   - §17.4 (Renderer) corrects the error path. A missing child stays a pending placeholder until it arrives and raises no error. An unknown type reaches the surface as a resolver error. Whether a cycle rejects its message or reaches the resolver depends on the `validationConfig` preset, which the Phase 1 spec sets (R1 §2.5.2, §2.7).
   - §17.6 (MCP Apps) states when line://ui works unchanged in a View. The lazy component chunks must be inlined into the View, or load from a CDN origin that the View declares (R5 §2.2, §5.2).
@@ -1066,7 +1067,7 @@ Which modules each component category uses:
 | Progress, Gauge/Meter | x | | | | | | x | | | | |
 | Table, DataGrid | x | | | | | | | | | x | |
 | ScrollArea | x | | | | | | | | | | x |
-| Chip (the Phase 1 spec settles its modules; a toggle may need `button`) | x | | | | | | | | | | |
+| Chip, AvatarGroup | x | | x | | | | | | | | |
 | Badge, Alert, Avatar, Separator, Skeleton, Spinner, Card, Empty State, all Static | x | | | | | | | | | | |
 | Dialog, Sheet, Popover, Tooltip, Toast | x | | | | | | | | | | |
 | Editable | x | x | | | | | | | | | |
