@@ -1,15 +1,16 @@
 # line://ui — Product Requirements Specification
 
-**Date:** 2026-10-13
+**Date:** 2026-10-20
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.17
+**Version:** 0.8.18
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.18 (2026-10-20) — The PRD, ARCHITECTURE and the Phase 1 plan follow the Phase 1 research stage.** The A2UI renderer projects directly on the `@a2ui/web_core` models and binder (`NodeResolver`). ButtonGroup becomes a toolbar with roving focus, and Chip becomes a toggle button with `aria-pressed`, so both leave the Static tier and gain a machine in Phase 1. The `line` catalog criterion uses only published artifacts. The inline form of the catalog validates against `client_capabilities.json#/$defs/Catalog`, `web_core` reads the catalog back with `Catalog.fromJson`, and its `validationSchema` compiles. Frontend-tool parameters are literal and flat. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and the Phase 1 spec decides how the emitter reaches each provider. The A2UI common types and dynamic bindings stay in the catalogs, and the 1024-character limit is a self-imposed cap on tool descriptions. Storybook loads the Custom Elements Manifest in Phase 1, and `@websublime/line-components` ships the manifest with a `customElements` field. The revision also corrects facts that the research disproved. §1.7 names the CDN endpoints that rewrite bare specifiers. §4.1 describes Icon by its registry attributes. §4.2 notes the pre-built PasswordInput and DateInput machines and leaves their tier to Phase 2. §5.2 moves keyboard checks to the Interaction row and names `storybook/test`. §2.1 and §6.2 list what `line-core/machine` re-exports, and §6.2 no longer says that the `sideEffects` field isolates subpaths. §7.3 names the A2UI basic catalog id in full. Miguel chose direct projection over light-DOM adapter elements rendered through `renderA2uiNode`. For the Vite-built packages he chose TypeScript 7.x `tsc --emitDeclarationOnly` for every `.d.ts` over the TypeScript 6.0 API beside 7.x and over waiting for TypeScript 7.1. He chose the published artifacts for catalog validation over a line-maintained schema and over the `web_core` round-trip alone. He chose literal flat tool schemas over common types in non-strict tools and over both variants per descriptor. He chose to keep focus on the same component across a reparent over accepting the loss and over a batch-end return without `moveBefore()`. He chose a toolbar ButtonGroup over a Static `group`, and a toggle Chip over a display-only Chip and over deferring selection to Phase 2. He chose a controller that calls `updateProps` on every host update over a per-component call and over events from `updated()`. He chose a manifest that Storybook loads and `line-components` ships over Storybook only and over waiting for Storybook 11 (ledger row `00-Z45`, decisions by Miguel on 2026-10-19 (projection technique) and 2026-10-20 (D1–D8); record in `docs/context/00-z45.md` and plan §5.6). Why: the twelve Phase 1 research notes contradicted statements in the PRD, ARCHITECTURE and the plan, and PROCESS §2 sends such research back to a plan and PRD revision before spec work. The forks the notes leave to the spec move to plan §5.5. Sections touched: §1.7, §2.1, §4.1, §4.2, §4.11, §5.1, §5.2, §6.2, §6.3, §7.3; ARCHITECTURE §6, §8, §9, §12, §13.1, §13.6, §14.7, §14.8, §17.3–§17.6; plan header, §1.2, §2, §4–§8, §10, §11; Phase 00 spec AM-073 in its own commit.
 - **v0.8.17 (2026-10-13) — Phase 1 opens with its four validating components, and the site landing page gates the exit.** The four validating components (Button, Icon, Stack, Separator) ship first. The agent-driven UI foundation stream follows on them and adds their descriptors, and every later component ships its descriptor in the same PR. The Phase 1 research stage chooses the projection technique before the spec, and the spec designs one renderer. The choice is no longer the stream's first task. The site landing page dogfoods the Phase 1 components and is a Phase 1 exit criterion. Miguel chose components first over the foundation stream first on throwaway elements and over an interleaved order. He chose the research stage over the first ledger task for the projection evidence. He chose a dogfooding landing page that gates the exit over a landing page outside the exit criteria and over the full §5.3 site (ledger row `00-Z27`, decision by Miguel on 2026-10-13; record in `docs/plans/01-plan-core-primitives.md` §5.4). The same gate chose TypeScript 7.x for Phase 1. PRD §2 names no TypeScript major, and its "Latest stable versions" row already covers 7.x, so no PRD section changes for it. Why: Miguel decided the forks the Phase 1 plan left open (§5.4). With these choices the descriptor API, the emitters and the renderer are designed against real components, the spec designs one renderer, and the public site shows the Phase 1 components. Sections touched: §7.3; ARCHITECTURE §17.4; plan §1, §2, §4–§8, §11.
 - **v0.8.16 (2026-10-13) — Rolldown 1.x ships with Vite 8.** §2.1 states that Rolldown 1.x is a direct dependency of Vite 8, and that Vite 8.3.4 depends on Rolldown `~1.2.12`. It no longer says that Rolldown is pinned at `1.0.x` (ledger row `00-Z20`, spec AM-064). Why: the dependency refresh moves Vite from 8.0.14 to 8.3.4, so the `1.0.x` claim becomes false. This is a factual alignment and changes no decision. Sections touched: §2.1; spec header and AM-064.
 - **v0.8.15 (2026-10-12) — line components guarantee the native htmx paths.** Components work with htmx through the native paths. These paths are host-level `hx-*`, slotted light-DOM `hx-*`, a form-associated value inside an htmx form, and a commit event as `hx-trigger`. A Playwright harness guards them on htmx 2 and htmx 4 in chromium, firefox and webkit. ARCHITECTURE §17.2 gains rule C9, which makes every value-bearing or compound component name exactly one commit event. Every value-bearing or compound component runs the harness in its Playwright tier, and a Storybook HTMX guide documents the patterns. The `LineHtmxElement` adapter stays exploratory and is deferred as a nice-to-have after 1.0. Miguel chose rule C9 in ARCHITECTURE §17.2 over a separate HTMX contract in ARCHITECTURE §6. He chose a shared harness now over the rejected option of a template row only, with the harness built alongside the first value-bearing component. He chose one MDX guide without a live demo over a guide with a live demo against a mocked server, and one aligned revision of MANIFESTO, PRD and ARCHITECTURE over leaving Law 7 to a separate decision (ledger row `00-Z17`, decision by Miguel on 2026-10-12; record in `docs/retrospective/00-phase-00-retro.md` and `docs/context/00-z17.md`). Why: the H1 spike showed host-level `hx-*`, slotted light-DOM `hx-*` and a form-associated value in an htmx form working without an adapter on htmx 2.0.11 and 4.0.0 in three engines, and it showed htmx events reaching the host (`composedEvents`). H1 did not exercise a component event as `hx-trigger`, so the new harness gives the first proof of that path. No PRD §7.3 or §7.4 component needs the adapter. ARCHITECTURE, MANIFESTO Law 7 and spec AM-063 align. Sections touched: §1 differentiators and principle 4, §8.1, Appendix A, Appendix D; plan §2.8.
@@ -145,7 +146,7 @@ No npm download or GitHub stars targets at this stage — premature for a pre-la
 | Accessibility | WCAG 2.1 AA (Zag.js provides this natively for state-machine components) |
 | Bundle size | Soft target < 5KB gzipped per component |
 | SSR/SSG | Out of scope for Phase 0. Investigation planned post-Phase 1 for Astro, Nuxt, Next.js compatibility |
-| CDN usage | CDN distribution via unpkg and jsdelivr from Phase 1 onwards. ESM builds are CDN-compatible by default via the package.json `exports` field |
+| CDN usage | CDN distribution via unpkg and jsdelivr from Phase 1 onwards. The transforming endpoints (jsDelivr `+esm`, esm.unpkg.com) rewrite the bare specifiers of the ESM builds. Raw files keep bare specifiers and need an import map. The Phase 1 spec fixes the CDN contract |
 | i18n — RTL | Supported natively via `dir` attribute |
 | i18n — Localisation | Localisation of component labels (e.g., "Close", "Dismiss") is the consumer's responsibility via slots and attributes |
 | Touch & pointer | All interactive components support both pointer and touch events. Zag.js handles this natively for pre-built machines; custom machines must follow the same pattern |
@@ -183,7 +184,7 @@ No npm download or GitHub stars targets at this stage — premature for a pre-la
 
 **Zag.js** — Production-ready state machines for 50+ UI patterns. WAI-ARIA accessibility built-in. Keyboard navigation, focus management, all solved. Zag exposes framework-agnostic primitives via the `@zag-js/vanilla` package (`VanillaMachine`, `normalizeProps`, `spreadProps`, `mergeProps`). There is **no first-party Lit adapter** in Zag's monorepo (`packages/frameworks/` contains only `preact`, `react`, `solid`, `svelte`, `vanilla`, `vue`) — we therefore author our own.
 
-**Machine Adapter (`@websublime/line-core/machine`)** — A thin Lit-aware wrapper around `@zag-js/vanilla`, exposed as `LineMachineController` (a `ReactiveController`). It (a) instantiates the Zag machine in `hostConnected` and subscribes to state, calling `host.requestUpdate()` so Lit re-renders on every transition; (b) tears down the subscription in `hostDisconnected` for deterministic cleanup; (c) catches start-up failures and renders a static fallback (Manifesto Law 9) instead of throwing; (d) re-exports the four `@zag-js/vanilla` public primitives — `normalizeProps`, `spreadProps`, `mergeProps`, and the `VanillaMachine` type — so components have a single import surface. Components consume only `@websublime/line-core/machine` — they never import `@zag-js/vanilla` directly. This is a single point of maintenance for any future Zag API change. (Note: `bindable` is **not** publicly exported by `@zag-js/vanilla` — it is an internal Zag pattern available **inside** machine configs via the `context({ bindable })` callback argument, not via import. Components do not need to import it.)
+**Machine Adapter (`@websublime/line-core/machine`)** — A thin Lit-aware wrapper around `@zag-js/vanilla`, exposed as `LineMachineController` (a `ReactiveController`). It (a) instantiates the Zag machine in `hostConnected` and subscribes to state, calling `host.requestUpdate()` so Lit re-renders on every transition; (b) tears down the subscription in `hostDisconnected` for deterministic cleanup; (c) catches start-up failures and renders a static fallback (Manifesto Law 9) instead of throwing; (d) re-exports `normalizeProps`, `spreadProps`, `mergeProps`, `VanillaMachine` and the type `Attrs` from `@zag-js/vanilla`, so components have a single import surface. Components consume only `@websublime/line-core/machine` — they never import `@zag-js/vanilla` directly. This is a single point of maintenance for any future Zag API change. (Note: `bindable` is **not** publicly exported by `@zag-js/vanilla` — it is an internal Zag pattern available **inside** machine configs via the `context({ bindable })` callback argument, not via import. Components do not need to import it.)
 
 **Foundation Tokens (`line-tokens`)** — Non-colour primitives, split into two tiers (18 families total) plus a baseline reset:
 
@@ -230,17 +231,17 @@ Each component has a product-level description below and a detailed technical sp
 |-----------|------|-------------|------|
 | Button | Custom | Primary interactive element for triggering actions. Supports form submit/reset | [spec](./specs/0002-button.md) |
 | IconButton | Custom | Icon-only action button. Requires accessible label for screen readers | [spec](./specs/0003-icon-button.md) |
-| ButtonGroup | Static | Visually groups related buttons with border collapse and shared navigation | [spec](./specs/0004-button-group.md) |
+| ButtonGroup | Pre-built or Custom | Groups related buttons as a toolbar with border collapse and roving focus; arrow keys move between the buttons (APG Toolbar). The Phase 1 spec picks the machine | [spec](./specs/0004-button-group.md) |
 | SplitButton | Custom | Primary action with dropdown for alternatives. Composes Button + Menu internally | [spec](./specs/0005-split-button.md) |
 | Alert | Static | Inline persistent feedback for info, warnings, errors, or success states | [spec](./specs/0006-alert.md) |
 | Badge | Static | Small status indicator — count, dot, or label variant | [spec](./specs/0007-badge.md) |
-| Chip | Static | Display tag with optional remove. Used for categories, filters, selections | [spec](./specs/0008-chip.md) |
+| Chip | Pre-built or Custom | Toggle button with `aria-pressed` for categories, filters and selections. `@zag-js/toggle` is a candidate, and the Phase 1 spec picks the machine | [spec](./specs/0008-chip.md) |
 | Avatar | Static | User or entity representation with image, initials fallback, and status | [spec](./specs/0009-avatar.md) |
 | AvatarGroup | Custom | Stacked avatars with overflow counter. Expands on hover, popover on overflow click | [spec](./specs/0010-avatar-group.md) |
 | Separator | Static | Visual divider between content sections. Horizontal or vertical | [spec](./specs/0011-separator.md) |
 | Visually Hidden | Static | Accessibility utility — hides content visually, available to screen readers | [spec](./specs/0012-visually-hidden.md) |
 | Portal | Static | Renders child content outside its DOM parent | [spec](./specs/0013-portal.md) |
-| Icon | Static | Framework-agnostic icon wrapper with pluggable library registry. Icons are delivered via slot; `@websublime/line-icons` is the recommended default but any icon library (Lucide, Phosphor, Iconoir, etc.) is supported | [spec](./specs/0014-icon.md) |
+| Icon | Static | Framework-agnostic icon wrapper with pluggable library registry. The `name` and `library` attributes resolve an icon through the registry, and `src` loads an SVG file; `@websublime/line-icons` is the recommended default but any icon library (Lucide, Phosphor, Iconoir, etc.) is supported | [spec](./specs/0014-icon.md) |
 | Kbd / Shortcut | Static | Keyboard shortcut display with OS-aware rendering (Cmd vs Ctrl) | [spec](./specs/0015-kbd.md) |
 | Skeleton | Static | Placeholder loading indicator with pulse or wave animation | [spec](./specs/0016-skeleton.md) |
 | Presence | Pre-built | Controls mount/unmount animations for enter/exit transitions | [spec](./specs/0017-presence.md) |
@@ -255,9 +256,9 @@ Each component has a product-level description below and a detailed technical sp
 | Component | Tier | Description | Spec |
 |-----------|------|-------------|------|
 | Input | Custom | Text input for email, tel, url, and plain text. Detects autofill | [spec](./specs/0023-input.md) |
-| PasswordInput | Custom | Password field with built-in visibility toggle | [spec](./specs/0024-password-input.md) |
+| PasswordInput | Custom | Password field with built-in visibility toggle. `@zag-js/password-input` is a pre-built machine; the Phase 2 spec settles the tier | [spec](./specs/0024-password-input.md) |
 | SearchInput | Custom | Text input with built-in clear action | [spec](./specs/0025-search-input.md) |
-| DateInput | Custom | Masked date field with segment navigation. No popup | [spec](./specs/0026-date-input.md) |
+| DateInput | Custom | Masked date field with segment navigation. No popup. `@zag-js/date-input` is a pre-built machine; the Phase 2 spec settles the tier | [spec](./specs/0026-date-input.md) |
 | Textarea | Custom | Multi-line text input with optional auto-resize | [spec](./specs/0027-textarea.md) |
 | Field | Custom | Orchestrates label, hint, error, and required indicator for any control | [spec](./specs/0028-field.md) |
 | Fieldset | Static | Semantic grouping of related controls with legend and disabled propagation | [spec](./specs/0029-fieldset.md) |
@@ -429,7 +430,8 @@ Each component has a product-level description below and a detailed technical sp
 |------|-------|-------------|
 | Pre-built | 46 | Uses existing `@zag-js/*` machine |
 | Custom | 46 | Custom machine via `createMachine()` |
-| Static | 39 | Purely presentational |
+| Static | 37 | Purely presentational |
+| Pre-built or Custom | 2 | ButtonGroup and Chip; the Phase 1 spec picks the machine |
 | **Total** | **131** |
 
 ---
@@ -459,7 +461,7 @@ Each component has a product-level description below and a detailed technical sp
 Lit source → CEM Analyzer → custom-elements.json → Storybook reads → API docs
 ```
 
-The `@custom-elements-manifest/analyzer` analyses Lit components and generates the manifest automatically — props, events, slots, CSS parts, CSS custom properties. Storybook reads the manifest and generates the API table without manual documentation.
+The `@custom-elements-manifest/analyzer` analyses Lit components and generates the manifest automatically — props, events, slots, CSS parts, CSS custom properties. The analyser runs before the Storybook build, and `preview.ts` loads the manifest through `setCustomElementsManifest`, so Storybook generates the API table without manual documentation. Storybook does not load the manifest on its own.
 
 **Storybook structure:**
 
@@ -502,9 +504,9 @@ Storybook
 |-------|------|---------------|
 | Unit | Bun test + `@open-wc/testing-helpers` | Pure logic, helpers, utilities |
 | Component | Bun test + `@open-wc/testing-helpers` | Rendering, props, events, slots |
-| A11y | `@storybook/addon-a11y` + axe-core | ARIA compliance, keyboard nav |
+| A11y | `@storybook/addon-a11y` + axe-core | ARIA compliance (automated rules). Keyboard navigation is covered by the Interaction row |
 | Visual Regression | Playwright screenshots in CI | Detect unintended visual changes |
-| Interaction | `@storybook/test` (play functions) | Simulate user flows within stories |
+| Interaction | `storybook/test` (play functions) | Simulate user flows within stories, including keyboard navigation |
 
 **Minimum test coverage per component:**
 
@@ -632,7 +634,7 @@ src/ → Vite library mode → dist/
   ├── line-element.js   ← Base class
   ├── mixins/           ← Individual mixins (inspector, metadata, direction, form-associated)
   ├── utilities/        ← Helpers, decorators
-  ├── machine/          ← Zag.js adapter: `LineMachineController` (Lit ReactiveController wrapping `@zag-js/vanilla`) + re-exports of the four public primitives `normalizeProps`, `spreadProps`, `mergeProps`, `VanillaMachine`. (`bindable` is not exported — it is accessed inside machine configs via the `context({ bindable })` callback.) Components import via `@websublime/line-core/machine`. See ARCHITECTURE §6 / §8.
+  ├── machine/          ← Zag.js adapter: `LineMachineController` (Lit ReactiveController wrapping `@zag-js/vanilla`) + re-exports of `normalizeProps`, `spreadProps`, `mergeProps`, `VanillaMachine` and the type `Attrs` from `@zag-js/vanilla`. (`bindable` is not exported — it is accessed inside machine configs via the `context({ bindable })` callback.) Components import via `@websublime/line-core/machine`. See ARCHITECTURE §6 / §8.
   ├── styles/           ← Shadow-DOM internal reset sheets (reset.common.css, reset.input.css, reset.button.css, reset.textarea.css, reset.select.css, reset.range.css, reset.progress.css, reset.summary.css, reset.fieldset.css, reset.table.css, reset.scrollbar.css) exposed as singleton `CSSStyleSheet` objects via the `./styles` subpath — see [ARCHITECTURE.md §14.3–§14.7](./ARCHITECTURE.md#14-browser-defaults-neutralisation)
   └── types/            ← .d.ts
 ```
@@ -652,7 +654,7 @@ src/ → Vite library mode → dist/
 
 The `./styles` subpath is consumed exclusively by components (each component imports only the reset sheets it needs via `static styles`). Consumers do **not** import `@websublime/line-core/styles` directly — these are shadow-DOM internal resets, distinct from the consumer-side light-DOM reset at `@websublime/line-tokens/reset` (see §9.9 and ARCHITECTURE §14.2 for the two-reset distinction).
 
-The `./machine` subpath exports the **`LineMachineController`** (Lit `ReactiveController`) that wraps `@zag-js/vanilla`. Components instantiate this controller in their constructor and the controller drives Lit's reactivity (`requestUpdate()` on each machine state transition) and lifecycle (machine started on `hostConnected`, stopped on `hostDisconnected`). The subpath also re-exports the four public primitives of `@zag-js/vanilla` — `normalizeProps`, `spreadProps`, `mergeProps`, and the `VanillaMachine` type — so component authors have a single import surface (`@websublime/line-core/machine`). The `bindable` factory is **not** re-exported because `@zag-js/vanilla` does not publicly export it — it is provided to machine configs through the `context({ bindable })` callback argument and is used only inside those configs. **No component should import `@zag-js/vanilla` directly** — the adapter is the single point of maintenance for Zag API changes and the home of the Manifesto Law 9 fallback (failed machine → static render, no uncaught error).
+The `./machine` subpath exports the **`LineMachineController`** (Lit `ReactiveController`) that wraps `@zag-js/vanilla`. Components instantiate this controller in their constructor and the controller drives Lit's reactivity (`requestUpdate()` on each machine state transition) and lifecycle (machine started on `hostConnected`, stopped on `hostDisconnected`). The subpath also re-exports `normalizeProps`, `spreadProps`, `mergeProps` and `VanillaMachine` from `@zag-js/vanilla`, with the type `Attrs`, so component authors have a single import surface (`@websublime/line-core/machine`). It leaves out `toStyleString`, which `@zag-js/vanilla` has exported since 1.44.0. The `bindable` factory is **not** re-exported because `@zag-js/vanilla` does not publicly export it — it is provided to machine configs through the `context({ bindable })` callback argument and is used only inside those configs. **No component should import `@zag-js/vanilla` directly** — the adapter is the single point of maintenance for Zag API changes and the home of the Manifesto Law 9 fallback (failed machine → static render, no uncaught error).
 
 **Icons package (`@websublime/line-icons`):**
 
@@ -696,7 +698,7 @@ The icons package consumes `@websublime/line-tokens` for icon-size and stroke-wi
 
 Each subpath entry may carry type-condition variants (`types`, `import`, `default`) where dual-publishing or `.d.ts` co-location requires it.
 
-**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the only side-effect. Importing one component never imports another. The umbrella package therefore declares `"sideEffects"` listing exactly the per-component dist files, so bundlers can tree-shake unused subpaths even when consumers use the root specifier.
+**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the only side-effect. Importing one component never imports another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation. The Phase 1 spec sets its value, the chunk layout and how bundle splitting is verified.
 
 Consumer imports surgically:
 
@@ -731,7 +733,7 @@ Each package ships its own granular exports. Example (`@websublime/line-themes`)
 Dual generation:
 
 1. **TypeScript declarations** (`.d.ts`) — Type safety in imports.
-2. **Custom Elements Manifest** (`custom-elements.json`) — For Storybook, IDEs, and any tooling consuming the standard.
+2. **Custom Elements Manifest** (`custom-elements.json`) — Storybook loads it, and `@websublime/line-components` ships it with a `customElements` field and a `files` entry, for IDEs and any tooling consuming the standard.
 
 ### 6.4 Release — Changesets
 
@@ -847,7 +849,7 @@ Workflows:
 
 **Agent-driven UI foundation.** This stream ships `@websublime/line-genui` (ARCHITECTURE §17, Appendix D). Items 2–8 start after Button, Icon, Stack and Separator ship, and they validate on them. The stream has ten items:
 
-1. Choose the projection technique in the Phase 1 research stage, before the spec. The candidates are light-DOM adapter elements rendered through `@a2ui/web_core` `renderA2uiNode` and direct projection on the `web_core` models and binder. The outcome binds the renderer, and the spec designs one renderer on it.
+1. The renderer projects directly on the `@a2ui/web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 projection evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The spec designs one renderer on it.
 2. Descriptor API (protocol-neutral Zod descriptors in `line-genui/src/catalog/`).
 3. `line` and `basic` catalog emitters for A2UI v0.9.1.
 4. Frontend-tool JSON Schema emitter (`{name, description, parameters}`).
@@ -864,9 +866,9 @@ Button, Icon, Stack and Separator ship first and validate the stream, which adds
 |-----------|--------|
 | Button | Custom |
 | IconButton | Custom |
-| ButtonGroup | Static |
+| ButtonGroup | Pre-built or Custom (spec picks the toolbar machine) |
 | Alert | Static |
-| Chip | Static |
+| Chip | Pre-built or Custom (spec picks; `@zag-js/toggle` is a candidate) |
 | Badge | Static |
 | Avatar | Static |
 | AvatarGroup | Custom |
@@ -893,9 +895,9 @@ Button, Icon, Stack and Separator ship first and validate the stream, which adds
 - Changeset entry for every component
 - Bundle splitting verified — families and independents work as documented
 - Every Phase 1 component in `@websublime/line-components` has an agent descriptor (exposed, or flagged `agentExposed: false` with a reason), and the CEM drift and coverage tests pass
-- `@websublime/line-genui/catalog.json` (the `line` catalog) validates against the A2UI v0.9.1 catalog meta-schema
-- The Phase 1 subset of the `basic` catalog is registered under the A2UI basic catalog id, and unmapped basic types render an inert placeholder and raise `line-a2ui-error`
-- The frontend-tool schemas validate as JSON Schema, use no `$ref` or `oneOf` beyond the A2UI common types, and keep every description at or under 1024 characters
+- The inline form of `@websublime/line-genui/catalog.json` (the `line` catalog) validates against the A2UI v0.9.1 `client_capabilities.json#/$defs/Catalog`, `web_core` reads the catalog back with `Catalog.fromJson`, and the catalog's `validationSchema` compiles
+- The Phase 1 subset of the `basic` catalog is registered under the A2UI basic catalog id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, and unmapped basic types render an inert placeholder and raise `line-a2ui-error`
+- The frontend-tool schemas validate as JSON Schema and use literal, flat parameters without the A2UI common types or dynamic bindings. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and every tool description stays at or under the self-imposed cap of 1024 characters
 - `@websublime/line-themes/hosts/mcp-apps.css` maps every MCP Apps standard host colour, font and border-radius variable on the reference list that the Phase 1 spec fixes, each to a line theme alias or token, and passes `lint-layers`
 - Storybook holds one recipe per transport (AG-UI, A2A, MCP, SSE)
 - `scripts/lint-layers.mjs` carries the `line-genui` edges and passes
