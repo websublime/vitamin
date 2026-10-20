@@ -1,11 +1,11 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.1 item 7 and the Errors and Icon rows, §2.2, §2.5–§2.7, §4.0, §4.1 G6, §4.2, §4.3, §5.3, §5.5, §5.6, §6, §7.1, §7.3, §7.4, §8, §11 D3), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6. Row 00-Z48 coherence review round 2 on 2026-10-20 adds task C23 (§4.3, §6), corrects the `sideEffects` wording (§2.6), the Z stream row (§4.0), the Storybook manifest merge (§4.2 P10, §4.1 G4) and the `./a2ui` owner (§2.5, §4.1 G2), and names the stream D and S task ids (§4.4, §4.5, §5.6), with PRD v0.8.21 and ARCHITECTURE v0.8.7. Row 00-Z48 coherence review round 3 on 2026-10-20 places P7 before C1 (§4.2, §6), names the `line-icons` subpaths and their owners (§2.5), widens the decision-id note (§5.6) and the S1–S10 risk line (§8), and splits the S stream owners by file (§4.0) (findings R3-L1-01 to R3-L1-04). It also routes A2UI icon names through the surface `iconMap` (§2.1 Icon row, §2.5; spec AM-006, decision D-M) and defers server-side A2UI to a later phase spec (§3), with PRD v0.8.22 and ARCHITECTURE v0.8.8
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.1 item 7 and the Errors and Icon rows, §2.2, §2.5–§2.7, §4.0, §4.1 G6, §4.2, §4.3, §5.3, §5.5, §5.6, §6, §7.1, §7.3, §7.4, §8, §11 D3), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6. Row 00-Z48 coherence review round 2 on 2026-10-20 adds task C23 (§4.3, §6), corrects the `sideEffects` wording (§2.6), the Z stream row (§4.0), the Storybook manifest merge (§4.2 P10, §4.1 G4) and the `./a2ui` owner (§2.5, §4.1 G2), and names the stream D and S task ids (§4.4, §4.5, §5.6), with PRD v0.8.21 and ARCHITECTURE v0.8.7. Row 00-Z48 coherence review round 3 on 2026-10-20 places P7 before C1 (§4.2, §6), names the `line-icons` subpaths and their owners (§2.5), widens the decision-id note (§5.6) and the S1–S10 risk line (§8), and splits the S stream owners by file (§4.0) (findings R3-L1-01 to R3-L1-04). It also routes A2UI icon names through the surface `iconMap` (§2.1 Icon row, §2.5; spec AM-006, decision D-M) and defers server-side A2UI to a later phase spec (§3), with PRD v0.8.22 and ARCHITECTURE v0.8.8. Row 00-Z48 coherence review round 4 on 2026-10-20 names infra-supervisor as the S owner for the `playwright.config.ts` change only (§4.0; spec §6.S.1, §10 SD71; finding R4-L1-01), adds the Icons row of ARCHITECTURE §17.4 to the renderer table (§2.1; finding R4-L1-02), and adds the `line-icons/a2ui` surface with its preview status (§2.1; spec AM-008), with PRD v0.8.23 and ARCHITECTURE v0.8.9
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.22)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.8)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.23)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.9)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
 >
@@ -82,12 +82,14 @@ PRD Appendix D defines these surfaces.
 | `@websublime/line-genui/catalog.json` | Emitted JSON of the `line` catalog | Normal policy |
 | `@websublime/line-genui/a2ui` | Session and `<line-a2ui-surface>` | Preview |
 | `@websublime/line-genui/custom-elements.json` | Custom Elements Manifest of `<line-a2ui-surface>` (spec §10) | Preview, with the surface |
+| `@websublime/line-icons/a2ui` | `A2uiIconMap` type and `a2uiIconMap` helper that feed the surface property `iconMap` (spec AM-008) | Preview, with the surface |
 | `@websublime/line-themes/hosts/mcp-apps.css` | CSS-only MCP Apps theming bridge | Normal policy |
 
 PRD Appendix D and ARCHITECTURE §17.7 set the preview policy.
 
 - `@websublime/line-genui/a2ui` may change in any minor release.
 - `@websublime/line-genui/a2ui` sits outside the PRD §7.1 breaking-changes policy until it targets a final A2UI v1.0.
+- `@websublime/line-icons/a2ui` follows the same preview status until A2UI v1.0, because its type and helper feed the preview property `iconMap` (ARCHITECTURE §17.7; spec AM-008).
 - The agent contract, the descriptor API and both catalogs follow the normal PRD §7.1 policy.
 
 The package has four dependency rules.
@@ -111,6 +113,7 @@ ARCHITECTURE §17.4 sets the renderer rules.
 | URLs | A policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured |
 | Limits | Configurable maximum node count, depth and data-model size |
 | Accessibility | One live region per surface, `aria-busy` during batches, required names validated; the surface never moves focus to another component, keeps focus across reorders, and on a reparent uses `moveBefore()` where the browser has it, otherwise returning focus to the same `instanceId` at the end of the batch (D4) |
+| Icons | The consumer sets `iconMap` to the null-prototype frozen `A2uiIconMap` that `a2uiIconMap(set, { library })` from `@websublime/line-icons/a2ui` returns; the surface looks each A2UI `Icon.name`, literal or bound, up with `Object.hasOwn` and renders `<line-icon>` with `library`, `name`, `weight` and `mirror` from the entry; `iconMap` unset, or a name absent from it, leaves the node neutral and raises `line-a2ui-error`; setting or replacing `iconMap` projects every Icon node again; a resolver rejection leaves `<line-icon>` neutral with no surface error (spec AM-006, AM-008) |
 
 ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 
@@ -245,7 +248,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | P | Platform and release (9th package, edges, publish, trusted publisher, bundle splitting, CDN, axe tier, TypeScript 7, `@websublime/*` externals, CEM wiring and packaging) | infra-supervisor |
 | C | Core primitives (20 components, spec + implementation + descriptor + stories + changeset) | webcomponents-supervisor |
 | D | Cross-cutting documentation (agent-driven UI guide, recipes index, Getting Started updates) | webcomponents-supervisor |
-| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content, infra-supervisor for CI and deploy changes (`playwright.config.ts`, `checks.yml`, `deploy-site.yml`) |
+| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content; infra-supervisor for the `playwright.config.ts` change (spec §6.S.1, §10 SD71) |
 | Z | Repo-wide (code of conduct, exit sweep and retrospective); process alignment lands in the ledger PR (§4.6) | Main session / per row |
 
 PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs an update when the Phase 1 ledger is created (§10).
