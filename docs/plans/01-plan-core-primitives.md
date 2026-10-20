@@ -1,11 +1,11 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.2, §2.5–§2.7, §4.2, §4.3, §5.5), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.19)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.5)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.20)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.6)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
 >
@@ -69,7 +69,7 @@ PRD §7.3 lists ten items.
 4. Frontend-tool JSON Schema emitter, `{name, description, parameters}` (§17.3, PRD Appendix D).
 5. `<line-a2ui-surface>`, light DOM, built on `@a2ui/web_core`, with preview status (§17.4, §17.7).
 6. CEM drift test and descriptor coverage test (§17.3).
-7. MCP Apps theming bridge `@websublime/line-themes/hosts/mcp-apps.css` (§17.6). The Phase 1 spec settles the fallback strategy for `line-tokens` primitives.
+7. MCP Apps theming bridge `@websublime/line-themes/hosts/mcp-apps.css` (§17.6). A `line-tokens` primitive takes a `body`-scoped `var(--host, inherit)` (spec §10 SD17).
 8. Transport recipes in Storybook for AG-UI, A2A, MCP and SSE (§17.5).
 9. Layer edges `line-genui -> line-core`, `line-components`, `line-icons` in the Phase 1 spec edge table and in `ALLOWED_EDGES` (§17.1).
 10. `infra-supervisor` bootstraps the npm trusted publisher for `@websublime/line-genui` in the AM-038 order (the Phase 00 spec's trusted publisher bootstrap amendment) before its first release.
@@ -105,7 +105,7 @@ ARCHITECTURE §17.4 sets the renderer rules.
 | Loading | Lazy `import()` through each descriptor's `load()`; no eager `define()` |
 | Composition | The surface creates elements by tag and wires children through slots |
 | Events | `line-a2ui-action` and `line-a2ui-error` |
-| Errors | A `processMessages` throw rejects its whole message; the surface catches every throw; an unknown type arrives as a resolver error and renders an inert placeholder for that node; a missing child stays a pending placeholder until it arrives and raises no error; whether a cycle rejects its message or arrives as a resolver error depends on the `validationConfig` preset the spec sets |
+| Errors | A `processMessages` throw rejects its whole message; the surface catches every throw; an unknown type arrives as a resolver error and renders an inert placeholder for that node; a missing child stays hidden until it arrives and raises no error; the surface passes `RELAXED_VALIDATION`, so a cycle rejects its message (spec §10 SD52, SD54) |
 | Theme | Agent theme hints are ignored by default; the host owns styling |
 | Text | Plain text by default; Markdown only through an opt-in sanitising renderer |
 | URLs | A policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured |
@@ -118,7 +118,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 |---|---|
 | Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant` |
 | Image | Native `<img>` behind the URL policy; `variant: "avatar"` maps to Avatar |
-| Icon | `<line-icon>` with A2UI icon names mapped to a `line-icons` resolver; the spec decides how `{ "svgPath": … }` renders (§5.5) |
+| Icon | `<line-icon>` with A2UI icon names mapped to a `line-icons` resolver; `{ "svgPath": … }` renders through the `<line-icon>` `path` property (spec §10 SD33) |
 | Video, AudioPlayer | Native `<video>` and `<audio controls>` |
 | Row, Column, List | `<line-stack>` |
 | Divider | `<line-separator>` |
@@ -133,20 +133,20 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | ButtonGroup | Custom; a custom roving-focus machine (D5, spec §10) | `./button-group` |
 | Alert | Static | `./alert` |
 | Chip | Pre-built; `@zag-js/toggle` 1.46.0 (D6, spec §10) | `./chip` |
-| Badge | Static | Spec settles by the §12 family rule |
+| Badge | Static | `./badge` (spec §10 SD12) |
 | Avatar | Static | `./avatar` |
 | AvatarGroup | Custom | `./avatar-group` |
-| Separator | Static | Spec settles by the §12 family rule |
-| Visually Hidden | Static | Spec settles by the §12 family rule |
-| Portal | Static | Spec settles by the §12 family rule |
+| Separator | Static | `./separator` (spec §10 SD12) |
+| Visually Hidden | Static | `./visually-hidden` (spec §10 SD12) |
+| Portal | Static | `./portal` (spec §10 SD12) |
 | Icon | Static | `./icon` |
-| Kbd / Shortcut | Static | Spec settles by the §12 family rule |
-| Skeleton | Static | Spec settles by the §12 family rule |
+| Kbd / Shortcut | Static | `./kbd`, one tag `line-kbd` (spec §10 SD12) |
+| Skeleton | Static | `./skeleton` (spec §10 SD12) |
 | Presence | Pre-built | `./presence` |
-| Stack | Static | Spec settles by the §12 family rule |
-| Grid | Static | Spec settles by the §12 family rule |
-| Center | Static | Spec settles by the §12 family rule |
-| Aspect Ratio | Static | Spec settles by the §12 family rule |
+| Stack | Static | `./stack` (spec §10 SD12) |
+| Grid | Static | `./grid` (spec §10 SD12) |
+| Center | Static | `./center` (spec §10 SD12) |
+| Aspect Ratio | Static | `./aspect-ratio` (spec §10 SD12) |
 | Spinner | Static | `./spinner` |
 
 - PRD §7.3 names Button, Icon, Stack and Separator as the validating set, and the plan gate confirmed it (O2.b (a)). They ship first, and stream G validates on them.
@@ -170,9 +170,9 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 ### 2.5 Icon surface
 
 - `<line-icon>` ships in Phase 1.
-- The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E).
-- The A2UI basic `Icon` maps A2UI icon names to a `line-icons` resolver (ARCHITECTURE §17.3). A2UI also accepts `{ "svgPath": … }`, which a name resolver does not cover (§5.5).
-- The reference resolvers fail in Vite 8 and esbuild production builds, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2). Task C22 fixes them before C2 (Icon), and the spec picks the loading mechanism (§5.5).
+- The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E), and `./a2ui` (A2UI icon-name map; spec §10 SD14).
+- The A2UI basic `Icon` maps A2UI icon names to a `line-icons` resolver (ARCHITECTURE §17.3). A2UI also accepts `{ "svgPath": … }`, which a name resolver does not cover. The surface renders it through the `<line-icon>` `path` property (spec §10 SD33).
+- The reference resolvers fail in Vite 8 and esbuild production builds, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2). Task C22 fixes them before C2 (Icon). Both resolvers fetch the SVG from a base URL that the consumer sets (spec §10 SD89, SD90).
 
 ### 2.6 Platform and release
 
@@ -180,17 +180,17 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 - Add the layer edges (PRD item 9).
 - Extend publish and `verify-pack` coverage to the 9th package.
 - Keep `@websublime/*` external in the library builds, so consumers get one `LineElement` class (R9 §2.1, task P9).
-- Load the Custom Elements Manifest into Storybook and ship it in `line-components` (D8, task P10).
+- Load the Custom Elements Manifest into Storybook and ship it in `line-components` (D8, task P10). `line-genui` ships its own manifest (task G4), and Storybook loads one manifest merged from `line-components` and `line-genui` (spec §10 SD94).
 - Bootstrap the trusted publisher (PRD item 10, AM-038 order).
-- Verify bundle splitting (PRD exit criterion, ARCHITECTURE §12). The spec sets the `sideEffects` value, the chunk layout and the verification (§5.5).
-- Verify CDN delivery through unpkg and jsDelivr, which PRD §1.7 promises "from Phase 1 onwards", against the CDN contract the spec fixes (§5.5).
+- Verify bundle splitting (PRD exit criterion, ARCHITECTURE §12). The packages omit the `sideEffects` field and use the default Rolldown chunks. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (spec §10 SD4).
+- Verify CDN delivery through unpkg and jsDelivr, which PRD §1.7 promises "from Phase 1 onwards", against the two-path CDN contract of spec §10 SD32.
 - Add a mechanism for the zero-axe-violation criterion. Today axe runs only in the Storybook `@storybook/addon-a11y` panel, which has no CI path and gates nothing, and no Playwright axe tier exists.
 - Add a code of conduct "before Phase 1 / v0.2.0" (PRD §10). No `CODE_OF_CONDUCT` file exists today.
 
 ### 2.7 Release target
 
 - Phase 1 ships `v0.2.0` as a minor release (PRD §7.1, changeset rule in PROCESS §6).
-- `line-genui` is a new package at `0.0.0`. A `minor` changeset on it yields `0.1.0`, so the first `line-genui` version is a spec question (§5.5).
+- P1 seeds `line-genui` at `0.1.0`. A `minor` changeset releases it at `0.2.0` with the other eight packages, and `0.1.0` is never published (spec §10 SD3).
 
 ### 2.8 Site landing page
 
@@ -245,7 +245,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | P | Platform and release (9th package, edges, publish, trusted publisher, bundle splitting, CDN, axe tier, TypeScript 7, `@websublime/*` externals, CEM wiring and packaging) | infra-supervisor |
 | C | Core primitives (20 components, spec + implementation + descriptor + stories + changeset) | webcomponents-supervisor |
 | D | Cross-cutting documentation (agent-driven UI guide, recipes index, Getting Started updates) | webcomponents-supervisor |
-| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | Proposal: webcomponents-supervisor for content, infra-supervisor for deploy changes |
+| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content, infra-supervisor for deploy changes |
 | Z | Repo-wide (code of conduct, process alignment) | Main session / per row |
 
 PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs an update when the Phase 1 ledger is created (§10).
@@ -259,9 +259,9 @@ R2 delivered the projection evidence, and Miguel chose direct projection on `Nod
 | G1 | Descriptor API | 2 |
 | G2 | `line` and `basic` catalog emitters (A2UI v0.9.1) | 3 |
 | G3 | Frontend-tool JSON Schema emitter | 4 |
-| G4 | `<line-a2ui-surface>` (preview), direct projection on `NodeResolver` | 5 |
+| G4 | `<line-a2ui-surface>` (preview), direct projection on `NodeResolver`; ships the `line-genui` manifest (`customElements`, `files`, `./custom-elements.json`; spec §10 SD94) | 5 |
 | G5 | CEM drift test and descriptor coverage test | 6 |
-| G6 | MCP Apps bridge `line-themes/hosts/mcp-apps.css`; the spec settles the `line-tokens` primitive fallback (ARCHITECTURE §17.6) | 7 |
+| G6 | MCP Apps bridge `line-themes/hosts/mcp-apps.css`; a `line-tokens` primitive takes a `body`-scoped `var(--host, inherit)` (spec §10 SD17; ARCHITECTURE §17.6) | 7 |
 | G7 | Transport recipes in Storybook (AG-UI, A2A, MCP, SSE); recipes pin middleware versions as the documented server convention or in a mock producer, because the middleware does not run fully in a browser (R6 §5.2) | 8 |
 
 Stream G also writes the descriptors of Button, Icon, Stack and Separator.
@@ -278,14 +278,14 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 | P6 | CDN delivery check (unpkg, jsDelivr) |
 | P7 | axe-core tier for the zero-violation exit criterion |
 | P8 | TypeScript 7.x upgrade (O1, D1). `typescript` moves to 7.x. The Vite-built packages (`line-core`, `line-components`, later `line-genui`) emit every `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and `vite-plugin-dts` leaves the build. The `tsc -b` packages emit with 7.x `tsc -b`. Ambient `declare module` lines in `apps/storybook` fix TS2882. The same commit updates the documents §2.9 lists. After R11 and the spec, before C1 |
-| P9 | Library builds keep `@websublime/*` external, so `line-components` stops inlining `line-core` (R9 §2.1). The spec picks the mechanism (§5.5). Before C1 |
-| P10 | CEM wiring and packaging (D8). The analyser runs before the Storybook build, `preview.ts` calls `setCustomElementsManifest`, and the comments follow. `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs` lines 8–10 claim that Storybook loads the manifest on its own, and lines 4–6 of that config claim that the manifest is empty (AM-073, I39). `line-components` ships the manifest with a `customElements` field and a `files` entry, under `verify-pack` coverage. Where the shipped manifest comes from depends on the §5.5 answer on the G5 manifest source. Before the C1 Storybook docs and G5 |
+| P9 | Library builds keep `@websublime/*` external, so `line-components` stops inlining `line-core` (R9 §2.1). Each build derives `external` from its manifest's `dependencies` and `peerDependencies` (spec §10 SD2). Before C1 |
+| P10 | CEM wiring and packaging (D8). The analyser runs before the Storybook build, `preview.ts` calls `setCustomElementsManifest`, and the comments follow. `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs` lines 8–10 claim that Storybook loads the manifest on its own, and lines 4–6 of that config claim that the manifest is empty (AM-073, I39). `line-components` ships the manifest with a `customElements` field and a `files` entry, under `verify-pack` coverage. The `line-components` build emits it (spec §10 SD26, SD27). Storybook loads one manifest merged from `line-components` and `line-genui` (spec §10 SD94). Before the C1 Storybook docs and G5 |
 
 ### 4.3 Stream C — core primitives
 
 - C1–C4 cover the validating components Button, Icon, Stack and Separator (O2.b (a)). They ship first, before stream G, without descriptors, and stream G adds their descriptors.
 - C21 changes `LineMachineController` in `line-core` so it calls `updateProps` on every host update, and a component declares its machine props as a function of its properties (D7). The same task corrects the "four public" count in `packages/line-core/README.md:10` and the code comment at `packages/line-core/src/machine/index.ts:2`. `@zag-js/vanilla` exports five values, and `line-core` leaves out `toStyleString` (AM-073); the names those two places list are correct. It lands before C1.
-- C22 fixes the `line-icons` resolvers for consumer bundlers (R10 P6). The spec picks the loading mechanism (§5.5). It lands before C2 (Icon).
+- C22 fixes the `line-icons` resolvers for consumer bundlers (R10 P6). Both resolvers fetch the SVG from a consumer-set base URL (spec §10 SD89, SD90). It lands before C2 (Icon).
 - C21 and C22 are prerequisites. They take numbers after the 20 component rows, so C1–C20 keep their component mapping.
 - C5–C20 cover the remaining 16 components. Each ships its descriptor in the same PR.
 - Each row runs the same sequence.
@@ -311,7 +311,8 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 ### 4.6 Stream Z — repo-wide
 
 - Z1 adds the code of conduct (PRD §10).
-- Z2 aligns PROCESS §4 and the `CLAUDE.md` ledger pointer with the Phase 1 streams.
+- No Z2 task remains, and spec AM-002 removes it. The PR that creates the Phase 1 ledger aligns PROCESS §4 and the `CLAUDE.md` ledger pointer with the Phase 1 streams (§10 step 6).
+- Z3 runs the exit sweep and writes the Phase 1 retrospective (spec §10 SD87).
 - The O4 items are Phase 00 ledger rows `00-Z28` (O4.a, class `decision`), `00-Z29` (O4.b, `blocked` until the Biome release) and `00-Z30` (O4.c, class `amendment`).
 - These rows do not wait for the Phase 1 ledger.
 
@@ -349,7 +350,7 @@ All six notes are delivered.
 
 ### 5.3 Upstream facts the research must re-check
 
-- `@a2ui/web_core` went from 0.12.0 to 0.13.0 in 11 days (2026-09-28 → 2026-10-09). 0.14.0 has been `latest` since 2026-10-17 (R1 §2.1). The spec pins the version on its own date (§5.5).
+- `@a2ui/web_core` went from 0.12.0 to 0.13.0 in 11 days (2026-09-28 → 2026-10-09). 0.14.0 has been `latest` since 2026-10-17 (R1 §2.1). The spec pins exactly `0.14.0` (spec §10 SD6).
 - `npm view @a2ui/web_core@0.13.0` lists seven dependencies: `lit ^3.3.3`, `zod ^3.25.76`, `@lit/context ^1.1.6`, `zod-to-json-schema ^3.25.2`, `@preact/signals-core ^1.14.2`, `validate-color ^2.2.4` and `redos-detector ^6.1.4`. 0.14.0 declares the same set (R1 §2.1–§2.2). The repo also declares `zod ^3.25.76`, while Zod `latest` is 4.6.7.
 
 ### 5.4 Decisions at the plan gate (Miguel, 2026-10-13)
@@ -411,35 +412,35 @@ Each item has two options, an own ledger row or a plan risk entry. Miguel asked 
 
 ### 5.5 Spec-level questions
 
-These questions belong to the Phase 1 spec. They are neither research items nor plan forks.
+These questions belonged to the Phase 1 spec. They are neither research items nor plan forks. Answered by spec §10 (APPROVED 2026-10-20). Each bullet names its answer.
 
-- Which ids does the `basic` catalog answer to, and does a session advertise it by default before basic coverage is complete (ARCHITECTURE §17.3, §17.9)? Options: (a) only `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`; (b) also the `v0_9_1` URL of the v0.9.1 protocol examples, which `web_core` rejects; (c) also the middleware fallback `…/v0_9/basic_catalog.json`; (d) the AG-UI recipe server sets `defaultCatalogId`; (e) recipes use only the `line` catalog id. Evidence: R1 §2.4.1 and P7, R6 §2.1 and §6 Q5.
-- What does the surface do when `processMessages` rejects a message? Options: one `processMessages` call per message or per batch (R1 §6 Q4); `validationConfig` none, `RELAXED`, `STRICT` or custom (R1 §6 Q3, §2.7); `VALIDATION_FAILED` with a JSON Pointer from Zod paths, or a generic error carrying the `web_core` code (R1 §6 Q9); depth limits from the `web_core` topology checks or from the surface (R2 §6 Q6, §2.6).
-- How does the frontend-tool emitter turn a descriptor into flat parameters (D3), and is there a per-descriptor token budget? Options: `zod-to-json-schema`, `toJson()` per component, or native `z.toJSONSchema`; a budget or none. Evidence: R3 §2.5, §2.7, §6 Q2 and Q7.
-- How does the emitter reach Gemini (D3)? One flat schema cannot meet OpenAI and Anthropic strict mode and Gemini `parameters` at once, because strict mode needs `additionalProperties: false` on every object and OpenAI also needs every property in `required`, while Gemini `parameters` allows neither `additionalProperties` nor `const`. Options: (a) a per-provider serialisation of the same flat literal schema (R3 §6 Q3 (c)); (b) Gemini through `parametersJsonSchema`. Evidence: R3 §2.6. Option (a) is not D3's rejected "both variants per descriptor", which meant a strict schema plus a common-types schema.
-- How does the basic `Icon` render `{ "svgPath": … }` and an unknown bound name? Options: an inline SVG path, an inert placeholder plus `line-a2ui-error`, or a fallback icon. Evidence: R10 §6 Q6, R1 §2.7, Law 9.
-- Does `<line-icon>` keep a slot path beside its `name`, `library` and `src` attributes, and where does the A2UI name map live (a `line-icons` subpath such as `./a2ui`, `line-genui`, or the `./icon` module)? Evidence: R10 §5 C3, §6 Q1.
-- How do the `line-icons` resolvers load icons in a consumer bundle (C22), and which shape do the Phase 1 subpaths take? Loading options: (a) the template `import()` with a per-bundler fix (an import map cannot fix it, because the CDN serves the file as `image/svg+xml`); (b) one literal `import()` per mapped name; (c) `import.meta.glob` per set (Vite, and webpack from 5.109); (d) fetch an SVG URL. R10 §6 Q4 lists the subpath shapes. Evidence: R10 P6, P7, §6 Q3 and Q4; R10 round 2 §2.2, §2.6, §6.
-- What is the `sideEffects` value, the chunk layout and the isolation check? Options for the field: (a) absent; (b) `["./dist/**/*.js"]` plus a source glob; (c) an explicit list with deterministic `chunkFileNames`, checked statically; (d) `[]` with a "named import or `import()` only" rule. Chunk layout: default Rolldown, `preserveModules`, or no cross-component imports, which also settles whether AvatarGroup imports Avatar and sets the precedent for SplitButton (Phase 3). Evidence: R9 §2.1, §2.2, §6 Q1, Q2 and Q4.
-- How do the library builds keep `@websublime/*` external (P9)? Evidence: R9 §2.1, §6 Q3.
-- Which CDN contract do the docs promise? Options: jsDelivr `+esm`, esm.unpkg.com, or raw files plus an import map; a `default` condition, `main`, `jsdelivr` or `unpkg` fields; a `process` shim or none; two Lit copies under `+esm` accepted or not. Evidence: R9 §2.3, §6 Q5.
-- Which components carry `agentExposed: false`? Portal, Presence and Visually Hidden are the candidates.
-- Which MCP Apps host variables form the `mcp-apps.css` reference list (§17.9)?
-- The utility-class decision is "Deferred to Phase 1 spec" (PRD §9.13).
-- Which version does `line-genui` release first (§2.7)? Options: `0.1.0`, `0.2.0`, or a canary first. The trusted-publisher bootstrap stays on path A, the AM-038 order (PRD §7.3 item 10). Evidence: R9 §2.5, §2.6, §6 Q9.
-- Which `@a2ui/web_core` version does `line-genui` pin, 0.13.0, 0.14.0 or `latest` on the spec date? Evidence: R1 §2.1, §6 Q1.
-- How is the IconButton name checked? Options: a runtime dev warning, a descriptor-level required-name check (§17.4), a DOM check after render, or axe only. Does IconButton join the ARCHITECTURE §7 form-associated list? A yes returns to an ARCHITECTURE §7 revision as a `decision`. Evidence: R8 §6 Q12 and Q13, R2 §6 Q5.
-- Which machine drives the ButtonGroup toolbar (D5)? The options are a custom roving-focus machine or another option, such as `@zag-js/toolbar` once it leaves pre-release. The choice also settles the tier label in PRD §4.1, §4.11 and §7.3 and in §2.2. Evidence: R8 §2.2, §6 Q6; `npm view @zag-js/toolbar` on 2026-10-20 (`latest` and `next` are 2.0.0-next.x, pre-release only).
-- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? The machine choice also settles the tier label. Evidence: R8 §2.2, §6 Q7.
-- What do Button's `pressed`, `loading` and `disabled` mean, now that D7 passes host props to the machine? The answer also settles why Chip is a separate toggle and not `Button[pressed]`, given that ARCHITECTURE §13.1 offers "Button with `pressed` state" in place of a ToggleButton. Evidence: R7 §6 OQ4, R8 §2.2.
-- How does C21 bound the cost of repeated `updateProps` calls? Each `VanillaMachine.updateProps` call nests one more merge closure, and one `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4). The deciding evidence is an upstream fix for the closure chain or a measured host update rate per component (R7 §6 OQ1).
-- Which tool runs the axe gate (P7)? Options: Playwright with `@axe-core/playwright`, the Storybook addon with the Vitest addon, or both. Evidence: R8 §2.4, §6 Q3.
-- Where do the G5 tests read the manifest? Options: the file, with the analyse step moved before the unit tier; a manifest built in memory; the manifest the `line-components` build emits (D8). Evidence: R4 §2.7, §6 OQ4.
-- What does the AG-UI recipe do with `line-a2ui-error`, and what does the A2A recipe accept? AG-UI options: an app-defined `forwardedProps` key documented as non-upstream, a local log only, or wait for an upstream channel. A2A options: an array or a single message per DataPart; accept `application/json+a2ui`; target A2A v1.0 (`@a2a-js/sdk` 1.3.0) or v0.3. Evidence: R6 §2.1, §2.2, §6 Q3 and Q4.
-- What do the recipes pin from `@ag-ui/a2ui-middleware`, which does not run fully in a browser? The options are the documented server convention or a mock producer that mirrors its output. Evidence: R6 §2.1, §5.2, §6 Q1 and Q2.
-- How does P8 wire the 7.x declarations (D1)? The spec settles `declarationMap`, the build wiring, the `verify-pack` run and the type-checker worker count in CI. Evidence: R11 §6 OQ1 (d), OQ3.
-- Each component spec fills its htmx row (§2.4).
-- The spec decides whether DOM snapshots need a custom serializer (Phase 00 spec §6.C.7 snapshot note and §11 Q2).
+- Which ids does the `basic` catalog answer to, and does a session advertise it by default before basic coverage is complete (ARCHITECTURE §17.3)? Answered: spec §10 SD43, SD44.
+- What does the surface do when `processMessages` rejects a message? Answered: spec §10 SD51, SD52, SD53, SD55.
+- How does the frontend-tool emitter turn a descriptor into flat parameters (D3), and is there a per-descriptor token budget? Answered: spec §10 SD46, SD50.
+- How does the emitter reach Gemini (D3)? Answered: spec §10 SD48.
+- How does the basic `Icon` render `{ "svgPath": … }` and an unknown bound name? Answered: spec §10 SD33.
+- Does `<line-icon>` keep a slot path, and where does the A2UI name map live? Answered: spec §10 SD14.
+- How do the `line-icons` resolvers load icons in a consumer bundle (C22), and which shape do the Phase 1 subpaths take? Answered: spec §10 SD88–SD92.
+- What is the `sideEffects` value, the chunk layout and the isolation check? Answered: spec §10 SD4.
+- How do the library builds keep `@websublime/*` external (P9)? Answered: spec §10 SD2.
+- Which CDN contract do the docs promise? Answered: spec §10 SD32.
+- Which components carry `agentExposed: false`? Answered: spec §10 SD38.
+- Which MCP Apps host variables form the `mcp-apps.css` reference list? Answered: spec §10 SD62, §6.G.6.
+- Does line://ui ship utility classes (PRD §9.13)? Answered: spec §10 SD1.
+- Which version does `line-genui` release first (§2.7)? Answered: spec §10 SD3.
+- Which `@a2ui/web_core` version does `line-genui` pin? Answered: spec §10 SD6.
+- How is the IconButton name checked, and does IconButton join the ARCHITECTURE §7 form-associated list? Answered: spec §10 SD36.
+- Which machine drives the ButtonGroup toolbar (D5)? Answered: spec §10 SD10 (custom machine, Custom tier).
+- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? Answered: spec §10 SD11 (`@zag-js/toggle`, Pre-built tier, no remove button).
+- What do Button's `pressed`, `loading` and `disabled` mean? Answered: spec §10 SD35.
+- How does C21 bound the cost of repeated `updateProps` calls? Answered: spec §10 SD18.
+- Which tool runs the axe gate (P7)? Answered: spec §10 SD78.
+- Where do the G5 tests read the manifest? Answered: spec §10 SD26.
+- What does the AG-UI recipe do with `line-a2ui-error`, and what does the A2A recipe accept? Answered: spec §10 SD65, SD66.
+- What do the recipes pin from `@ag-ui/a2ui-middleware`? Answered: spec §10 SD64.
+- How does P8 wire the 7.x declarations (D1)? Answered: spec §10 SD7.
+- Each component spec fills its htmx row (§2.4). Answered for the static rows: spec §10 SD34.
+- Do DOM snapshots need a custom serializer? Answered: spec §10 SD81.
 
 ### 5.6 Decisions after the research stage (Miguel, 2026-10-20)
 
@@ -455,7 +456,7 @@ The twelve research notes broke statements in the PRD, ARCHITECTURE and this pla
 | D2 Catalog validation | (a) | The criterion uses only published artifacts. The inline form of the `line` catalog validates against `client_capabilities.json#/$defs/Catalog`, `web_core` reads the catalog back with `Catalog.fromJson`, and its `validationSchema` compiles (R1 §2.4, R2 §2.7) | Chosen — Miguel, 2026-10-20 |
 | D2 Catalog validation | (b) | A line-maintained schema derived from the basic catalog | Rejected |
 | D2 Catalog validation | (c) | The `web_core` round-trip alone | Rejected |
-| D3 Frontend-tool schemas | (a) | Tool parameters are literal and flat, and the emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini; the spec decides how the emitter reaches each provider (§5.5). The A2UI common types and dynamic bindings stay in the catalogs, which the flat-schema rule does not cover. The 1024-character limit is a self-imposed cap on tool descriptions (R3 §2.6, §2.7) | Chosen — Miguel, 2026-10-20 |
+| D3 Frontend-tool schemas | (a) | Tool parameters are literal and flat, and the emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini; one flat literal model is serialised per provider (spec §10 SD48). The A2UI common types and dynamic bindings stay in the catalogs, which the flat-schema rule does not cover. The 1024-character limit is a self-imposed cap on tool descriptions (R3 §2.6, §2.7) | Chosen — Miguel, 2026-10-20 |
 | D3 Frontend-tool schemas | (b) | Common types in the tools, for non-strict modes only | Rejected |
 | D3 Frontend-tool schemas | (c) | Both variants per descriptor | Rejected |
 | D4 Focus on reparent | (a) | Focus stays on the same component. The reconciler keeps it across reorders. On a reparent the surface uses `moveBefore()` where the browser has it, and otherwise returns focus to the same `instanceId` at the end of the batch. The rule reads "the surface never moves focus to another component" (R2 §2.8) | Chosen — Miguel, 2026-10-20 |
@@ -476,13 +477,13 @@ The twelve research notes broke statements in the PRD, ARCHITECTURE and this pla
 Miguel saw the orchestrator defaults below with the forks on 2026-10-20 and corrected none.
 
 - Descriptors stay on the Zod 3 API, because only that API composes with the `web_core` common types (R3 §2.2, §8 Zod row).
-- The `line-genui` trusted-publisher bootstrap stays on path A, the AM-038 order (PRD §7.3 item 10). The first version stays a spec question (§5.5).
+- The `line-genui` trusted-publisher bootstrap stays on path A, the AM-038 order (PRD §7.3 item 10). The spec seeds the first version (spec §10 SD3).
 - Ambient `declare module` lines in `apps/storybook` fix TS2882 (R11 §6 OQ2 (b)), inside P8.
-- The library builds keep `@websublime/*` external (R9 §2.1, P9). The mechanism is a spec question.
-- The `line-icons` resolvers get fixed for consumer bundlers before C2 (R10 P6, C22). The mechanism is a spec question.
+- The library builds keep `@websublime/*` external (R9 §2.1, P9). The spec sets the mechanism (spec §10 SD2).
+- The `line-icons` resolvers get fixed for consumer bundlers before C2 (R10 P6, C22). The spec sets the mechanism (spec §10 SD89).
 - The factual Phase 00 spec drift on the manifest and the site tree lands as AM-073. The TypeScript 7 places in that spec wait for P8.
 - Field labelling (ARCHITECTURE §9), SplitButton bundling (§13.1) and the PasswordInput and DateInput tiers (PRD §4.2) get their fact corrections and stay deferred to later phases.
-- The remaining forks move to §5.5 as spec questions.
+- The remaining forks moved to §5.5, and the spec answers them (spec §10).
 
 ---
 
@@ -511,8 +512,8 @@ P7 axe tier ──────────────────────�
 The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds the research outcomes.
 
 1. Research (R1–R12). Delivered (§5.1–§5.2).
-2. Plan and PRD revision 00-Z45 (§5.6). Miguel approves it before spec work.
-3. Spec, which answers §5.5.
+2. Plan and PRD revision 00-Z45 (§5.6). Done: Miguel approved it on 2026-10-20.
+3. Spec, which answers §5.5. Done: APPROVED 2026-10-20 (row 00-Z46).
 4. P1 scaffold, P2 edges, P8 TypeScript 7, P9 externals, P10 CEM wiring and packaging, and C21 controller change.
 5. C1–C4 (Button, Icon, Stack, Separator), without descriptors; C22 lands before C2.
 6. Stream G (G1–G7), including the descriptors of C1–C4.
@@ -530,11 +531,11 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 
 ### 7.1 Components
 
-- [ ] All listed components pass the 8-point test checklist (§5.2)
+- [ ] All listed components pass the 8-point test checklist (PRD §5.2)
 - [ ] Storybook documentation complete for every component
 - [ ] Zero axe-core violations
 - [ ] CEM manifest generated and verified
-- [ ] *Storybook loads the manifest through `setCustomElementsManifest`, and `@websublime/line-components` ships it with a `customElements` field and a `files` entry (D8).*
+- [ ] *Storybook loads the manifest through `setCustomElementsManifest`, and `@websublime/line-components` and `@websublime/line-genui` each ship one with a `customElements` field and a `files` entry (D8; spec §10 SD94).*
 - [ ] Changeset entry for every component
 - [ ] *Every Phase 1 component spec is APPROVED before code, with the Agent contract section filled (hand-off item 4).*
 - [ ] *Every component fills the htmx Tests row per C9 (harness run, or `n/a` with a reason).*
@@ -554,14 +555,14 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 ### 7.3 Documentation
 
 - [ ] Storybook holds one recipe per transport (AG-UI, A2A, MCP, SSE)
-- [ ] The site landing page (hero, value proposition, features, Storybook link; §5.3) is built with Phase 1 line://ui components and is live at `line-ui.websublime.com`
+- [ ] The site landing page (hero, value proposition, features, Storybook link; PRD §5.3) is built with Phase 1 line://ui components and is live at `line-ui.websublime.com`
 
 ### 7.4 Platform and release
 
 - [ ] Bundle splitting verified — families and independents work as documented
 - [ ] `scripts/lint-layers.mjs` carries the `line-genui` edges and passes
 - [ ] The npm trusted publisher for `@websublime/line-genui` exists before its first release
-- [ ] *CDN delivery through unpkg and jsDelivr is verified against the contract the spec fixes (PRD §1.7).*
+- [ ] *CDN delivery through unpkg and jsDelivr is verified against the two-path contract of spec §10 SD32 (PRD §1.7).*
 - [ ] *The workspace builds, type-checks and emits declarations on TypeScript 7.x (O1). The Vite-built packages emit every `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and the `tsc -b` packages with 7.x `tsc -b` (D1).*
 - [ ] *A consumer that imports `@websublime/line-core` and a `line-components` subpath gets one `LineElement` class (P9).*
 - [ ] *The Phase 1 spec records the utility-class decision (PRD §9.13).*
@@ -576,12 +577,12 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
-| A2UI churn; `web_core` ships breaking minors (0.12.0 → 0.13.0 in 11 days; 0.14.0 `latest` since 2026-10-17 with 12 entries marked BREAKING) | High | High | Pin exactly (ARCHITECTURE §17.7), keep a version seam in `line-genui`, re-verify the version on the spec date (§5.5) |
+| A2UI churn; `web_core` ships breaking minors (0.12.0 → 0.13.0 in 11 days; 0.14.0 `latest` since 2026-10-17 with 12 entries marked BREAKING) | High | High | Pin exactly (ARCHITECTURE §17.7), keep a version seam in `line-genui`; the spec pins `0.14.0`, and a newer version needs an AM (spec §10 SD6) |
 | Zod split; the repo and `web_core` declare `zod ^3.25.76` while Zod `latest` is 4.6.7, and descriptors share Zod types with `web_core` | Medium | High | Keep the repo on Zod 3 and the descriptors on the Zod 3 API until `web_core` moves (relies on the same AM-064 reading of PRD §2). R3 §2.2 shows that only the Zod 3 API composes with the `web_core` common types, and that Zod 4 descriptors lose every prop without an error (upstream PR #2753 is open) |
 | The TypeScript 7.x move (O1) breaks the toolchain | Medium | High | R11 found blocker B1 (`vite-plugin-dts` needs the TypeScript JS API, which 7.0 lacks) and TS2882 in `apps/storybook`. D1 emits the Vite-built packages' `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and ambient `declare module` lines fix TS2882 (P8) |
 | `line-components` inlines `line-core`, so consumers get two `LineElement` classes (R9 §2.1) | High | High | P9 keeps `@websublime/*` external before C1; the §7.4 one-class criterion |
-| The reference icon resolvers emit no icon in a consumer bundle (R10 P6) | High | Medium | C22 fixes them before C2; the spec picks the loading mechanism (§5.5) |
-| Repeated `updateProps` calls slow each machine down (D7, C21). Each call nests one more merge closure, and one `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | The §5.5 question on bounding the cost; an upstream fix for the closure chain or a measured update rate per component decides it. D7 stands |
+| The reference icon resolvers emit no icon in a consumer bundle (R10 P6) | High | Medium | C22 fixes them before C2; both resolvers fetch from a consumer-set base URL (spec §10 SD89, SD90) |
+| Repeated `updateProps` calls slow each machine down (D7, C21). Each call nests one more merge closure, and one `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | C21 measures the host update rate per component and sets a budget, and a `line-core` subclass replaces the props source only past it (spec §10 SD18). D7 stands |
 | Catalog quality becomes the agent UX | High | Medium | Descriptor descriptions reviewed in each component spec; research note §7 |
 | Accessibility of agent-built trees is under-specified upstream | Medium | High | Renderer accessibility rules (§17.4) with the D4 focus rule; the R2 VoiceOver pass matched S1–S10 for (b); P7 axe tier |
 | Prompt injection through action labels | Medium | High | Agent strings stay untrusted; plain text by default (§17.4) |
@@ -606,12 +607,12 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 
 ## 10. Next Steps
 
-1. The research stage is done. R1–R12 are delivered (§5.1–§5.2), and revision 00-Z45 aligned the PRD (v0.8.18), ARCHITECTURE (v0.8.4) and this plan with them (PROCESS §2).
-2. Miguel approves revision 00-Z45.
-3. The next step is the spec `docs/specs/01-spec-core-primitives.md`. It is grounded in research only and answers §5.5. Component specs `docs/specs/NNNN-<component>.md` are written just-in-time (PRD §8.2).
+1. The research stage is done. R1–R12 are delivered (§5.1–§5.2), and revision 00-Z45 aligned the PRD (v0.8.18), ARCHITECTURE (v0.8.4) and this plan with them (PROCESS §2). Done.
+2. Miguel approves revision 00-Z45. Done: approved 2026-10-20.
+3. The spec `docs/specs/01-spec-core-primitives.md` answers §5.5. Done: APPROVED 2026-10-20 (row 00-Z46). Component specs `docs/specs/NNNN-<component>.md` are written just-in-time (PRD §8.2).
 4. Until the Phase 1 ledger exists, each opening PR (the spec, the coherence review) gets its own row in stream Z of the Phase 00 ledger.
-5. The coherence review runs 3 clean rounds with the lenses plan↔PRD, spec↔research and spec↔ARCHITECTURE (PROCESS §5).
-6. The ledger `docs/plans/01-tasks-core-primitives.md` follows the spec's streams. In the same change, PROCESS §4 stream ownership and the `CLAUDE.md` ledger pointer follow the Phase 1 streams.
+5. The coherence review runs 3 clean rounds with the lenses plan↔PRD, spec↔research and spec↔ARCHITECTURE (PROCESS §5). This is the current step (row 00-Z48).
+6. The ledger `docs/plans/01-tasks-core-primitives.md` follows the spec's streams. The PR that creates it also aligns PROCESS §4 stream ownership and the `CLAUDE.md` ledger pointer with the Phase 1 streams. No Z2 task remains (spec AM-002).
 7. Work is delegated to the supervisors, the exit sweep runs, and the retrospective `docs/retrospective/01-<slug>.md` closes the phase.
 
 ---
@@ -631,7 +632,7 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 | PT | Which projection technique does the renderer use? | Direct projection on the `web_core` models and binder (`NodeResolver`) (Miguel, 2026-10-19) |
 | D1 | How do the Vite-built packages get `.d.ts` files on TypeScript 7? | They emit every `.d.ts` with TypeScript 7.x `tsc --emitDeclarationOnly`, and `vite-plugin-dts` leaves the build; the `tsc -b` packages emit with 7.x `tsc -b` (Miguel, 2026-10-20) |
 | D2 | What does the `line` catalog validate against? | Published artifacts only: `client_capabilities.json#/$defs/Catalog` for the inline form, the `Catalog.fromJson` read-back and a compiling `validationSchema` |
-| D3 | What do the frontend-tool schemas look like? | Literal, flat parameters; the emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and the spec decides how the emitter reaches each provider; common types stay in the catalogs; 1024 characters is a self-imposed cap on tool descriptions |
+| D3 | What do the frontend-tool schemas look like? | Literal, flat parameters; the emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini, and one flat literal model is serialised per provider (spec §10 SD48); common types stay in the catalogs; 1024 characters is a self-imposed cap on tool descriptions |
 | D4 | Where does focus go when an agent update reparents the focused node? | It stays on the same component, through `moveBefore()` where available and otherwise a return to the same `instanceId` at batch end |
 | D5 | What is ButtonGroup? | A `toolbar` with roving focus and a machine in Phase 1 |
 | D6 | What is Chip? | A toggle button with `aria-pressed` and a machine in Phase 1 |

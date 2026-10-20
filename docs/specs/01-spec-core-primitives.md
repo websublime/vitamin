@@ -24,7 +24,7 @@
 
 > **What this document is.** The implementation specification for Phase 1 of line://ui. It is the implementable contract for the 9th package, the layer edges, the manifests, the platform and release tasks, the stream C prerequisites, the component contract table, stream G, the documentation, the landing page and the cross-cutting test rules. Section §10 records every decision it rests on.
 >
-> **What this document is NOT.** It is not a planning document. Scope, streams, dependencies and the exit criteria belong to the plan. It is not a research document. Facts come from the research notes R1–R12, not from new investigation. It is not a component spec. Each component's internals belong to its own `docs/specs/NNNN-<component>.md` (plan §2.3).
+> **What this document is NOT.** It is not a planning document. Scope, streams, dependencies and the exit criteria belong to the plan. It is not a research document. Facts come from the research notes R1–R12 and their addenda, not from new investigation. It is not a component spec. Each component's internals belong to its own `docs/specs/NNNN-<component>.md` (plan §2.3).
 
 ---
 
@@ -273,6 +273,7 @@ Entrypoints and tags (plan §2.2, §10 SD12, ARCH §12):
 - Each C task adds its own `exports` key and its own `vite.config.mjs` entry `'<c>/index': 'src/<c>/index.ts'` in the same PR. The table is the final map at phase exit.
 - The root `"."` stays types and shared utilities only and registers no element (ARCH §12).
 - No component module imports another component module (§10 SD4, MANIFESTO Law 4, Law 6). Default Rolldown chunking applies (§10 SD4).
+- `src/shared/` holds code that is not a component. Its first module is `src/shared/button-machine.ts`, the Button machine that C1 and C5 import. Law 4 does not apply to it, and its code lands in a shared chunk (§12 AM-002, D-L3-06; ARCH §13.1).
 - The `dependencies` list MUST equal the set of bare specifiers that `dist/` imports, apart from `@websublime/*` packages already listed (§10 SD2). The list above is the expected phase-exit set. `@zag-js/vanilla` is absent because components reach it through `@websublime/line-core/machine` (`packages/line-core/src` imports, R7 §2.1) [INFERENCE: holds while no component imports `@zag-js/vanilla` directly] (§10 SD13).
 
 ### 4.3 `@websublime/line-icons`
@@ -289,7 +290,7 @@ Entrypoints and tags (plan §2.2, §10 SD12, ARCH §12):
     "url": "git+https://github.com/websublime/line-ui.git",
     "directory": "packages/line-icons"
   },
-  "sideEffects": false,                            // unchanged (R10 §6 Q4; R10 round 2 §2.5)
+  "sideEffects": false,                            // unchanged (R10 §2.4; R10 round 2 §2.5)
   "publishConfig": { "access": "public" },
   "exports": {
     ".":                    { "types": "./dist/index.d.ts",              "import": "./dist/index.js" },              // kept (Phase 00 consumers)
@@ -374,7 +375,7 @@ The `exports` map, `files`, `sideEffects` and `dependencies` stay as in `package
 | Task | Change | Public surface |
 |---|---|---|
 | C21 | `LineMachineController` calls `updateProps` on every host update (D7). It carries the measured cost budget and the fallback of §10 SD18 | No new export. The fallback is a `VanillaMachine` subclass internal to `./machine` (§10 SD18) |
-| C23 | `LineElement` attaches `ElementInternals` for every component and exposes a protected `internals` accessor. `FormAssociated` reuses it. No `globalThis` registration (§10 SD19) | Protected member only. `LineElement` stays exported from `"."` |
+| C23 | `LineElement` attaches `ElementInternals` for every component and keeps it in an ES `#private` field. Subclasses reach it as `this[INTERNALS]`, through a Symbol key that `line-core` exports, a plain `Symbol('line.internals')` and not `Symbol.for`. `FormAssociated` reuses it. No `globalThis` registration (§10 SD19; §12 AM-002) | A new `INTERNALS` export from `"."`. No public `internals` property. `LineElement` stays exported from `"."` |
 | P5 | `/* @__PURE__ */` on each `createSheet()` call in `src/styles/index.ts:30-40` (§10 SD20, R9 §2.1) | None. `./styles` keeps its exports (Phase 00 spec §6.D.7) |
 | P8 | `build` becomes `vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly`; `dev` gains the `tsc --watch` half (§10 SD7, D1) | None |
 
@@ -385,7 +386,7 @@ New and changed paths only. `+` marks a new path and `~` a changed one.
 ```
 .github/workflows/checks.yml                         ~ P5, P7, P10, S1 (steps below)
 CODE_OF_CONDUCT.md                                   + Z1
-CLAUDE.md                                            ~ P8 Tech Stack; Z2 ledger pointer
+CLAUDE.md                                            ~ P8 Tech Stack
 .claude/agents/webcomponents-supervisor.md           ~ P8 (lines 15, 72)
 .gitignore                                           ~ P10 (packages/line-components/custom-elements.json); G4 (packages/line-genui/custom-elements.json)
 package.json                                         ~ P5 esbuild, P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack
@@ -395,7 +396,6 @@ vite.config.shared.mjs                               ~ P8 (dts removed), P9 (der
 scripts/lint-layers.mjs                              ~ P2 (ALLOWED_EDGES, header)
 scripts/verify-pack.mjs                              ~ P10 (customElements target check, both packages)
 scripts/report-size.mjs                              + P5 (size report, §10 SD21)
-docs/PROCESS.md                                      ~ Z2 (§4)
 docs/specs/00-spec-design-system.md                  ~ AM rows of P5, P8, P9, P10
 docs/retrospective/01-<slug>.md                      + Z3
 apps/site/package.json                               ~ S1 (@websublime/* devDependencies)
@@ -414,6 +414,7 @@ packages/line-components/custom-elements-manifest.config.mjs  + P10
 packages/line-components/__tests__/bundle-splitting.test.ts   + P5
 packages/line-components/__tests__/line-element-identity.test.ts + P9
 packages/line-components/src/<c>/                    + C1–C20 (ARCH §10)
+packages/line-components/src/shared/button-machine.ts + C1 (shared Button machine, C5 imports it; §12 AM-002)
 packages/line-components/__tests__/a11y/*.e2e.ts     + P7 harness, one file per component from C1 on
 packages/line-genui/                                 + P1
   package.json  tsconfig.json  vite.config.mjs  README.md
@@ -426,7 +427,7 @@ packages/line-icons/src/registry.ts                  + C22
 packages/line-icons/src/resolvers/{lucide,phosphor}.ts  ~ C22 (fetch from base, §10 SD89, SD90)
 packages/line-icons/README.md                        ~ C22 (base URL, CSP, in-bundle recipe)
 packages/line-icons/__tests__/consumer-matrix.e2e.ts + C22
-packages/line-icons/src/a2ui/                        + C2 or G2 owner (§10 SD14, SD15)
+packages/line-icons/src/a2ui/                        + G2 (§10 SD14, SD15; §12 AM-002)
 packages/line-themes/package.json                    ~ G6
 packages/line-themes/src/hosts/mcp-apps.css          + G6
 ```
@@ -496,7 +497,7 @@ Owner of every P task is `infra-supervisor` (plan §4.0). P8, P9 and P10 land af
 | Step | Action | Source |
 |---|---|---|
 | 1 | Create a short-lived granular token with publish access and store it as `NPM_TOKEN` in the `npm` environment | AM-038 (4), Phase 00 spec §7.2 |
-| 2 | Run `snapshot-deploy.yml` on `main`. The token publishes the first `line-genui` canary, `0.2.0-<sha>-SNAPSHOT` | R9 §2.5 path A; §10 SD3 |
+| 2 | Run `snapshot-deploy.yml` on `main`. The token publishes the first `line-genui` canary, `0.2.0-<sha>-SNAPSHOT` [INFERENCE: extrapolated from R9's `0.0.0`-seed probe] | R9 §2.5 path A; §10 SD3 |
 | 3 | Delete the token from the environment and from npmjs.com | AM-038 |
 | 4 | Add the trusted publisher for `snapshot-deploy.yml` with environment `npm` and "npm publish" ticked | AM-038 (4); R9 §2.5 |
 | 5 | Publish an OIDC canary through `snapshot-deploy.yml` within 48 hours of step 4 | R9 §2.5 (48-hour expiry) |
@@ -504,7 +505,7 @@ Owner of every P task is `infra-supervisor` (plan §4.0). P8, P9 and P10 land af
 | 7 | Set "Require 2FA and disallow tokens" on the package | R9 §2.5 path A |
 
 - npm points `latest` at the first canary until the first stable ships (AM-042, R9 §2.5). This effect is accepted (§10 SD3).
-- `npm trust` and staged publishing need npm ≥ 11.15.0 (R9 §2.5). Path A uses the npmjs.com settings page and needs neither.
+- `npm trust` and staged publishing need npm ≥ 11.15.0 (R9 §2.5). Path A uses the npmjs.com settings page and needs neither [INFERENCE: R9 does not state it].
 - **Acceptance:**
   - `npm view @websublime/line-genui` returns the step 5 canary with provenance.
   - The package settings show two trusted publishers and token publishing disallowed before the first stable release (plan §7.4).
@@ -515,7 +516,7 @@ Owner of every P task is `infra-supervisor` (plan §4.0). P8, P9 and P10 land af
 - **Deps:** P9, C1. Each later C task extends the expected-tag table in the test.
 - **Changes:**
   - `packages/line-components/__tests__/bundle-splitting.test.ts`, run by the existing "Unit tier" step (`.github/workflows/checks.yml:38-39`).
-  - Root `devDependencies` gain `"esbuild": "^0.28.2"` (R9 §2.1 probe version).
+  - Root `devDependencies` gain `"esbuild": "^0.28.2"` (R9 §3 probe 4 version).
   - `.github/workflows/checks.yml:28-29`, the "Zero-export smoke" step, is removed. The root-registers-nothing assertion of the harness replaces it (§10 SD24).
   - `scripts/report-size.mjs` and the `createSheet` annotations (§7.6).
   - AM row to Phase 00 spec §9.1 for the removed RK11 smoke step. §9.1 holds the zero-export criterion (`docs/specs/00-spec-design-system.md:2542`), and the step name cites it (`.github/workflows/checks.yml:28`).
@@ -704,13 +705,15 @@ export default {
 - **Owner:** `webcomponents-supervisor`.
 - **Deps:** spec APPROVED. Blocks C1 (§10 SD19).
 - **Changes**
-  - `packages/line-core/src/line-element.ts`: attach internals once per element and expose a protected `internals` accessor (§10 SD19; R8 §2.5 option (c)).
+  - `packages/line-core/src/line-element.ts`: attach internals once per element, keep them in an ES `#private` field and expose them through a Symbol-keyed accessor (§10 SD19; §12 AM-002; R8 §2.5 option (c)).
+  - `packages/line-core/src/index.ts`: export the Symbol key as `export const INTERNALS = Symbol('line.internals')` (§10 SD19; §12 AM-002).
   - `packages/line-core/src/line-element.ts:30-32`: replace the empty `reflectState` with a body that writes `data-*` and `:state()` (R8 §2.5).
-  - `packages/line-core/src/mixins/form-associated.ts:77-82`: drop its own `attachInternals()` call and reuse the base accessor (§10 SD19).
+  - `packages/line-core/src/mixins/form-associated.ts:77-82`: drop its own `attachInternals()` call and reuse the base accessor through the Symbol key (§10 SD19).
 
 **Contract**
 
-- `LineElement` MUST call `attachInternals()` once for every component and expose it through one protected `internals` accessor (§10 SD19).
+- `LineElement` MUST call `attachInternals()` once for every component and keep the result in an ES `#private` field (§10 SD19; §12 AM-002).
+- Subclasses MUST reach the internals as `this[INTERNALS]`, an accessor keyed by the Symbol that `line-core` exports. The key MUST be a plain `Symbol(...)`, not `Symbol.for(...)`. No public `internals` property exists at runtime, so the element stays outside the WCCG protocol names that axe reads (R8 §2.4; §10 SD19; §12 AM-002).
 - `FormAssociated` MUST reuse that accessor. A second `attachInternals()` throws `NotSupportedError` (R8 §2.5, probe P1).
 - `LineElement` MUST NOT set `formAssociated`. Only §7 components opt in (MANIFESTO Law 7; ARCH §7).
 - `LineElement.reflectState` MUST reflect machine state as both `data-<state>` and `:state(<state>)`, so ARCH §14.8 holds for every component, Chip, ButtonGroup, AvatarGroup and IconButton included (§10 SD19; ARCH §14.8).
@@ -723,6 +726,7 @@ export default {
 - A plain `LineElement` subclass reflects `data-x` and `:state(x)` through `reflectState`.
 - A `FormAssociated(LineElement)` subclass attaches internals exactly once and keeps its form behaviour.
 - No `globalThis` write exists in `line-core` source.
+- A plain `LineElement` subclass instance has no own or inherited `internals` property at runtime, and the exported Symbol reaches its internals.
 - The PR reports the measured per-element cost.
 
 #### 6.C.3 C22 — `line-icons` resolvers for consumer bundles
@@ -736,6 +740,7 @@ export default {
   - The resolver docs in `packages/line-icons/README.md` show the base URLs, the CSP note and the in-bundle recipe below.
   - C22 adds the consumer matrix test `packages/line-icons/__tests__/consumer-matrix.e2e.ts` (§10 SD96).
   - Root `devDependencies` gain `"webpack": "^5.112.0"` for the matrix (R10 round 2 §2.1; §10 SD96). esbuild comes from P5.
+  - C22 adds `packages/line-icons/src/registry.ts` and the `./registry`, `./resolvers/lucide` and `./resolvers/phosphor` export keys of §4.3 (plan §2.5; §12 AM-002, L3-09).
 
 **Mechanism (§10 SD89)**
 
@@ -787,6 +792,15 @@ export default {
 - Each map entry MUST carry the weight and the RTL mirror flag per name. Nine names mirror in RTL (§10 SD15; R10 §2.3).
 - `line-icons` MUST NOT pick a default set. The consumer registers one (§10 SD15; ARCH §11).
 - The three Lucide collisions MUST be documented in the `./a2ui` docs (§10 SD15; R10 §2.3, §6 Q7).
+- G2 owns `packages/line-icons/src/a2ui/` and its `./a2ui` export key (§12 AM-002, L3-09).
+
+**Registry hook (§12 AM-002, D-L3-02)**
+
+- `line-components` MUST define a structural registry interface with one method, `resolve(library, name): Promise<string | SVGElement>`.
+- `<line-icon>` MUST read its resolvers from a static hook, `LineIcon.registry`, which the consumer sets once.
+- The `line-icons` `IconRegistry` satisfies the interface structurally (`packages/line-icons/src/index.ts`). `line-components` imports nothing from `line-icons`, so no layer edge is added (§3.2, §3.3).
+- On the agent path, `line-genui` sets `LineIcon.registry`, because it holds edges to both packages (§3.2; §6.G.4).
+- With no registry set, a `name` lookup leaves `<line-icon>` in the neutral C8 state (§10 SD92) [INFERENCE: the C8 miss path covers an unset hook].
 
 **SVG injection (§10 SD91, SD95, SD97)**
 
@@ -798,15 +812,17 @@ C2 implements the icon surface above and this injection rule in `<line-icon>`.
 - A parsed document whose root is not `svg` MUST leave the neutral C8 state (R10 round 2 §2.7, P14).
 - An `SVGElement` that a consumer's resolver returns MUST be inserted as is. The consumer built it, and no string sink is involved. The reference resolvers return strings (§10 SD95; `packages/line-icons/src/index.ts:1`).
 - The string MUST pass through a Trusted Types policy named `line-icon` before `DOMParser` reads it. Under `require-trusted-types-for 'script'`, `DOMParser.parseFromString` rejects a plain string in all three engines (R10 round 2 §2.7, P13).
-- The module MUST create the policy once, behind a guard, when `trustedTypes` exists (§10 SD97).
+- `<line-icon>` MUST create the policy lazily, on the first SVG string it injects, once per realm behind a guard, when `trustedTypes` exists. The module MUST NOT create it at load, so `customElements.define()` always runs (§10 SD97; §12 AM-002; ARCH §12; MANIFESTO Law 6).
 - If `createPolicy` throws, `<line-icon>` MUST render the neutral C8 state, and nothing reaches the consumer as an error (§10 SD97; MANIFESTO Law 9; ARCH §17.2 C8). It throws when the page's `trusted-types` list omits `line-icon`, or when a second copy of the module already created the policy.
 - The docs MUST name the policy, so a page that enforces Trusted Types lists `trusted-types line-icon`.
-- The parse and allowlist step weighs about 0.5 KB gzipped. The R10 round 2 probe sanitiser weighed 477 B with the narrower lists (R10 round 2 §2.7).
+- The parse step MUST keep elements in the SVG namespace only. Every Lucide and Phosphor SVG carries `xmlns` on the root `svg` (R10 round 2 addendum A1).
+- The default `xmlns` declaration on the root `svg` MUST be accepted. Every prefixed namespace declaration (`xmlns:*`, for example `xmlns:xlink`) MUST be dropped, because `xlink:href` never passes (R10 round 2 addendum A1; §10 SD95).
+- The parse and allowlist step weighs about 0.5 KB gzipped [INFERENCE: not measured with the wider lists]. The R10 round 2 probe sanitiser weighed 477 B with the narrower lists (R10 round 2 §2.7).
 
 | Allowlist | Entries | Source |
 |---|---|---|
 | Elements (9) | `svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon` | R10 round 2 §2.7, P14 for all but `g`; `g` is a design choice beyond the probe (§10 SD95) |
-| Attributes, measured (23) | `class`, `cx`, `cy`, `d`, `fill`, `height`, `opacity`, `points`, `r`, `rx`, `ry`, `stroke`, `stroke-linecap`, `stroke-linejoin`, `stroke-width`, `viewBox`, `width`, `x`, `x1`, `x2`, `y`, `y1`, `y2` | The 22 Lucide attributes and the 4 Phosphor attributes of R10 round 2 §2.7, P14. The note gives the Lucide count only; the names come from an inventory of the 2143 `lucide-static` 1.56.0 files in `node_modules/lucide-static/icons/` and the 9072 `@phosphor-icons/core` 2.1.1 files, run 2026-10-20 |
+| Attributes, measured (23) | `class`, `cx`, `cy`, `d`, `fill`, `height`, `opacity`, `points`, `r`, `rx`, `ry`, `stroke`, `stroke-linecap`, `stroke-linejoin`, `stroke-width`, `viewBox`, `width`, `x`, `x1`, `x2`, `y`, `y1`, `y2` | The 22 Lucide attributes and the 4 Phosphor attributes of R10 round 2 §2.7, P14. The names come from the inventory of the 2143 `lucide-static` 1.56.0 files and the 9072 `@phosphor-icons/core` 2.1.1 files recorded in R10 round 2 addendum A1 |
 | Attributes, presentation (10) | `transform`, `fill-rule`, `clip-rule`, `fill-opacity`, `stroke-opacity`, `stroke-dasharray`, `stroke-dashoffset`, `stroke-miterlimit`, `vector-effect`, `shape-rendering` | SVG 2 presentation attributes (W3C SVG 2, "Presentation attributes"). A design choice beyond the probe (§10 SD95) |
 | Attributes, accessibility (3) | `aria-hidden`, `role`, `focusable` | WAI-ARIA attributes on SVG (W3C SVG 2) and the legacy `focusable` attribute. A design choice beyond the probe (§10 SD95) |
 
@@ -834,20 +850,20 @@ Column notes:
 - **Machine** follows plan §2.2 and PRD §4.1 unless a decision overrides it.
 - **Role** names the decided placement. `—` means the component spec settles it from R8 §2.2.
 - **htmx** follows rule C9 and plan §2.4. "Spec decides" means the spec runs the harness or marks the row `n/a` with a reason. "`n/a` expected" is a drafting expectation that each component spec confirms or overturns (§10 SD34).
-- **Deps** lists the tasks that MUST merge before the row (plan §6; §10 SD86). C5 shares Button's machine (ARCH §13.1). C6 opens with a probe across slotted `line-button` hosts (§10 SD10). C11 takes its avatars through a slot (§10 SD4).
+- **Deps** lists the tasks that MUST merge before the row (plan §6; §10 SD86). C5 shares Button's machine through `src/shared/button-machine.ts` (ARCH §13.1; §12 AM-002). C6 opens with a probe across slotted `line-button` hosts (§10 SD10). C11 takes its avatars through a slot (§10 SD4).
 
 | Task | Component | Deps | Spec file | Entry / tag | Tier and machine | Role placement | Form-assoc. | `agentExposed` | htmx row | The component spec still settles |
 |---|---|---|---|---|---|---|---|---|---|---|
 | C1 | Button | C21, C23, P7–P10 | `0002-button.md` | `./button` / `line-button` | Custom; press `idle → active` (§10 SD35) | Inner native `<button>`, host `aria-label` copied (§10 SD31) | Yes (ARCH §7; §10 SD36) | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Parts, slots, loading part (ARCH §13.1, §13.5); screen-reader pass of the named `generic` host (R8 §6 Q1, Q5) |
-| C2 | Icon | C21, C23, P7–P10, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); implements the §6.C.3 icon surface and SVG injection rule |
-| C3 | Stack | C21, C23, P7–P10 | `0018-stack.md` | `./stack` / `line-stack` | Static | — | No | `true` | `n/a` expected [INFERENCE] | List semantics for A2UI `List` (R8 §6 Q11) |
+| C2 | Icon | C21, C23, P7–P10, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static; resolvers through the static `LineIcon.registry` hook, a structural interface that the `line-icons` `IconRegistry` satisfies, with no layer edge added (§6.C.3; §12 AM-002) | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); implements the §6.C.3 icon surface, registry hook and SVG injection rule |
+| C3 | Stack | C21, C23, P7–P10 | `0018-stack.md` | `./stack` / `line-stack` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Any `line-stack` list semantics beyond the A2UI `List` rule of §6.G.4 (R8 §6 Q11; §10 SD59) |
 | C4 | Separator | C21, C23, P7–P10 | `0011-separator.md` | `./separator` / `line-separator` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Orientation semantics (R8 §2.2) |
-| C5 | IconButton | C21, C23, P7–P10, G1, G5, C1 | `0003-icon-button.md` | `./icon-button` / `line-icon-button` | Custom; same machine as Button (ARCH §13.1) | Inner native `<button>` (§10 SD31) | No; `type="button"` only (§10 SD36) | `true` | Spec decides (plan §2.4) | Name sources it accepts (§6.C.5) |
+| C5 | IconButton | C21, C23, P7–P10, G1, G5, C1 | `0003-icon-button.md` | `./icon-button` / `line-icon-button` | Custom; same machine as Button, imported from `src/shared/button-machine.ts` (ARCH §13.1; §12 AM-002) | Inner native `<button>` (§10 SD31) | No; `type="button"` only (§10 SD36) | `true` | Spec decides (plan §2.4) | Name sources it accepts (§6.C.5) |
 | C6 | ButtonGroup | C21, C23, P7–P10, G1, G5, C1 | `0004-button-group.md` | `./button-group` / `line-button-group` | Custom roving-focus `createMachine` on `@zag-js/core` 1.46.0 (§10 SD10) | `toolbar` (ARCH §13.1) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Opens with the slotted roving-focus probe (§10 SD10; R8 §6 Q6) |
 | C7 | Alert | C21, C23, P7–P10, G1, G5 | `0006-alert.md` | `./alert` / `line-alert` | Static | — | No | `true` | `n/a` expected [INFERENCE] | `alert` vs `status` role (R8 §6 Q8; §10 SD37) |
-| C8 | Chip | C21, C23, P7–P10, G1, G5 | `0008-chip.md` | `./chip` / `line-chip` | Pre-built `@zag-js/toggle` 1.46.0; no remove button; not compound (§10 SD11) | Inner native `<button>` (§10 SD31) | No | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Commit event name if value-bearing (ARCH §17.2 C9) |
+| C8 | Chip | C21, C23, P7–P10, G1, G5 | `0008-chip.md` | `./chip` / `line-chip` | Pre-built `@zag-js/toggle` 1.46.0; no remove button; not compound (§10 SD11) | Inner native `<button>` (§10 SD31) | No | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Whether a binding names a value prop. If it does, `line-change` and `line-input` per ARCH §17.2 C3 and C9; if not, no commit event (§12 AM-002) |
 | C9 | Badge | C21, C23, P7–P10, G1, G5 | `0007-badge.md` | `./badge` / `line-badge` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Count announcement (R8 §2.2) |
-| C10 | Avatar | C21, C23, P7–P10, G1, G5 | `0009-avatar.md` | `./avatar` / `line-avatar` | Static (plan §2.2) | — | No | `true` | `n/a` expected [INFERENCE] | Static vs `@zag-js/avatar` (R7 §6 OQ6; §10 SD37) |
+| C10 | Avatar | C21, C23, P7–P10, G1, G5 | `0009-avatar.md` | `./avatar` / `line-avatar` | Static (plan §2.2; ARCH §13.2; PRD §4.1) | — | No | `true` | `n/a` expected [INFERENCE] | Slot and part details within ARCH §13.2 (§10 SD37) |
 | C11 | AvatarGroup | C21, C23, P7–P10, G1, G5, C10 | `0010-avatar-group.md` | `./avatar-group` / `line-avatar-group` | Custom (ARCH §13.2) | Overflow "+N" on an inner native `<button>` (§10 SD31) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Overflow popover mechanism (R7 §6 OQ5); hover and focus expansion under WCAG 1.4.13 (R8 §6 Q10); avatars arrive by slot (§10 SD4) |
 | C12 | Visually Hidden | C21, C23, P7–P10, G1, G5 | `0012-visually-hidden.md` | `./visually-hidden` / `line-visually-hidden` | Static | — | No | `false`: agent text that only screen readers hear (§10 SD38) | `n/a` expected [INFERENCE] | — |
 | C13 | Portal | C21, C23, P7–P10, G1, G5 | `0013-portal.md` | `./portal` / `line-portal` | Static | — | No | `false`: moved nodes escape surface reconciliation and focus order (§10 SD38; R8 §2.2) | `n/a` expected [INFERENCE] | Focus and reading order after the move (R8 §2.2) |
@@ -862,7 +878,7 @@ Column notes:
 - PRD v0.8.19 (§4.1, §4.11, §7.3), ARCH v0.8.5 §13.1 and plan §2.2 read "Custom" for ButtonGroup and "Pre-built" for Chip (§10 SD10, SD11).
 - Every descriptor MUST carry `agentExposed` with a recorded reason (ARCH §17.2; §10 SD38).
 - Roles set only through internals MUST get a screen-reader pass in their component spec (R8 §6 Q5; §10 SD39).
-- Chip and AvatarGroup take the `common` and `button` reset modules, because each renders an inner native `<button>` (§10 SD31, SD84; ARCH §14.7). ButtonGroup keeps `common` only.
+- Chip and AvatarGroup take the `common` and `button` reset modules, because each renders an inner native `<button>` (§10 SD31, SD84; ARCH §14.7). ButtonGroup and Presence keep `common` only (ARCH §14.7; §12 AM-002).
 
 #### 6.C.5 Button, IconButton, ButtonGroup and Chip semantics
 
@@ -870,21 +886,23 @@ Column notes:
 
 - The machine MUST model the press as `idle → active`, reflected as `data-active` and `:state(active)` (§10 SD35; ARCH §14.8; R7 §6 OQ4 (c)).
 - An opt-in `pressed` attribute MUST make Button a toggle with `aria-pressed`, reflected as `data-pressed` and `:state(pressed)` (§10 SD35).
-- `loading` and `disabled` MUST be props that guards read at event time, not finite states (§10 SD35; R7 §2.4 probe B1).
-- A loading Button MUST stay focusable and expose `aria-disabled="true"` (§10 SD35; R8 §2.2).
+- `loading` and `disabled` MUST be props that guards read at event time, not finite states (§10 SD35; R7 §2.4 probe B1). Probe B1 tested `disabled` only; `loading` follows the same pattern [INFERENCE].
+- A loading Button MUST stay focusable and expose `aria-disabled="true"` (§10 SD35; R7 §2.4).
 - The loading label MUST come from the consumer (§10 SD35; `docs/MANIFESTO.md:66`, component-level strings out of scope).
-- ARCH §13.1 receives a text correction of its state list (§10 SD35).
+- ARCH v0.8.5 §13.1 carries the corrected state list (§10 SD35).
+- The Button machine MUST live in `packages/line-components/src/shared/button-machine.ts`, so C5 imports it without importing Button (§12 AM-002; ARCH §13.1; MANIFESTO Law 4).
 
 **IconButton (C5)**
 
 - On the agent path the descriptor MUST mark the name required. The surface MUST replace a nameless node with a placeholder and raise `line-a2ui-error` before render (§10 SD36; ARCH §17.4).
 - On hand-written markup the axe gate MUST catch a missing name through `button-name` on the inner native `<button>` (§10 SD36; R8 §2.4 probe P1; R2 §6 Q5).
 - IconButton MUST be `type="button"` only and MUST NOT be form-associated. ARCH §7 stays unchanged (§10 SD36).
+- IconButton MUST import its machine from `src/shared/button-machine.ts` and MUST NOT import Button's component module (§12 AM-002; ARCH §13.1).
 
 **ButtonGroup (C6)**
 
 - ButtonGroup MUST discover its buttons through `slotchange` and MUST NOT import Button (§10 SD10; ARCH §13.1; MANIFESTO Law 4).
-- The roving-focus machine is a custom `createMachine` on `@zag-js/core` 1.46.0 (§10 SD10; R7 §2.4).
+- The roving-focus machine is a custom `createMachine` on `@zag-js/core` 1.46.0 (§10 SD10; R7 §2.4; R8 §6 Q6).
 - The component spec MUST open with a slotted roving-focus probe across `line-button` hosts with inner native buttons (§10 SD10).
 - Revisit the machine when `@zag-js/toolbar` ships stable and the repo moves to Zag 2. Today only 2.0.0-next versions exist (§10 SD10; plan §2.2).
 
@@ -986,12 +1004,12 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 
 - **Owner:** webcomponents-supervisor.
 - **Deps:** G1.
-- **Changes:** the `line` catalog emitter, `@websublime/line-genui/catalog.json`, the session registration of the `basic` implementations, the inline projection function.
+- **Changes:** the `line` catalog emitter, `@websublime/line-genui/catalog.json`, the session registration of the `basic` implementations, the inline projection function, and `packages/line-icons/src/a2ui/` with its `./a2ui` export key (§10 SD14; §12 AM-002, L3-09).
 
 **`line` catalog**
 
 - `catalog.json` MUST hold the document form of the `line` catalog, with `$defs/anyFunction` and `$defs/theme` added (R2 §2.7; §10 SD42).
-- `toJson()` output as emitted MUST NOT ship as the file. It fails the `Catalog` def on `protocolVersion` and `$defs` (R2 §2.7).
+- `toJson()` output as emitted MUST NOT ship as the file. Without `$defs/anyFunction` and `$defs/theme`, `common_types.json` and `server_to_client.json` do not compile against it (R2 §2.7). Only the inline projection is checked against the `Catalog` def.
 - line MUST ship a documented function that derives the inline projection. Client capabilities and the D2 criterion use that projection (§10 SD42).
 - The `catalogId` MUST be `https://line-ui.websublime.com/a2ui/catalogs/line/v1/catalog.json` (§10 SD42).
 - The id is an identifier. It need not resolve (§10 SD42).
@@ -1067,6 +1085,7 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
   - `packages/line-genui/custom-elements-manifest.config.mjs`, the `analyze` build step and the §4.1 manifest keys, so `line-genui` ships its own Custom Elements Manifest for `<line-a2ui-surface>` (§10 SD94).
   - The surface's JSDoc documents its attributes and properties and carries `@fires` for `line-a2ui-action` and `line-a2ui-error` (§10 SD94, SD61).
   - The `@websublime/line-genui/custom-elements.json` import in the P10 merge in `apps/storybook/.storybook/preview.ts`, and `packages/line-genui/custom-elements.json` in `.gitignore`.
+  - The session sets `LineIcon.registry` to the consumer's `line-icons` `IconRegistry` before it renders an Icon node, so bound icon names resolve on the agent path (§6.C.3 registry hook; §12 AM-002).
 - **Status:** preview. The export may change in any minor release and sits outside the PRD §7.1 policy until it targets a final A2UI v1.0 (ARCH §17.7; PRD Appendix D).
 
 **Upstream pin**
@@ -1080,13 +1099,14 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 
 - The surface MUST project directly on the `web_core` models and `NodeResolver` (ARCH §17.4; R2 §5a).
 - The surface MUST load no Lit and no `A2uiLitElement` (ARCH §17.4).
+- Law 5 reading: Law 5 ("Lit owns DOM") governs `line-components` components. `<line-a2ui-surface>` is a light-DOM orchestrator in `line-genui`. Its own reconciler is its rendering cycle, and no other code mutates its DOM. Miguel approved this reading on 2026-10-20, as SD17 records the Law 10 reading (MANIFESTO Law 5; ARCH §17.4; §10 SD17; §12 AM-002).
 - The render root MUST be light DOM (ARCH §17.4).
 - Components MUST load lazily through each descriptor's `load()` (ARCH §17.4).
 - The session MUST call `processMessages` once per message. A bad message then drops only itself (R1 §2.7; R2 §2.6; §10 SD51).
 - `aria-busy` MUST cover the whole transport batch (ARCH §17.4; R2 §2.8).
 - The `MessageProcessor` MUST receive `RELAXED_VALIDATION` (R1 §2.7; §10 SD52).
 - The surface MUST catch every `web_core` throw (ARCH §17.4).
-- The surface MUST enforce the depth limit itself while it walks `NodeResolver`. `web_core` `maxDepth` does not fire with `allowMissingRoot: true` (R2 §2.6; §10 SD53).
+- The surface MUST enforce the depth limit itself while it walks `NodeResolver`. `web_core` `maxDepth` is unreliable with `allowMissingRoot: true`, because the walk starts at each id in sorted order (R2 §2.6; §10 SD53).
 - A cycle MUST reject its message. Under `RELAXED_VALIDATION`, `web_core` throws at message level (R1 §2.7; §10 SD54).
 - An unknown type MUST render an inert placeholder for that node (ARCH §17.4).
 - A pending child MUST stay hidden and be replaced when it arrives. It MUST raise no error (R1 §2.5.2; §10 SD54).
@@ -1122,9 +1142,10 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - Each surface MUST hold one live region (ARCH §17.4).
 - The live region MUST announce "Content updated." and an error sentence on error (R2 §6 Q3; §10 SD59).
 - `line-stack` rendering a List MUST carry `role="list"` (R2 §6 Q4; §10 SD59).
+- Each List item MUST carry `role="listitem"`, on the item `line-stack` or on a wrapper otherwise (R2 §2.1; §10 SD59).
 - The surface MUST wrap Button text in a `<span>` (§10 SD59).
 - The surface MUST NOT move focus to another component (ARCH §17.4; plan §5.6 D4).
-- The reconciler MUST key by `instanceId` and keep focus across reorders (ARCH §17.4).
+- The reconciler MUST key by `instanceId` and keep focus across reorders (ARCH §17.4). It is the surface's rendering cycle under the Law 5 reading above (§12 AM-002).
 - On a reparent, the surface MUST use `moveBefore()` where the browser has it, and otherwise return focus to the same `instanceId` at batch end (plan §5.6 D4).
 - The docs MUST state the template-list limit. `instanceId` is unstable across template-array insertions and reorders, so a kept element may rebind to another item (R2 §2.8; §10 SD60).
 - The revisit trigger for that limit is a2ui#1745 (R2 §6 Q1; §10 SD60).
@@ -1202,7 +1223,7 @@ Source: R6 §2.1; R6 §6 Q7.
 - The host publishes 76 keys (R5 §2.3).
 - The table below lists every host key, each with its line target or its exclusion reason (§10 SD62; R5 §2.3, §6 Q3).
 
-Reference host values come from `examples/basic-host/src/host-styles.ts` in `modelcontextprotocol/ext-apps` (`main`, read 2026-10-20). R5 §2.3 gives the same radii and size ranges. Line values come from `packages/line-themes/src/aliases.css:9-72`, `packages/line-tokens/src/typography.css:11-46`, `radii.css:9-15` and `focus-ring.css:16`.
+Reference host values come from `examples/basic-host/src/host-styles.ts` in `modelcontextprotocol/ext-apps` (`main`, read 2026-10-20), as R5 addendum A1 records. R5 §2.3 gives the same radii and size ranges. Line values come from `packages/line-themes/src/aliases.css:9-72`, `packages/line-tokens/src/typography.css:11-46`, `radii.css:9-15` and `focus-ring.css:16`.
 
 **Mapping rules**
 
@@ -1380,7 +1401,7 @@ Reference host values come from `examples/basic-host/src/host-styles.ts` in `mod
 **AG-UI**
 
 - The deployed story MUST use an in-browser mock producer (§10 SD64).
-- The middleware cannot run in a browser. It imports `crypto`, uses CommonJS-only `clarinet` and fails on jsDelivr (R6 §2.1).
+- The middleware does not run fully in a browser. It imports `crypto` and uses CommonJS-only `clarinet`. The render path ran in Chromium through esm.sh, but the action path throws under esm.sh's `crypto` stub (R6 §2.1).
 - The mock MUST emit `ACTIVITY_SNAPSHOT`, `a2ui-surface`, `status: building` and then `a2ui_operations`, and accept `forwardedProps.a2uiAction` (R6 §2.1).
 - The MDX MUST document the server convention pinned exactly to `@ag-ui/a2ui-middleware` 0.0.13, the npm `latest` on 2026-10-20 (npm registry; §10 SD64).
 - A Bun test MUST run the pinned middleware and compare its output with the mock fixture (§10 SD64).
@@ -1486,6 +1507,8 @@ Reference host values come from `examples/basic-host/src/host-styles.ts` in `mod
 
 ### 6.Z Repo-wide
 
+The PR that creates the Phase 1 ledger also aligns PROCESS §4 "Repo agents" (`docs/PROCESS.md:79-81`) and the `CLAUDE.md:48` ledger pointer. No separate task does it (plan §4.6, §10 step 6; §12 AM-002).
+
 #### 6.Z.1 Z1 — Code of conduct
 
 - **Owner:** main session (plan §4.0).
@@ -1497,18 +1520,7 @@ Reference host values come from `examples/basic-host/src/host-styles.ts` in `mod
   - Miguel supplies the reporting contact in the Z1 PR (§10 SD74).
 - **Acceptance:** the file exists and the README link resolves.
 
-#### 6.Z.2 Z2 — PROCESS §4 and the `CLAUDE.md` ledger pointer
-
-- **Owner:** main session.
-- **Deps:** the Phase 1 ledger file exists.
-- **Changes:**
-  - `docs/PROCESS.md` §4 "Repo agents" (`docs/PROCESS.md:79-81`) maps the Phase 1 streams to owners as plan §4.0 does. `webcomponents-supervisor` implements C, D and G and the S content. `infra-supervisor` implements P and the S deploy changes. Stream Z stays with the main session per row.
-  - `CLAUDE.md:48` points at the Phase 1 ledger `docs/plans/01-tasks-<slug>.md` (PROCESS §6 naming).
-- **Contract:**
-  - PROCESS §4 MUST keep the Phase 00 letters readable as history or drop them in the same commit. Live text MUST NOT name a stream that has no ledger (PROCESS §3).
-- **Acceptance:** a grep of `PROCESS.md` and `CLAUDE.md` for the Phase 00 ledger path returns only historical mentions.
-
-#### 6.Z.3 Z3 — Exit sweep and Phase 1 retrospective
+#### 6.Z.2 Z3 — Exit sweep and Phase 1 retrospective
 
 - **Owner:** main session.
 - **Deps:** every other Phase 1 row. The exit sweep starts before the last rows land (plan §7.4).
@@ -1545,7 +1557,7 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 - No TypeScript 6.0 package enters the workspace (D1 (b) rejected).
 - The `declare module` lines keep `noUncheckedSideEffectImports` on for every other import (R11 OQ2 (b)).
 - The existing "Typecheck" step type-checks `apps/storybook` against the emitted `line-core` declarations. That step and `verify-pack` check (a) verify the output (§10 SD7; `checks.yml:24-27`).
-- Editors that rely on the TypeScript API for Astro or MDX keep 6.0-era behaviour. No CI step checks `.astro` or `.mdx` (R11 §2.9).
+- Editor tools for Astro and MDX that need the TypeScript API lose it until they support 7.x. No CI step checks `.astro` or `.mdx` (R11 §2.9).
 - The CEM analyser parses with its own nested TypeScript 5.4.5 and does not read the workspace version (R4 §2.9).
 
 ### 7.2 Versioning and changesets
@@ -1566,7 +1578,7 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 - A package that no Phase 1 branch changes still needs a `minor` changeset before the Version PR, so all nine land at `0.2.0` [INFERENCE: plan §7.4 "Every package is released at `0.2.0`"] (§10 SD75).
 - `0.1.0` of `line-genui` is never published (§10 SD3).
 - Once `v0.2.0` ships, further Phase 1 changesets use `patch` (PROCESS §6).
-- Canaries follow `0.2.0-<sha>-SNAPSHOT` (`.changeset/config.json:18`; R9 §2.6).
+- Canaries follow `0.2.0-<sha>-SNAPSHOT` (`.changeset/config.json:18`; R9 §2.6) [INFERENCE: extrapolated from R9's `0.0.0`-seed probe].
 - Changesets bumps a dependent when a `peerDependencies` range it declares is bumped, and that bump may be `major` [INFERENCE: Changesets peer-dependent behaviour, not probed in R9]. P3 MUST prove the nine `0.2.0` versions in a dry run before the first `line-genui` release. If the dry run shows a `line-genui` major bump, P3 sets `___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange: true` in `.changeset/config.json` through an AM row [INFERENCE] (§10 SD76).
 - R9 §2.6 ran on `@changesets/cli` 2.31.1, the repo version. npm `latest` is 3.0.3. Phase 1 stays on 2.x [INFERENCE: no decision moves it] (§10 SD77).
 
@@ -1600,12 +1612,12 @@ Content rules (§10 SD61):
 |---|---|---|
 | CI runner | Playwright with `@axe-core/playwright` 4.14.0 inside "Browser tier" | §10 SD78; R8 §2.4 |
 | Engines | Chromium, Firefox, WebKit | `playwright.config.ts:22-26` |
-| Ruleset | `withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])` | §10 SD79; R8 §2.4 |
+| Ruleset | `withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])` | §10 SD79; axe-core tag documentation (`doc/API.md`, "Axe-core Tags") |
 | Pass condition | Zero violations, as a failing check | plan §7.1, §7.2 |
 | Targets | Every story of every component; the `<line-a2ui-surface>` stories; the landing page | plan §7.1, §7.2; S1 |
 | Author panel | `@storybook/addon-a11y` stays and gates nothing | §10 SD78; PRD §5.2 |
 
-- axe misses roles set only through `ElementInternals` and closed shadow roots (R8 §2.4).
+- axe's naming rules ignore roles set only through `ElementInternals`, and axe skips closed shadow roots (R8 §2.4).
 - Zero violations do not prove that an accessible name exists for such roles (R8 §2.4).
 - Each component whose role lives only in internals gets a screen-reader pass recorded in its component spec (§10 SD39).
 - Button, IconButton, Chip and the AvatarGroup overflow control put `button` on an inner native element, so axe's naming rules apply (§10 SD31).
@@ -1617,7 +1629,7 @@ All checks run on the packed tarball from `stageAndPack` (`scripts/verify-pack.m
 | Check | Method | Fails when | Source |
 |---|---|---|---|
 | Registration harness | Fresh happy-dom realm per subpath; wrap `customElements.define`; import the subpath; record names | A subpath registers a set other than its §4.2 row; the root `"."` registers anything | §10 SD4; R9 §2.2 |
-| Isolation scan | esbuild `--metafile` bundle per subpath; scan inputs and tag strings | A bundle holds another component's module or tag | §10 SD4; R9 §2.2 |
+| Isolation scan | esbuild `--metafile` bundle per subpath; scan inputs and tag strings. Modules under `src/shared/` are shared code and may sit in any bundle (§12 AM-002) | A bundle holds another component's module or tag | §10 SD4; R9 §2.2 |
 | esbuild consumer bundle | One bare-import bundle of every subpath through esbuild | esbuild emits `ignored-bare-import` | §10 SD4; R9 §2.1 |
 | `instanceof` harness | Consumer bundle importing `@websublime/line-core` and a subpath | The element is not `instanceof` the imported `LineElement` | §10 SD2; R9 §2.1; plan §7.4 |
 | `line-genui` registration | Same harness on `./catalog` and `./a2ui` | `./catalog` defines any element; `./a2ui` defines anything but `line-a2ui-surface` | PRD §7.3; R9 §2.2; added by G4 |
@@ -1664,7 +1676,7 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | Browser | Playwright, three engines, `*.e2e.ts` | Focus, keyboard, axe, layout, everything happy-dom cannot model | PRD §5.2; `playwright.config.ts:5` |
 | Packaging | `bun test` on the packed tarball | §7.5 checks | §10 SD4 |
 
-- The browser tier is the source of truth where the two tiers disagree (plan §8 "happy-dom gaps" row, retrospective lesson 2; `docs/plans/01-plan-core-primitives.md:588`; happy-dom limits in R7 §2.2).
+- The browser tier is the source of truth where the two tiers disagree (plan §8 "happy-dom gaps" row, retrospective lesson 2; `docs/plans/01-plan-core-primitives.md:588`; happy-dom limits in R7 §2.3).
 - Tests exercise the built artifact wherever the claim is about what ships (retrospective lesson 5, cited in R9 §2.2).
 - Component tests take no DOM snapshots. They assert parts, attributes, slots and events through queries (§10 SD81).
 - A component spec MAY use a string snapshot with the built-in serializer after a helper normalises the HTML (§10 SD81).
@@ -1679,8 +1691,8 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | A2UI churn. `web_core` ships breaking minors (0.12.0 → 0.13.0 in 11 days; 0.14.0 `latest` since 2026-10-17 with 12 entries marked BREAKING; plan §8, R1 §2.1) | High | High | `line-genui` pins `@a2ui/web_core` exactly at `0.14.0`. A newer version lands only through an AM after the R1 and R2 probes run again (§4.1, §6.G.4; §10 SD6). The surface keeps preview status (ARCH §17.7) |
-| Zod split. The repo and `web_core` declare `zod ^3.25.76`, while Zod `latest` is 4.6.7 (plan §8) | Medium | High | Descriptors stay on the Zod 3 API (§6.G.1; R3 §2.2). The docs import ext-apps from `./app-with-deps`, so no Zod 4 peer enters a Zod 3 app (§6.G.7; §10 SD69) |
-| The TypeScript 7.x move breaks the toolchain (R11 blocker B1, TS2882) | Medium | High | P8 emits declarations with 7.x `tsc --emitDeclarationOnly` and adds ambient CSS module lines (§6.P.8, §7.1; §10 SD7) |
+| Zod split. The repo and `web_core` declare `zod ^3.25.76`, while Zod `latest` is 4.6.7 (plan §8) | Medium | High | Descriptors stay on the Zod 3 API (§6.G.1; R3 §2.2). The docs import ext-apps from `./app-with-deps`, so no Zod 4 peer enters a Zod 3 app (§6.G.7; §10 SD69). `./app-with-deps` still inlines Zod 4 (2 copies, about 153 KB gzipped with the catalog imports; R3 §2.3) |
+| The TypeScript 7.x move breaks the toolchain (R11 blocker B1; required change RC1, TS2882) | Medium | High | P8 emits declarations with 7.x `tsc --emitDeclarationOnly` and adds ambient CSS module lines (§6.P.8, §7.1; §10 SD7) |
 | `line-components` inlines `line-core`, so consumers get two `LineElement` classes (R9 §2.1) | High | High | P9 derives `external` from each manifest before C1. The `instanceof` harness and the identity test run on the packed tarball (§6.P.9, §7.5; §10 SD2) |
 | The icon origin is unavailable or blocked by CSP. The resolvers fetch each SVG, unpkg answers some calls with 500 and its 404 lacks CORS, and `connect-src` must list the origin (R10 round 2 §2.4, §2.6, §2.7) | Medium | Medium | `base` is required, so no third-party request happens unless the consumer sets it. The docs give a self-host recipe and the CSP note. Every failure leaves `<line-icon>` in the neutral C8 state (§6.C.3; §10 SD90, SD92) |
 | Repeated `updateProps` calls slow each machine down. One `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | C21 measures the host update rate per machine component and records a budget. It files the upstream Zag issue. A `line-core` `VanillaMachine` subclass replaces the props source only for components past the budget (§6.C.1; §10 SD18) |
@@ -1689,7 +1701,7 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | Anthropic strict mode caps each request at 20 strict tools, 24 optional params and 16 union-typed params across all strict schemas (R3 §2.6) | Medium | Medium | Acceptance holds per tool. The docs state the per-request caps, and a live provider call before each release is recorded in the release PR (§6.G.3; §10 SD49) |
 | Catalog quality becomes the agent UX (plan §8) | High | Medium | Descriptions reach the catalog through `spec(…, {mixins})` and the `REF:` helper (§6.G.1; §10 SD41). Each component spec reviews its descriptor |
 | Accessibility of agent-built trees is under-specified upstream (plan §8) | Medium | High | The surface checks required names before render, keeps one live region and follows the D4 focus rule. P7 runs the axe tier on the surface stories (§6.G.4, §7.4; §10 SD36, SD82) |
-| axe misses roles set only through `ElementInternals` (R8 §2.4) | Medium | High | Interactive roles sit on inner native elements. Internals-only roles get a screen-reader pass in their component spec (§7.4; §10 SD31, SD39) |
+| axe's naming rules ignore roles set only through `ElementInternals` (R8 §2.4) | Medium | High | Interactive roles sit on inner native elements. Internals-only roles get a screen-reader pass in their component spec (§7.4; §10 SD31, SD39) |
 | Template-list reorders rebind a kept element to another item, because `instanceId` is unstable until a2ui#1745 (R2 §2.8) | Medium | Medium | The docs state the limit, and a2ui#1745 is the revisit trigger (§6.G.4; §10 SD60) |
 | Prompt injection through action labels (plan §8) | Medium | High | Agent strings stay untrusted and render as plain text. Markdown renders only through a consumer hook. The URL policy applies after base resolution and rejects `data:` (§6.G.4; §10 SD57, SD58) |
 | Hostile or runaway agents exhaust the surface (ARCH §17.4) | Medium | High | Finite limits on node count, depth and data-model size. A breach rejects the message. The G4 stress test sets the values through an AM (§6.G.4; §10 SD56) |
@@ -1724,9 +1736,9 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
 - [ ] CEM manifest generated and verified
   - Tasks: P10, G5.
   - Check: `bun run scripts/verify-pack.mjs` fails without `custom-elements.json` in the `line-components` tarball; the G5 drift and coverage tests pass.
-- [ ] *Storybook loads the manifest through `setCustomElementsManifest`, and `@websublime/line-components` ships it with a `customElements` field and a `files` entry (D8).*
-  - Task: P10.
-  - Check: `apps/storybook/.storybook/preview.ts` calls `setCustomElementsManifest`; `verify-pack` check (a) covers the `customElements` field (§4.2).
+- [ ] *Storybook loads the manifest through `setCustomElementsManifest`, and `@websublime/line-components` and `@websublime/line-genui` each ship one with a `customElements` field and a `files` entry (D8; §10 SD94).*
+  - Tasks: P10, G4.
+  - Check: `apps/storybook/.storybook/preview.ts` calls `setCustomElementsManifest` with the manifest merged from both packages; `verify-pack` check (a) covers the `customElements` field of both packages (§4.1, §4.2).
 - [ ] Changeset entry for every component
   - Tasks: C1–C20.
   - Check: each component PR adds a `.changeset/*.md` entry (§6.C.6).
@@ -1814,12 +1826,12 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
 
 ## 10. Design Decisions
 
-Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows record orchestrator defaults that Miguel confirmed when he chose "proceed as proposed" at the end of round 4. Default R5 and R6 rows record orchestrator defaults shown to Miguel with their rounds, to which he raised no objection. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft, except SD96, which is pending. The Question column names the session id from the 00-Z46 decision record where one exists.
+Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows record orchestrator defaults that Miguel confirmed when he chose "proceed as proposed" at the end of round 4. Default R5 and R6 rows record orchestrator defaults shown to Miguel with their rounds, to which he raised no objection. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft. The Question column names the session id from the 00-Z46 decision record where one exists.
 
 | ID | Question | Decision | Rejected | Evidence | Origin | Status |
 |---|---|---|---|---|---|---|
 | SD1 | Q13: Does line://ui ship utility classes (PRD §9.13)? | No. line://ui ships no utility classes | Ship a new set; rename the v0.7 set | PRD §9.13; plan §7.4 | Default R1 | Approved 2026-10-20 |
-| SD2 | Q09: How do `@websublime/*` packages stay external (P9)? | Derive `external` from each manifest's `dependencies` and `peerDependencies`, by name or `name/…`; every bare specifier in `dist/` is declared | A `/^@websublime\//` regex; a per-package list | R9 §2.1 probe 6; ARCH §12; plan §7.4 | Default R1 | Approved 2026-10-20 |
+| SD2 | Q09: How do `@websublime/*` packages stay external (P9)? | Derive `external` from each manifest's `dependencies` and `peerDependencies`, by name or `name/…`; every bare specifier in `dist/` is declared | A `/^@websublime\//` regex; a per-package list | R9 §3 probe 6; ARCH §12; plan §7.4 | Default R1 | Approved 2026-10-20 |
 | SD3 | Q14: What is the first `line-genui` version? | Seed `0.1.0`; a `minor` changeset yields `0.2.0`; `0.1.0` is never published; the canary-first effect on `latest` is accepted | Seed `0.0.0` to reach `0.1.0` | R9 §2.5, §2.6; PRD §7.1; plan §7.4 | Fork R1 | Approved 2026-10-20 |
 | SD4 | Q08: What `sideEffects` value, chunk layout and isolation checks apply? | Remove the field; no component imports another (AvatarGroup by slot); default Rolldown chunks; registration harness, isolation scan and one esbuild consumer bundle on the packed tarball; AM to Phase 00 spec §4.7 | A `dist`+`src` glob; an explicit file list with a static check; `[]` with a named-import rule | R9 §2.1, §2.2; MANIFESTO Law 4, Law 6; ARCH §12 | Fork R1 | Approved 2026-10-20 |
 | SD5 | Does `line-genui` carry `sideEffects`? | The field is omitted, extending §10 SD4, because `./a2ui` defines an element at module top | `sideEffects: false` | §10 SD4; R9 §2.1 | Drafting | Approved 2026-10-20 |
@@ -1827,16 +1839,16 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD7 | Q25: How does P8 wire TypeScript 7.x declarations (D1)? | Keep `declarationMap: true`; `build` runs `vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly`; `dev` adds `tsc --watch`; `verify-pack` and Typecheck verify; `--checkers` at its default | `declarationMap: false`; a `closeBundle` plugin; a pinned checker count or `--singleThreaded` | R11 §2.4, §2.8; plan §5.6 D1 | Default R1 | Approved 2026-10-20 |
 | SD8 | Does `line-genui` have a root export? | No `"."` export | A root barrel | PRD Appendix D | Drafting | Approved 2026-10-20 |
 | SD9 | Are the `line-genui` peers optional? | `line-components` and `line-icons` are required peers, with no `peerDependenciesMeta` | Optional peers | PRD §6.1; ARCH §17.1 | Drafting | Approved 2026-10-20 |
-| SD10 | Q17: Which machine drives the ButtonGroup toolbar, and what is its tier label? | A custom roving-focus `createMachine` on `@zag-js/core` 1.46.0, tier Custom, buttons found through `slotchange`; the component spec opens with a slotted roving-focus probe; revisit when `@zag-js/toolbar` ships stable and the repo moves to Zag 2 | `@zag-js/toolbar` 2.0.0-next; `@zag-js/toggle-group` roving focus | R7 §2.1, §2.4; R8 §6 Q6; plan §5.6 D5 | Fork R2 | Approved 2026-10-20 |
+| SD10 | Q17: Which machine drives the ButtonGroup toolbar, and what is its tier label? | A custom roving-focus `createMachine` on `@zag-js/core` 1.46.0, tier Custom, buttons found through `slotchange`; the component spec opens with a slotted roving-focus probe; revisit when `@zag-js/toolbar` ships stable and the repo moves to Zag 2 | `@zag-js/toolbar` 2.0.0-next; `@zag-js/toggle-group` roving focus | R7 §2.4 (`createMachine` API); R8 §6 Q6; plan §2.2, §5.6 D5 | Fork R2 | Approved 2026-10-20 |
 | SD11 | Q18: Does Chip use `@zag-js/toggle` or a custom machine, and does it have a remove button? | Pre-built `@zag-js/toggle` 1.46.0, tier Pre-built, no remove button, not compound | A custom one-state machine; a sibling remove button | R7 §2.3, §2.4; R8 §2.2; plan §5.6 D6 | Fork R2 | Approved 2026-10-20 |
 | SD12 | Q28: What entrypoints do the ten §12 family-rule components get? | Ten independents with one tag each; Kbd / Shortcut is one tag `line-kbd` at `./kbd` | Two tags under `./kbd`; two entrypoints; a Grid family | ARCH §12, §17.3; PRD §4.1; MANIFESTO Law 4 | Default R1 | Approved 2026-10-20 |
 | SD13 | Does `line-components` declare `@zag-js/vanilla`? | No; components reach it through `@websublime/line-core/machine` | Declaring it | R7 §2.1; ARCH §8 | Drafting | Approved 2026-10-20 |
-| SD14 | Q06: Does `<line-icon>` get a slot, and where does the A2UI name map live? | Attributes only, no slot; the map is per-set data in the `line-icons` `./a2ui` subpath | A default slot; the map in `line-genui`; the map in `line-components` `./icon` | R10 §6 Q1; ARCH §17.1; MANIFESTO Law 1 | Fork R2 | Approved 2026-10-20 |
+| SD14 | Q06: Does `<line-icon>` get a slot, and where does the A2UI name map live? | Attributes only, no slot; the map is per-set data in the `line-icons` `./a2ui` subpath, owned by task G2 (AM-002) | A default slot; the map in `line-genui`; the map in `line-components` `./icon` | R10 §6 Q1; ARCH §17.1; MANIFESTO Law 1 | Fork R2 | Approved 2026-10-20 |
 | SD15 | Q49: What does the A2UI icon map hold? | No default set (the consumer registers one); each entry carries weight and the RTL mirror flag per name; the three Lucide collisions are accepted and documented | Lucide or Phosphor as default; fill or drifted glyphs for the collisions | R10 §2.3, §2.5, §6 Q2, Q5, Q7; ARCH §11 | Fork R2 | Approved 2026-10-20 |
 | SD16 | Does the `line-themes` barrel import the MCP Apps bridge? | No; consumers import `./hosts/mcp-apps.css` on its own | Importing it from `src/index.css` | PRD Appendix D "Tiers" | Drafting | Approved 2026-10-20 |
-| SD17 | Q30: How does `mcp-apps.css` handle `line-tokens` primitives? | A `body`-scoped `var(--host, inherit)` with no copied literals; Miguel approved the Law 10 reading that `line-themes` may name a token without copying its value | Copied literals; a second sheet in `line-tokens`; colour aliases only | R5 §2.4b; MANIFESTO Law 10 | Fork R4 | Approved 2026-10-20 |
+| SD17 | Q30: How does `mcp-apps.css` handle `line-tokens` primitives? | A `body`-scoped `var(--host, inherit)` with no copied literals; Miguel approved the Law 10 reading that `line-themes` may name a token without copying its value. Beside it, Miguel approved the Law 5 reading that Law 5 governs `line-components` components, and the `<line-a2ui-surface>` reconciler is that light-DOM orchestrator's own rendering cycle (§6.G.4) (AM-002) | Copied literals; a second sheet in `line-tokens`; colour aliases only | R5 §2.4b; MANIFESTO Law 5, Law 10 | Fork R4 | Approved 2026-10-20 |
 | SD18 | Q20: How does C21 bound the cost of repeated `updateProps` calls? | C21 measures the host update rate per component and sets a budget; an upstream issue is filed; past the budget only, a `line-core` `VanillaMachine` subclass replaces the props source | Skip `updateProps` on shallow-equal props; wait for an upstream fix alone | R7 §2.3 P4, §6 OQ1; plan §5.6 D7 | Fork R1 | Approved 2026-10-20 |
-| SD19 | Q31: How do components reach `ElementInternals`? | `LineElement` attaches internals for every component behind a protected `internals` accessor; `FormAssociated` reuses it; no `globalThis` registration; a `line-core` task before C1 measures the per-element cost | Private internals; an accessor on `FormAssociated` only; an opt-in controller; `globalThis` registration | R8 §2.5, §6 Q2; ARCH §14.8 | Fork R1 | Approved 2026-10-20 |
+| SD19 | Q31: How do components reach `ElementInternals`? | `LineElement` attaches internals for every component and keeps them in an ES `#private` field; subclasses reach them as `this[INTERNALS]`, a plain `Symbol` key that `line-core` exports, so no public `internals` property joins the WCCG protocol names that axe reads; `FormAssociated` reuses it; no `globalThis` registration; a `line-core` task before C1 measures the per-element cost (AM-002) | A public-at-runtime `internals` property; an accessor on `FormAssociated` only; an opt-in controller; `globalThis` registration | R8 §2.4, §2.5, §6 Q2; ARCH §14.8 | Fork R1 | Approved 2026-10-20 |
 | SD20 | Q43: Does `line-core/styles` tree-shake per sheet? | `/* @__PURE__ */` on each `createSheet()` call | Leave as is; one subpath per sheet | R9 §2.1; Phase 00 spec §6.D.7 | Default R1 | Approved 2026-10-20 |
 | SD21 | Q42: What does the < 5 KB soft target count? | The component alone with Lit, `line-core` and Zag external, measured with esbuild and `gzip -9 -n` on the packed tarball, reported per component, not gating | First-component cost; marginal cost over a baseline; size-limit with brotli | R9 §2.4, §6 Q6; PRD §1.6–§1.7 | Default R1 | Approved 2026-10-20 |
 | SD22 | Where do the ambient CSS module declarations live? | `apps/storybook/types/line-css.d.ts`, included by `apps/storybook/tsconfig.json` | Another `.d.ts` path | R11 OQ2 (b) | Drafting | Approved 2026-10-20 |
@@ -1854,7 +1866,7 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD34 | What htmx outcome does the spec expect for the static rows? | `n/a` expected for the 14 static rows, confirmed or overturned by each component spec | Running the harness on every row | plan §2.4; ARCH §17.2 C9 | Drafting | Approved 2026-10-20 |
 | SD35 | Q19: What do Button `pressed`, `loading` and `disabled` mean, and why is Chip not `Button[pressed]`? | The active press is `idle → active` (`data-active`, `:state(active)`); opt-in `pressed` is a toggle with `aria-pressed`; `loading` and `disabled` are props read by guards; a loading Button stays focusable with `aria-disabled`; the consumer supplies the loading text; Chip stays separate by role; ARCH §13.1 state list gets a text correction | `pressed` as active press only; `pressed` as toggle only; `loading`/`disabled` as finite states | R7 §2.4, §6 OQ4; R8 §2.2; ARCH §14.8 | Fork R2 | Approved 2026-10-20 |
 | SD36 | Q16: How is the IconButton name checked, and is IconButton form-associated? | A descriptor-level required name; the surface rejects a nameless node to a placeholder with `line-a2ui-error` before render; the axe gate covers hand-written markup; `type="button"` only, not form-associated, ARCH §7 unchanged | A runtime dev warning; a DOM check after render alone; adding IconButton to ARCH §7 | R8 §2.4; R2 §2.8, §6 Q5; ARCH §13.1 | Fork R2 | Approved 2026-10-20 |
-| SD37 | Q46–Q48: Presence tracking and unmount; AvatarGroup overflow and Avatar tier; Alert and Spinner roles | Deferred to the component specs: Presence after the R7 §6 OQ2 three-engine probe (R7 §6 OQ2, OQ3); AvatarGroup and Avatar (R7 §6 OQ5, OQ6; R8 §6 Q10); Alert and Spinner (R8 §6 Q8, Q9) | Deciding them in this spec | R7 §6 OQ2, OQ3, OQ5, OQ6; R8 §6 Q8–Q10 | Default R2 | Approved 2026-10-20 |
+| SD37 | Q46–Q48: Presence tracking and unmount; AvatarGroup overflow; Alert and Spinner roles | Deferred to the component specs: Presence after the R7 §6 OQ2 three-engine probe (R7 §6 OQ2, OQ3); AvatarGroup (R7 §6 OQ5; R8 §6 Q10); Alert and Spinner (R8 §6 Q8, Q9). Avatar stays Static, as ARCH §13.2 and PRD §4.1 decide, which answers R7 §6 OQ6 (AM-002) | Deciding them in this spec | R7 §6 OQ2, OQ3, OQ5, OQ6; R8 §6 Q8–Q10; ARCH §13.2 | Default R2 | Approved 2026-10-20 |
 | SD38 | Q11: Which components carry `agentExposed: false`? | Portal, Presence and Visually Hidden, each with a recorded reason | Portal and Presence only; none | R8 §2.2; R7 §2.2; ARCH §17.4 | Fork R2 | Approved 2026-10-20 |
 | SD39 | R2 default: How are roles set only through internals checked? | A screen-reader pass recorded in the component spec | No second check | R8 §2.4, §6 Q5 | Default R2 | Approved 2026-10-20 |
 | SD40 | What do G6, G7 and G4 depend on beyond plan §6? | G6 on P1; G7 on G4; G4 on P5, whose harness gains the `line-genui` registration row | — | plan §6; §7.5 | Drafting | Approved 2026-10-20 |
@@ -1863,20 +1875,20 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD43 | Q01a: Which catalog ids does the `basic` implementation answer to? | Only the v0_9 id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, always registered; the AG-UI recipe server sets `defaultCatalogId` to it | Also the `v0_9_1` id; also the middleware fallback `…/v0_9/basic_catalog.json`; recipes on the `line` id only | R1 §2.4.1, §2.6; R6 §2.1; ARCH §17.3 | Fork R3 | Approved 2026-10-20 |
 | SD44 | Q01b: Does a session advertise `basic` by default? | Capabilities list the basic id only on consumer opt-in until basic coverage is complete | Advertise by default; advertise a trimmed inline basic catalog | R1 §2.6; R6 §2.2, §2.3; ARCH §17.3 | Fork R3 | Approved 2026-10-20 |
 | SD45 | Q50: Which protocol versions are advertised, accepted and emitted? | Advertise `v0.9` and `v0.9.1`; accept both; emit `v0.9.1` | Advertise `v0.9.1` alone | R1 §2.5.1, P10, §6 Q8; R2 §2.6 | Default R3 | Approved 2026-10-20 |
-| SD46 | Q03a: How does the frontend-tool emitter build flat parameters? | A line-owned walker over the Zod 3 descriptor schema, checked with Ajv and the R3 P11 subset checks | `zod-to-json-schema`; `Catalog.toJson()` plus a rewrite; native `z.toJSONSchema` (Zod 4) | R3 §2.1, §2.2, §2.5, §6 Q4 | Fork R3 | Approved 2026-10-20 |
-| SD47 | Which props does the tool walker leave out? | `ComponentId`, `ChildList` and `Action` props | Emitting them as literals | R3 §6 Q4 | Drafting | Approved 2026-10-20 |
+| SD46 | Q03a: How does the frontend-tool emitter build flat parameters? | A line-owned walker over the Zod 3 descriptor schema, checked with Ajv and the R3 P11 subset checks | `zod-to-json-schema`; `Catalog.toJson()` plus a rewrite; native `z.toJSONSchema` (Zod 4) | R3 §2.1, §2.2, §2.5, §6 Q2 | Fork R3 | Approved 2026-10-20 |
+| SD47 | Which props does the tool walker leave out? | `ComponentId`, `ChildList` and `Action` props | Emitting them as literals | R3 §6 Q4 [INFERENCE: R3 does not name these props] | Drafting | Approved 2026-10-20 |
 | SD48 | Q04: How does the emitter reach Gemini? | One flat literal model per descriptor, serialised per provider through a provider argument; Gemini gets `parameters` with `nullable` | Gemini `parametersJsonSchema` with the strict schema | R3 §2.6 | Fork R3 | Approved 2026-10-20 |
 | SD49 | Q51: How is provider acceptance proved, and what tool-name pattern applies? | Per tool; offline subset checks in CI on every PR; a live call to each provider before each release recorded in the release PR; Anthropic per-request caps documented; names match `^[a-zA-Z0-9_-]{1,64}$` | Offline checks alone; live calls in CI | R3 §2.6, §3 | Fork R3 | Approved 2026-10-20 |
 | SD50 | Q03b: Does a tool definition get a token budget? | Report only: CI prints bytes and o200k tokens per tool | No budget; a gating budget | R3 §2.7 | Default R3 | Approved 2026-10-20 |
 | SD51 | Q02a: One `processMessages` call per message or per batch? | One call per message; a bad message drops only itself; `aria-busy` covers the batch | One call per batch | R1 §2.7; R2 §2.6, §2.8; R6 §2.2 | Default R3 | Approved 2026-10-20 |
 | SD52 | Q02b: Which `validationConfig` does the surface pass? | `RELAXED_VALIDATION` | None; `STRICT_VALIDATION`; custom with `allowUnknownElements: false` | R1 §2.7; R2 §2.0 | Default R3 | Approved 2026-10-20 |
-| SD53 | Q02d: Where does the depth limit live? | A surface-side counter while it walks `NodeResolver` | `web_core` `maxDepth`, which does not fire with `allowMissingRoot: true` | R2 §2.6, §6 Q6; R1 §2.7 | Default R3 | Approved 2026-10-20 |
+| SD53 | Q02d: Where does the depth limit live? | A surface-side counter while it walks `NodeResolver` | `web_core` `maxDepth`, which is unreliable with `allowMissingRoot: true` because the walk starts at each id in sorted order | R2 §2.6, §6 Q6; R1 §2.7 | Default R3 | Approved 2026-10-20 |
 | SD54 | Q02 (K1): How do a cycle and a pending child behave (contradiction K1)? | A cycle rejects its message; a pending child stays hidden, is replaced on arrival and raises no error; ARCH §17.4 Errors row and plan §2.1 corrected | Treating a pending child as a resolver error | R1 §2.5.2, §2.7; R2 spike surface | Fork R3 | Approved 2026-10-20 |
 | SD55 | Q02c: What payload does `line-a2ui-error` carry? | The generic A2UI form `{version, error: {code, surfaceId, message, …}}` with the `web_core` code | `VALIDATION_FAILED` with a computed JSON Pointer `path`; a hybrid of both | R2 §2.6; R1 §2.1, §2.7 | Fork R3 | Approved 2026-10-20 |
 | SD56 | Q32a: What are the default limits for node count, depth and data-model size? | Finite defaults; a breach rejects the message with `line-a2ui-error`; the values come from a G4 stress test through an AM | `web_core` constants; unlimited unless configured | R1 §2.7, §4; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
 | SD57 | Q32b: How does the URL policy apply? | After resolution against the document base, to Image, Video and Audio URLs and `openUrl`; `data:` rejected | Allowing `data:` for images | R1 §2.6; R2 spike surface; R5 §2.2; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
 | SD58 | Q32c: What shape does the Markdown opt-in take? | A surface hook the consumer supplies; the consumer owns sanitising | A line-shipped renderer; plain text only | R1 §2.3; R6 §2.1; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
-| SD59 | Q59: What surface rendering details apply? | Live region "Content updated." plus an error sentence; `role="list"` on `line-stack` for List; Button text in a `<span>`; `building`/`retrying` → `aria-busy`, `failed` → inert | `<p>` for Button text | R2 §2.8, §6 Q3, Q4, Q8; R6 §2.1, §6 Q7 | Default R3 | Approved 2026-10-20 |
+| SD59 | Q59: What surface rendering details apply? | Live region "Content updated." plus an error sentence; `role="list"` on `line-stack` for List, and `role="listitem"` on each item `line-stack` or on a wrapper otherwise; Button text in a `<span>`; `building`/`retrying` → `aria-busy`, `failed` → inert (AM-002) | `<p>` for Button text | R2 §2.1, §2.8, §6 Q3, Q4, Q8; R6 §2.1, §6 Q7 | Default R3 | Approved 2026-10-20 |
 | SD60 | Q52: How does the reconciler treat template-list reorders? | Document the limit; revisit trigger a2ui#1745 | Keying by `componentId` plus data path; waiting for #1745 | R2 §2.8, §6 Q1; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
 | SD61 | Q44: What content rules govern the manifest? | `@fires` mandatory; tests filter on `privacy`, `static` and `inheritedFrom`; inherited static `formAssociated`; ARIA in the descriptor; `schemaVersion` as emitted; no analyser plugin | An ARIA plugin; a `schemaVersion` 2.1.0 plugin; a member-stripping plugin | R4 §2.3, §2.4, §2.6, §6 OQ1–OQ3, OQ6–OQ8 | Default R1 | Approved 2026-10-20 |
 | SD62 | Q12: Which host keys are on the `mcp-apps.css` reference list? | The role-matched subset under a written rule. It holds 2 font families, 4 weights, the role-matched colours, and the radii, sizes and line heights that the scale map matches (§10 SD63). Every excluded key is listed with its reason | All 76 keys; the 71 colour, font and radius keys | R5 §2.3, §2.5, §6 Q1, Q3 | Fork R4 | Approved 2026-10-20 |
@@ -1889,11 +1901,11 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD69 | Q55: Which ext-apps entry do the docs show? | ext-apps 2.x `./app-with-deps` | The main entry; 1.7.5; inline helper copies | R5 §2.1, §6 Q5; ARCH §17.6 | Default R4 | Approved 2026-10-20 |
 | SD70 | Where does the D1 guide live? | One MDX file under `apps/storybook/stories/` | — | Phase 00 spec §6.G | Drafting | Approved 2026-10-20 |
 | SD71 | How does the browser tier serve the landing page? | A third Playwright `webServer` runs `astro preview` on `apps/site/dist`; the port is left to the implementer | A build-time HTML check | R12 §6 Q3 | Drafting | Approved 2026-10-20 |
-| SD72 | Q40: How does the landing page load components and guard registration? | A processed `<script>import</script>` per section, no Astro or Lit integration; a Playwright guard asserts every `line-*` is `:defined` in three engines | One shared module; a build-time HTML check; review only | R12 §2.1, §2.2, §6 Q3; MANIFESTO Principle 5 | Default R1 | Approved 2026-10-20 |
-| SD73 | Q41: Unupgraded state, theme CSS scope and stylesheet delivery on the site? | Left to the S1 implementer and recorded in the PR | Fixing them in the spec | R12 §2.4, §2.5, §6 Q1, Q2, Q5 | Default R1 | Approved 2026-10-20 |
+| SD72 | Q40: How does the landing page load components and guard registration? | A processed `<script>import</script>` per section, no Astro or Lit integration; a Playwright guard asserts every `line-*` is `:defined` in three engines; hand-written `<link rel="modulepreload">` is left to the S1 implementer (§10 SD73) (AM-002) | One shared module; a build-time HTML check; review only | R12 §2.1, §2.2, §6 Q3, Q4; MANIFESTO Principle 5 | Default R1 | Approved 2026-10-20 |
+| SD73 | Q41: Unupgraded state, theme CSS scope, stylesheet delivery and hand-written `<link rel="modulepreload">` on the site? | Left to the S1 implementer and recorded in the PR (AM-002) | Fixing them in the spec | R12 §2.4, §2.5, §6 Q1, Q2, Q4, Q5 | Default R1 | Approved 2026-10-20 |
 | SD74 | Which code of conduct text and contact does Z1 use? | The Contributor Covenant, latest version; Miguel supplies the reporting contact in the Z1 PR | — | PRD §10; plan §7.4 | Drafting | Approved 2026-10-20 |
 | SD75 | Do untouched packages get a changeset? | Every package gets a `minor` changeset so all nine reach `0.2.0` | Bumping only changed packages | plan §7.4 | Drafting | Approved 2026-10-20 |
-| SD76 | What if Changesets bumps `line-genui` to a major through its peers? | P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` through an AM row | Accepting a major | R9 §2.6 method | Drafting | Approved 2026-10-20 |
+| SD76 | What if Changesets bumps `line-genui` to a major through its peers? | P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` through an AM row | Accepting a major | R9 §2.6 method [INFERENCE: R9 did not probe peer-dependent bumps] | Drafting | Approved 2026-10-20 |
 | SD77 | Which `@changesets/cli` major does Phase 1 use? | Stay on 2.x (2.31.1) | Move to 3.x | R9 §2.6 | Drafting | Approved 2026-10-20 |
 | SD78 | Q21: Which runner makes zero axe violations a failing CI check? | Playwright with `@axe-core/playwright` 4.14.0 as the gate; `@storybook/addon-a11y` stays as the author panel | Storybook addon plus Vitest addon; Playwright with the addon removed | R8 §2.4; PRD §5.2 | Default R1 | Approved 2026-10-20 |
 | SD79 | R2 default: Which axe ruleset does the gate run? | WCAG 2.0 and 2.1 A and AA tags | Other tag sets | R8 §2.4, §6 Q4 | Default R2 | Approved 2026-10-20 |
@@ -1914,7 +1926,7 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD94 | Where does the Storybook API documentation of `<line-a2ui-surface>` come from? | `line-genui` ships its own Custom Elements Manifest, with a `customElements` field, a `files` entry and a `./custom-elements.json` export. G4 adds the analyser config, the build step and the surface JSDoc with `@fires` for `line-a2ui-action` and `line-a2ui-error`. Storybook loads one manifest merged from both packages by concatenating their `modules` arrays. `verify-pack` check (a) covers the `line-genui` target. G5 coverage stays on `line-components` | Hand-written MDX for the surface API | plan §5.6 D8; R4 §2.7, §2.8; ARCH §17.3 | Fork R6 | Approved 2026-10-20 |
 | SD95 | Which elements and attributes pass the injection step, and what happens to an `SVGElement` result? | Strings (resolver output and `src`) pass a presentation allowlist of 9 elements (`svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon`) and 36 attributes (the 23 measured plus 10 SVG 2 presentation attributes and `aria-hidden`, `role`, `focusable`). `href`, `xlink:href`, `style`, `on*`, any value containing `url(`, and the elements `script`, `style`, `foreignObject`, `use`, `a`, `image`, `defs`, `clipPath`, `mask`, gradients and `pattern` never pass. An `SVGElement` from a consumer's resolver is inserted as is | The narrow Lucide/Phosphor list with `SVGElement` inserted directly; every result through the narrow list | R10 round 2 §2.7, P14; W3C SVG 2 presentation attributes; ARCH §11 | Fork R6 | Approved 2026-10-20 |
 | SD96 | Where does the C22 matrix test live, when do its pages run, and what does it add to the root manifest? | `packages/line-icons/__tests__/consumer-matrix.e2e.ts`. The bundler pages run in the Browser tier on a self-hosted base. The CDN-base pages run with P6 on `workflow_dispatch` and before each release (as SD25). Root `devDependencies` gain `webpack ^5.112.0` | Another path; running the CDN pages on every PR | R10 round 2 §2.1, §2.2; §10 SD25 | Drafting | Approved 2026-10-20 |
-| SD97 | What happens when the `line-icon` Trusted Types policy cannot be created? | The module creates the policy once behind a guard. If `createPolicy` throws, because the page's `trusted-types` list omits `line-icon` or a second module copy already created it, `<line-icon>` renders the neutral C8 state and nothing reaches the consumer as an error | Letting the `TypeError` propagate | R10 round 2 §2.7, P13; MANIFESTO Law 9; ARCH §17.2 C8 | Default R6 | Approved 2026-10-20 |
+| SD97 | What happens when the `line-icon` Trusted Types policy cannot be created? | `<line-icon>` creates the policy lazily, on the first SVG string it injects, once per realm behind a guard, never at module load, so `define()` always runs. If `createPolicy` throws, because the page's `trusted-types` list omits `line-icon` or a second module copy already created it, `<line-icon>` renders the neutral C8 state and nothing reaches the consumer as an error (AM-002) | Letting the `TypeError` propagate; creating the policy at module load | R10 round 2 §2.7, P13; MANIFESTO Law 6, Law 9; ARCH §12, §17.2 C8 | Default R6 | Approved 2026-10-20 |
 
 ---
 
@@ -1930,5 +1942,7 @@ PROCESS §3 requires that any change to this spec after approval lands as a row 
 
 | ID | Date | Trigger | Change | Reason | Evidence |
 |---|---|---|---|---|---|
+| AM-001 | 2026-10-20 | ledger 00-Z48 (factual correction, coherence review round 1) | Factual edits, no design change. L1-14/L2-01/L3-10: §10 intro drops ", except SD96, which is pending". L2-03: §6.G.2 says `toJson()` lacks `$defs/anyFunction` and `$defs/theme`, so the published schemas do not compile, and only the inline projection is checked against the `Catalog` def. L2-06: §7.4 and §8 say axe's naming rules ignore internals-only roles and axe skips closed shadow roots. L2-07: §7.1 says Astro and MDX editor tools lose the TypeScript API until they support 7.x. L2-09: §8 cites R11 blocker B1 and required change RC1 (TS2882). L2-10: locators fixed in §4.3 (R10 §2.4), §6.P.5 (R9 §3 probe 4), SD2 (R9 §3 probe 6), §7.8 (R7 §2.3) and SD46 (R3 §6 Q2). L2-11: SD10 Evidence and §6.C.5 cite R7 §2.4, R8 §6 Q6 and plan §2.2. L2-12: `[INFERENCE]` on the 0.5 KB size (§6.C.3), on `loading` in probe B1 (§6.C.5), on path A needing neither (§6.P.4), on `0.2.0-<sha>-SNAPSHOT` (§6.P.4, §7.2), and in SD47 and SD76; "stays focusable" cites R7 §2.4; the `withTags` strings cite the axe-core tag docs. L2-13: §6.G.7 says the middleware does not run fully in a browser. L2-14: §8 notes `./app-with-deps` still inlines Zod 4. L2-15: §6.G.4 and SD53 say `maxDepth` is unreliable with `allowMissingRoot: true`. L3-13: §6.C.5 says ARCH v0.8.5 §13.1 carries the corrected state list. L1-07: the §9.1 D8 criterion covers the `line-components` and `line-genui` manifests (tasks P10, G4). R10 round 2 addendum A1: §6.C.3 keeps SVG-namespace elements, accepts the root `xmlns` and drops every `xmlns:*` declaration | The round-1 coherence review found these statements misread their sources or left a fact unsourced | agent R1LensPlanPRD (L1-07, L1-14); agent R1LensSpecResearch (L2-01, L2-03, L2-06, L2-07, L2-09 to L2-15); agent R1LensSpecArch (L3-10, L3-13); R2 §2.6, §2.7; R3 §2.3; R6 §2.1; R7 §2.3, §2.4; R8 §2.4, §6 Q6; R9 §3; R10 §2.4; R10 round 2 addendum A1; R11 §2.9; PRD §6.3 |
+| AM-002 | 2026-10-20 | ledger 00-Z48 (decision — Miguel chose the Law 5 reading that scopes Law 5 to `line-components` components over amending Law 5 and over building the surface on Lit; a structural registry interface with a static `LineIcon.registry` hook over a `line-components → line-icons` edge; the shared Button machine in `line-components` `src/shared/` over the machine in `line-core`; a `#private` internals field with an exported Symbol accessor over a public-at-runtime `internals` property; the ledger PR aligning PROCESS §4 and `CLAUDE.md` over task Z2; plus orchestrator defaults L3-05, L3-08, L3-09, L3-12, L2-02, L3-07, L2-04 and L2-08) | D-L3-01: §6.G.4 and SD17 record the Law 5 reading for the `<line-a2ui-surface>` reconciler. D-L3-02: §6.C.3 adds the registry hook (`resolve(library, name)`, static `LineIcon.registry`, satisfied by the `line-icons` `IconRegistry`, no layer edge), the C2 row states it, and G4 Changes set it on the agent path. D-L3-06: §4.2, §5, §6.C.4, §6.C.5 and the §7.5 isolation scan name `src/shared/button-machine.ts` as shared code. D-L2-05: §4.5, §6.C.2 and SD19 keep internals in a `#private` field reached through `INTERNALS`, a plain Symbol exported from `line-core`. D-L1-06: task Z2 leaves §6.Z, §5 and §9; §6.Z states that the ledger PR aligns PROCESS §4 and the `CLAUDE.md` pointer, and Z3's section becomes §6.Z.2. L3-05: §6.C.3 and SD97 create the Trusted Types policy lazily. L3-08: the C10 row and SD37 hold Avatar Static. L3-09: G2 owns `src/a2ui/` and `./a2ui` (§5, §6.C.3, §6.G.2, SD14); C22 Changes add `src/registry.ts` and three export keys. L3-12: §6.C.4 gives Presence the `common` reset only. L2-02: §6.G.4 and SD59 require `role="listitem"` on each List item; the C3 cell narrows. L3-07: the C8 cell uses `line-change`/`line-input` per C3 and C9. L2-04: §6.G.6 cites R5 addendum A1 and the §6.C.3 allowlist cites R10 round 2 addendum A1. L2-08: SD73 adds hand-written `modulepreload`; SD72 Evidence adds R12 §6 Q4 | The round-1 coherence review raised five design forks and eight gaps that the approved spec left open or settled against a higher document | agent R1LensSpecArch (L3-01, L3-02, L3-05 to L3-09, L3-12); agent R1LensSpecResearch (L2-02, L2-04, L2-05, L2-08); agent R1LensPlanPRD (L1-06); Miguel's decisions of 2026-10-20; MANIFESTO Law 4, Law 5, Law 6, Law 9; ARCH §11, §12, §13.1, §13.2, §14.7, §17.2; R2 §2.1; R5 addendum A1; R8 §2.4; R10 round 2 addendum A1; R12 §6 Q4 |
 
 *End of spec.*

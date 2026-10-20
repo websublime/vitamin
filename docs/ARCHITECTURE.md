@@ -12,6 +12,14 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.6 (2026-10-20)** — Aligned with PRD v0.8.20, with the Phase 1 coherence review (ledger row `00-Z48`, decisions by Miguel on 2026-10-20).
+  - §6 (Base Class — LineElement) shows that `FormAssociated` reuses the `LineElement` internals and only sets `formAssociated` (Phase 1 spec §10 SD19, task C23).
+  - §11 (Icon System) says `<line-icon>` takes its registry through the static hook `LineIcon.registry`, which the consumer sets. Any object with `resolve(library, name)` fits, such as the `line-icons` `IconRegistry`, so `line-components` gains no edge to `line-icons` (Phase 1 spec AM-002).
+  - §12 (Bundle Splitting Rule) and §13.1 (Button Ecosystem) state the rules the Phase 1 spec decided for `sideEffects`, the build externals and the IconButton name check (Phase 1 spec §10 SD2, SD4, SD36). §13.1 places the shared Button machine in `src/shared/button-machine.ts` (Phase 1 spec AM-002).
+  - §14.7 (Reset Module to Component Mapping) gives Presence the `common` module only.
+  - §14.8 (State Reflection) says subclasses reach the internals through a Symbol key exported by `line-core`, over an ES `#private` field (Phase 1 spec §10 SD19 as amended by AM-002).
+  - §17.3 to §17.6 state the decided rules for the basic catalog id, the provider serialisation, `svgPath`, the AG-UI error, `validationConfig`, the A2A shapes, the View delivery and the bridge primitives (Phase 1 spec §10 SD17, SD33, SD43, SD48, SD52, SD54, SD65, SD66, SD68). §17.4 says a missing child stays hidden until it arrives, and records that Law 5 governs `line-components` components, not the `line-genui` surface (Phase 1 spec AM-002).
+  - §17.9 (Phase 1 spec answers) replaces the four open questions with the answers of Phase 1 spec §10 SD19, SD44, SD38 and SD62.
 - **v0.8.5 (2026-10-20)** — Aligned with PRD v0.8.19, with corrections from the Phase 1 spec work (ledger row `00-Z46`, decisions by Miguel on 2026-10-20).
   - §13.1 (Button Ecosystem) separates the two meanings of "pressed". The machine models the press itself as `active`, `pressed` is an opt-in toggle with `aria-pressed`, and `loading` and `disabled` are props that the machine's guards read (R7 §2.4, R8 §2.2).
   - §13.1 (Button Ecosystem) records the machines the Phase 1 spec picks. ButtonGroup runs on a custom roving-focus machine, and Chip on the pre-built `@zag-js/toggle` 1.46.0 machine.
@@ -254,7 +262,7 @@ LitElement
         ├── Inspector mixin (feature flag via localStorage)
         ├── Metadata mixin (version, docs, qa)
         ├── Direction mixin (LTR/RTL)
-        └── FormAssociated mixin (opt-in, ElementInternals)
+        └── FormAssociated mixin (opt-in formAssociated; reuses LineElement internals)
               │
               ├── Pre-built machine components — compose a `LineMachineController`
               │     ├── LineDialog (uses @zag-js/dialog)
@@ -270,6 +278,8 @@ LineMachineController — Lit `ReactiveController`, exported from `@websublime/l
 ```
 
 A component declares its tier by composing a `LineMachineController` with a pre-built Zag.js machine or a custom `createMachine()` result, or by composing none (static). `LineElement` holds no machine. Each component owns its controller, and static components carry no machine overhead.
+
+`LineElement` attaches `ElementInternals` for every component (§14.8). The `FormAssociated` mixin reuses those internals and sets `formAssociated` (Phase 1 spec §10 SD19, task C23).
 
 **Zag.js integration is via the first-party `LineMachineController` adapter** (Lit `ReactiveController` exported from `@websublime/line-core/machine`). The adapter wraps the framework-agnostic `@zag-js/vanilla` package (`VanillaMachine`, `normalizeProps`, `spreadProps`, `mergeProps`) and provides:
 
@@ -446,7 +456,7 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 <line-icon src="/my-icons/custom.svg"></line-icon>
 ```
 
-- `line-icon` exposes a **registry** where the consumer registers icon libraries.
+- `line-icon` exposes the **registry** through a static hook, `LineIcon.registry`. The consumer sets it once with any object that satisfies the resolver interface `resolve(library, name): Promise<string | SVGElement>`, such as the `line-icons` `IconRegistry`. `line-components` defines the interface, so it gains no edge to `line-icons`. On the agent path, `line-genui` sets the hook (Phase 1 spec AM-002).
 - Each library is a resolver: given a name, returns the SVG.
 - Zero icons bundled in `line-icons` core — the consumer brings their own resolver (Lucide, Phosphor, Iconoir, `@radix-ui/react-icons`, custom).
 - Dependency direction is one-way: `line-icons → line-tokens` is permitted (icons reuse icon-size / sizing tokens); the inverse is forbidden.
@@ -459,9 +469,9 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 
 **Umbrella package, not per-component packages (Manifesto Law 6).** All components ship inside a single `@websublime/line-components` package with **one version and one changelog**. Each component family or independent component is exposed as a **subpath export** in `package.json` — `@websublime/line-components/button`, `@websublime/line-components/dialog`, etc. There is no central barrel that imports every component; the root `"."` export is intentionally minimal (types and shared utilities only). This is **not** a Lerna-style "one package per component" layout — the umbrella keeps a single source of truth while subpath exports preserve tree-shaking and bundle isolation.
 
-**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. The Phase 1 spec sets the field value, the chunk layout and how bundle splitting is verified.
+**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. The packages therefore omit the field and use the default Rolldown chunks. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (Phase 1 spec §10 SD4).
 
-**Shared runtime stays external.** The library builds keep `@websublime/*` external, so a consumer that imports `line-core` and a component gets one `LineElement` class. A copy of `line-core` inlined into `line-components` would give two classes, and `instanceof` would fail. The Phase 1 spec picks the build mechanism.
+**Shared runtime stays external.** The library builds keep `@websublime/*` external, so a consumer that imports `line-core` and a component gets one `LineElement` class. A copy of `line-core` inlined into `line-components` would give two classes, and `instanceof` would fail. Each build derives `external` from its manifest's `dependencies` and `peerDependencies`, so every bare specifier in `dist/` is declared (Phase 1 spec §10 SD2).
 
 ```js
 // Consumer imports surgically — registers only what is used
@@ -502,7 +512,7 @@ Architectural decisions for specific components that were debated and resolved. 
 ### 13.1 Button Ecosystem
 
 - **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default. The machine models the press itself as `idle → active`. `pressed` is an opt-in toggle that sets `aria-pressed`. `loading` and `disabled` are props that the machine's guards read. All four reflect as `data-*` attributes and `:state()` (§14.8). Loading state is headless (state only, no bundled spinner).
-- **IconButton** — Separate component, `aria-label` required, same machine as Button. TypeScript cannot check the name in markup or on elements the A2UI surface creates by tag at run time, so the Phase 1 spec picks the check.
+- **IconButton** — Separate component, `aria-label` required, same machine as Button. The shared machine lives in `packages/line-components/src/shared/button-machine.ts`, which Button and IconButton both import. Law 4 does not cover it because it is not a component (Phase 1 spec AM-002). TypeScript cannot check the name in markup or on elements the A2UI surface creates by tag at run time. The descriptor therefore requires the name, the surface rejects a nameless node, and the axe gate covers hand-written markup (Phase 1 spec §10 SD36).
 - **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. A custom roving-focus machine drives it, because `@zag-js/toolbar` ships only pre-release versions (`latest` and `next` are 2.0.0-next.x on 2026-10-20). Border collapse, slot-based (does NOT import Button).
 - **SplitButton** — Custom, Phase 3 (depends on Button + Menu), bundles both internally.
 - **ToggleButton** — NOT a separate component; use ToggleGroup with single item or Button with `pressed` state.
@@ -1068,7 +1078,7 @@ Which modules each component category uses:
 | Table, DataGrid | x | | | | | | | | | x | |
 | ScrollArea | x | | | | | | | | | | x |
 | Chip, AvatarGroup | x | | x | | | | | | | | |
-| Badge, Alert, Avatar, Separator, Skeleton, Spinner, Card, Empty State, all Static | x | | | | | | | | | | |
+| Badge, Alert, Avatar, Separator, Skeleton, Spinner, Card, Empty State, Presence, all Static | x | | | | | | | | | | |
 | Dialog, Sheet, Popover, Tooltip, Toast | x | | | | | | | | | | |
 | Editable | x | x | | | | | | | | | |
 | FileUpload | x | x | | | | | | | | | |
@@ -1095,18 +1105,27 @@ line-input:state(disabled) { /* disabled state */ }
 line-input:state(invalid) { /* invalid state */ }
 ```
 
-**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and exposes it through a protected `internals` accessor, which the `FormAssociated` mixin reuses (Phase 1 spec, task C23). The base class handles the wiring:
+**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and keeps it in an ES `#private` field. Subclasses reach it through a Symbol key that `line-core` exports, and the `FormAssociated` mixin reuses it. The key is a plain `Symbol(...)`, not `Symbol.for`, so it stays outside the protocol names that axe reads (Phase 1 spec §10 SD19 as amended by AM-002, task C23). The base class handles the wiring:
 
 ```typescript
+// In @websublime/line-core
+export const INTERNALS = Symbol('line.internals');
+
 // In LineElement
+#internals = this.attachInternals();
+
+protected get [INTERNALS](): ElementInternals {
+  return this.#internals;
+}
+
 protected reflectState(name: string, active: boolean) {
   // Data attribute (universal)
   if (active) this.dataset[name] = '';
   else delete this.dataset[name];
 
   // CustomStateSet (modern)
-  if (active) this.internals.states.add(name);
-  else this.internals.states.delete(name);
+  if (active) this.#internals.states.add(name);
+  else this.#internals.states.delete(name);
 }
 ```
 
@@ -1496,8 +1515,8 @@ Every component spec states these rules in its Agent contract section (PRD §8.1
 - line://ui ships two catalogs, versioned independently.
   - The `line` catalog carries the full vocabulary under its own versioned `catalogId`. Any incompatible change gets a new id. `@websublime/line-genui/catalog.json` holds its emitted JSON.
   - A2UI v0.9.1 publishes no standalone catalog meta-schema, so the `line` catalog is checked against published artifacts. Its inline form validates against `client_capabilities.json#/$defs/Catalog`, `web_core` reads it back with `Catalog.fromJson`, and its `validationSchema` compiles.
-  - The `basic` catalog registers line components under the A2UI basic catalog id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, so agents that know only the basic catalog render with line://ui. Its JSON Schema is A2UI's own, so line://ui registers implementations under the upstream id and does not re-emit it. The v0.9.1 protocol examples and `@ag-ui/a2ui-middleware` use other ids, and the Phase 1 spec decides which of them the catalog also answers to.
-- Frontend-tool parameters are literal and flat. They carry no `$ref`, `oneOf`, `allOf`, recursion or open maps, and no A2UI common types or dynamic bindings. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini. Strict mode needs `additionalProperties: false` on every object, and Gemini `parameters` allows neither `additionalProperties` nor `const`, so the Phase 1 spec decides how the emitter reaches each provider. The catalogs keep the common types and dynamic bindings, and the flat rule does not cover them.
+  - The `basic` catalog registers line components under the A2UI basic catalog id `https://a2ui.org/specification/v0_9/catalogs/basic/catalog.json`, so agents that know only the basic catalog render with line://ui. Its JSON Schema is A2UI's own, so line://ui registers implementations under the upstream id and does not re-emit it. The v0.9.1 protocol examples and `@ag-ui/a2ui-middleware` use other ids. The catalog answers only to the v0_9 id, and the AG-UI recipe server sets `defaultCatalogId` to it (Phase 1 spec §10 SD43).
+- Frontend-tool parameters are literal and flat. They carry no `$ref`, `oneOf`, `allOf`, recursion or open maps, and no A2UI common types or dynamic bindings. The emitted tool definitions are accepted by OpenAI and Anthropic in strict mode and by Gemini. Strict mode needs `additionalProperties: false` on every object, and Gemini `parameters` allows neither `additionalProperties` nor `const`. The emitter therefore builds one flat literal model per descriptor and serialises it per provider. Gemini gets `parameters` with `nullable` (Phase 1 spec §10 SD48). The catalogs keep the common types and dynamic bindings, and the flat rule does not cover them.
 - Every tool description stays at or under 1024 characters. This is a self-imposed cap that matches OpenAI's observed function-description limit; no provider documents it.
 
 Coverage of the `basic` catalog grows by phase. An unmapped basic type renders an inert placeholder and raises `line-a2ui-error`.
@@ -1506,7 +1525,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 |----------------------|------------------|-------|
 | Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant` | 1 |
 | Image | Native `<img>` behind the URL policy; `variant: "avatar"` → Avatar | 1 |
-| Icon | `<line-icon>`, with the A2UI icon names mapped to a `line-icons` resolver. A2UI also accepts `{ "svgPath": … }`, and the Phase 1 spec decides how the surface renders it | 1 |
+| Icon | `<line-icon>`, with the A2UI icon names mapped to a `line-icons` resolver. A2UI also accepts `{ "svgPath": … }`. The surface renders it through the `<line-icon>` `path` property (Phase 1 spec §10 SD33) | 1 |
 | Video, AudioPlayer | Native `<video>` and `<audio controls>` | 1 |
 | Row, Column, List | `<line-stack>` | 1 |
 | Divider | `<line-separator>` | 1 |
@@ -1531,8 +1550,8 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 | Render root | Light DOM | Document `::part()` rules cannot reach elements inside another shadow root (Law 1) |
 | Loading | Lazy `import()` through each descriptor's `load()`; no eager `define()` | Custom elements upgrade when their module arrives (Law 6) |
 | Composition | The surface creates elements by tag and wires children through slots | Orchestrator pattern (Law 4) |
-| Events | `line-a2ui-action` carries the resolved A2UI `action` message; `line-a2ui-error` carries an A2UI `error` message | The app sends both through its transport. AG-UI defines no error channel, so the Phase 1 spec decides what the AG-UI recipe does with an error |
-| Errors | A `processMessages` throw rejects its whole message, and a rejected `updateComponents` applies nothing. The surface catches every `web_core` throw. An unknown type reaches the surface as a resolver error, and the surface renders an inert placeholder for that node. A missing child stays a pending placeholder until it arrives and raises no error. Whether a cycle rejects its message or reaches the resolver depends on the `validationConfig` preset, which the Phase 1 spec sets | Law 9 |
+| Events | `line-a2ui-action` carries the resolved A2UI `action` message; `line-a2ui-error` carries an A2UI `error` message | The app sends both through its transport. AG-UI defines no error channel, so the AG-UI recipe logs an error locally and sends nothing (Phase 1 spec §10 SD65) |
+| Errors | A `processMessages` throw rejects its whole message, and a rejected `updateComponents` applies nothing. The surface catches every `web_core` throw. An unknown type reaches the surface as a resolver error, and the surface renders an inert placeholder for that node. A missing child stays hidden until it arrives and raises no error. The surface passes `RELAXED_VALIDATION`, so a cycle rejects its message (Phase 1 spec §10 SD52, SD54) | Law 9 |
 | Theme | Agent theme hints are ignored by default | The host owns styling |
 | Text | Plain text by default; Markdown only through an opt-in sanitising renderer | Agent strings are untrusted |
 | URLs | A URL policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured | Upstream does not check media URLs |
@@ -1540,6 +1559,8 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 | Accessibility | One live region per surface; `aria-busy` during batches; required names validated. The surface never moves focus to another component. Its reconciler keeps focus across reorders. On a reparent the surface uses `moveBefore()` where the browser has it, and otherwise returns focus to the same `instanceId` at the end of the batch | Law 3 |
 
 The surface projects directly on the `web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The surface keeps its own reconciliation, keyed by `instanceId` and preserving focus, and its own effect lifecycle. It loads no Lit and no `@experimental` `A2uiLitElement`. Unknown types reach it from the resolver, and so do cycles when no `validationConfig` is set.
+
+Law 5 ("Lit owns DOM") governs `line-components` components. The surface is a light-DOM orchestrator in `line-genui`, its reconciler is its rendering cycle, and no other code mutates its DOM (Phase 1 spec AM-002).
 
 Importing `@websublime/line-genui/catalog` defines no element. Importing `@websublime/line-genui/a2ui` defines only `line-a2ui-surface`.
 
@@ -1550,7 +1571,7 @@ The app owns the transport. line://ui documents each one as a Storybook recipe a
 | Transport | Inbound | Outbound |
 |-----------|---------|----------|
 | AG-UI 1.0, `@ag-ui/a2ui-middleware` convention | `ACTIVITY_SNAPSHOT` with `activityType: "a2ui-surface"` and `content.a2ui_operations` | `forwardedProps.a2uiAction` on the next run |
-| A2A | DataPart with `mimeType: application/a2ui+json` in the part `metadata`. The A2UI v0.9.1 extension spec requires `data` to be an array of messages. The v0.9.1 protocol text and both reference implementations send one message per part, and the Python implementation still sends `application/json+a2ui` for v0.8 and v0.9. The Phase 1 spec decides which shapes and which A2A version the recipe accepts | DataPart with `[action]`; capabilities in message metadata |
+| A2A | DataPart with `mimeType: application/a2ui+json` in the part `metadata`. The A2UI v0.9.1 extension spec requires `data` to be an array of messages. The v0.9.1 protocol text and both reference implementations send one message per part, and the Python implementation still sends `application/json+a2ui` for v0.8 and v0.9. The recipe accepts an array or a single message per DataPart and both MIME types, and targets A2A v1.0 with `@a2a-js/sdk` 1.3.0 (Phase 1 spec §10 SD66) | DataPart with `[action]`; capabilities in message metadata |
 | MCP | Tool result `EmbeddedResource` with `application/a2ui+json` | `tools/call` of `a2ui_action` or `a2ui_error` |
 | SSE | One message per SSE event | POST |
 | WebSocket, `fetch` streams | JSONL | POST |
@@ -1559,10 +1580,10 @@ Recipes pin the middleware version, as the documented server convention or in a 
 
 ### 17.6 MCP Apps
 
-- line://ui works unchanged inside an MCP Apps View, which is one HTML document in a sandboxed iframe, when the lazy component chunks are inlined into the View or load from a CDN origin that the View declares. The Phase 1 spec documents the delivery.
-- `@websublime/line-themes/hosts/mcp-apps.css` is a CSS-only bridge. It maps the standard MCP host colour, font and border-radius variables on the reference list (§17.9) onto line theme aliases or `line-tokens` primitives, so `line-themes` gains no runtime (Law 10).
+- line://ui works unchanged inside an MCP Apps View, which is one HTML document in a sandboxed iframe, when the lazy component chunks are inlined into the View or load from a CDN origin that the View declares. The docs show `vite-plugin-singlefile` first and a CDN listed in `resourceDomains` as the alternative (Phase 1 spec §10 SD68).
+- `@websublime/line-themes/hosts/mcp-apps.css` is a CSS-only bridge. It maps the standard MCP host colour, font and border-radius variables on the reference list (Phase 1 spec §6.G.6) onto line theme aliases or `line-tokens` primitives, so `line-themes` gains no runtime (Law 10).
 - The app applies `hostContext.styles.variables` and `hostContext.theme` with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`). The theme call sets `color-scheme` for `light-dark()`.
-- The Phase 1 spec decides how the bridge handles `line-tokens` primitives, because a primitive cannot fall back to itself.
+- The bridge sets a `line-tokens` primitive with a `body`-scoped `var(--host, inherit)` and copies no literal, because a primitive cannot fall back to itself (Phase 1 spec §10 SD17).
 
 ### 17.7 Stability
 
@@ -1582,9 +1603,9 @@ Recipes pin the middleware version, as the documented server convention or in a 
 | Headless chat primitives | Separate catalogue question | A product decision |
 | Dev-time AI (Storybook 11 MCP, llms.txt from the CEM) | Schedule with Storybook 11 | Storybook 11 stable |
 
-### 17.9 Open questions for the Phase 1 spec
+### 17.9 Phase 1 spec answers
 
-- Should `line-core` expose the `FormAssociated` internals through one accessor, so components can set `ElementInternals` ARIA? Today `#internals` is private, and a second `attachInternals()` call throws.
-- Should a session advertise the basic catalog id by default before basic coverage is complete, or only when the consumer opts in?
-- Which components carry `agentExposed: false`? Portal, Presence and Visually Hidden are the candidates.
-- Which MCP Apps standard host colour, font and border-radius variables form the reference list that `mcp-apps.css` must map (§17.6)?
+- `LineElement` keeps the internals in an ES `#private` field, and subclasses reach them through a Symbol key that `line-core` exports (Phase 1 spec §10 SD19 as amended by AM-002).
+- A session advertises the basic catalog id only when the consumer opts in, until basic coverage is complete (Phase 1 spec §10 SD44).
+- Portal, Presence and Visually Hidden carry `agentExposed: false`, each with a recorded reason (Phase 1 spec §10 SD38).
+- The `mcp-apps.css` reference list is the role-matched subset under a written rule, and every excluded key is listed with its reason (Phase 1 spec §10 SD62, §6.G.6).
