@@ -12,7 +12,7 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
-- **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review rounds 5–10 (ledger row `00-Z48`, round-7 decision by Miguel on 2026-10-20).
+- **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review rounds 5–12 (ledger row `00-Z48`, round-7 decision by Miguel on 2026-10-20).
   - §17.1 (Layers) says `line-components` is a peer loaded lazily through descriptor `load()`, and `line-icons` is a peer for the `A2uiIconMap` and `A2uiIconName` types only (`import type`; the shipped `.d.ts` references `@websublime/line-icons/a2ui`), never loaded at run time. The peer stays (Phase 1 spec §10 SD9, AM-008, AM-009; finding L3R5-01).
   - §11 (Icon System) says the global slot is created on first access (`setIconRegistry`, the `LineIcon.registry` getter or setter, or a `<line-icon>` connect), never at module load, so `define()` stays the only module-top side effect of `./icon` and the root defines and creates nothing (§12). The event on the slot's `events` target is `line-icon-registry-change` (Law 2 prefix), because it is a cross-copy, cross-version contract (Phase 1 spec AM-010; findings L3R5-02, L3R5-03).
   - §17.4 (Renderer) defines `A2uiIconName` as the union of the 59 A2UI v0.9.1 `Icon.name` enum values, kept in `packages/line-icons/src/a2ui/` and exported from `./a2ui` beside `A2uiIconEntry`, `A2uiIconMap` and `a2uiIconMap` (R10 §2.1, P2; R1 §2.6; Phase 1 spec AM-010; finding L3R5-04).
@@ -21,6 +21,7 @@ This document captures the **cross-cutting architectural decisions** that apply 
   - §17.5 (Transports) says Phase 1 ships recipes for AG-UI, A2A, MCP and SSE and none for WebSocket or `fetch`-stream JSONL (PRD §7.3 item 8; Phase 1 spec AM-012; finding L3R7-03).
   - §17.4 (Renderer) says the surface extends `HTMLElement`, not `LineElement`, and imports no `line-core` module that loads `lit` at run time (Phase 1 spec AM-012, AM-014; findings L3R7-04, L3R8-02).
   - §17.4 (Renderer) cites Phase 1 spec AM-012 and AM-014 for the surface base-class sentence (Phase 1 spec AM-015; findings L3R9-03, L2R9-03).
+  - §17.3 (Descriptors and catalogs) says the drift test reads the `line-components` `custom-elements.json`, the manifest that the package build emits (Phase 1 spec §10 SD26, AM-018; finding L3R12-05).
 - **v0.8.9 (2026-10-20)** — Aligned with PRD v0.8.23, with coherence review round 4 (ledger row `00-Z48`).
   - §11 (Icon System) says the global slot `globalThis[Symbol.for('line.icon-registry')]` holds `{ registry, events }`, where `events` is an `EventTarget`. `setIconRegistry` and the `LineIcon.registry` setter write `registry` and dispatch `change` on `events`; every `<line-icon>` copy subscribes through the slot while connected and resolves again on `change`, so an element that connects before the registry is set still renders (Phase 1 spec AM-008).
   - §17.3 (Descriptors and catalogs) and §17.4 (Renderer) give the `iconMap` shape: `A2uiIconMap`, a null-prototype frozen object keyed by A2UI name, which the surface reads with `Object.hasOwn`. Setting or replacing `iconMap` projects every Icon node of the surface again (Phase 1 spec AM-008).
@@ -1532,7 +1533,7 @@ Every component spec states these rules in its Agent contract section (PRD §8.1
   - the `agentExposed` flag, which defaults to `true`.
 - Descriptors are written on the Zod 3 API and reuse the `@a2ui/web_core` common-type schemas (`DynamicString`, `ComponentId`, `ChildList`, `Action` and their siblings) in the catalogs. Only the Zod 3 API composes with those schemas.
 - The Custom Elements Manifest enriches descriptions and deprecations. It cannot be the only source, because its types are plain text and it carries no ARIA metadata. Form association appears in it only as the inherited static member `formAssociated`.
-- A drift test fails when a descriptor names an attribute, property, slot or event that `customElements.json` lacks.
+- A drift test fails when a descriptor names an attribute, property, slot or event that the `line-components` `custom-elements.json` lacks (Phase 1 spec §10 SD26).
 - A coverage test fails when a `@websublime/line-components` component in the CEM has no descriptor. `<line-a2ui-surface>` lives in `line-genui`, so the test does not cover it.
 - Every component keeps a descriptor. A component that makes no sense to an agent carries `agentExposed: false` with a reason, and the emitters leave flagged descriptors out of the catalogs and the frontend-tool schemas.
 - The emitters produce the A2UI v0.9.1 catalog JSON for the `line` catalog and the frontend-tool schemas (`{name, description, parameters}`). An A2UI v1.0 emitter follows when v1.0 is final.
