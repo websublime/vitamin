@@ -18,10 +18,12 @@
 >   `@phosphor-icons/core`'s `exports` map and reports "not exported" (P3). R10 did not record this.
 > - `lucide-static` 1.56.0 also ships one ES module per icon, `dist/esm/icons/<name>.mjs` (1879 files,
 >   `export default` SVG string) (P2). A literal `import()` of those files renders in all three bundlers with no
->   consumer configuration, and on both CDNs with an import map (P4, P5). `@phosphor-icons/core` 2.1.1 has no JS form
->   of its icons, so a Phosphor resolver needs `?raw` or fetch (P2).
+>   consumer configuration, and on both CDNs with an import map (P4, P5). Under jsDelivr `+esm` with no map it rendered
+>   only in a simulated rewrite, with the candidate module served locally (§2.6). `@phosphor-icons/core` 2.1.1 has no
+>   JS form of its icons, so a Phosphor resolver needs `?raw` or fetch (P2).
 > - `import.meta.glob` is not Vite-only. webpack added it in 5.109 (2026-07-24), and 5.112.0 renders the probe (P4).
->   esbuild and both CDNs leave the call in place, and the module throws an uncaught `TypeError` when it loads (P4, P5).
+>   esbuild and both CDNs leave the call in place. With the call at the module's top level, as in the probe, the module
+>   throws an uncaught `TypeError` when it loads (P4, P5).
 >   A glob over a whole set puts a map of every file in the entry: 34.7 KB gzipped for Lucide in Vite, and 178 KB
 >   with Phosphor's six weights (P9).
 > - Fetching the SVG from a base URL renders in every bundler and on both CDNs (P4, P5). Its entry is 1054–1334 B
@@ -48,9 +50,11 @@ path for a missing icon".
 2. **Q2 Weight.** What do the entry and each icon weigh gzipped, and does a page with one icon pay for others (Law 6)?
 3. **Q3 Law 9.** What happens for an unknown name or library, and for a failed fetch?
 4. **Q4 Contract.** Which mechanisms keep `IconResolver` and `IconRegistry` unchanged, and how do they relate to the
-   chosen subpaths `./registry`, `./resolvers/lucide` and `./resolvers/phosphor`, with `"."` kept?
-5. **Q5 CDN.** Which mechanisms work under jsDelivr `+esm` (the zero-config path) and under unpkg raw files with an
-   import map and a `process` shim (the second path)?
+   Phase 1 subpaths that plan §2.5 names (`./registry` and `./resolvers/*`, `docs/plans/01-plan-core-primitives.md:172`),
+   taken as `./resolvers/lucide` and `./resolvers/phosphor` with `"."` kept (R10 §6 Q4 (a))?
+5. **Q5 CDN.** Which mechanisms work under the two CDN candidates of plan §5.5
+   (`docs/plans/01-plan-core-primitives.md:424`, R9 §2.3): jsDelivr `+esm` with no import map, and unpkg raw files
+   with an import map and a `process` shim?
 
 ## 2. Findings
 
@@ -84,7 +88,7 @@ raw file.
 | (a) today, `` `lucide-static/icons/${name}.svg?raw` `` | builds; 0/3, bare specifier left | builds; 0/3, same | **build fails** on the Phosphor import | 0/3 without a map; 0/3 with a map (SVG MIME) | 0/3 (SVG MIME) |
 | (a) plus a consumer fix | 3/3 with a transform plugin | 3/3 with an `onLoad` plugin and `.svg` text loader | 3/3 with a `?raw` rule and a Phosphor alias | no fix found | no fix found |
 | (a′) template `` `lucide-static/dist/esm/icons/${name}.mjs` `` (Lucide) | 0/3; 3/3 with an import map to a CDN | same as Vite | 3/3, no config | 0/3 without a map; 3/3 with a map | 3/3 |
-| (b) literal `import('…/<name>.svg?raw')` per name | 3/3, no config | 3/3 with `--loader:.svg=text` | 3/3 with a `?raw` rule and a Phosphor alias | 0/3 (SVG MIME) | 0/3 (SVG MIME) |
+| (b) literal `import('…/<name>.svg?raw')` per name | 3/3, no config | 3/3 with `--loader:.svg=text` | 3/3 with a `?raw` rule and a Phosphor alias | 0/3 (SVG MIME, with a map to raw files; the `.svg/+esm` URL returns 404, P6) | 0/3 (SVG MIME) |
 | (b′) literal `import('lucide-static/dist/esm/icons/<name>.mjs')` (Lucide) | 3/3, no config | 3/3, no config | 3/3, no config | 3/3 (simulated rewrite, see §2.6) | 3/3 |
 | (c) `import.meta.glob` per set | 3/3 | builds; 0/3, uncaught `TypeError` | 3/3 | 0/3, uncaught `TypeError` | 0/3, uncaught `TypeError` |
 | (d) `fetch(base + file)` | 3/3 | 3/3 | 3/3 | 3/3 | 3/3 |
@@ -129,8 +133,9 @@ cannot render without a fallback. [INFERENCE] A literal map of the full set (187
 entries) would weigh about as much as the (c) map in §2.3.
 
 **(c) and `tsc -b`.** `line-icons` builds with `tsc -b`, which emits `import.meta.glob(…)` verbatim (P10). The repo's
-TypeScript 5.9.3 rejects the call with TS2339 unless `vite/client` types are in scope (P10). The transform therefore
-happens in the consumer's bundler:
+TypeScript 5.9.3 rejects the call with TS2339 without `import.meta.glob` typings. With `vite/client` types in scope it
+compiles (P10). An ambient `ImportMeta` declaration was not probed. The transform therefore happens in the consumer's
+bundler:
 
 - Vite transforms a glob inside `node_modules`. The pattern must start with `./`, `../` or `/`. The bare pattern
   `lucide-static/icons/*.svg` gives the warning "Invalid glob pattern", and Vite leaves the call untransformed (P11).
@@ -139,8 +144,9 @@ happens in the consumer's bundler:
   sibling inside `.bun/<pkg>/node_modules/`, and the Vite build emitted 2143 icon chunks (P12).
 - webpack 5.109 added `import.meta.glob`, compatible with Vite's options (`eager`, `import`, `query`, `base`) (webpack
   blog, 2026-07-24). 5.112.0 also rejects a bare pattern ("must be relative … aliases are not resolved") (P11).
-- esbuild leaves the call in place. `import.meta.glob` is `undefined` in browsers, so the module throws when it is
-  evaluated (P4, P5).
+- esbuild leaves the call in place. `import.meta.glob` is `undefined` in browsers. The probe candidate called it at the
+  module's top level, so the module threw when it was evaluated (P4, P5). [INFERENCE] A call inside the async
+  resolver would reject the resolver's promise instead.
 - Vite's dev server and its dependency optimiser were not probed.
 
 **(d) fetch.** The resolver fetches `new URL(file, base)` and returns `res.text()`. Bundlers see no icon import (P3).
@@ -203,7 +209,8 @@ resolver is 993 B (Vite), 711 B (esbuild) and 709 B (webpack) (P9). Chunk figure
   `Promise<string | SVGElement>` (`packages/line-icons/src/index.ts:1`) has no "absent" value besides an empty string.
 - jsDelivr caches a 404 for 86 400 s, and a hit with `max-age=31536000, immutable` (P6).
 - The Law 9 sentence "Components never throw uncaught errors at the consumer" (`docs/MANIFESTO.md:55`) is broken only
-  by (c) outside Vite and webpack, where the error is thrown when the module loads, before any resolver runs (P4, P5).
+  by (c) outside Vite and webpack, where the probe's top-level call threw when the module loaded, before any resolver
+  ran (P4, P5). [INFERENCE] A call placed inside the resolver would turn this into a rejection.
 
 ### 2.5 Contract shape (Q4)
 
@@ -213,10 +220,10 @@ resolver is 993 B (Vite), 711 B (esbuild) and 709 B (webpack) (P9). Chunk figure
 | (a′) | unchanged | unchanged (Lucide); no Phosphor equivalent | webpack: none. Vite, esbuild, CDNs: an import map for `lucide-static/` |
 | (b) `?raw` | unchanged | unchanged signature; only mapped names resolve | Vite: none. esbuild: `.svg` text loader. webpack: `?raw` rule or `futureDefaults`, and an alias for Phosphor. CDNs: not possible |
 | (b′) `.mjs` | unchanged | unchanged signature; only mapped names resolve; Lucide only | none in the three bundlers; an import map on raw CDN files |
-| (c) | unchanged | unchanged signature | Vite or webpack ≥ 5.109 only; `line-icons` needs `vite/client` types to compile |
+| (c) | unchanged | unchanged signature | Vite or webpack ≥ 5.109 only; `line-icons` needs `import.meta.glob` typings to compile, for example `vite/client` (P10) |
 | (d) | unchanged | gains a `base` option, or a built-in default base URL | a base URL (CDN or self-hosted), `connect-src`, and a Trusted Types policy where the page enforces one |
 
-- All four fit the chosen subpaths. Each resolver file is self-contained, so `./resolvers/lucide` carries only the
+- All four fit the subpaths of Q4. Each resolver file is self-contained, so `./resolvers/lucide` carries only the
   Lucide map or glob, and `./registry` carries none (P3).
 - Keeping `"."` with its re-exports is safe under `sideEffects: false`. A webpack build that imports only
   `IconRegistry` or `createLucideResolver` from `"."` dropped the Phosphor module and built, while the same import
@@ -268,8 +275,8 @@ resolver is 993 B (Vite), 711 B (esbuild) and 709 B (webpack) (P9). Chunk figure
   `on*` and `style`, kept Lucide `house` intact, and returned `null` for a non-SVG document (P14). It is a probe,
   not a recommendation.
 - (d) needs `connect-src` to list the icon origin. `connect-src 'self'` blocked jsDelivr in all three engines, and
-  `connect-src 'self' https://cdn.jsdelivr.net` let the icons through (P13). The import-based mechanisms over a CDN
-  need the origin in `script-src` instead.
+  `connect-src 'self' https://cdn.jsdelivr.net` let the icons through (P13). [INFERENCE] The import-based mechanisms
+  over a CDN need the origin in `script-src` instead; P13 tested only (d).
 
 ## 3. Probes
 
@@ -305,7 +312,8 @@ directory was deleted afterwards. Exit codes are 0 unless stated.
   in §2.4 and §2.7.
 - **Law 6.** §2.3 shows lazy loading per icon in every working mechanism. The cost that differs is the entry map, and
   a glob or context map exceeds the PRD §1.7 soft target.
-- **Law 9 and C8.** §2.4. Only (c) outside Vite and webpack throws before the component can catch.
+- **Law 9 and C8.** §2.4. Only (c) outside Vite and webpack threw before the component could catch, with the call at
+  the module's top level as in the probe. [INFERENCE] A call inside the resolver would reject instead.
 - **Law 10.** No mechanism adds a `line-icons` dependency. The sanitiser in §2.7 needs none. A Trusted Types policy
   name would be a new public surface.
 - **ARCHITECTURE §17.4 Text and URL rows.** Agent strings are untrusted. A2UI bound names reach the resolver at run
@@ -321,13 +329,15 @@ directory was deleted afterwards. Exit codes are 0 unless stated.
 - **C2 (new).** Plan §5.5 option (a) reads "the template `import()` plus a documented import map or bundler plugin"
   (`docs/plans/01-plan-core-primitives.md:421`). An import map cannot make it work. The mapped URL serves an SVG,
   which every engine refuses as a module script (§2.2, P4, P5).
-- **C3 (fact changed).** Plan §1.2 says the resolvers "emit no icon" in a Vite 8 build
-  (`docs/plans/01-plan-core-primitives.md:53`), and §2.5 repeats it (line 174). The same holds for esbuild 0.28.2.
-  webpack 5.112.0 does not complete the build when the Phosphor resolver is imported (§2.2, P3). R10 P6 tested Vite
-  only (`docs/research/01-research-icon.md:279`).
-- **C4 (new).** The R10 §2.5 inference "Without an import map a browser rejects that bare specifier, and the `?raw`
-  query has no meaning outside Vite" (`docs/research/01-research-icon.md:258-259`) is now measured. Vite, esbuild and
-  webpack (with a rule or `futureDefaults`) all give `?raw` a meaning. The browser failure is the MIME check (P3, P4).
+- **Added fact (not a contradiction).** Plan §1.2 says the resolvers are "verified under Bun only" and "emit no icon"
+  in a Vite 8 build (`docs/plans/01-plan-core-primitives.md:53`), and §2.5 repeats the Vite fact (line 174). Both
+  still hold. The same failure holds for esbuild 0.28.2, and webpack 5.112.0 does not complete the build when the
+  Phosphor resolver is imported (§2.2, P3). R10 P6 tested Vite only (`docs/research/01-research-icon.md:279`).
+- **R10 inference confirmed.** R10 §2.5 inferred "Without an import map a browser rejects that bare specifier, and the
+  `?raw` query has no meaning outside Vite" (`docs/research/01-research-icon.md:258-259`). On the browser side this
+  is now measured. All three engines reject the bare specifier, and the CDNs ignore `?raw` and serve `image/svg+xml`
+  (P4, P5, P6). Among the bundlers, Vite gives `?raw` a meaning natively, and webpack does so with a rule or
+  `futureDefaults`. esbuild strips the query, and only its `.svg` text loader makes the import work (P3).
 
 ## 6. Open questions for the spec
 
@@ -340,8 +350,9 @@ directory was deleted afterwards. Exit codes are 0 unless stated.
    (d) fetch from a base URL;
    or a mix per set, for example (b′) for Lucide and (b) or (d) for Phosphor.
    Evidence: §2.2 matrix, §2.3 weights, §2.4, §2.6.
-   The evidence rules out (a) and (c) for the chosen zero-config CDN path, since both fail under `+esm` (§2.6). It
-   rules out (b) `?raw` on either CDN path. It rules out (a) without consumer configuration in every bundler (§2.2).
+   The evidence rules out (a), (a′) and (c) for jsDelivr `+esm` with no import map, since all three fail there
+   (§2.6). It rules out (b) `?raw` on either CDN candidate. It rules out (a) without consumer configuration in every
+   bundler (§2.2).
 2. **Must a generic `<line-icon name="x">` resolve any name of the set?** If yes, (b) and (b′) need a full-set map or a
    fallback (§2.2, P4). If the map covers only the A2UI names, a name outside it fails before any request.
    Evidence: §2.3 map weights, and R10 §6 Q1 on where the A2UI map lives.
