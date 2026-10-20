@@ -1,11 +1,11 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Factual corrections from row 00-Z46 on 2026-10-20 (§2.1 Errors row, §2.6 axe, §5.5 snapshot note)
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
 **Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.18)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.4)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.5)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
 >
@@ -104,7 +104,7 @@ ARCHITECTURE §17.4 sets the renderer rules.
 | Loading | Lazy `import()` through each descriptor's `load()`; no eager `define()` |
 | Composition | The surface creates elements by tag and wires children through slots |
 | Events | `line-a2ui-action` and `line-a2ui-error` |
-| Errors | A `processMessages` throw rejects its whole message; the surface catches every throw; node faults (unknown type, pending child, cycle) arrive as resolver errors and render an inert placeholder for that node |
+| Errors | A `processMessages` throw rejects its whole message; the surface catches every throw; an unknown type arrives as a resolver error and renders an inert placeholder for that node; a missing child stays a pending placeholder until it arrives and raises no error; whether a cycle rejects its message or arrives as a resolver error depends on the `validationConfig` preset the spec sets |
 | Theme | Agent theme hints are ignored by default; the host owns styling |
 | Text | Plain text by default; Markdown only through an opt-in sanitising renderer |
 | URLs | A policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured |
@@ -183,7 +183,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 - Bootstrap the trusted publisher (PRD item 10, AM-038 order).
 - Verify bundle splitting (PRD exit criterion, ARCHITECTURE §12). The spec sets the `sideEffects` value, the chunk layout and the verification (§5.5).
 - Verify CDN delivery through unpkg and jsDelivr, which PRD §1.7 promises "from Phase 1 onwards", against the CDN contract the spec fixes (§5.5).
-- Add a mechanism for the zero-axe-violation criterion. Today axe runs only through Storybook `@storybook/addon-a11y`, and no Playwright axe tier exists.
+- Add a mechanism for the zero-axe-violation criterion. Today axe runs only in the Storybook `@storybook/addon-a11y` panel, which has no CI path and gates nothing, and no Playwright axe tier exists.
 - Add a code of conduct "before Phase 1 / v0.2.0" (PRD §10). No `CODE_OF_CONDUCT` file exists today.
 
 ### 2.7 Release target
@@ -438,7 +438,7 @@ These questions belong to the Phase 1 spec. They are neither research items nor 
 - What do the recipes pin from `@ag-ui/a2ui-middleware`, which does not run fully in a browser? The options are the documented server convention or a mock producer that mirrors its output. Evidence: R6 §2.1, §5.2, §6 Q1 and Q2.
 - How does P8 wire the 7.x declarations (D1)? The spec settles `declarationMap`, the build wiring, the `verify-pack` run and the type-checker worker count in CI. Evidence: R11 §6 OQ1 (d), OQ3.
 - Each component spec fills its htmx row (§2.4).
-- The spec decides whether DOM snapshots need a custom serializer (Phase 00 spec §6.F.3 snapshot note).
+- The spec decides whether DOM snapshots need a custom serializer (Phase 00 spec §6.C.7 snapshot note and §11 Q2).
 
 ### 5.6 Decisions after the research stage (Miguel, 2026-10-20)
 
