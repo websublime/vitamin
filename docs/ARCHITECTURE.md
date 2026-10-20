@@ -12,6 +12,11 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.8 (2026-10-20)** — Aligned with PRD v0.8.22, with coherence review round 3 (ledger row `00-Z48`, decisions by Miguel on 2026-10-20).
+  - §11 (Icon System) stores the registry at `globalThis[Symbol.for('line.icon-registry')]`, so every copy of `src/shared/icon-registry.ts`, such as separate jsDelivr `+esm` bundles, reads and writes one place. It gives `<line-icon>` a boolean `mirror` attribute that flips the glyph under `:dir(rtl)`, types `options` as `{ weight?: string }`, and says that setting the registry makes connected `<line-icon>` instances resolve again (Phase 1 spec AM-006, decision D-G).
+  - §17.3 (Descriptors and catalogs) and §17.4 (Renderer) say the surface maps A2UI icon names through its `iconMap` property, which the consumer fills with `a2uiIconMap(set, { library })` from `line-icons/a2ui`. Only a name absent from `iconMap`, or `iconMap` unset, raises `line-a2ui-error`; a resolver rejection leaves `<line-icon>` neutral with no surface error (Phase 1 spec AM-006, decision D-M).
+  - §17.6 (MCP Apps) says one shipped rule reads, on `html`, a primitive the bridge sets, not that it is the only `html` rule that reads primitives (`packages/line-tokens/src/focus-ring.css:16`, `:19`; Phase 1 spec AM-005).
+  - §17.8 (Deferred and rejected) says a later phase spec takes up server-side A2UI, because the Phase 1 spec lists it as a non-goal (Phase 1 spec §2, AM-005).
 - **v0.8.7 (2026-10-20)** — Aligned with PRD v0.8.21, with coherence review round 2 (ledger row `00-Z48`, decisions by Miguel on 2026-10-20).
   - §11 (Icon System) gives `<line-icon>` a `weight` attribute, which it passes as `options.weight` to `resolve(library, name, options?)`. The registry lives in the shared module `src/shared/icon-registry.ts`; the consumer sets it once with `setIconRegistry(registry)` or `LineIcon.registry`, and `line-genui` never writes it. The `LineIconRegistry` type is exported from the `line-components` root `"."` (Phase 1 spec AM-004, decisions D-W and D-R).
   - §12 (Bundle Splitting Rule) says only `line-components` and `line-genui` omit the `sideEffects` field; the other packages keep theirs (Phase 1 spec §4.3–§4.5, §10 SD4, SD5).
@@ -462,7 +467,7 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 <line-icon src="/my-icons/custom.svg"></line-icon>
 ```
 
-- `line-icon` reads its **registry** from a shared module, `src/shared/icon-registry.ts`. The consumer sets it once, with `setIconRegistry(registry)` exported from the `line-components` root `"."` (which defines no element, §12) or through the static hook `LineIcon.registry`; both write the same module. The registry is any object that satisfies `LineIconRegistry`, `resolve(library, name, options?): Promise<string | SVGElement>`, such as the `line-icons` `IconRegistry`. `<line-icon>` has a `weight` attribute, which it passes as `options.weight`; on the agent path the surface sets `weight` from the `line-icons/a2ui` map entry. `line-components` defines and exports the `LineIconRegistry` type from its root, so it gains no edge to `line-icons`. `line-genui` never writes the registry; its docs show the consumer line (Phase 1 spec §10 SD15, AM-004).
+- `line-icon` reads its **registry** from a shared module, `src/shared/icon-registry.ts`. The module stores it at `globalThis[Symbol.for('line.icon-registry')]`, so every copy of the module, such as separate jsDelivr `+esm` bundles or another version, reads and writes one place (Phase 1 spec AM-006, decision D-G). The consumer sets it with `setIconRegistry(registry)` exported from the `line-components` root `"."` (which defines no element, §12) or through the static hook `LineIcon.registry`; both use that global key. Setting the registry, through either API, makes connected `<line-icon>` instances resolve again. The registry is any object that satisfies `LineIconRegistry`, `resolve(library: string, name: string, options?: { weight?: string }): Promise<string | SVGElement>`, such as the `line-icons` `IconRegistry`. `<line-icon>` has a `weight` attribute, which it passes as `options.weight`, and a boolean `mirror` attribute; with `mirror` set, its own CSS flips the glyph under `:dir(rtl)`. On the agent path the surface sets `weight` and `mirror` from its `iconMap` entry (§17.4). `line-components` defines and exports the `LineIconRegistry` type from its root, so it gains no edge to `line-icons`. `line-genui` never writes the registry; its docs show the consumer line (Phase 1 spec §10 SD15, AM-004, AM-006).
 - Each library is a resolver: given a name, returns the SVG.
 - Zero icons bundled in `line-icons` core — the consumer brings their own resolver (Lucide, Phosphor, Iconoir, `@radix-ui/react-icons`, custom).
 - Dependency direction is one-way: `line-icons → line-tokens` is permitted (icons reuse icon-size / sizing tokens); the inverse is forbidden.
@@ -1531,7 +1536,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 |----------------------|------------------|-------|
 | Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant` | 1 |
 | Image | Native `<img>` behind the URL policy; `variant: "avatar"` → Avatar | 1 |
-| Icon | `<line-icon>`, with the A2UI icon names mapped to a `line-icons` resolver. A2UI also accepts `{ "svgPath": … }`. The surface renders it through the `<line-icon>` `path` property (Phase 1 spec §10 SD33) | 1 |
+| Icon | `<line-icon>`. The surface maps the A2UI icon name through its `iconMap` property, which the consumer fills with `a2uiIconMap(set, { library })` from `@websublime/line-icons/a2ui` (Phase 1 spec AM-006, decision D-M). A2UI also accepts `{ "svgPath": … }`. The surface renders it through the `<line-icon>` `path` property (Phase 1 spec §10 SD33) | 1 |
 | Video, AudioPlayer | Native `<video>` and `<audio controls>` | 1 |
 | Row, Column, List | `<line-stack>` | 1 |
 | Divider | `<line-separator>` | 1 |
@@ -1563,6 +1568,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 | URLs | A URL policy hook with the default allowlist `https:`, `http:`, `mailto:`, `tel:`; `requiresUserActivation` is honoured | Upstream does not check media URLs |
 | Limits | Configurable maximum node count, depth and data-model size | Hostile or runaway agents |
 | Accessibility | One live region per surface; `aria-busy` during batches; required names validated. The surface never moves focus to another component. Its reconciler keeps focus across reorders. On a reparent the surface uses `moveBefore()` where the browser has it, and otherwise returns focus to the same `instanceId` at the end of the batch | Law 3 |
+| Icons | The consumer sets the `iconMap` property to the result of `a2uiIconMap(set, { library })` from `@websublime/line-icons/a2ui`, where `set` is `'lucide'` or `'phosphor'` and `library` is the key the consumer registered that set under. For an A2UI `Icon.name`, literal or bound, the surface renders `<line-icon>` with `library`, `name`, `weight` and `mirror` from the map entry. With `iconMap` unset, or a name absent from it, the node stays neutral and the surface raises `line-a2ui-error`. A resolver rejection (a 404, CORS, CSP, a missing `base`, an unset registry) leaves `<line-icon>` neutral and raises no surface error (Phase 1 spec AM-006, decision D-M) | The surface sees the map but not the resolver |
 
 The surface projects directly on the `web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The surface keeps its own reconciliation, keyed by `instanceId` and preserving focus, and its own effect lifecycle. It loads no Lit and no `@experimental` `A2uiLitElement`. Unknown types reach it from the resolver, and so do cycles when no `validationConfig` is set.
 
@@ -1590,7 +1596,7 @@ Recipes pin the middleware version, as the documented server convention or in a 
 - `@websublime/line-themes/hosts/mcp-apps.css` is a CSS-only bridge. It maps the standard MCP host colour, font and border-radius variables on the reference list (Phase 1 spec §6.G.6) onto line theme aliases or `line-tokens` primitives, so `line-themes` gains no runtime (Law 10).
 - The app applies `hostContext.styles.variables` and `hostContext.theme` with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`). The theme call sets `color-scheme` for `light-dark()`.
 - The bridge sets a `line-tokens` primitive with a `body`-scoped `var(--host, inherit)` and copies no literal, because a primitive cannot fall back to itself (Phase 1 spec §10 SD17).
-- The one shipped `line-tokens` rule that reads primitives on `html` is `:where(html) { --line-focus-ring: … }` (`packages/line-tokens/src/focus-ring.css:19`). The bridge redeclares `--line-focus-ring` on `body` with the same composition, names only, so the composed ring follows the host ring colour (Phase 1 spec §6.G.6, AM-004).
+- One shipped `line-tokens` rule reads, on `html`, a primitive the bridge sets: `:where(html) { --line-focus-ring: … }` (`packages/line-tokens/src/focus-ring.css:19`). The bridge redeclares `--line-focus-ring` on `body` with the same composition, names only, so the composed ring follows the host ring colour (Phase 1 spec §6.G.6, AM-004, AM-005).
 
 ### 17.7 Stability
 
@@ -1604,7 +1610,7 @@ Recipes pin the middleware version, as the documented server convention or in a 
 |------|----------|--------------------|
 | WebMCP for form-associated elements | Defer | WebMCP spec issue #94 resolved and a second engine signals support |
 | MCP Apps host element (`<line-mcp-app-frame>`) | Defer | line://ui targets chat hosts; needs a sandbox-proxy origin and a security review |
-| Server-side A2UI → `<line-*>` HTML | Defer | A Phase 1+ spec takes it up. The HTMX spike (H1) reported on 2026-10-12 and informs this item without deciding it (`docs/retrospective/00-phase-00-retro.md`). |
+| Server-side A2UI → `<line-*>` HTML | Defer | A later phase spec takes it up; the Phase 1 spec lists it as a non-goal (Phase 1 spec §2). The HTMX spike (H1) reported on 2026-10-12 and informs this item without deciding it (`docs/retrospective/00-phase-00-retro.md`). |
 | Model-authored `<line-*>` markup | Reject | The Sanitizer API reaches Baseline and an allowlist story exists |
 | json-render and OpenUI renderers | Out of scope | Upstream ships a web-components renderer |
 | Headless chat primitives | Separate catalogue question | A product decision |

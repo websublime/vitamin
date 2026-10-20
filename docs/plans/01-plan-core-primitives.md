@@ -1,11 +1,11 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.1 item 7 and the Errors and Icon rows, §2.2, §2.5–§2.7, §4.0, §4.1 G6, §4.2, §4.3, §5.3, §5.5, §5.6, §6, §7.1, §7.3, §7.4, §8, §11 D3), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6. Row 00-Z48 coherence review round 2 on 2026-10-20 adds task C23 (§4.3, §6), corrects the `sideEffects` wording (§2.6), the Z stream row (§4.0), the Storybook manifest merge (§4.2 P10, §4.1 G4) and the `./a2ui` owner (§2.5, §4.1 G2), and names the stream D and S task ids (§4.4, §4.5, §5.6), with PRD v0.8.21 and ARCHITECTURE v0.8.7
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.1 item 7 and the Errors and Icon rows, §2.2, §2.5–§2.7, §4.0, §4.1 G6, §4.2, §4.3, §5.3, §5.5, §5.6, §6, §7.1, §7.3, §7.4, §8, §11 D3), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6. Row 00-Z48 coherence review round 2 on 2026-10-20 adds task C23 (§4.3, §6), corrects the `sideEffects` wording (§2.6), the Z stream row (§4.0), the Storybook manifest merge (§4.2 P10, §4.1 G4) and the `./a2ui` owner (§2.5, §4.1 G2), and names the stream D and S task ids (§4.4, §4.5, §5.6), with PRD v0.8.21 and ARCHITECTURE v0.8.7. Row 00-Z48 coherence review round 3 on 2026-10-20 places P7 before C1 (§4.2, §6), names the `line-icons` subpaths and their owners (§2.5), widens the decision-id note (§5.6) and the S1–S10 risk line (§8), and splits the S stream owners by file (§4.0) (findings R3-L1-01 to R3-L1-04). It also routes A2UI icon names through the surface `iconMap` (§2.1 Icon row, §2.5; spec AM-006, decision D-M) and defers server-side A2UI to a later phase spec (§3), with PRD v0.8.22 and ARCHITECTURE v0.8.8
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.21)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.7)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.22)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.8)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
 >
@@ -118,7 +118,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 |---|---|
 | Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant` |
 | Image | Native `<img>` behind the URL policy; `variant: "avatar"` maps to Avatar |
-| Icon | `<line-icon>` with A2UI icon names mapped to a `line-icons` resolver; `{ "svgPath": … }` renders through the `<line-icon>` `path` property (spec §10 SD33) |
+| Icon | `<line-icon>`; the surface maps A2UI icon names through its `iconMap` property, which the consumer fills with `a2uiIconMap(set, { library })` from `line-icons/a2ui` (ARCHITECTURE §17.4; spec AM-006); `{ "svgPath": … }` renders through the `<line-icon>` `path` property (spec §10 SD33) |
 | Video, AudioPlayer | Native `<video>` and `<audio controls>` |
 | Row, Column, List | `<line-stack>` |
 | Divider | `<line-separator>` |
@@ -170,8 +170,8 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 ### 2.5 Icon surface
 
 - `<line-icon>` ships in Phase 1.
-- The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E), and `./a2ui` (A2UI icon-name map, task G2; spec §10 SD14, AM-002).
-- The A2UI basic `Icon` maps A2UI icon names to a `line-icons` resolver (ARCHITECTURE §17.3). A2UI also accepts `{ "svgPath": … }`, which a name resolver does not cover. The surface renders it through the `<line-icon>` `path` property (spec §10 SD33).
+- The `line-icons` registry gains its Phase 1 subpaths `./registry`, `./resolvers/lucide` and `./resolvers/phosphor` (task C22; PRD §6.2; spec §4.3, AM-002) and `./a2ui` (A2UI icon-name map, task G2; spec §10 SD14, AM-002).
+- The A2UI basic `Icon` maps A2UI icon names through the surface property `iconMap`, which the consumer fills with `a2uiIconMap(set, { library })` from `line-icons/a2ui` (ARCHITECTURE §17.3, §17.4; spec AM-006). A2UI also accepts `{ "svgPath": … }`, which a name map does not cover. The surface renders it through the `<line-icon>` `path` property (spec §10 SD33).
 - The reference resolvers fail in Vite 8 and esbuild production builds, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2). Task C22 fixes them before C2 (Icon). Both resolvers fetch the SVG from a base URL that the consumer sets (spec §10 SD89, SD90).
 
 ### 2.6 Platform and release
@@ -222,7 +222,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 |---|---|---|
 | WebMCP for form-associated elements | Defer | WebMCP spec issue #94 resolved and a second engine signals support |
 | `<line-mcp-app-frame>` | Defer | line://ui targets chat hosts; needs a sandbox-proxy origin and a security review |
-| Server-side A2UI → `<line-*>` HTML | Defer | A Phase 1+ spec takes it up; the H1 htmx spike informs it without deciding it |
+| Server-side A2UI → `<line-*>` HTML | Defer | A later phase spec takes it up (ARCHITECTURE §17.8; spec §2); the H1 htmx spike informs it without deciding it |
 | Model-authored `<line-*>` markup | Reject | The Sanitizer API reaches Baseline and an allowlist story exists |
 | json-render and OpenUI renderers | Out of scope | Upstream ships a web-components renderer |
 | Headless chat primitives | Separate catalogue question | A product decision |
@@ -245,7 +245,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | P | Platform and release (9th package, edges, publish, trusted publisher, bundle splitting, CDN, axe tier, TypeScript 7, `@websublime/*` externals, CEM wiring and packaging) | infra-supervisor |
 | C | Core primitives (20 components, spec + implementation + descriptor + stories + changeset) | webcomponents-supervisor |
 | D | Cross-cutting documentation (agent-driven UI guide, recipes index, Getting Started updates) | webcomponents-supervisor |
-| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content, infra-supervisor for deploy changes |
+| S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content, infra-supervisor for CI and deploy changes (`playwright.config.ts`, `checks.yml`, `deploy-site.yml`) |
 | Z | Repo-wide (code of conduct, exit sweep and retrospective); process alignment lands in the ledger PR (§4.6) | Main session / per row |
 
 PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs an update when the Phase 1 ledger is created (§10).
@@ -276,7 +276,7 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 | P4 | Trusted publisher bootstrap (AM-038 order) before the first `line-genui` release |
 | P5 | Bundle-splitting verification |
 | P6 | CDN delivery check (unpkg, jsDelivr) |
-| P7 | axe-core tier for the zero-violation exit criterion |
+| P7 | axe-core tier for the zero-violation exit criterion. Before C1 (spec §10 SD86) |
 | P8 | TypeScript 7.x upgrade (O1, D1). `typescript` moves to 7.x. The Vite-built packages (`line-core`, `line-components`, later `line-genui`) emit every `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and `vite-plugin-dts` leaves the build. The `tsc -b` packages emit with 7.x `tsc -b`. Ambient `declare module` lines in `apps/storybook` fix TS2882. The same commit updates the documents §2.9 lists. After R11 and the spec, before C1 |
 | P9 | Library builds keep `@websublime/*` external, so `line-components` stops inlining `line-core` (R9 §2.1). Each build derives `external` from its manifest's `dependencies` and `peerDependencies` (spec §10 SD2). Before C1 |
 | P10 | CEM wiring and packaging (D8). The analyser runs before the Storybook build, `preview.ts` calls `setCustomElementsManifest`, and the comments follow. `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs` lines 8–10 claim that Storybook loads the manifest on its own, and lines 4–6 of that config claim that the manifest is empty (AM-073, I39). `line-components` ships the manifest with a `customElements` field and a `files` entry, under `verify-pack` coverage. The `line-components` build emits it (spec §10 SD26, SD27). `preview.ts` merges the package manifests by concatenating their `modules` arrays (spec §10 SD94). Before the C1 Storybook docs and G5 |
@@ -447,7 +447,7 @@ These questions belonged to the Phase 1 spec. They are neither research items no
 
 The twelve research notes broke statements in the PRD, ARCHITECTURE and this plan (PROCESS §2). Miguel confirmed the projection technique on 2026-10-19 and decided D1–D8 on 2026-10-20. The record is `docs/context/00-z45.md` (ledger row `00-Z45`).
 
-The decision ids D1–D8 in this section are not the stream D task ids D1–D3 (§4.4).
+Throughout this plan, D1–D8 are these decision ids, not the stream D task ids D1–D3 (§4.4).
 
 | Fork | Option | What it decides | Resolution |
 |---|---|---|---|
@@ -510,7 +510,7 @@ C1–C4 shipped ─────────────────────�
 CEM entries of real components ──────► G5 drift and coverage tests
 components the landing page uses ────► S landing page sections
 P4 trusted publisher ────────────────► first line-genui release
-P7 axe tier ─────────────────────────► evidence for the zero-axe criteria
+P7 axe tier ─────────────────────────► C1 (spec §10 SD86); evidence for the zero-axe criteria
 ```
 
 The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds the research outcomes.
@@ -525,7 +525,7 @@ The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds
 
 - Stream S builds each part of the landing page after the components it uses ship.
 - P4 lands before the first `line-genui` release.
-- P7 lands before the axe criteria can be evidenced.
+- P7 lands before C1 (spec §10 SD86).
 
 ---
 
@@ -588,7 +588,7 @@ The plan mirrors the 17 PRD §7.3 exit criteria in their wording. Plan-level add
 | The reference icon resolvers emit no icon in a consumer bundle (R10 P6) | High | Medium | C22 fixes them before C2; both resolvers fetch from a consumer-set base URL (spec §10 SD89, SD90) |
 | Repeated `updateProps` calls slow each machine down (D7, C21). Each call nests one more merge closure, and one `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | C21 measures the host update rate per component and sets a budget, and a `line-core` subclass replaces the props source only past it (spec §10 SD18). D7 stands |
 | Catalog quality becomes the agent UX | High | Medium | Descriptor descriptions reviewed in each component spec; research note §7 |
-| Accessibility of agent-built trees is under-specified upstream | Medium | High | Renderer accessibility rules (§17.4) with the D4 focus rule; the R2 VoiceOver pass matched S1–S10 for (b); P7 axe tier |
+| Accessibility of agent-built trees is under-specified upstream | Medium | High | Renderer accessibility rules (§17.4) with the D4 focus rule; the R2 VoiceOver pass matched R2 scenarios S1–S10 for (b); P7 axe tier |
 | Prompt injection through action labels | Medium | High | Agent strings stay untrusted; plain text by default (§17.4) |
 | Scope creep toward a chat platform | Medium | Medium | Hold the §3 out-of-scope list; headless chat primitives stay a product decision |
 | happy-dom gaps hide browser bugs | High | Medium | The browser tier is the source of truth (retrospective lesson 2) |
