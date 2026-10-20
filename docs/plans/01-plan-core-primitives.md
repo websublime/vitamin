@@ -1,11 +1,11 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.2, §2.5–§2.7, §4.2, §4.3, §5.5), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19. Row 00-Z48 on 2026-10-20 (coherence review round 1) points the open spec questions at the approved spec answers (§2.1 item 7 and the Errors and Icon rows, §2.2, §2.5–§2.7, §4.0, §4.1 G6, §4.2, §4.3, §5.3, §5.5, §5.6, §6, §7.1, §7.3, §7.4, §8, §11 D3), assigns the `line-genui` manifest to G4, adds task Z3, places the PROCESS §4 alignment in the ledger PR (§4.6, §10 step 6) and marks the current step (§10), with PRD v0.8.20 and ARCHITECTURE v0.8.6. Row 00-Z48 coherence review round 2 on 2026-10-20 adds task C23 (§4.3, §6), corrects the `sideEffects` wording (§2.6), the Z stream row (§4.0), the Storybook manifest merge (§4.2 P10, §4.1 G4) and the `./a2ui` owner (§2.5, §4.1 G2), and names the stream D and S task ids (§4.4, §4.5, §5.6), with PRD v0.8.21 and ARCHITECTURE v0.8.7
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.20)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.6)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.21)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.7)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
 >
@@ -170,7 +170,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 ### 2.5 Icon surface
 
 - `<line-icon>` ships in Phase 1.
-- The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E), and `./a2ui` (A2UI icon-name map; spec §10 SD14).
+- The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E), and `./a2ui` (A2UI icon-name map, task G2; spec §10 SD14, AM-002).
 - The A2UI basic `Icon` maps A2UI icon names to a `line-icons` resolver (ARCHITECTURE §17.3). A2UI also accepts `{ "svgPath": … }`, which a name resolver does not cover. The surface renders it through the `<line-icon>` `path` property (spec §10 SD33).
 - The reference resolvers fail in Vite 8 and esbuild production builds, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2). Task C22 fixes them before C2 (Icon). Both resolvers fetch the SVG from a base URL that the consumer sets (spec §10 SD89, SD90).
 
@@ -182,7 +182,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 - Keep `@websublime/*` external in the library builds, so consumers get one `LineElement` class (R9 §2.1, task P9).
 - Load the Custom Elements Manifest into Storybook and ship it in `line-components` (D8, task P10). `line-genui` ships its own manifest (task G4), and Storybook loads one manifest merged from `line-components` and `line-genui` (spec §10 SD94).
 - Bootstrap the trusted publisher (PRD item 10, AM-038 order).
-- Verify bundle splitting (PRD exit criterion, ARCHITECTURE §12). The packages omit the `sideEffects` field and use the default Rolldown chunks. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (spec §10 SD4).
+- Verify bundle splitting (PRD exit criterion, ARCHITECTURE §12). `line-components` and `line-genui` omit the `sideEffects` field; the other packages keep theirs (Phase 1 spec §4.3–§4.5, §10 SD4, SD5). The two packages use the default Rolldown chunks. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (spec §10 SD4).
 - Verify CDN delivery through unpkg and jsDelivr, which PRD §1.7 promises "from Phase 1 onwards", against the two-path CDN contract of spec §10 SD32.
 - Add a mechanism for the zero-axe-violation criterion. Today axe runs only in the Storybook `@storybook/addon-a11y` panel, which has no CI path and gates nothing, and no Playwright axe tier exists.
 - Add a code of conduct "before Phase 1 / v0.2.0" (PRD §10). No `CODE_OF_CONDUCT` file exists today.
@@ -246,7 +246,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | C | Core primitives (20 components, spec + implementation + descriptor + stories + changeset) | webcomponents-supervisor |
 | D | Cross-cutting documentation (agent-driven UI guide, recipes index, Getting Started updates) | webcomponents-supervisor |
 | S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor for content, infra-supervisor for deploy changes |
-| Z | Repo-wide (code of conduct, process alignment) | Main session / per row |
+| Z | Repo-wide (code of conduct, exit sweep and retrospective); process alignment lands in the ledger PR (§4.6) | Main session / per row |
 
 PROCESS §4 assigns owners by the Phase 00 stream letters (A–H), so it needs an update when the Phase 1 ledger is created (§10).
 
@@ -257,9 +257,9 @@ R2 delivered the projection evidence, and Miguel chose direct projection on `Nod
 | Task | Content | PRD §7.3 item |
 |---|---|---|
 | G1 | Descriptor API | 2 |
-| G2 | `line` and `basic` catalog emitters (A2UI v0.9.1) | 3 |
+| G2 | `line` and `basic` catalog emitters (A2UI v0.9.1); the `line-icons` `./a2ui` icon-name map (spec §10 SD14, AM-002) | 3 |
 | G3 | Frontend-tool JSON Schema emitter | 4 |
-| G4 | `<line-a2ui-surface>` (preview), direct projection on `NodeResolver`; ships the `line-genui` manifest (`customElements`, `files`, `./custom-elements.json`; spec §10 SD94) | 5 |
+| G4 | `<line-a2ui-surface>` (preview), direct projection on `NodeResolver`; ships the `line-genui` manifest (`customElements`, `files`, `./custom-elements.json`; spec §10 SD94) and adds it to the Storybook merge | 5 |
 | G5 | CEM drift test and descriptor coverage test | 6 |
 | G6 | MCP Apps bridge `line-themes/hosts/mcp-apps.css`; a `line-tokens` primitive takes a `body`-scoped `var(--host, inherit)` (spec §10 SD17; ARCHITECTURE §17.6) | 7 |
 | G7 | Transport recipes in Storybook (AG-UI, A2A, MCP, SSE); recipes pin middleware versions as the documented server convention or in a mock producer, because the middleware does not run fully in a browser (R6 §5.2) | 8 |
@@ -279,14 +279,15 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 | P7 | axe-core tier for the zero-violation exit criterion |
 | P8 | TypeScript 7.x upgrade (O1, D1). `typescript` moves to 7.x. The Vite-built packages (`line-core`, `line-components`, later `line-genui`) emit every `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and `vite-plugin-dts` leaves the build. The `tsc -b` packages emit with 7.x `tsc -b`. Ambient `declare module` lines in `apps/storybook` fix TS2882. The same commit updates the documents §2.9 lists. After R11 and the spec, before C1 |
 | P9 | Library builds keep `@websublime/*` external, so `line-components` stops inlining `line-core` (R9 §2.1). Each build derives `external` from its manifest's `dependencies` and `peerDependencies` (spec §10 SD2). Before C1 |
-| P10 | CEM wiring and packaging (D8). The analyser runs before the Storybook build, `preview.ts` calls `setCustomElementsManifest`, and the comments follow. `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs` lines 8–10 claim that Storybook loads the manifest on its own, and lines 4–6 of that config claim that the manifest is empty (AM-073, I39). `line-components` ships the manifest with a `customElements` field and a `files` entry, under `verify-pack` coverage. The `line-components` build emits it (spec §10 SD26, SD27). Storybook loads one manifest merged from `line-components` and `line-genui` (spec §10 SD94). Before the C1 Storybook docs and G5 |
+| P10 | CEM wiring and packaging (D8). The analyser runs before the Storybook build, `preview.ts` calls `setCustomElementsManifest`, and the comments follow. `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs` lines 8–10 claim that Storybook loads the manifest on its own, and lines 4–6 of that config claim that the manifest is empty (AM-073, I39). `line-components` ships the manifest with a `customElements` field and a `files` entry, under `verify-pack` coverage. The `line-components` build emits it (spec §10 SD26, SD27). `preview.ts` merges the package manifests by concatenating their `modules` arrays (spec §10 SD94). Before the C1 Storybook docs and G5 |
 
 ### 4.3 Stream C — core primitives
 
 - C1–C4 cover the validating components Button, Icon, Stack and Separator (O2.b (a)). They ship first, before stream G, without descriptors, and stream G adds their descriptors.
 - C21 changes `LineMachineController` in `line-core` so it calls `updateProps` on every host update, and a component declares its machine props as a function of its properties (D7). The same task corrects the "four public" count in `packages/line-core/README.md:10` and the code comment at `packages/line-core/src/machine/index.ts:2`. `@zag-js/vanilla` exports five values, and `line-core` leaves out `toStyleString` (AM-073); the names those two places list are correct. It lands before C1.
 - C22 fixes the `line-icons` resolvers for consumer bundlers (R10 P6). Both resolvers fetch the SVG from a consumer-set base URL (spec §10 SD89, SD90). It lands before C2 (Icon).
-- C21 and C22 are prerequisites. They take numbers after the 20 component rows, so C1–C20 keep their component mapping.
+- C23 makes `LineElement` attach `ElementInternals` for every component, in a `#private` field reached through the exported `INTERNALS` Symbol. It lands before C1 (spec §10 SD19, AM-002).
+- C21, C22 and C23 are prerequisites. They take numbers after the 20 component rows, so C1–C20 keep their component mapping.
 - C5–C20 cover the remaining 16 components. Each ships its descriptor in the same PR.
 - Each row runs the same sequence.
   1. Component spec APPROVED.
@@ -299,13 +300,13 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 
 ### 4.4 Stream D — cross-cutting documentation
 
-- Stream D writes an agent-driven UI guide.
-- Stream D writes a recipes index for the transport recipes.
-- Stream D updates Getting Started for `line-genui` and the Phase 1 components.
+- D1 writes an agent-driven UI guide.
+- D2 writes a recipes index for the transport recipes.
+- D3 updates Getting Started for `line-genui` and the Phase 1 components.
 
 ### 4.5 Stream S — site
 
-- Stream S builds the landing page (hero, value proposition, features, Storybook link) with Phase 1 line components (O3 (b)).
+- S1 builds the landing page (hero, value proposition, features, Storybook link) with Phase 1 line components (O3 (b)).
 - Each part of the page starts after the components it uses ship.
 
 ### 4.6 Stream Z — repo-wide
@@ -446,6 +447,8 @@ These questions belonged to the Phase 1 spec. They are neither research items no
 
 The twelve research notes broke statements in the PRD, ARCHITECTURE and this plan (PROCESS §2). Miguel confirmed the projection technique on 2026-10-19 and decided D1–D8 on 2026-10-20. The record is `docs/context/00-z45.md` (ledger row `00-Z45`).
 
+The decision ids D1–D8 in this section are not the stream D task ids D1–D3 (§4.4).
+
 | Fork | Option | What it decides | Resolution |
 |---|---|---|---|
 | PT Projection technique | (a) | Light-DOM adapter elements rendered through `web_core` `renderA2uiNode` | Rejected |
@@ -492,12 +495,13 @@ Miguel saw the orchestrator defaults below with the forks on 2026-10-20 and corr
 These dependencies are fixed.
 
 ```
-spec APPROVED ───────────────────────► P8, P9, P10, C21, C22 and every C and G task
+spec APPROVED ───────────────────────► P8, P9, P10, C21, C22, C23 and every C and G task
 P1 scaffold line-genui ──────────────► G code (G1–G7)
 P2 layer edges ──────────────────────► line-genui declares dependencies/peers
 R11 + D1 ────────────────────────────► P8 TypeScript 7.x upgrade ──► C1
 P9 @websublime/* external ───────────► C1
 C21 controller updateProps (D7) ─────► C1
+C23 LineElement internals (SD19) ────► C1
 C22 line-icons resolvers ────────────► C2 Icon
 P10 CEM wiring and packaging (D8) ───► C1 Storybook docs, G5
 R2 projection decided (b) ───────────► G4 surface on NodeResolver
@@ -514,7 +518,7 @@ The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds
 1. Research (R1–R12). Delivered (§5.1–§5.2).
 2. Plan and PRD revision 00-Z45 (§5.6). Done: Miguel approved it on 2026-10-20.
 3. Spec, which answers §5.5. Done: APPROVED 2026-10-20 (row 00-Z46).
-4. P1 scaffold, P2 edges, P8 TypeScript 7, P9 externals, P10 CEM wiring and packaging, and C21 controller change.
+4. P1 scaffold, P2 edges, P7 axe tier (spec §10 SD86), P8 TypeScript 7, P9 externals, P10 CEM wiring and packaging, C21 controller change and C23 `LineElement` internals.
 5. C1–C4 (Button, Icon, Stack, Separator), without descriptors; C22 lands before C2.
 6. Stream G (G1–G7), including the descriptors of C1–C4.
 7. C5–C20, each with its descriptor in the same PR.

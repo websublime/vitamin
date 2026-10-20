@@ -388,7 +388,7 @@ The groups hold 37 colour keys, 28 font keys, 6 radii, 1 border width and 4 shad
 
 ### A1.3 Comparison with the spec
 
-- Every host value that the "Rule" column of spec §6.G.6 quotes matches the value above. This covers the 4 weights, the 11 sizes, the 11 line heights and the 6 radii (A1-P1).
+- Every host value that the "Rule" or "Reason" column of spec §6.G.6 quotes matches the value above. The two columns quote 4 weights, 8 sizes, 6 line heights and 5 radii (A1-P1; ledger row `00-Z48`, coherence review round 2, finding L2R2-10).
 - The "Rule" column quotes no colour, family, border-width or shadow value, so nothing there can differ.
 - The spec places the file on `main`, read 2026-10-20. The commit above pins that read.
 

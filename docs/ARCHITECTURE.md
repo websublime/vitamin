@@ -12,6 +12,12 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.7 (2026-10-20)** — Aligned with PRD v0.8.21, with coherence review round 2 (ledger row `00-Z48`, decisions by Miguel on 2026-10-20).
+  - §11 (Icon System) gives `<line-icon>` a `weight` attribute, which it passes as `options.weight` to `resolve(library, name, options?)`. The registry lives in the shared module `src/shared/icon-registry.ts`; the consumer sets it once with `setIconRegistry(registry)` or `LineIcon.registry`, and `line-genui` never writes it. The `LineIconRegistry` type is exported from the `line-components` root `"."` (Phase 1 spec AM-004, decisions D-W and D-R).
+  - §12 (Bundle Splitting Rule) says only `line-components` and `line-genui` omit the `sideEffects` field; the other packages keep theirs (Phase 1 spec §4.3–§4.5, §10 SD4, SD5).
+  - §14.8 (State Reflection) says axe's WCCG lookup misses the internals because of the Symbol description and the prototype accessor, not because the Symbol is plain (R8 §2.4; Phase 1 spec AM-004).
+  - §17.4 (Renderer) limits the Law 5 reading to the "Lit owns DOM" clause (Phase 1 spec §6.G.4, AM-004).
+  - §17.6 (MCP Apps) says the bridge redeclares `--line-focus-ring` on `body` (`packages/line-tokens/src/focus-ring.css:19`; Phase 1 spec AM-004).
 - **v0.8.6 (2026-10-20)** — Aligned with PRD v0.8.20, with the Phase 1 coherence review (ledger row `00-Z48`, decisions by Miguel on 2026-10-20).
   - §6 (Base Class — LineElement) shows that `FormAssociated` reuses the `LineElement` internals and only sets `formAssociated` (Phase 1 spec §10 SD19, task C23).
   - §11 (Icon System) says `<line-icon>` takes its registry through the static hook `LineIcon.registry`, which the consumer sets. Any object with `resolve(library, name)` fits, such as the `line-icons` `IconRegistry`, so `line-components` gains no edge to `line-icons` (Phase 1 spec AM-002).
@@ -456,7 +462,7 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 <line-icon src="/my-icons/custom.svg"></line-icon>
 ```
 
-- `line-icon` exposes the **registry** through a static hook, `LineIcon.registry`. The consumer sets it once with any object that satisfies the resolver interface `resolve(library, name): Promise<string | SVGElement>`, such as the `line-icons` `IconRegistry`. `line-components` defines the interface, so it gains no edge to `line-icons`. On the agent path, `line-genui` sets the hook (Phase 1 spec AM-002).
+- `line-icon` reads its **registry** from a shared module, `src/shared/icon-registry.ts`. The consumer sets it once, with `setIconRegistry(registry)` exported from the `line-components` root `"."` (which defines no element, §12) or through the static hook `LineIcon.registry`; both write the same module. The registry is any object that satisfies `LineIconRegistry`, `resolve(library, name, options?): Promise<string | SVGElement>`, such as the `line-icons` `IconRegistry`. `<line-icon>` has a `weight` attribute, which it passes as `options.weight`; on the agent path the surface sets `weight` from the `line-icons/a2ui` map entry. `line-components` defines and exports the `LineIconRegistry` type from its root, so it gains no edge to `line-icons`. `line-genui` never writes the registry; its docs show the consumer line (Phase 1 spec §10 SD15, AM-004).
 - Each library is a resolver: given a name, returns the SVG.
 - Zero icons bundled in `line-icons` core — the consumer brings their own resolver (Lucide, Phosphor, Iconoir, `@radix-ui/react-icons`, custom).
 - Dependency direction is one-way: `line-icons → line-tokens` is permitted (icons reuse icon-size / sizing tokens); the inverse is forbidden.
@@ -469,7 +475,7 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 
 **Umbrella package, not per-component packages (Manifesto Law 6).** All components ship inside a single `@websublime/line-components` package with **one version and one changelog**. Each component family or independent component is exposed as a **subpath export** in `package.json` — `@websublime/line-components/button`, `@websublime/line-components/dialog`, etc. There is no central barrel that imports every component; the root `"."` export is intentionally minimal (types and shared utilities only). This is **not** a Lerna-style "one package per component" layout — the umbrella keeps a single source of truth while subpath exports preserve tree-shaking and bundle isolation.
 
-**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. The packages therefore omit the field and use the default Rolldown chunks. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (Phase 1 spec §10 SD4).
+**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. `line-components` and `line-genui` therefore omit the field and use the default Rolldown chunks; the other packages keep theirs. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (Phase 1 spec §4.3–§4.5, §10 SD4, SD5).
 
 **Shared runtime stays external.** The library builds keep `@websublime/*` external, so a consumer that imports `line-core` and a component gets one `LineElement` class. A copy of `line-core` inlined into `line-components` would give two classes, and `instanceof` would fail. Each build derives `external` from its manifest's `dependencies` and `peerDependencies`, so every bare specifier in `dist/` is declared (Phase 1 spec §10 SD2).
 
@@ -1105,7 +1111,7 @@ line-input:state(disabled) { /* disabled state */ }
 line-input:state(invalid) { /* invalid state */ }
 ```
 
-**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and keeps it in an ES `#private` field. Subclasses reach it through a Symbol key that `line-core` exports, and the `FormAssociated` mixin reuses it. The key is a plain `Symbol(...)`, not `Symbol.for`, so it stays outside the protocol names that axe reads (Phase 1 spec §10 SD19 as amended by AM-002, task C23). The base class handles the wiring:
+**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and keeps it in an ES `#private` field. Subclasses reach it through a Symbol key that `line-core` exports, and the `FormAssociated` mixin reuses it. The key is a plain `Symbol(...)`, not `Symbol.for`. The key's description is `line.internals`, not `internals` or `privateInternals`, and the accessor lives on the prototype, so axe's WCCG lookup does not find it (R8 §2.4; Phase 1 spec §10 SD19 as amended by AM-002 and AM-004, task C23). The base class handles the wiring:
 
 ```typescript
 // In @websublime/line-core
@@ -1560,7 +1566,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 
 The surface projects directly on the `web_core` models and binder (`NodeResolver`). Miguel chose this technique on 2026-10-19 from the R2 evidence, over light-DOM adapter elements rendered through `renderA2uiNode`. The surface keeps its own reconciliation, keyed by `instanceId` and preserving focus, and its own effect lifecycle. It loads no Lit and no `@experimental` `A2uiLitElement`. Unknown types reach it from the resolver, and so do cycles when no `validationConfig` is set.
 
-Law 5 ("Lit owns DOM") governs `line-components` components. The surface is a light-DOM orchestrator in `line-genui`, its reconciler is its rendering cycle, and no other code mutates its DOM (Phase 1 spec AM-002).
+The "Lit owns DOM" clause of Law 5 governs `line-components` components. The surface is a light-DOM orchestrator in `line-genui`, its reconciler is its rendering cycle, and no other code mutates its DOM. The surface still keeps no styles in TypeScript and no business logic in render (Phase 1 spec §6.G.4, AM-002, AM-004).
 
 Importing `@websublime/line-genui/catalog` defines no element. Importing `@websublime/line-genui/a2ui` defines only `line-a2ui-surface`.
 
@@ -1584,6 +1590,7 @@ Recipes pin the middleware version, as the documented server convention or in a 
 - `@websublime/line-themes/hosts/mcp-apps.css` is a CSS-only bridge. It maps the standard MCP host colour, font and border-radius variables on the reference list (Phase 1 spec §6.G.6) onto line theme aliases or `line-tokens` primitives, so `line-themes` gains no runtime (Law 10).
 - The app applies `hostContext.styles.variables` and `hostContext.theme` with the ext-apps SDK (`applyHostStyleVariables`, `applyDocumentTheme`). The theme call sets `color-scheme` for `light-dark()`.
 - The bridge sets a `line-tokens` primitive with a `body`-scoped `var(--host, inherit)` and copies no literal, because a primitive cannot fall back to itself (Phase 1 spec §10 SD17).
+- The one shipped `line-tokens` rule that reads primitives on `html` is `:where(html) { --line-focus-ring: … }` (`packages/line-tokens/src/focus-ring.css:19`). The bridge redeclares `--line-focus-ring` on `body` with the same composition, names only, so the composed ring follows the host ring colour (Phase 1 spec §6.G.6, AM-004).
 
 ### 17.7 Stability
 
