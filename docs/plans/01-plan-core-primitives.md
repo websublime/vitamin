@@ -1,10 +1,10 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Factual corrections from row 00-Z46 on 2026-10-20 (§2.1 Errors row, §2.6 axe, §5.5 snapshot note)
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note) and the ButtonGroup and Chip machines the spec picks (§2.2, PRD v0.8.19)
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.18)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.19)
 **Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.5)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
@@ -129,9 +129,9 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 |---|---|---|
 | Button | Custom | `./button` |
 | IconButton | Custom | `./icon-button` |
-| ButtonGroup | Pre-built or Custom; the spec picks the toolbar machine (D5) | `./button-group` |
+| ButtonGroup | Custom; a custom roving-focus machine (D5, spec §10) | `./button-group` |
 | Alert | Static | `./alert` |
-| Chip | Pre-built or Custom; `@zag-js/toggle` is a candidate (D6) | `./chip` |
+| Chip | Pre-built; `@zag-js/toggle` 1.46.0 (D6, spec §10) | `./chip` |
 | Badge | Static | Spec settles by the §12 family rule |
 | Avatar | Static | `./avatar` |
 | AvatarGroup | Custom | `./avatar-group` |
@@ -149,7 +149,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | Spinner | Static | `./spinner` |
 
 - PRD §7.3 names Button, Icon, Stack and Separator as the validating set, and the plan gate confirmed it (O2.b (a)). They ship first, and stream G validates on them.
-- ButtonGroup and Chip left the Static tier (D5, D6), so each gains a machine and the tests that cover it. ButtonGroup is a `toolbar` with roving focus (APG Toolbar). `npm view @zag-js/toolbar` on 2026-10-20 shows only pre-release versions (`latest` and `next` are 2.0.0-next.x). Chip is a toggle button with `aria-pressed`, and `@zag-js/toggle` 1.46.0 is a candidate machine.
+- ButtonGroup and Chip left the Static tier (D5, D6), so each gains a machine and the tests that cover it. ButtonGroup is a `toolbar` with roving focus (APG Toolbar) on a custom roving-focus machine, because `npm view @zag-js/toolbar` on 2026-10-20 shows only pre-release versions (`latest` and `next` are 2.0.0-next.x). Chip is a toggle button with `aria-pressed` on the pre-built `@zag-js/toggle` 1.46.0 machine.
 - The PRD says "From then on, every component ships its descriptor in the same PR".
 
 ### 2.3 Component specs and the agent contract
@@ -428,8 +428,8 @@ These questions belong to the Phase 1 spec. They are neither research items nor 
 - Which version does `line-genui` release first (§2.7)? Options: `0.1.0`, `0.2.0`, or a canary first. The trusted-publisher bootstrap stays on path A, the AM-038 order (PRD §7.3 item 10). Evidence: R9 §2.5, §2.6, §6 Q9.
 - Which `@a2ui/web_core` version does `line-genui` pin, 0.13.0, 0.14.0 or `latest` on the spec date? Evidence: R1 §2.1, §6 Q1.
 - How is the IconButton name checked? Options: a runtime dev warning, a descriptor-level required-name check (§17.4), a DOM check after render, or axe only. Does IconButton join the ARCHITECTURE §7 form-associated list? A yes returns to an ARCHITECTURE §7 revision as a `decision`. Evidence: R8 §6 Q12 and Q13, R2 §6 Q5.
-- Which machine drives the ButtonGroup toolbar (D5)? The options are a custom roving-focus machine or another option, such as `@zag-js/toolbar` once it leaves pre-release. The choice also settles the tier label, which reads "Pre-built or Custom" in PRD §4.1, §4.11 and §7.3 and in §2.2 until then. Evidence: R8 §2.2, §6 Q6; `npm view @zag-js/toolbar` on 2026-10-20 (`latest` and `next` are 2.0.0-next.x, pre-release only).
-- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? The machine choice also settles the tier label, which reads "Pre-built or Custom" until then. Evidence: R8 §2.2, §6 Q7.
+- Which machine drives the ButtonGroup toolbar (D5)? The options are a custom roving-focus machine or another option, such as `@zag-js/toolbar` once it leaves pre-release. The choice also settles the tier label in PRD §4.1, §4.11 and §7.3 and in §2.2. Evidence: R8 §2.2, §6 Q6; `npm view @zag-js/toolbar` on 2026-10-20 (`latest` and `next` are 2.0.0-next.x, pre-release only).
+- Does Chip (D6) use the pre-built `@zag-js/toggle` 1.46.0 or a custom machine, and does it also carry a remove button? The machine choice also settles the tier label. Evidence: R8 §2.2, §6 Q7.
 - What do Button's `pressed`, `loading` and `disabled` mean, now that D7 passes host props to the machine? The answer also settles why Chip is a separate toggle and not `Button[pressed]`, given that ARCHITECTURE §13.1 offers "Button with `pressed` state" in place of a ToggleButton. Evidence: R7 §6 OQ4, R8 §2.2.
 - How does C21 bound the cost of repeated `updateProps` calls? Each `VanillaMachine.updateProps` call nests one more merge closure, and one `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4). The deciding evidence is an upstream fix for the closure chain or a measured host update rate per component (R7 §6 OQ1).
 - Which tool runs the axe gate (P7)? Options: Playwright with `@axe-core/playwright`, the Storybook addon with the Vitest addon, or both. Evidence: R8 §2.4, §6 Q3.

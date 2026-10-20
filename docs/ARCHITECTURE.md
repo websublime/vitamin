@@ -12,8 +12,10 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
-- **v0.8.5 (2026-10-20)** — Corrections from the Phase 1 spec work (ledger row `00-Z46`, decisions by Miguel on 2026-10-20). No PRD change.
+- **v0.8.5 (2026-10-20)** — Aligned with PRD v0.8.19, with corrections from the Phase 1 spec work (ledger row `00-Z46`, decisions by Miguel on 2026-10-20).
   - §13.1 (Button Ecosystem) separates the two meanings of "pressed". The machine models the press itself as `active`, `pressed` is an opt-in toggle with `aria-pressed`, and `loading` and `disabled` are props that the machine's guards read (R7 §2.4, R8 §2.2).
+  - §13.1 (Button Ecosystem) records the machines the Phase 1 spec picks. ButtonGroup runs on a custom roving-focus machine, and Chip on the pre-built `@zag-js/toggle` 1.46.0 machine.
+  - §14.8 (State Reflection) says `LineElement` attaches `ElementInternals` for every component behind a protected `internals` accessor that `FormAssociated` reuses, so every component reflects `:state()` (R8 §2.5).
   - §17.4 (Renderer) corrects the error path. A missing child stays a pending placeholder until it arrives and raises no error. An unknown type reaches the surface as a resolver error. Whether a cycle rejects its message or reaches the resolver depends on the `validationConfig` preset, which the Phase 1 spec sets (R1 §2.5.2, §2.7).
   - §17.6 (MCP Apps) states when line://ui works unchanged in a View. The lazy component chunks must be inlined into the View, or load from a CDN origin that the View declares (R5 §2.2, §5.2).
 - **v0.8.4 (2026-10-20)** — Aligned with PRD v0.8.18 (ledger row `00-Z45`, decisions by Miguel on 2026-10-19 (projection technique) and 2026-10-20 (D1–D8)).
@@ -498,12 +500,12 @@ Architectural decisions for specific components that were debated and resolved. 
 
 ### 13.1 Button Ecosystem
 
-- **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default. The machine models the press itself as `idle → active`. `pressed` is an opt-in toggle that sets `aria-pressed`. `loading` and `disabled` are props that the machine's guards read. All four reflect as states (§14.8). Loading state is headless (state only, no bundled spinner).
+- **Button** — Custom machine, `formAssociated: true`, supports `type="submit|reset|button"`, slots: prefix/suffix/default. The machine models the press itself as `idle → active`. `pressed` is an opt-in toggle that sets `aria-pressed`. `loading` and `disabled` are props that the machine's guards read. All four reflect as `data-*` attributes and `:state()` (§14.8). Loading state is headless (state only, no bundled spinner).
 - **IconButton** — Separate component, `aria-label` required, same machine as Button. TypeScript cannot check the name in markup or on elements the A2UI surface creates by tag at run time, so the Phase 1 spec picks the check.
-- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. It has a machine. `npm view @zag-js/toolbar` on 2026-10-20 shows only pre-release versions (`latest` and `next` are 2.0.0-next.x), so the Phase 1 spec picks a custom roving-focus machine or another option. Border collapse, slot-based (does NOT import Button).
+- **ButtonGroup** — `role="toolbar"` with roving focus (APG Toolbar). Arrow keys move between the buttons, and the group is one Tab stop. A custom roving-focus machine drives it, because `@zag-js/toolbar` ships only pre-release versions (`latest` and `next` are 2.0.0-next.x on 2026-10-20). Border collapse, slot-based (does NOT import Button).
 - **SplitButton** — Custom, Phase 3 (depends on Button + Menu), bundles both internally.
 - **ToggleButton** — NOT a separate component; use ToggleGroup with single item or Button with `pressed` state.
-- **Chip** — A toggle button with `aria-pressed`, Phase 1. It has a machine. `@zag-js/toggle` 1.46.0 is a candidate, and the Phase 1 spec picks the machine.
+- **Chip** — A toggle button with `aria-pressed`, Phase 1. It runs on the pre-built `@zag-js/toggle` 1.46.0 machine and carries no remove button.
 
 ### 13.2 Avatar Group
 
@@ -1092,20 +1094,18 @@ line-input:state(disabled) { /* disabled state */ }
 line-input:state(invalid) { /* invalid state */ }
 ```
 
-**Both APIs reflect the same machine state simultaneously.** The base class handles the wiring:
+**Both APIs reflect the same machine state simultaneously.** `LineElement` attaches `ElementInternals` for every component and exposes it through a protected `internals` accessor, which the `FormAssociated` mixin reuses (Phase 1 spec, task C23). The base class handles the wiring:
 
 ```typescript
-// In LineElement or FormAssociated mixin
+// In LineElement
 protected reflectState(name: string, active: boolean) {
   // Data attribute (universal)
   if (active) this.dataset[name] = '';
   else delete this.dataset[name];
 
   // CustomStateSet (modern)
-  if (this.#internals?.states) {
-    if (active) this.#internals.states.add(name);
-    else this.#internals.states.delete(name);
-  }
+  if (active) this.internals.states.add(name);
+  else this.internals.states.delete(name);
 }
 ```
 
