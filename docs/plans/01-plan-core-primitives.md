@@ -1,6 +1,6 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 (2026-10-20) pending Miguel's approval
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
