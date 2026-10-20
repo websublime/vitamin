@@ -1,6 +1,6 @@
 # PHASE PLAN: Phase 01 — Core Primitives
 
-**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note) and the ButtonGroup and Chip machines the spec picks (§2.2, PRD v0.8.19)
+**Status:** APPROVED — Miguel at the plan gate on 2026-10-13. Revision 00-Z45 approved by Miguel on 2026-10-20. Row 00-Z46 on 2026-10-20 adds factual corrections (§2.1 Errors row, §2.6 axe, §5.5 snapshot note, the icon resolver facts from R10 round 2 in §1.2, §2.5, §5.2 and §5.5), the ButtonGroup and Chip machines the spec picks (§2.2), and the `line-genui` manifest surface (§2.1), with PRD v0.8.19
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
@@ -50,7 +50,7 @@ PRD §7.3 lists what the phase validates.
 | htmx harness | Exists | `packages/line-core/__tests__/integration/htmx/` |
 | htmx guide | Exists | `apps/storybook/stories/htmx.mdx` |
 | `LineElement`, mixins, `LineMachineController`, reset sheets | Exist | `line-core` |
-| Icon resolvers | Exist; verified under Bun only. In a Vite 8 production build they emit no icon and leave a bare `?raw` specifier (R10 P6), so C22 fixes them before C2 | `line-icons` |
+| Icon resolvers | Exist; verified under Bun only. Vite 8 and esbuild production builds render no icon and leave a bare `?raw` specifier, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2), so C22 fixes them before C2 | `line-icons` |
 
 - Hand-off item 3 (the genui stream) becomes the first pillar.
 - Hand-off item 4 (the C1–C9 agent contract) needs no template work. In Phase 1 it becomes an obligation. Every component spec fills the Agent contract section, and the coherence review checks it.
@@ -81,6 +81,7 @@ PRD Appendix D defines these surfaces.
 | `@websublime/line-genui/catalog` | Descriptors, the `line` catalog, the `basic` catalog implementations, emitters; no DOM | Normal policy (PRD §7.1) |
 | `@websublime/line-genui/catalog.json` | Emitted JSON of the `line` catalog | Normal policy |
 | `@websublime/line-genui/a2ui` | Session and `<line-a2ui-surface>` | Preview |
+| `@websublime/line-genui/custom-elements.json` | Custom Elements Manifest of `<line-a2ui-surface>` (spec §10) | Preview, with the surface |
 | `@websublime/line-themes/hosts/mcp-apps.css` | CSS-only MCP Apps theming bridge | Normal policy |
 
 PRD Appendix D and ARCHITECTURE §17.7 set the preview policy.
@@ -171,7 +172,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 - `<line-icon>` ships in Phase 1.
 - The `line-icons` registry gains its Phase 1 subpaths `./registry` and `./resolvers/*` (PRD §6.2 note, Phase 00 spec §6.E).
 - The A2UI basic `Icon` maps A2UI icon names to a `line-icons` resolver (ARCHITECTURE §17.3). A2UI also accepts `{ "svgPath": … }`, which a name resolver does not cover (§5.5).
-- The reference resolvers fail in a Vite 8 production build (R10 P6). Task C22 fixes them before C2 (Icon), and the spec picks the loading mechanism (§5.5).
+- The reference resolvers fail in Vite 8 and esbuild production builds, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2). Task C22 fixes them before C2 (Icon), and the spec picks the loading mechanism (§5.5).
 
 ### 2.6 Platform and release
 
@@ -342,7 +343,7 @@ All six notes are delivered.
 | R7 Zag.js and machines | `@zag-js/presence` (Presence is pre-built) through `LineMachineController`; custom machines for Button, IconButton, AvatarGroup (ARCHITECTURE §13.1–§13.2) | Delivered — [`01-research-zag-machines.md`](../research/01-research-zag-machines.md) |
 | R8 Accessibility | WAI-ARIA patterns for the 20 components; the axe-core tier (Playwright vs Storybook); the §17.9 question on exposing `FormAssociated` internals for `ElementInternals` ARIA | Delivered — [`01-research-accessibility.md`](../research/01-research-accessibility.md) |
 | R9 Packaging | Umbrella subpath exports and `sideEffects`, bundle-splitting verification, CDN delivery (unpkg, jsDelivr) of ESM builds, the per-component soft size target (< 5 KB gzipped, PRD §1.7), npm trusted publishing for a new package and its first version | Delivered — [`01-research-packaging.md`](../research/01-research-packaging.md) |
-| R10 Icon | A2UI basic icon names and their mapping to the Lucide and Phosphor resolvers; the `line-icons` Phase 1 subpaths | Delivered — [`01-research-icon.md`](../research/01-research-icon.md) |
+| R10 Icon | A2UI basic icon names and their mapping to the Lucide and Phosphor resolvers; the `line-icons` Phase 1 subpaths. Round 2 (row 00-Z47) measures how the resolvers load icons in Vite, esbuild, webpack and on the CDNs | Delivered — [`01-research-icon.md`](../research/01-research-icon.md), [`01-research-icon-round2.md`](../research/01-research-icon-round2.md) |
 | R11 TypeScript 7.x toolchain | Verify `tsc -b`, `vite-plugin-dts` 5.1.2 (through `unplugin-dts` 1.1.2; `@microsoft/api-extractor` is an optional peer that the repo does not install, because `bundleTypes` is off), the CEM analyser 0.11.0 (it bundles its own `typescript ~5.4.2`) and Storybook 10 on 7.x; a blocker returns the work to the plan (PROCESS §2) | Delivered — [`01-research-typescript-7.md`](../research/01-research-typescript-7.md) |
 | R12 Site dogfooding | Astro 7 static output with the Phase 1 components, client-side upgrade of the Phase 1 components | Delivered — [`01-research-site-dogfooding.md`](../research/01-research-site-dogfooding.md) |
 
@@ -418,7 +419,7 @@ These questions belong to the Phase 1 spec. They are neither research items nor 
 - How does the emitter reach Gemini (D3)? One flat schema cannot meet OpenAI and Anthropic strict mode and Gemini `parameters` at once, because strict mode needs `additionalProperties: false` on every object and OpenAI also needs every property in `required`, while Gemini `parameters` allows neither `additionalProperties` nor `const`. Options: (a) a per-provider serialisation of the same flat literal schema (R3 §6 Q3 (c)); (b) Gemini through `parametersJsonSchema`. Evidence: R3 §2.6. Option (a) is not D3's rejected "both variants per descriptor", which meant a strict schema plus a common-types schema.
 - How does the basic `Icon` render `{ "svgPath": … }` and an unknown bound name? Options: an inline SVG path, an inert placeholder plus `line-a2ui-error`, or a fallback icon. Evidence: R10 §6 Q6, R1 §2.7, Law 9.
 - Does `<line-icon>` keep a slot path beside its `name`, `library` and `src` attributes, and where does the A2UI name map live (a `line-icons` subpath such as `./a2ui`, `line-genui`, or the `./icon` module)? Evidence: R10 §5 C3, §6 Q1.
-- How do the `line-icons` resolvers load icons in a consumer bundle (C22), and which shape do the Phase 1 subpaths take? Loading options: (a) the template `import()` plus a documented import map or bundler plugin; (b) one literal `import()` per mapped name; (c) `import.meta.glob` per set (Vite only); (d) fetch an SVG URL. R10 §6 Q4 lists the subpath shapes. Evidence: R10 P6, P7, §6 Q3 and Q4.
+- How do the `line-icons` resolvers load icons in a consumer bundle (C22), and which shape do the Phase 1 subpaths take? Loading options: (a) the template `import()` with a per-bundler fix (an import map cannot fix it, because the CDN serves the file as `image/svg+xml`); (b) one literal `import()` per mapped name; (c) `import.meta.glob` per set (Vite, and webpack from 5.109); (d) fetch an SVG URL. R10 §6 Q4 lists the subpath shapes. Evidence: R10 P6, P7, §6 Q3 and Q4; R10 round 2 §2.2, §2.6, §6.
 - What is the `sideEffects` value, the chunk layout and the isolation check? Options for the field: (a) absent; (b) `["./dist/**/*.js"]` plus a source glob; (c) an explicit list with deterministic `chunkFileNames`, checked statically; (d) `[]` with a "named import or `import()` only" rule. Chunk layout: default Rolldown, `preserveModules`, or no cross-component imports, which also settles whether AvatarGroup imports Avatar and sets the precedent for SplitButton (Phase 3). Evidence: R9 §2.1, §2.2, §6 Q1, Q2 and Q4.
 - How do the library builds keep `@websublime/*` external (P9)? Evidence: R9 §2.1, §6 Q3.
 - Which CDN contract do the docs promise? Options: jsDelivr `+esm`, esm.unpkg.com, or raw files plus an import map; a `default` condition, `main`, `jsdelivr` or `unpkg` fields; a `process` shim or none; two Lit copies under `+esm` accepted or not. Evidence: R9 §2.3, §6 Q5.

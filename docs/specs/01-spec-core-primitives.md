@@ -1,6 +1,6 @@
 # SPEC: Phase 1 — Core Primitives
 
-**Status:** DRAFT
+**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved
 **Author:** line://ui orchestrator (row 00-Z46)
 **Date:** 2026-10-20
 **Phase target:** line://ui v0.2.0
@@ -18,7 +18,7 @@
 - R8 — [`docs/research/01-research-accessibility.md`](../research/01-research-accessibility.md)
 - R9 — [`docs/research/01-research-packaging.md`](../research/01-research-packaging.md)
 - R10 — [`docs/research/01-research-icon.md`](../research/01-research-icon.md)
-- R10 round 2 — `docs/research/01-research-icon-round2.md` (row 00-Z47, pending)
+- R10 round 2 — [`docs/research/01-research-icon-round2.md`](../research/01-research-icon-round2.md) (row 00-Z47, delivered)
 - R11 — [`docs/research/01-research-typescript-7.md`](../research/01-research-typescript-7.md)
 - R12 — [`docs/research/01-research-site-dogfooding.md`](../research/01-research-site-dogfooding.md)
 
@@ -136,15 +136,17 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
   "version": "0.1.0",                              // P1; seeded so a minor changeset yields 0.2.0 (§10 SD3, R9 §2.6)
   "type": "module",
   "license": "MIT",
-  "files": ["dist", "src"],                        // AM-036 pattern: declaration maps in dist/ point at ../src
+  "files": ["dist", "src", "custom-elements.json"],// AM-036 pattern; G4: shipped manifest (§10 SD94)
   "repository": {                                  // AM-038: trusted publishing and provenance match this url
     "type": "git",
     "url": "git+https://github.com/websublime/line-ui.git",
     "directory": "packages/line-genui"
   },
   // no "sideEffects" field (§10 SD4, SD5); ./a2ui calls customElements.define() at module top
+  "customElements": "./custom-elements.json",     // G4 (§10 SD94)
   "publishConfig": { "access": "public" },
   "exports": {
+    "./custom-elements.json": "./custom-elements.json",   // G4 (§10 SD94)
     "./catalog": {                                 // PRD Appendix D: descriptors, catalogs, emitters; touches no DOM
       "types": "./dist/catalog/index.d.ts",
       "import": "./dist/catalog/index.js"
@@ -165,9 +167,10 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
     "@websublime/line-icons": "workspace:^"
   },
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly",   // §10 SD7, D1
+    "build": "vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly && bun run analyze",   // §10 SD7, D1; analyze added by G4
+    "analyze": "custom-elements-manifest analyze --config custom-elements-manifest.config.mjs",            // G4 (§10 SD94)
     "dev": "trap 'kill 0' INT TERM; vite build --watch & tsc -p tsconfig.json --noEmit false --emitDeclarationOnly --watch & wait",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist custom-elements.json",
     "typecheck": "tsc --noEmit"
   }
 }
@@ -178,6 +181,7 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
 - `@a2ui/web_core` moves to a newer version only through an AM after the R1 and R2 probes run again (§10 SD6).
 - Every bare specifier that `dist/` imports MUST appear in `dependencies` or `peerDependencies` (§10 SD2). A G task that adds a direct import of `lit` or another package adds the declaration in the same PR.
 - `vite.config.mjs` calls the shared factory with `entries: { 'catalog/index': 'src/catalog/index.ts', 'a2ui/index': 'src/a2ui/index.ts' }` (P1).
+- P1 ships the manifest without the `customElements` field, the `custom-elements.json` `files` entry, the `./custom-elements.json` export and the `analyze` script. G4 adds them with the analyser config, as G2 adds `./catalog.json` (§10 SD23, SD94).
 - The `peerDependencies` carry no `peerDependenciesMeta`. PRD §6.1 and ARCH §17.1 name both as peers, and no decision makes either optional (§10 SD9).
 
 ### 4.2 `@websublime/line-components`
@@ -285,7 +289,7 @@ Entrypoints and tags (plan §2.2, §10 SD12, ARCH §12):
     "url": "git+https://github.com/websublime/line-ui.git",
     "directory": "packages/line-icons"
   },
-  "sideEffects": false,                            // unchanged (R10 §6 Q4); OQ-C22 may revise it
+  "sideEffects": false,                            // unchanged (R10 §6 Q4; R10 round 2 §2.5)
   "publishConfig": { "access": "public" },
   "exports": {
     ".":                    { "types": "./dist/index.d.ts",              "import": "./dist/index.js" },              // kept (Phase 00 consumers)
@@ -315,8 +319,10 @@ Entrypoints and tags (plan §2.2, §10 SD12, ARCH §12):
 ```
 
 - `./a2ui` holds the map of the A2UI icon names as per-set data (§10 SD14, SD15). §6.C.3 states the decided icon surface in full.
-- The loading mechanism inside `./resolvers/*` is open question OQ-C22 (§11, §6.C.3). The subpath names above do not depend on it (plan §2.5, PRD §6.2).
-- `lucide-static` `latest` was 1.60.0 on 2026-10-20 (npm registry). The mapped names were checked only against 1.16.0, 1.56.0 and 1.59.0 (R10 P4, P8). The C22 owner re-checks the peer floor.
+- The `exports` map and `sideEffects: false` stay as written under the fetch mechanism (§10 SD89). Keeping `"."` with its re-exports is safe under `sideEffects: false` (R10 round 2 §2.5, P3).
+- `createLucideResolver({ base })` and `createPhosphorResolver({ base, weight? })` take a required `base` option (§10 SD90; §6.C.3). This breaks Phase 00 callers of `createLucideResolver()` and `createPhosphorResolver({ weight })` without `base` (`packages/line-icons/README.md:21-22`). The break lands in the C22 `minor`, and the C22 changeset records it (PRD §7.1 pre-1.0). No deprecation cycle applies, because today's form renders no icon without consumer bundler configuration, and on neither CDN path (R10 round 2 §2.2, §2.6; §10 SD93).
+- The mechanism adds no dependency to `line-icons` (R10 round 2 §4).
+- `lucide-static` `latest` was 1.60.0 on 2026-10-20 (npm registry). The C22 owner re-checks the peer floor (§6.C.3).
 
 ### 4.4 `@websublime/line-themes`
 
@@ -381,13 +387,13 @@ New and changed paths only. `+` marks a new path and `~` a changed one.
 CODE_OF_CONDUCT.md                                   + Z1
 CLAUDE.md                                            ~ P8 Tech Stack; Z2 ledger pointer
 .claude/agents/webcomponents-supervisor.md           ~ P8 (lines 15, 72)
-.gitignore                                           ~ P10 (packages/line-components/custom-elements.json)
-package.json                                         ~ P5 esbuild, P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed
+.gitignore                                           ~ P10 (packages/line-components/custom-elements.json); G4 (packages/line-genui/custom-elements.json)
+package.json                                         ~ P5 esbuild, P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack
 playwright.config.ts                                 ~ S1 (webServer for apps/site)
 custom-elements-manifest.config.mjs                  - P10 (removed; replaced by the package config)
 vite.config.shared.mjs                               ~ P8 (dts removed), P9 (derived externals)
 scripts/lint-layers.mjs                              ~ P2 (ALLOWED_EDGES, header)
-scripts/verify-pack.mjs                              ~ P10 (customElements target check)
+scripts/verify-pack.mjs                              ~ P10 (customElements target check, both packages)
 scripts/report-size.mjs                              + P5 (size report, §10 SD21)
 docs/PROCESS.md                                      ~ Z2 (§4)
 docs/specs/00-spec-design-system.md                  ~ AM rows of P5, P8, P9, P10
@@ -397,7 +403,7 @@ apps/site/src/pages/index.astro                      ~ S1
 apps/site/__tests__/landing.e2e.ts                   + S1
 apps/storybook/package.json                          ~ P10 (analyze script removed)
 apps/storybook/.storybook/main.ts                    ~ P10 (comment at :24)
-apps/storybook/.storybook/preview.ts                 ~ P10 (setCustomElementsManifest)
+apps/storybook/.storybook/preview.ts                 ~ P10 (setCustomElementsManifest, merged manifest); G4 (line-genui import)
 apps/storybook/types/line-css.d.ts                   + P8 (ambient CSS module declarations)
 apps/storybook/tsconfig.json                         ~ P8 (includes types/)
 packages/line-core/package.json                      ~ P8
@@ -413,9 +419,13 @@ packages/line-genui/                                 + P1
   package.json  tsconfig.json  vite.config.mjs  README.md
   src/catalog/index.ts                               + P1 (G1–G3 fill it)
   src/a2ui/index.ts                                  + P1 (G4 fills it)
+  custom-elements-manifest.config.mjs                + G4 (surface manifest, §10 SD94)
   __tests__/                                         + G tasks
 packages/line-icons/package.json                     ~ C22, G2 (./a2ui)
 packages/line-icons/src/registry.ts                  + C22
+packages/line-icons/src/resolvers/{lucide,phosphor}.ts  ~ C22 (fetch from base, §10 SD89, SD90)
+packages/line-icons/README.md                        ~ C22 (base URL, CSP, in-bundle recipe)
+packages/line-icons/__tests__/consumer-matrix.e2e.ts + C22
 packages/line-icons/src/a2ui/                        + C2 or G2 owner (§10 SD14, SD15)
 packages/line-themes/package.json                    ~ G6
 packages/line-themes/src/hosts/mcp-apps.css          + G6
@@ -435,7 +445,7 @@ Owner of every P task is `infra-supervisor` (plan §4.0). P8, P9 and P10 land af
 - **Owner:** infra-supervisor.
 - **Deps:** spec APPROVED, P2.
 - **Changes:**
-  - `packages/line-genui/package.json` as in §4.1, without the `./catalog.json` key (G2 adds it).
+  - `packages/line-genui/package.json` as in §4.1, without the `./catalog.json` key (G2 adds it) and without the manifest keys and `analyze` script (G4 adds them, §10 SD94).
   - `packages/line-genui/tsconfig.json`, a copy of `packages/line-core/tsconfig.json:1-10`.
   - `packages/line-genui/vite.config.mjs` with the two entries of §4.1.
   - `src/catalog/index.ts` and `src/a2ui/index.ts` as zero-export modules (`export {};`), the Phase 00 precedent of `line-components` (Phase 00 spec §4.7). G2 adds the `./catalog.json` key with its emitter (§10 SD23).
@@ -620,9 +630,10 @@ export default {
 
   - `packages/line-components/package.json` gains `customElements`, the `files` entry, the `./custom-elements.json` export and the `analyze` script (§4.2).
   - `apps/storybook/.storybook/preview.ts` imports the manifest through `@websublime/line-components/custom-elements.json` with `{ type: 'json' }` and calls `setCustomElementsManifest` before `preview` is exported (R4 §2.8).
+  - `preview.ts` passes one manifest merged from the imported package manifests by concatenating their `modules` arrays (§10 SD94). G4 adds the `@websublime/line-genui/custom-elements.json` import once that manifest exists [INFERENCE: not probed; G4's acceptance checks that the Storybook API table for `<line-a2ui-surface>` renders].
   - `apps/storybook/.storybook/main.ts:24` loses the claim that the manifest loads on its own.
   - The root `custom-elements-manifest.config.mjs`, the `apps/storybook` `analyze` script, `customElements.json` in its `clean` script, and the "Storybook analyze (CEM)" step (`checks.yml:46-47`) are removed (§10 SD27).
-  - `scripts/verify-pack.mjs:163` adds `customElements` to the `main`/`module`/`types` field list of check (a).
+  - `scripts/verify-pack.mjs:163` adds `customElements` to the `main`/`module`/`types` field list of check (a). The check then covers the `customElements` target of `line-components` and, once G4 lands, of `line-genui` (§10 SD94).
   - `.gitignore` gains `packages/line-components/custom-elements.json`.
   - AM row to Phase 00 spec §6.F.1 and §7.3 for the move from a root-only manifest to a package manifest.
 - **Contract:** §7.3 holds.
@@ -644,7 +655,7 @@ export default {
 | Step | Tasks | Gate |
 |---|---|---|
 | 1 | C21, C23, P7, P8, P9, P10 | Spec APPROVED. All six land before C1 (plan §6; §10 SD19, SD86). |
-| 2 | C22 | Lands before C2 (plan §6). Its mechanism waits on R10 round 2 (OQ-C22). |
+| 2 | C22 | Lands before C2 (plan §6). It fetches icons from a consumer-set base URL (§10 SD89–SD92). |
 | 3 | C1 Button, C2 Icon, C3 Stack, C4 Separator | Ship without descriptors. Stream G writes their descriptors (plan §4.3, PRD §7.3 validating set). |
 | 4 | G1–G7 | Validate on C1–C4 (plan §6). |
 | 5 | C5–C20 | Each ships its descriptor in the same PR (plan §2.2, §4.3). |
@@ -717,9 +728,45 @@ export default {
 #### 6.C.3 C22 — `line-icons` resolvers for consumer bundles
 
 - **Owner:** `webcomponents-supervisor`.
-- **Deps:** spec APPROVED, R10 round 2 (row `00-Z47`, `docs/research/01-research-icon-round2.md`). Blocks C2 (plan §6).
-- **Problem:** the reference resolvers use a template `import()` with a Vite-only `?raw` query (`packages/line-icons/src/resolvers/lucide.ts:8`, `phosphor.ts:16`). A Vite 8 production build emits no icon (R10 §3 P6).
-- **Mechanism:** open. See OQ-C22 in §11. This section states only the acceptance contract and the decided icon surface.
+- **Deps:** spec APPROVED. R10 round 2 is delivered (row `00-Z47`). Blocks C2 (plan §6).
+- **Problem:** the reference resolvers use a template `import()` with a Vite-only `?raw` query (`packages/line-icons/src/resolvers/lucide.ts:8`, `phosphor.ts:16`). It renders no icon in Vite 8.3.4 or esbuild 0.28.2 output. webpack 5.112.0 does not build today's resolvers without a `?raw` rule, and the Phosphor resolver also needs an alias (R10 round 2 §2.2, P3, P4).
+- **Changes**
+  - `packages/line-icons/src/resolvers/lucide.ts` and `phosphor.ts` fetch the SVG from a base URL (§10 SD89).
+  - `createLucideResolver` and `createPhosphorResolver` gain a required `base` option (§10 SD90).
+  - The resolver docs in `packages/line-icons/README.md` show the base URLs, the CSP note and the in-bundle recipe below.
+  - C22 adds the consumer matrix test `packages/line-icons/__tests__/consumer-matrix.e2e.ts` (§10 SD96).
+  - Root `devDependencies` gain `"webpack": "^5.112.0"` for the matrix (R10 round 2 §2.1; §10 SD96). esbuild comes from P5.
+
+**Mechanism (§10 SD89)**
+
+- Both reference resolvers MUST fetch `new URL(file, base)` and return the response text (R10 round 2 §2.2 (d)).
+- Fetch is the only probed mechanism that renders in Vite, esbuild and webpack builds and on the jsDelivr `+esm` and unpkg paths, for both sets and for any name of the set (R10 round 2 §2.2, §2.6).
+- Bundlers see no icon import, so a consumer configures no bundler (R10 round 2 §2.2, §2.5).
+- The entry weighs 1054–1334 B gzipped with no map, and each icon costs one request, 221–483 B gzipped for the five probed files (R10 round 2 §2.3).
+- `assertIconName` MUST still run before any fetch, so an agent-supplied name cannot leave the icon directory (`packages/line-icons/src/resolvers/icon-name.ts:1-6`; R10 round 2 §4).
+- A path-only base MUST resolve against `document.baseURI`. A path-only base threw "Invalid base URL" in all three engines until the probe resolved it so (R10 round 2 §2.2 (d)).
+
+| Set | `file` relative to `base` | Example `base` (jsDelivr, pinned to the peer version) | Source |
+|---|---|---|---|
+| Lucide | `<name>.svg` | `https://cdn.jsdelivr.net/npm/lucide-static@<version>/icons/` | `lucide.ts:8`; R10 §2.2 |
+| Phosphor | `<weight>/<name>.svg` for `regular`, `<weight>/<name>-<weight>.svg` for the other five weights | `https://cdn.jsdelivr.net/npm/@phosphor-icons/core@<version>/assets/` | `phosphor.ts:15-16`; R10 §2.2 |
+
+**Base URL (§10 SD90)**
+
+- `base` MUST be a required option of `createLucideResolver` and `createPhosphorResolver`. `createPhosphorResolver` keeps its `weight` default beside it (`phosphor.ts:9`).
+- Without `base`, the resolver MUST reject, and `<line-icon>` stays in the neutral C8 state (§10 SD92).
+- line://ui MUST NOT make a third-party request unless the consumer sets `base`.
+- The docs MUST show a jsDelivr URL pinned to the installed peer version and a self-host recipe that serves the peer's `icons/` or `assets/` folder.
+- The docs MUST state the CSP need. `connect-src` MUST list the icon origin. `connect-src 'self'` blocked jsDelivr in all three engines, and adding `https://cdn.jsdelivr.net` let the icons through (R10 round 2 §2.7, P13).
+- The docs MUST state that unpkg's 404 carries no CORS header. A missing icon there surfaces as a network `TypeError`, not a readable 404. jsDelivr's 404 keeps `access-control-allow-origin: *` (R10 round 2 §2.4, P6).
+- The docs MUST give a recipe for consumers who want icons inside their bundle. It is a custom `IconResolver` with one literal `import()` per name, for example of `lucide-static/dist/esm/icons/<name>.mjs`. That form rendered in all three bundlers with no configuration (R10 round 2 §2.2 (b′)). `@phosphor-icons/core` 2.1.1 has no JS form of its icons, so the recipe covers Lucide only (R10 round 2 §2.2, P2).
+- The `lucide-static` peer floor stays `^1.16.0` unless the C22 owner finds a mapped name missing. The mapped names were checked against 1.16.0, 1.56.0 and 1.59.0, while `latest` is 1.60.0 (R10 P4, P8; npm registry on 2026-10-20).
+
+**Miss path (§10 SD92)**
+
+- An unknown name, a 404, a CORS or CSP block, and a missing `base` MUST make the resolver reject (R10 round 2 §2.4).
+- `<line-icon>` MUST catch the rejection and render the neutral C8 state. No error reaches the consumer (ARCH §17.2 C8; MANIFESTO Law 9).
+- On the agent path, the surface raises `line-a2ui-error` for a bound name that resolves to no icon (§10 SD33; §6.G.4).
 
 **Acceptance contract**
 
@@ -727,6 +774,9 @@ export default {
 - A no-build page over jsDelivr `+esm` and a no-build page over unpkg raw files MUST render the same icon (R10 §6 Q3; §10 SD32).
 - A missing or invalid icon MUST leave `<line-icon>` in the neutral C8 state, and nothing MUST throw to the consumer (ARCH §17.2 C8; MANIFESTO Law 9). Today `IconRegistry.resolve` and the resolvers throw (`packages/line-icons/src/index.ts:21`; `resolvers/icon-name.ts:5`; `resolvers/phosphor.ts:13`).
 - The ARCH §11 rule "zero icons bundled in `line-icons` core" holds (ARCH §11).
+- The R10 round 2 matrix runs as C22's acceptance test. It covers Vite, esbuild and webpack builds of the packed tarball and the jsDelivr `+esm` and unpkg raw pages, in Chromium, Firefox and WebKit, for `house` in both sets, Phosphor `heart` with the `fill` weight, `rocket`, and the unknown `definitely-not-an-icon` (R10 round 2 §2.1, §2.2).
+- The bundler pages use a self-hosted base and run in the "Browser tier" step. The CDN-base pages need live CDNs and run with P6 on `workflow_dispatch` and before each release (§10 SD96, as SD25).
+- A resolver created without `base` rejects, and `<line-icon>` renders the neutral C8 state.
 
 **Decided icon surface**
 
@@ -737,6 +787,44 @@ export default {
 - Each map entry MUST carry the weight and the RTL mirror flag per name. Nine names mirror in RTL (§10 SD15; R10 §2.3).
 - `line-icons` MUST NOT pick a default set. The consumer registers one (§10 SD15; ARCH §11).
 - The three Lucide collisions MUST be documented in the `./a2ui` docs (§10 SD15; R10 §2.3, §6 Q7).
+
+**SVG injection (§10 SD91, SD95, SD97)**
+
+C2 implements the icon surface above and this injection rule in `<line-icon>`.
+
+- `<line-icon>` MUST parse every SVG string with `DOMParser` as `image/svg+xml`. The rule covers resolver output and the response of the `src` attribute (§10 SD91).
+- `<line-icon>` MUST keep only the allowlisted elements and attributes below and drop everything else before it inserts the parsed node (§10 SD95).
+- `<line-icon>` MUST drop every attribute on the never-pass list, and every attribute whose value contains `url(`, even where the attribute name is allowlisted (§10 SD95).
+- A parsed document whose root is not `svg` MUST leave the neutral C8 state (R10 round 2 §2.7, P14).
+- An `SVGElement` that a consumer's resolver returns MUST be inserted as is. The consumer built it, and no string sink is involved. The reference resolvers return strings (§10 SD95; `packages/line-icons/src/index.ts:1`).
+- The string MUST pass through a Trusted Types policy named `line-icon` before `DOMParser` reads it. Under `require-trusted-types-for 'script'`, `DOMParser.parseFromString` rejects a plain string in all three engines (R10 round 2 §2.7, P13).
+- The module MUST create the policy once, behind a guard, when `trustedTypes` exists (§10 SD97).
+- If `createPolicy` throws, `<line-icon>` MUST render the neutral C8 state, and nothing reaches the consumer as an error (§10 SD97; MANIFESTO Law 9; ARCH §17.2 C8). It throws when the page's `trusted-types` list omits `line-icon`, or when a second copy of the module already created the policy.
+- The docs MUST name the policy, so a page that enforces Trusted Types lists `trusted-types line-icon`.
+- The parse and allowlist step weighs about 0.5 KB gzipped. The R10 round 2 probe sanitiser weighed 477 B with the narrower lists (R10 round 2 §2.7).
+
+| Allowlist | Entries | Source |
+|---|---|---|
+| Elements (9) | `svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon` | R10 round 2 §2.7, P14 for all but `g`; `g` is a design choice beyond the probe (§10 SD95) |
+| Attributes, measured (23) | `class`, `cx`, `cy`, `d`, `fill`, `height`, `opacity`, `points`, `r`, `rx`, `ry`, `stroke`, `stroke-linecap`, `stroke-linejoin`, `stroke-width`, `viewBox`, `width`, `x`, `x1`, `x2`, `y`, `y1`, `y2` | The 22 Lucide attributes and the 4 Phosphor attributes of R10 round 2 §2.7, P14. The note gives the Lucide count only; the names come from an inventory of the 2143 `lucide-static` 1.56.0 files in `node_modules/lucide-static/icons/` and the 9072 `@phosphor-icons/core` 2.1.1 files, run 2026-10-20 |
+| Attributes, presentation (10) | `transform`, `fill-rule`, `clip-rule`, `fill-opacity`, `stroke-opacity`, `stroke-dasharray`, `stroke-dashoffset`, `stroke-miterlimit`, `vector-effect`, `shape-rendering` | SVG 2 presentation attributes (W3C SVG 2, "Presentation attributes"). A design choice beyond the probe (§10 SD95) |
+| Attributes, accessibility (3) | `aria-hidden`, `role`, `focusable` | WAI-ARIA attributes on SVG (W3C SVG 2) and the legacy `focusable` attribute. A design choice beyond the probe (§10 SD95) |
+
+| Never passes | Entries | Reason |
+|---|---|---|
+| Attributes | `href`, `xlink:href`, `style`, every `on*` attribute, every attribute whose value contains `url(` | They load content, run script or reference other nodes (§10 SD95) |
+| Elements | `script`, `style`, `foreignObject`, `use`, `a`, `image`, `defs`, `clipPath`, `mask`, `linearGradient`, `radialGradient`, `pattern` | They work through references or load content (§10 SD95) |
+
+**SVG injection acceptance**
+
+- A test SVG with `<script>`, `<foreignObject>`, `<a href="javascript:…">`, an `on*` attribute and a `style` attribute renders with all five removed, in Chromium, Firefox and WebKit.
+- A `<use href="#x">` element and a `fill="url(#x)"` attribute are removed.
+- A `g` element with `transform` and a `path` with `fill-rule="evenodd"` survive intact.
+- Lucide `house` renders intact.
+- A non-SVG document leaves the neutral C8 state.
+- An `SVGElement` returned by a custom resolver is inserted unchanged.
+- A page served with `require-trusted-types-for 'script'` and `trusted-types line-icon` renders the icon.
+- A page served with `require-trusted-types-for 'script'` and `trusted-types other` leaves `<line-icon>` in the neutral C8 state, with no uncaught error (§10 SD97).
 
 #### 6.C.4 Component contract table (C1–C20)
 
@@ -751,7 +839,7 @@ Column notes:
 | Task | Component | Deps | Spec file | Entry / tag | Tier and machine | Role placement | Form-assoc. | `agentExposed` | htmx row | The component spec still settles |
 |---|---|---|---|---|---|---|---|---|---|---|
 | C1 | Button | C21, C23, P7–P10 | `0002-button.md` | `./button` / `line-button` | Custom; press `idle → active` (§10 SD35) | Inner native `<button>`, host `aria-label` copied (§10 SD31) | Yes (ARCH §7; §10 SD36) | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Parts, slots, loading part (ARCH §13.1, §13.5); screen-reader pass of the named `generic` host (R8 §6 Q1, Q5) |
-| C2 | Icon | C21, C23, P7–P10, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); depends on C22 and OQ-C22 |
+| C2 | Icon | C21, C23, P7–P10, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); implements the §6.C.3 icon surface and SVG injection rule |
 | C3 | Stack | C21, C23, P7–P10 | `0018-stack.md` | `./stack` / `line-stack` | Static | — | No | `true` | `n/a` expected [INFERENCE] | List semantics for A2UI `List` (R8 §6 Q11) |
 | C4 | Separator | C21, C23, P7–P10 | `0011-separator.md` | `./separator` / `line-separator` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Orientation semantics (R8 §2.2) |
 | C5 | IconButton | C21, C23, P7–P10, G1, G5, C1 | `0003-icon-button.md` | `./icon-button` / `line-icon-button` | Custom; same machine as Button (ARCH §13.1) | Inner native `<button>` (§10 SD31) | No; `type="button"` only (§10 SD36) | `true` | Spec decides (plan §2.4) | Name sources it accepts (§6.C.5) |
@@ -974,7 +1062,11 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 
 - **Owner:** webcomponents-supervisor.
 - **Deps:** G1, G2, P5 (its registration harness, §10 SD40); R2 decided (plan §6).
-- **Changes:** `packages/line-genui/src/a2ui/` (session, surface, reconciler); the `@websublime/line-genui/a2ui` export; `line-genui` `dependencies`.
+- **Changes:**
+  - `packages/line-genui/src/a2ui/` (session, surface, reconciler); the `@websublime/line-genui/a2ui` export; `line-genui` `dependencies`.
+  - `packages/line-genui/custom-elements-manifest.config.mjs`, the `analyze` build step and the §4.1 manifest keys, so `line-genui` ships its own Custom Elements Manifest for `<line-a2ui-surface>` (§10 SD94).
+  - The surface's JSDoc documents its attributes and properties and carries `@fires` for `line-a2ui-action` and `line-a2ui-error` (§10 SD94, SD61).
+  - The `@websublime/line-genui/custom-elements.json` import in the P10 merge in `apps/storybook/.storybook/preview.ts`, and `packages/line-genui/custom-elements.json` in `.gitignore`.
 - **Status:** preview. The export may change in any minor release and sits outside the PRD §7.1 policy until it targets a final A2UI v1.0 (ARCH §17.7; PRD Appendix D).
 
 **Upstream pin**
@@ -1068,6 +1160,8 @@ Source: R6 §2.1; R6 §6 Q7.
 - A focused element keeps focus across a reorder and a reparent in Chromium, Firefox and WebKit.
 - The G4 stress test runs and its measured limits land through an AM.
 - `package.json` lists `@a2ui/web_core` as exactly `0.14.0`.
+- `verify-pack` fails when `custom-elements.json` is missing from the `line-genui` tarball (§10 SD94).
+- The Storybook API table for `<line-a2ui-surface>` renders its attributes, properties and both events from the merged manifest (§10 SD94).
 
 #### 6.G.5 G5 — CEM drift and coverage tests
 
@@ -1478,7 +1572,8 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 
 ### 7.3 Custom Elements Manifest
 
-- One manifest serves the G5 tests, Storybook and consumers. The `line-components` build emits it into the package (§10 SD26, D8).
+- Two manifests ship. The `line-components` build emits one into that package, and it serves the G5 tests, Storybook and consumers (§10 SD26, D8). The `line-genui` build emits one for `<line-a2ui-surface>` (§10 SD94).
+- Storybook loads one manifest merged from both by concatenating their `modules` arrays (§6.P.10; §10 SD94).
 - The analyser runs before the Storybook build, because `package.json:23` builds packages before apps (§10 SD26).
 - `line-components` ships it with a `customElements` field, a `files` entry and an `exports` key (D8; §4.2).
 - The analysis includes the `line-core` sources, because inheritance resolves by class name across the manifest (R4 §2.3).
@@ -1497,7 +1592,7 @@ Content rules (§10 SD61):
 | Per-item deprecation | Class- and member-level only | R4 OQ7 (a); §10 SD61 |
 
 - No analyser plugin beyond `litPlugin()` is added (§10 SD61).
-- `<line-a2ui-surface>` lives in `line-genui`. D8 names only `line-components`, so the shipped manifest does not cover it (§11 OQ-surface-manifest).
+- The G5 coverage test still covers `line-components` only. `<line-a2ui-surface>` has no descriptor (ARCH §17.3).
 
 ### 7.4 axe tier
 
@@ -1587,7 +1682,7 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | Zod split. The repo and `web_core` declare `zod ^3.25.76`, while Zod `latest` is 4.6.7 (plan §8) | Medium | High | Descriptors stay on the Zod 3 API (§6.G.1; R3 §2.2). The docs import ext-apps from `./app-with-deps`, so no Zod 4 peer enters a Zod 3 app (§6.G.7; §10 SD69) |
 | The TypeScript 7.x move breaks the toolchain (R11 blocker B1, TS2882) | Medium | High | P8 emits declarations with 7.x `tsc --emitDeclarationOnly` and adds ambient CSS module lines (§6.P.8, §7.1; §10 SD7) |
 | `line-components` inlines `line-core`, so consumers get two `LineElement` classes (R9 §2.1) | High | High | P9 derives `external` from each manifest before C1. The `instanceof` harness and the identity test run on the packed tarball (§6.P.9, §7.5; §10 SD2) |
-| The reference icon resolvers emit no icon in a consumer bundle (R10 P6) | High | Medium | C22 fixes them before C2 against the §6.C.3 acceptance contract. The mechanism waits on R10 round 2, row 00-Z47 (§11 OQ-C22) |
+| The icon origin is unavailable or blocked by CSP. The resolvers fetch each SVG, unpkg answers some calls with 500 and its 404 lacks CORS, and `connect-src` must list the origin (R10 round 2 §2.4, §2.6, §2.7) | Medium | Medium | `base` is required, so no third-party request happens unless the consumer sets it. The docs give a self-host recipe and the CSP note. Every failure leaves `<line-icon>` in the neutral C8 state (§6.C.3; §10 SD90, SD92) |
 | Repeated `updateProps` calls slow each machine down. One `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | C21 measures the host update rate per machine component and records a budget. It files the upstream Zag issue. A `line-core` `VanillaMachine` subclass replaces the props source only for components past the budget (§6.C.1; §10 SD18) |
 | Changesets bumps `line-genui` to a major when its peer `line-components` moves from 0.1 to 0.2 [INFERENCE: not probed in R9 §2.6] | Medium | High | P3 proves `0.2.0` for all nine packages in a dry run before the first `line-genui` release. On a major bump, P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` through an AM row (§6.P.3, §7.2) |
 | Shipped manifest module paths point at files the tarball lacks (R4 OQ5) | Medium | Medium | `files` ships `src`. P10 checks the module paths on the packed tarball (§6.P.10, §7.3) |
@@ -1693,8 +1788,8 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
   - Task: P4.
   - Check: the package settings show two trusted publishers and token publishing disallowed (§6.P.4).
 - [ ] *CDN delivery through unpkg and jsDelivr is verified against the contract the spec fixes (PRD §1.7).*
-  - Tasks: P6, D3.
-  - Check: `packages/line-components/__tests__/cdn.e2e.ts` passes on both paths, and the release PR records both runs (§7.7).
+  - Tasks: P6, C22, D3.
+  - Check: `packages/line-components/__tests__/cdn.e2e.ts` passes on both paths, and the release PR records both runs (§7.7). The C22 matrix test `packages/line-icons/__tests__/consumer-matrix.e2e.ts` renders icons in three bundlers and on both CDN paths in three engines (§6.C.3).
 - [ ] *The workspace builds, type-checks and emits declarations on TypeScript 7.x (O1). The Vite-built packages emit every `.d.ts` with 7.x `tsc --emitDeclarationOnly`, and the `tsc -b` packages with 7.x `tsc -b` (D1).*
   - Task: P8.
   - Check: `bun run build`, `bun --filter '@websublime/*' typecheck` and `verify-pack` exit 0; `tsc --version` prints 7.x (§6.P.8).
@@ -1719,7 +1814,7 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
 
 ## 10. Design Decisions
 
-Fork rows record Miguel's choice among options. Default rows record an orchestrator default that Miguel saw on 2026-10-20 and confirmed when he chose "proceed as proposed" at the end of round 4. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft. The Question column names the session id from the 00-Z46 decision record where one exists.
+Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows record orchestrator defaults that Miguel confirmed when he chose "proceed as proposed" at the end of round 4. Default R5 and R6 rows record orchestrator defaults shown to Miguel with their rounds, to which he raised no objection. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft, except SD96, which is pending. The Question column names the session id from the 00-Z46 decision record where one exists.
 
 | ID | Question | Decision | Rejected | Evidence | Origin | Status |
 |---|---|---|---|---|---|---|
@@ -1810,19 +1905,22 @@ Fork rows record Miguel's choice among options. Default rows record an orchestra
 | SD85 | In which order do `mcp-apps.css` and the `line-themes` CSS load? | `mcp-apps.css` loads after the `line-themes` CSS; the docs state the order; a G6 browser test checks it | Leaving the order unstated | `packages/line-themes/src/aliases.css:6-7`; §6.G.6 | Drafting | Approved 2026-10-20 |
 | SD86 | Which tasks must merge before each C1–C20 row? | The §6.C.4 Deps column. P7 lands before C1; C5 and C6 depend on C1; C11 depends on C10; C5–C20 depend on G1 and G5 | Only the plan §6 dependencies | plan §6; ARCH §13.1; §10 SD4, SD10 | Drafting | Approved 2026-10-20 |
 | SD87 | Which task owns the exit sweep and the Phase 1 retrospective? | Task Z3, owned by the main session, depending on every other Phase 1 row | No task row | plan §7.4, §10 step 7 (`docs/plans/01-plan-core-primitives.md:570`, `:614`) | Drafting | Approved 2026-10-20 |
-| SD88 | Q07: Decide the resolver loading mechanism now, or after more research? | R10 round 2 first (row 00-Z47); the mechanism settles OQ-C22 | Decide now from the contract; decide now on fetch-by-URL | R10 §3 P6, §6 Q3 | Fork R1 | Approved 2026-10-20 |
+| SD88 | Q07: Decide the resolver loading mechanism now, or after more research? | R10 round 2 first (row 00-Z47); settled by SD89–SD92 | Decide now from the contract; decide now on fetch-by-URL | R10 §3 P6, §6 Q3 | Fork R1 | Approved 2026-10-20 |
+| SD89 | Q07a: Which mechanism do the reference resolvers use? | Both the Lucide and Phosphor resolvers fetch the SVG from a base URL. It is the only probed mechanism that renders in Vite, esbuild and webpack builds and on the jsDelivr `+esm` and unpkg paths, for both sets and any name of the set. The entry is about 1 KB with no map, and each icon costs one request | Lucide literal `.mjs` map for the A2UI names plus fetch for Phosphor; full Lucide `.mjs` map plus fetch for Phosphor; template `import()` with consumer fixes; `?raw` map; `import.meta.glob` | R10 round 2 §2.2, §2.3, §2.6 | Fork R5 | Approved 2026-10-20 |
+| SD90 | Q07b: Who owns the base URL? | `base` is a required option of `createLucideResolver` and `createPhosphorResolver`. Without it the resolver rejects and `<line-icon>` stays neutral. No third-party request happens unless the consumer sets `base`. The docs show a jsDelivr URL pinned to the peer version and a self-host recipe | A default jsDelivr base | R10 round 2 §2.4, §2.6, §2.7, §6 Q4 | Fork R5 | Approved 2026-10-20 |
+| SD91 | Q07c: How does `<line-icon>` inject an SVG string? | `DOMParser` (`image/svg+xml`) plus an allowlist, behind a Trusted Types policy named `line-icon` created when `trustedTypes` exists. It covers resolver output and the `src` attribute. A non-SVG document leaves the neutral C8 state. SD95 sets the allowlist and the `SVGElement` rule; SD97 sets the policy guard | `innerHTML` with the policy and no filter; resolvers that return `SVGElement` | R10 round 2 §2.7, P13, P14 | Fork R5 | Approved 2026-10-20 |
+| SD92 | Q07d: What does a miss resolve to? | An unknown name, a 404, a CORS or CSP block, or a missing `base` makes the resolver reject. `<line-icon>` catches it and renders the neutral C8 state, and nothing reaches the consumer (Law 9). On the agent path the surface raises `line-a2ui-error` (§10 SD33) | Resolving to an empty value | R10 round 2 §2.4, §6 Q6; ARCH §17.2 C8 | Default R5 | Approved 2026-10-20 |
+| SD93 | Does the required `base` get a deprecation cycle? | No. `createLucideResolver()` and `createPhosphorResolver({ weight })` without `base` break in the C22 `minor`, recorded in its changeset (PRD §7.1 pre-1.0). Today's form renders no icon without consumer bundler configuration, and on neither CDN path | Keeping the old form deprecated for one minor | R10 round 2 §2.2, §2.6; PRD §7.1; `packages/line-icons/README.md:21-22` | Fork R6 | Approved 2026-10-20 |
+| SD94 | Where does the Storybook API documentation of `<line-a2ui-surface>` come from? | `line-genui` ships its own Custom Elements Manifest, with a `customElements` field, a `files` entry and a `./custom-elements.json` export. G4 adds the analyser config, the build step and the surface JSDoc with `@fires` for `line-a2ui-action` and `line-a2ui-error`. Storybook loads one manifest merged from both packages by concatenating their `modules` arrays. `verify-pack` check (a) covers the `line-genui` target. G5 coverage stays on `line-components` | Hand-written MDX for the surface API | plan §5.6 D8; R4 §2.7, §2.8; ARCH §17.3 | Fork R6 | Approved 2026-10-20 |
+| SD95 | Which elements and attributes pass the injection step, and what happens to an `SVGElement` result? | Strings (resolver output and `src`) pass a presentation allowlist of 9 elements (`svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon`) and 36 attributes (the 23 measured plus 10 SVG 2 presentation attributes and `aria-hidden`, `role`, `focusable`). `href`, `xlink:href`, `style`, `on*`, any value containing `url(`, and the elements `script`, `style`, `foreignObject`, `use`, `a`, `image`, `defs`, `clipPath`, `mask`, gradients and `pattern` never pass. An `SVGElement` from a consumer's resolver is inserted as is | The narrow Lucide/Phosphor list with `SVGElement` inserted directly; every result through the narrow list | R10 round 2 §2.7, P14; W3C SVG 2 presentation attributes; ARCH §11 | Fork R6 | Approved 2026-10-20 |
+| SD96 | Where does the C22 matrix test live, when do its pages run, and what does it add to the root manifest? | `packages/line-icons/__tests__/consumer-matrix.e2e.ts`. The bundler pages run in the Browser tier on a self-hosted base. The CDN-base pages run with P6 on `workflow_dispatch` and before each release (as SD25). Root `devDependencies` gain `webpack ^5.112.0` | Another path; running the CDN pages on every PR | R10 round 2 §2.1, §2.2; §10 SD25 | Drafting | Approved 2026-10-20 |
+| SD97 | What happens when the `line-icon` Trusted Types policy cannot be created? | The module creates the policy once behind a guard. If `createPolicy` throws, because the page's `trusted-types` list omits `line-icon` or a second module copy already created it, `<line-icon>` renders the neutral C8 state and nothing reaches the consumer as an error | Letting the `TypeError` propagate | R10 round 2 §2.7, P13; MANIFESTO Law 9; ARCH §17.2 C8 | Default R6 | Approved 2026-10-20 |
 
 ---
 
 ## 11. Open Questions
 
-| ID | Question | Options | Blocks | Evidence |
-|---|---|---|---|---|
-| OQ-C22 | How do the `line-icons` reference resolvers load icons in a consumer bundle? | The template `import()` with a documented import map or bundler plugin; one literal `import()` per mapped name; `import.meta.glob` per set; fetching the SVG from a consumer-set base URL | C22 and C2. No other task waits on it. The spec moves to APPROVED only after it is settled (§10 SD88) | R10 §3 P6, §6 Q3; R10 round 2, `docs/research/01-research-icon-round2.md` (row 00-Z47, pending) |
-| OQ-surface-manifest | Where do the G4 Storybook API docs for `<line-a2ui-surface>` come from? The element lives in `line-genui`, outside the manifest D8 ships (§7.3) | Hand-written MDX; a `line-genui` manifest | The G4 Storybook docs | plan §5.6 D8; §6.P.10; §7.3 |
-
-- `sideEffects: false` on `line-icons` stays unless the OQ-C22 answer needs a change (§4.3; R10 §6 Q4).
-- The `lucide-static` peer floor is re-checked by the C22 owner. The mapped names were checked against 1.16.0, 1.56.0 and 1.59.0, while `latest` is 1.60.0 (§4.3; R10 P4, P8; npm registry on 2026-10-20).
+None.
 
 ---
 
