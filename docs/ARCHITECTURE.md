@@ -12,11 +12,12 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
-- **v0.8.11 (2026-10-21)** — Aligned with PRD v0.8.25, with coherence review round 23 (ledger row `00-Z48`).
-  - §14.8 (State Reflection) writes the host attribute in the `reflectState` snippet with ``toggleAttribute(`data-${name}`, active)``, so a kebab-case state such as `focus-visible` from the state table maps verbatim. `this.dataset['focus-visible'] = ''` throws `SyntaxError` in Chromium (Phase 1 spec §6.C.2, AM-032; finding L3R23-09).
+- **v0.8.11 (2026-10-21)** — Aligned with PRD v0.8.25, with coherence review rounds 23 and 24 (ledger row `00-Z48`).
+  - §14.8 (State Reflection) writes the host attribute in the `reflectState` snippet with ``toggleAttribute(`data-${name}`, active)``, so a kebab-case state such as `focus-visible` from the state table maps verbatim. `this.dataset['focus-visible'] = ''` throws `SyntaxError` in Chromium (Phase 1 spec §6.C.2, AM-032; finding L3R23-09). The snippet keeps the guard on `states` (`states?.add`, `states?.delete`) that the `FormAssociated` override had (`packages/line-core/src/mixins/form-associated.ts:135`), so the data attribute is still set where internals have no custom states (`packages/line-core/__tests__/form-associated.test.ts:134-141`; Phase 1 spec AM-034; findings L2R24-04, L3R24-03).
   - §10 (Component File Structure) gives the path `packages/line-components/src/dialog/`, the package that Phase 1 spec §5 names (Phase 1 spec AM-032; finding L3R23-15).
   - §14.4 (Reset Module Contents) says that every component declares `reset.common.css` and that `LineElement` does not inject it, as §14.6 and `packages/line-core/src/line-element.ts:12-13` state (Phase 1 spec AM-032; finding L3R23-15).
   - §5 (CSS Parts Naming Convention) no longer gives "chip dismiss" as the `::part(remove)` example, because Chip carries no remove button (PRD v0.8.19; Phase 1 spec AM-032; finding L3R23-15).
+  - §14.3 (Modular CSS Reset) and §14.5 (Build Pipeline, the code comment and the Source row) give the path `packages/line-core/src/styles/`, the package that Phase 1 spec §5 names (Phase 1 spec AM-034; finding L3R24-04).
 - **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review rounds 5–12 (ledger row `00-Z48`, round-7 decision by Miguel on 2026-10-20).
   - §17.1 (Layers) says `line-components` is a peer loaded lazily through descriptor `load()`, and `line-icons` is a peer for the `A2uiIconMap` and `A2uiIconName` types only (`import type`; the shipped `.d.ts` references `@websublime/line-icons/a2ui`), never loaded at run time. The peer stays (Phase 1 spec §10 SD9, AM-008, AM-009; finding L3R5-01).
   - §11 (Icon System) says the global slot is created on first access (`setIconRegistry`, the `LineIcon.registry` getter or setter, or a `<line-icon>` connect), never at module load, so `define()` stays the only module-top side effect of `./icon` and the root defines and creates nothing (§12). The event on the slot's `events` target is `line-icon-registry-change` (Law 2 prefix), because it is a cross-copy, cross-version contract (Phase 1 spec AM-010; findings L3R5-02, L3R5-03).
@@ -622,7 +623,7 @@ The reset system is split into independent CSS files. Each file targets a specif
 **File structure:**
 
 ```
-packages/core/src/styles/
+packages/line-core/src/styles/
 ├── reset.common.css       ← ALL components get this (minimal)
 ├── reset.input.css        ← Components with <input> in shadow DOM
 ├── reset.button.css       ← Components with <button> in shadow DOM
@@ -974,7 +975,7 @@ th, td {
 The `.css` files are real, standalone, editable files in the repository. At build time, Vite inlines them as strings. The core package exports them as singleton `CSSStyleSheet` objects.
 
 ```typescript
-// packages/core/src/styles/index.ts
+// packages/line-core/src/styles/index.ts
 import commonCSS from './reset.common.css?inline';
 import inputCSS from './reset.input.css?inline';
 import buttonCSS from './reset.button.css?inline';
@@ -1010,7 +1011,7 @@ export const scrollbarReset = createSheet(scrollbarCSS);
 
 | Stage | What happens |
 |-------|-------------|
-| **Source** | Real `.css` files in `packages/core/src/styles/`. Editable, lintable, reviewable. |
+| **Source** | Real `.css` files in `packages/line-core/src/styles/`. Editable, lintable, reviewable. |
 | **Build** | Vite `?inline` reads each CSS file and embeds it as a JavaScript string constant. Tree-shaking removes unused modules. |
 | **Runtime** | `createSheet()` runs once per module (singleton). Creates a `CSSStyleSheet` object in memory. |
 | **Adoption** | Components declare resets in `static styles`. Lit merges them with component-specific styles into `adoptedStyleSheets`. |
@@ -1152,9 +1153,9 @@ protected reflectState(name: string, active: boolean) {
   // Data attribute (universal); toggleAttribute keeps a kebab-case name such as focus-visible verbatim
   this.toggleAttribute(`data-${name}`, active);
 
-  // CustomStateSet (modern)
-  if (active) this.#internals.states.add(name);
-  else this.#internals.states.delete(name);
+  // CustomStateSet (modern); the guard keeps the data attribute working where internals have no states
+  if (active) this.#internals.states?.add(name);
+  else this.#internals.states?.delete(name);
 }
 ```
 
