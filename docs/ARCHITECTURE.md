@@ -12,6 +12,9 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.12 (2026-10-21)** — Aligned with PRD v0.8.26, with coherence review round 30 (ledger row `00-Z48`).
+  - §17.3 (Descriptors and catalogs) gives Text inside a Button a `<span>`, as Phase 1 spec §10 SD59 sets (Phase 1 spec AM-040; finding L3R30-03).
+  - §12 (Bundle Splitting Rule, the side-effect contract) cites Phase 1 spec §4.3–§4.5, §10 SD4, SD5 on the sentence about the manifests that keep `"sideEffects"`, and Phase 1 spec §7.5, §10 SD4 on the harness sentence (Phase 1 spec AM-040; finding L3R30-07).
 - **v0.8.11 (2026-10-21)** — Aligned with PRD v0.8.25, with coherence review rounds 23 and 24 (ledger row `00-Z48`).
   - §14.8 (State Reflection) writes the host attribute in the `reflectState` snippet with ``toggleAttribute(`data-${name}`, active)``, so a kebab-case state such as `focus-visible` from the state table maps verbatim. `this.dataset['focus-visible'] = ''` throws `SyntaxError` in Chromium (Phase 1 spec §6.C.2, AM-032; finding L3R23-09). The snippet keeps the guard on `states` (`states?.add`, `states?.delete`) that the `FormAssociated` override had (`packages/line-core/src/mixins/form-associated.ts:135`), so the data attribute is still set where internals have no custom states (`packages/line-core/__tests__/form-associated.test.ts:134-141`; Phase 1 spec AM-034; findings L2R24-04, L3R24-03).
   - §10 (Component File Structure) gives the path `packages/line-components/src/dialog/`, the package that Phase 1 spec §5 names (Phase 1 spec AM-032; finding L3R23-15).
@@ -500,7 +503,7 @@ Icons are **orthogonal to the design system.** `@websublime/line-icons` is a sep
 
 **Umbrella package, not per-component packages (Manifesto Law 6).** All components ship inside a single `@websublime/line-components` package with **one version and one changelog**. Each component family or independent component is exposed as a **subpath export** in `package.json` — `@websublime/line-components/button`, `@websublime/line-components/dialog`, etc. There is no central barrel that imports every component; the root `"."` export is intentionally minimal (types and shared utilities only). This is **not** a Lerna-style "one package per component" layout — the umbrella keeps a single source of truth while subpath exports preserve tree-shaking and bundle isolation.
 
-**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. `line-components` and `line-genui` therefore omit the field and use the default Rolldown chunks; the other packages keep theirs. A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (Phase 1 spec §4.3–§4.5, §10 SD4, SD5).
+**Side-effect contract.** Each component file calls `customElements.define()` at module top — this is the **only** side-effect. Importing one component never imports or executes another. There is no barrel, so a consumer that imports one subpath pulls in only that subpath's module graph, and unused subpaths never enter the bundle. The `"sideEffects"` field does not provide this isolation, because listing a file keeps it in the bundle and an entry-file list drops registrations whose `define()` sits in a shared chunk. `line-components` and `line-genui` therefore omit the field and use the default Rolldown chunks; the other packages keep theirs (Phase 1 spec §4.3–§4.5, §10 SD4, SD5). A registration harness, an isolation scan and one esbuild consumer bundle verify the split on the packed tarball (Phase 1 spec §7.5, §10 SD4).
 
 **Shared runtime stays external.** The library builds keep `@websublime/*` external, so a consumer that imports `line-core` and a component gets one `LineElement` class. A copy of `line-core` inlined into `line-components` would give two classes, and `instanceof` would fail. Each build derives `external` from its manifest's `dependencies` and `peerDependencies`, so every bare specifier in `dist/` is declared (Phase 1 spec §10 SD2).
 
@@ -1553,7 +1556,7 @@ Coverage of the `basic` catalog grows by phase. An unmapped basic type renders a
 
 | A2UI basic component | line://ui target | Phase |
 |----------------------|------------------|-------|
-| Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant` | 1 |
+| Text | Native `<p>`, `<h1>`–`<h5>`, `<small>` by `variant`; `<span>` inside Button (Phase 1 spec §10 SD59) | 1 |
 | Image | Native `<img>` behind the URL policy; `variant: "avatar"` → Avatar | 1 |
 | Icon | `<line-icon>`. The surface maps the A2UI icon name through its `iconMap` property, an `A2uiIconMap` that the consumer fills with `a2uiIconMap(set, { library })` from `@websublime/line-icons/a2ui` (Phase 1 spec AM-006, decision D-M; AM-008; shape in §17.4). A2UI also accepts `{ "svgPath": … }`. The surface renders it through the `<line-icon>` `path` property (Phase 1 spec §10 SD33) | 1 |
 | Video, AudioPlayer | Native `<video>` and `<audio controls>` | 1 |
