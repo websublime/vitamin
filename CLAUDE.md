@@ -45,10 +45,13 @@ line-ui/
 └── biome.json · tsconfig.base.json · postcss.config.mjs · vite.config.shared.mjs · bun-test-preload.ts · bunfig.toml
 ```
 
-The ledger `docs/plans/00-tasks-design-system.md` says what exists and what is pending; read it before deciding
-what to delegate. Root scripts: `bun run lint`, `bun run build`, `bun run changeset`, `bun run status`. Tests
-run per package with `bun test packages/<name>` for packages that have test files (root `bun run test` covers
-only the CSS packages); `docs/PROCESS.md` §5 defines the full Verify record.
+The ledger `docs/plans/01-tasks-core-primitives.md` says what exists and what is pending in Phase 1, by stream:
+G agent-driven UI, P platform and release, C core primitives, D documentation, S site, Z repo-wide (owners in
+plan §4.0). The Phase 00 ledger `docs/plans/00-tasks-design-system.md` keeps its open rows (`00-Z29`, blocked).
+Read the ledgers before deciding what to delegate. Root scripts: `bun run lint`, `bun run build`,
+`bun run changeset`, `bun run status`. Tests run per package with `bun test packages/<name>` for packages that
+have test files (root `bun run test` covers only the CSS packages); `docs/PROCESS.md` §5 defines the full Verify
+record.
 
 ## Agents
 

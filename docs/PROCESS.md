@@ -77,11 +77,13 @@ the heavier one, and a class only ever moves up mid-task.
   edits files directly only for the `trivial` class and for the ledger row flips that §6 assigns to it. Every
   other file change goes to an agent.
 - **Repo agents** (`.claude/agents/`): `sdlc` runs the whole loop for one request when dispatched;
-  `webcomponents-supervisor` implements streams C, D, E, G, H (packages, components, tokens, Storybook docs);
-  `infra-supervisor` implements streams A, B, F (workspace, CI, hooks, release); `git-workflow-manager` owns the
-  track step. **Harness agents:** `scout` for read-only research, `reviewer` and `security-reviewer` for the
-  gates. When a harness agent is not mounted, a fresh general subagent runs the same §5 checklist and the PR
-  body names which agent ran.
+  `webcomponents-supervisor` implements packages, components, `line-genui`, Storybook docs and site content, and
+  `infra-supervisor` implements workspace, build wiring, CI, hooks and release. The phase plan §4.0 names the
+  accountable supervisor of each stream (Phase 1: streams C, G, D, S → `webcomponents-supervisor`; stream P →
+  `infra-supervisor`), and the ledger row's Owner repeats it. `git-workflow-manager` owns the track step.
+  **Harness agents:** `scout` for read-only research, `reviewer` and `security-reviewer` for the gates. When a
+  harness agent is not mounted, a fresh general subagent runs the same §5 checklist and the PR body names which
+  agent ran.
 - **Models.** The main session runs on whatever model the developer selects. The supervisors run on Opus
   (frontmatter `model:`); `git-workflow-manager` on Sonnet; `sdlc` inherits the session model. The harness
   agents `reviewer`, `security-reviewer`, `scout`, `sonic` run on Opus through the repo-scoped
@@ -89,11 +91,15 @@ the heavier one, and a class only ever moves up mid-task.
 - **`sdlc` waits by returning.** A subagent has no channel to Miguel. "Wait for Miguel" means return to the
   caller with the phase reached, the class, and the proposal or question; the caller relays, then re-dispatches
   `sdlc` with the answer and the state. The two gate iterations in §5 do not need Miguel; the escalation does.
-- **One implementer per task, on the task branch, in the shared working tree.** Parallel writers are allowed
-  only when their code file sets do not overlap, each on its own branch in its own worktree. The ledger is
-  exempt from the overlap rule; on a ledger conflict keep both rows and never re-flip a row you do not own.
-  Two agents never write the same branch. Agents write files and return short summaries; finding lists stay
-  bounded (~12).
+- **One accountable implementer per task, on the task branch, in the shared working tree.** The phase spec's
+  file-class table (Phase 1 spec §4) decides which supervisor edits each class of file. When a task touches a
+  class the table gives the other supervisor, the orchestrator (main session or `sdlc`) dispatches that
+  supervisor for those classes, one after the other on the same task branch; the second dispatch adds no
+  changeset entry, and the accountable supervisor writes the changeset entry last, after the other dispatch
+  returns (§6). Parallel writers are allowed only when their code file sets do not overlap, each on its own
+  branch in its own worktree. The ledger is exempt from the overlap rule; on a ledger conflict keep both rows
+  and never re-flip a row you do not own. Two agents never write the same branch at the same time. Agents
+  write files and return short summaries; finding lists stay bounded (~12).
 - **Understand opens at the code graph.** The graph is the `codebase-memory` MCP server in `.mcp.json`;
   `index_status` takes one required argument, `project` = the repository root path, and reports readiness
   plus the sha it was built at; `index_repository` rebuilds it for the main checkout — never for a throwaway
@@ -135,8 +141,9 @@ Gates are proportional to the class. A phase is not locked until its gate passes
   and the next number in its stream (highest existing + 1; gaps stay). Off-plan work joins the stream it
   touches; repo-wide work, process work, and `trivial` changes use stream `Z`. A bug against a `done` row is a
   new row whose `Deps` names the original; `done` never reopens.
-- **Row flips have one owner each.** The orchestrator flips `todo → in_progress` in the first commit on the
-  new branch. `git-workflow-manager` flips `in_progress → in_review` with the PR number when it opens the PR,
+- **Row flips have one owner each.** The orchestrator (main session or `sdlc`) flips `todo → in_progress` in
+  the first commit on the new branch, and flips a `blocked` row to `todo` once the outside event it waits on
+  has happened. `git-workflow-manager` flips `in_progress → in_review` with the PR number when it opens the PR,
   and flips any row whose PR has merged since to `done`. The merge itself is the done signal.
 - **Branch off `main`, never commit to `main`.** The orchestrator creates the branch, named
   `<type>/<NN>-<id>-<slug>` in lowercase (`feat/00-d4-direction-mixin`, `docs/00-z3-am-022-reset-sheets`).
@@ -148,10 +155,11 @@ Gates are proportional to the class. A phase is not locked until its gate passes
   `agents`, `skills`, `docs`, `ci`, `hooks`, `repo`. The body names the row id (`00-D4`). A spec amendment
   commit precedes the code that depends on it. The implementer pushes the branch when its run ends, so nothing
   is stranded locally; it never opens the PR.
-- **Changeset before the PR, every branch.** The implementer's last step before handing off is
-  `bun run changeset`: pick every published package the branch changed (`src`, build or exports config,
-  dependencies) and the semver bump — `patch` for fixes, `minor` for new capability, `major` for a breaking
-  contract — and write a one-line consumer-facing summary. A branch that changed no published package runs
+- **Changeset before the PR, every branch.** The accountable implementer's last step before handing off, after
+  any dispatch of the other supervisor on the branch has returned (§4), is `bun run changeset`: pick every
+  published package the branch changed (`src`, build or exports config, dependencies) and the semver bump —
+  `patch` for fixes, `minor` for new capability, `major` for a breaking contract — and write a one-line
+  consumer-facing summary. A branch that changed no published package runs
   `bun run empty` instead, so every PR carries a file under `.changeset/`. `bun run status` shows what the
   branch will bump. No changeset file, no PR. Once a phase's minor release has shipped, further changesets in that phase use
   `patch`, even for new capability, so the next minor stays the next phase's version (PRD §7.1, §6.5). This is
