@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
 
 // Shared Vite library-mode config factory (§6.F.2).
 // Consumed by `@websublime/line-core` and `@websublime/line-components`.
+// Vite emits the JavaScript; each package's `build` script runs
+// `tsc --emitDeclarationOnly` for the `.d.ts` files (AM-074).
 //
 // Usage in a package's vite.config.mjs:
 //   import shared from '../../vite.config.shared.mjs';
@@ -19,8 +20,9 @@ export default function shared(pkg) {
         // Rolldown reads Rollup-shaped config
         external: [/^lit/, /^@zag-js\//],
       },
+      // Watch rebuilds keep dist/, so the `tsc --watch` declarations survive (§7.1; §12 AM-006, L2R3-04).
+      emptyOutDir: !process.argv.includes('--watch'),
       sourcemap: true,
     },
-    plugins: [dts({ outDir: 'dist', tsconfigPath: './tsconfig.json' })],
   });
 }
