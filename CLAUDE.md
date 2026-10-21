@@ -20,10 +20,10 @@ Foundation documents live in `docs/`. Read the section a task needs; only the sh
 
 ## Tech Stack
 
-- **Language:** TypeScript 5+ (strict, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`)
+- **Language:** TypeScript 7.x (strict, `verbatimModuleSyntax`, `exactOptionalPropertyTypes`)
 - **Runtime / workspaces:** Bun 1.4+ (`bun --filter`), `.bun-version` pinned
 - **Libraries:** Lit 3+, Zag.js (`@zag-js/core`, `@zag-js/vanilla`), Zod, `@radix-ui/colors`
-- **Build:** Vite 8 (Rolldown) for runtime packages, `tsc -b` for TS-only packages, PostCSS pipeline for CSS packages
+- **Build:** Vite 8 (Rolldown) plus `tsc --emitDeclarationOnly` declarations for runtime packages, `tsc -b` for TS-only packages, PostCSS pipeline for CSS packages
 - **Quality:** Biome (lint + format), `scripts/lint-layers.mjs` (cross-layer dependency guard), `.githooks/` (pre-commit runs `biome check --staged`)
 - **Tests:** `bun test` on happy-dom (`bun-test-preload.ts`), `@open-wc/testing-helpers`; Playwright real-browser tier (`playwright.config.ts`, `bun run e2e`)
 - **Docs:** Storybook 10 (`apps/storybook`, web-components-vite + CEM analyser); Astro 7 site (`apps/site`); both deploy to Cloudflare Pages

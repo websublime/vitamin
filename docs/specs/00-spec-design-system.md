@@ -71,7 +71,7 @@ The following are explicitly **out of scope** for Phase 00 and must not be intro
 │  ├── Biome 2.x             (lint + format)                                 │
 │  ├── Vite 8+               (component bundler, Rolldown 1.x default)       │
 │  ├── PostCSS 8.5+          (design-system CSS pipeline)                    │
-│  ├── TypeScript 5.x        (types + dual emission)                         │
+│  ├── TypeScript 7.x        (types + dual emission)                         │
 │  ├── Changesets 2.x        (versioning + publish, snapshot/canary)         │
 │  └── Playwright 1.60+      (browser-tier tests, snapshots)                 │
 └────────────────────────────────────────────────────────────────────────────┘
@@ -437,11 +437,10 @@ Root `package.json` `build` script is `"bun --filter './packages/*' build && bun
 | `lit` | `^3.3.3` | R4 |
 | `vite` | `^8.3.4` | R5 round-2; AM-064 |
 | `rolldown` | bundled with Vite 8 (Vite 8.3.4 depends on `~1.2.12`) | R5 round-2; AM-064 |
-| `vite-plugin-dts` | `^5.1.2` (devDependency) | required by §6.F.2 `vite.config.shared.mjs` and §7.1 matrix; Vite 8 compatible (AM-005, AM-064) |
 | `@radix-ui/colors` | `^3.0.0` | R1 |
 | `@zag-js/core` | `^1.46.0` | R3; AM-064 |
 | `@zag-js/vanilla` | `^1.46.0` | R3 / C4 round-2; AM-064 |
-| `typescript` | latest 5.x | trivial |
+| `typescript` | `^7.0.2` | trivial; AM-074 |
 | `tslib` | latest 2.x | required by §7.1 `importHelpers: true` (AM-002) |
 | `postcss` | `^8.5.30` | R6 round-2; AM-064 |
 | `postcss-cli` | `^11.0.1` (devDependency) | required by §6.B B4 build commands for `line-tokens` / `line-colors` / `line-themes`; PostCSS 8 compatible (AM-005, AM-064) |
@@ -548,6 +547,7 @@ This is **not active configuration**; it is documented in `docs/runbooks/bundler
 | AM-071 | 2026-10-14 | ledger `00-Z30` (factual correction; Phase 1 plan O4.c, Miguel chose an own row of class `amendment` on 2026-10-13) | One §6.F.5 edit to the publish path step 4 rationale. The old sentence said that Bun 1.3.14 fills `workspace:` ranges from the versions in `bun.lock` and cited oven-sh/bun#18906. The new text says that `bun pm pack` fills `workspace:` ranges from the versions recorded in `bun.lock` and that `changeset version` does not update `bun.lock`. It adds that CI installs with `--frozen-lockfile`, which accepts the stale versions, so a pack without the staging would ship stale ranges. It notes that a plain `bun install` refreshes those versions since the fix in Bun 1.4.1 (oven-sh/bun#18906). The publisher design is unchanged. | The repository runs Bun 1.4.3 since AM-064. The behaviour the staging works around persists on 1.4.3. The #18906 citation described a bug that a newer Bun fixed, so the sentence now names what still holds. | On `5d0f3e8`, `bun.lock` records line-colors 0.1.2, line-core 0.1.0 and line-tokens 0.1.2, while their `package.json` files say 0.1.3, 0.1.1 and 0.1.3. Version PR #254 (`f14dcb6`) bumped the manifests and left `bun.lock` alone. Two independent probes on Bun 1.4.3 used a clean `git archive` copy with `git init`. `bun install --frozen-lockfile` exits 0 with the stale versions. An in-place `bun pm pack` exits 0. The line-components tarball ships `line-core ^0.1.0` and `line-tokens ^0.1.2`. The line-themes tarball ships `line-colors ^0.1.2`. A plain `bun install` exits 0 and rewrites the three `bun.lock` versions to the `package.json` versions. A pack after it ships `^0.1.1`, `^0.1.3` and `^0.1.3`. `gh issue view 18906 -R oven-sh/bun` reports it CLOSED on 2026-09-04. `gh pr view 41302 -R oven-sh/bun` reports `install: one workspace-link rule so bun.lock reloads match package.json`, MERGED on 2026-09-04 as `f942cb0`. A tag compare places that commit after `bun-v1.4.0` and inside `bun-v1.4.1`. |
 | AM-072 | 2026-10-19 | ledger `00-Z41` (decision — Miguel chose syncing `bun.lock` in the Version PR while keeping the staging, over the staging only and over syncing and packing in place without the staging, reversing the AM-036 rejection of a `version:` hook that syncs `bun.lock`) | Four edits, three in §6.F.5 and one in §7.2; the staging, the guard checks (a)–(e) and the snapshot workflows are unchanged. (1) The `release.yml` block: the `changesets/action` step gains `version: bun run version`. (2) The publish path scripts block lists the root `version` script, `changeset version && bun install --ignore-scripts`, and the sentence before it says three scripts. (3) The publish path step 4 rationale no longer says that the publish path runs no `bun install`. It says that the root `version` script syncs `bun.lock` in the Version PR and that the staging still covers the snapshot path, whose versions exist only in the job's working tree, and any state where `bun.lock` lags the manifests. (4) The §7.2 release bullet adds that the root `version` script syncs `bun.lock` in the Version PR. | Version PR #254 (`f14dcb6`) bumped the manifests and left `bun.lock` stale on `main`. On Bun 1.4.1 and later a plain `bun install` syncs the workspace versions without lockfile text surgery, which removes the AM-036 objection. `changesets/action` v1.9.0 runs the `version` input instead of `changeset version` and commits every working-tree change into the Version PR. `--ignore-scripts` keeps lifecycle scripts out of the release job, which holds `contents: write` and `id-token: write` (AM-067). The staging stays because the snapshot path never syncs `bun.lock` and guard (e) cannot see a lagging floor, because 0.1.1 satisfies `^0.1.0`. | `docs/context/00-z41.md`. The changesets/action source at `a45c4d5`, `src/run.ts` `runVersion` and `src/git.ts` `pushChanges`. A clean-copy probe on 2026-10-19, on Bun 1.4.3, of `bb94d7c` (`git archive`, `git init`, `HOME` in a temp directory). `bun install --frozen-lockfile` exits 0. `bun install --ignore-scripts` exits 0 and changes only three `bun.lock` lines, the workspace versions of line-colors 0.1.2 → 0.1.3, line-core 0.1.0 → 0.1.1 and line-tokens 0.1.2 → 0.1.3. With a throwaway patch changeset for `@websublime/line-utils`, left uncommitted, and the new `version` script, `bun run version` exits 0 without `GITHUB_TOKEN`. A committed changeset makes `@changesets/changelog-github` ask for `GITHUB_TOKEN`, which CI sets in the release step. It bumps line-utils 0.1.0 → 0.1.1 in its `package.json`, `CHANGELOG.md` and `bun.lock` workspace entry, changes no other `bun.lock` line, consumes the ten pending empty changesets, and bumps no dependent, because `workspace:^` in line-components still holds. Then `bun install --frozen-lockfile` and `bun install` exit 0 with no further diff. The packages build exits 0, `scripts/verify-pack.mjs` exits 0 (8 packages, 0 failures), and `bun run release --dry-run` exits 0 with only line-utils 0.1.1 to publish. `actionlint` v1.7.12 exits 0 on the edited `release.yml` block. |
 | AM-073 | 2026-10-20 | ledger `00-Z45` (factual correction from research notes R4, R7 and R12) | Seven edits, no design change. (1) §6.F.1 `main.ts` block: the `viteFinal` comment "CEM consumed automatically when customElements.json is present at the project root" now says that Storybook loads the manifest only when `preview.ts` calls `setCustomElementsManifest`, which Phase 00 does not. (2) §6.F.1 CEM analyser paragraph: "Phase 00 produces an empty manifest; Phase 1 starts populating it" now says that the glob covers every package, so the analyser emits each module, and `LineElement` appears as `customElement: true`. (3) §7.3: "Phase 00 emits an empty manifest (no components)" gets the same correction. (4) §6.F.6 `apps/site` tree: it gains `README.md` and `tsconfig.json`, and the `package.json` comment reads `"astro": "^7.3.8"`, matching the §6.A.3 row. (5) §6.D.6 `machine/index.ts` block: the comment "The four PUBLIC primitives of @zag-js/vanilla" now names the re-exports and says that `toStyleString` is left out. (6) §6.D.6 `bindable` paragraph: "exports exactly four names" now says that `@zag-js/vanilla` exports five values since 1.44.0, `toStyleString` among them. (7) §9.3 checklist: "re-exports exactly four `@zag-js/vanilla` primitives" now lists `VanillaMachine`, `normalizeProps`, `spreadProps`, `mergeProps` and the `Attrs` type, and says that `toStyleString` is left out. | The spec stated a Storybook auto-load and an empty manifest that the repo never had. Its site tree omitted two files and gave a looser Astro range than §6.A.3. It also called the re-exported names the four public primitives of `@zag-js/vanilla`, which has exported a fifth value, `toStyleString`, since 1.44.0. The Phase 1 plan revision (row `00-Z45`, decision D8) schedules the Storybook wiring, and the repo comments in `apps/storybook/.storybook/main.ts:24` and `custom-elements-manifest.config.mjs:4–6` move with that task. Plan task C21 corrects the same wording in `packages/line-core/README.md:10` and `packages/line-core/src/machine/index.ts:2`. | `docs/research/01-research-custom-elements-manifest.md` §5 items 2 and 3 (probe P2 emits 24 modules with `LineElement` as `customElement: true`; `preview.ts` never calls `setCustomElementsManifest`; `checks.yml` analyses after the Storybook build); `docs/research/01-research-site-dogfooding.md` §5; `apps/site/` holds `README.md` and `tsconfig.json`, and `apps/site/package.json` declares `"astro": "^7.3.8"`; `docs/research/01-research-zag-machines.md` §2.5 and §5 C6 (`@zag-js/vanilla` 1.46.0 exports `mergeProps`, `normalizeProps`, `toStyleString`, `spreadProps` and `VanillaMachine`); `packages/line-core/src/machine/index.ts` re-exports `mergeProps`, `normalizeProps`, `spreadProps`, `VanillaMachine` and type `Attrs`. |
+| AM-074 | 2026-10-21 | ledger `01-P8` (decision — Miguel chose TypeScript 7.x `tsc --emitDeclarationOnly` over `vite-plugin-dts` for the Vite-built declarations, Phase 1 plan D1 on 2026-10-20; Phase 1 spec §10 SD7) | Seven edits. (1) §3 diagram: `TypeScript 5.x` → `TypeScript 7.x`. (2) §6.A.3: the `vite-plugin-dts` row (`^5.1.2`, devDependency) is removed. (3) §6.A.3 `typescript` row: `latest 5.x` → `^7.0.2`. (4) §6.B `line-core` row: `.d.ts via vite-plugin-dts` → `.d.ts` via TypeScript 7.x `tsc --emitDeclarationOnly`. (5) §6.F.2 `vite.config.shared.mjs` block: the `dts` import and plugin are dropped and `build` gains `emptyOutDir: !process.argv.includes('--watch')`. (6) §7.1 `emitDeclarationOnly` note: the base still omits it because the three `tsc -b` packages need JS emit; the two Vite-built packages pass `--emitDeclarationOnly` on the `tsc` command line in `build`. (7) §7.1 matrix: `vite build (+ vite-plugin-dts)` → `vite build` + `tsc --emitDeclarationOnly` for `line-core` and `line-components`. | `vite-plugin-dts` has no TypeScript 7.x path; on 7.x it needs the `@typescript/typescript6` fallback, so its declarations would come from 6.0.3. TypeScript 7.0.2 `tsc --emitDeclarationOnly` writes the same `.d.ts` file set (probe P-T). | `docs/research/01-research-typescript-7.md` (R11) §2.7, §2.8, §6 OQ1 (d); Phase 1 spec §6.P.8, §7.1 |
 
 **A4 — npm scope.**
 
@@ -607,7 +607,7 @@ Allowed edges (downward only):
 | `line-schemas` | `tsc -b` | `.js` + `.d.ts` |
 | `line-themes` | same PostCSS pattern; **inputs are generated** | role mappings + barrels |
 | `line-utils` | `tsc -b` | `.js` + `.d.ts` |
-| `line-core` | `vite build` (library mode) | `.js` ESM + `.d.ts` via `vite-plugin-dts` |
+| `line-core` | `vite build` (library mode) | `.js` ESM + `.d.ts` via TypeScript 7.x `tsc --emitDeclarationOnly` (AM-074) |
 | `line-components` | `vite build` (no-op until Phase 1) | empty `index.js` |
 | `line-icons` | `tsc -b` | `.js` + `.d.ts` |
 
@@ -1667,7 +1667,6 @@ export default config;
 
 ```js
 import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
 
 export default function shared(pkg) {
   return defineConfig({
@@ -1680,9 +1679,10 @@ export default function shared(pkg) {
       rollupOptions: {                        // Rolldown reads Rollup-shaped config
         external: [/^lit/, /^@zag-js\//]
       },
+      // Watch rebuilds keep dist/, so the `tsc --watch` declarations survive (AM-074).
+      emptyOutDir: !process.argv.includes('--watch'),
       sourcemap: true
-    },
-    plugins: [dts({ outDir: 'dist', tsconfigPath: './tsconfig.json' })]
+    }
   });
 }
 ```
@@ -2447,7 +2447,7 @@ The decision is genuine — the spec does not pre-commit either outcome.
 Notes on the base config:
 
 - `importHelpers: true` requires `tslib` to be installed as a root devDependency of the monorepo (added to the §6.A.3 dependency set). All packages inherit the flag and resolve `tslib` through workspace hoisting.
-- `emitDeclarationOnly` is intentionally **absent** from the base. No package in §6.B needs declaration-only emit; the three `tsc -b` packages (`line-schemas`, `line-utils`, `line-icons`) require JS emit alongside `.d.ts`. Setting it in the base would silently break their builds.
+- `emitDeclarationOnly` is intentionally **absent** from the base. The three `tsc -b` packages (`line-schemas`, `line-utils`, `line-icons`) require JS emit alongside `.d.ts`, so setting it in the base would silently break their builds. The two Vite-built packages (`line-core`, `line-components`) pass `--emitDeclarationOnly` on the `tsc` command line in their `build` script instead (AM-074).
 - `esModuleInterop` is intentionally **absent**. `verbatimModuleSyntax: true` enforces explicit `import type` / value-import discipline, which makes interop shimming unnecessary and would otherwise mask invalid import shapes.
 - `noUnusedParameters` and `noUnusedLocals` are kept in the TypeScript base **in addition to** Biome's equivalents. Biome runs in the editor and pre-commit hook; `tsc --noEmit` runs as an independent CI gate. The redundancy is deliberate — it preserves `tsc --noEmit` as a defense-in-depth signal that does not depend on Biome being green.
 
@@ -2465,8 +2465,8 @@ Every package's `tsconfig.json` extends `../../tsconfig.base.json` and sets the 
 | `line-schemas` | `tsc -b` | `"composite": true`, `"exclude": ["tests/**","dist/**"]` |
 | `line-utils` | `tsc -b` | `"composite": true`, `"exclude": ["tests/**","dist/**"]`, `"references": [{ "path": "../line-schemas" }]` |
 | `line-icons` | `tsc -b` | `"composite": true`, `"exclude": ["tests/**","dist/**"]` |
-| `line-core` | `vite build` (+ `vite-plugin-dts`) | `"noEmit": true`, `"exclude": ["tests/**","dist/**"]` |
-| `line-components` | `vite build` (+ `vite-plugin-dts`) | `"noEmit": true`, `"exclude": ["tests/**","dist/**"]` |
+| `line-core` | `vite build` + `tsc --emitDeclarationOnly` (AM-074) | `"noEmit": true`, `"exclude": ["tests/**","dist/**"]` |
+| `line-components` | `vite build` + `tsc --emitDeclarationOnly` (AM-074) | `"noEmit": true`, `"exclude": ["tests/**","dist/**"]` |
 
 Two invariants govern this matrix:
 

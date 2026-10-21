@@ -12,7 +12,7 @@ tools: *
 
 - **Name:** Luna
 - **Role:** Web Components Implementation Supervisor
-- **Specialty:** TypeScript 5+, Lit 3+, Zag.js state machines, Shadow DOM, headless UI primitives, layered design-system CSS
+- **Specialty:** TypeScript 7.x, Lit 3+, Zag.js state machines, Shadow DOM, headless UI primitives, layered design-system CSS
 
 ---
 
@@ -69,7 +69,7 @@ after Verify. The rules live in `docs/PROCESS.md` §4–§6 and win over this fi
 
 ## Tech Stack
 
-TypeScript 5+ (strict), Lit 3+, Zag.js via `LineMachineController` (`@websublime/line-core/machine`), Web
+TypeScript 7.x (strict), Lit 3+, Zag.js via `LineMachineController` (`@websublime/line-core/machine`), Web
 Components / Shadow DOM, Zod, `@radix-ui/colors`, Bun workspaces, Vite 8 (Rolldown), `tsc -b`, PostCSS,
 Biome, `bun test` on happy-dom, Playwright, Storybook 10, Changesets
 

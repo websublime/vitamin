@@ -108,7 +108,8 @@ function isInspectorEnabled(): boolean {
  *
  * On disconnect the listener, dialog, and outline sheet are torn down so the
  * active path leaks nothing. The file path, export name, and generic signature
- * are stable so `vite-plugin-dts` emits a deterministic `.d.ts` (D1 constraint).
+ * are stable so TypeScript 7.x `tsc --emitDeclarationOnly` emits a
+ * deterministic `.d.ts` (D1 constraint).
  *
  * @see docs/specs/00-spec-design-system.md §6.D.2
  */
