@@ -1,5 +1,14 @@
 # @websublime/line-components
 
+## 0.1.1
+
+### Patch Changes
+
+- [#283](https://github.com/websublime/line-ui/pull/283) [`3a04024`](https://github.com/websublime/line-ui/commit/3a04024cbb2eeab2f3b7b832c41e5d66b5749d31) Thanks [@miguelramos](https://github.com/miguelramos)! - Type declarations are now emitted by TypeScript 7 `tsc --emitDeclarationOnly` instead of `vite-plugin-dts`; no API change.
+
+- Updated dependencies [[`3a04024`](https://github.com/websublime/line-ui/commit/3a04024cbb2eeab2f3b7b832c41e5d66b5749d31)]:
+  - @websublime/line-core@0.1.2
+
 ## 0.1.0
 
 ### Minor Changes
