@@ -1,6 +1,6 @@
 # line://ui — Architecture
 
-**Date:** 2026-10-20
+**Date:** 2026-10-21
 **Status:** APPROVED
 **Maintenance:** Living document — updated as architectural decisions evolve.
 **Source:** Extracted from PRD v0.8.3 §3 (Component Architecture) and §9 (Design System — Layered Package Model). Aligned with Manifesto Laws 2, 6, 7, 10 (revised 2026-05-19).
@@ -12,6 +12,11 @@ This document captures the **cross-cutting architectural decisions** that apply 
 
 ## Revision Notes
 
+- **v0.8.11 (2026-10-21)** — Aligned with PRD v0.8.25, with coherence review round 23 (ledger row `00-Z48`).
+  - §14.8 (State Reflection) writes the host attribute in the `reflectState` snippet with ``toggleAttribute(`data-${name}`, active)``, so a kebab-case state such as `focus-visible` from the state table maps verbatim. `this.dataset['focus-visible'] = ''` throws `SyntaxError` in Chromium (Phase 1 spec §6.C.2, AM-032; finding L3R23-09).
+  - §10 (Component File Structure) gives the path `packages/line-components/src/dialog/`, the package that Phase 1 spec §5 names (Phase 1 spec AM-032; finding L3R23-15).
+  - §14.4 (Reset Module Contents) says that every component declares `reset.common.css` and that `LineElement` does not inject it, as §14.6 and `packages/line-core/src/line-element.ts:12-13` state (Phase 1 spec AM-032; finding L3R23-15).
+  - §5 (CSS Parts Naming Convention) no longer gives "chip dismiss" as the `::part(remove)` example, because Chip carries no remove button (PRD v0.8.19; Phase 1 spec AM-032; finding L3R23-15).
 - **v0.8.10 (2026-10-20)** — Aligned with PRD v0.8.24, with coherence review rounds 5–12 (ledger row `00-Z48`, round-7 decision by Miguel on 2026-10-20).
   - §17.1 (Layers) says `line-components` is a peer loaded lazily through descriptor `load()`, and `line-icons` is a peer for the `A2uiIconMap` and `A2uiIconName` types only (`import type`; the shipped `.d.ts` references `@websublime/line-icons/a2ui`), never loaded at run time. The peer stays (Phase 1 spec §10 SD9, AM-008, AM-009; finding L3R5-01).
   - §11 (Icon System) says the global slot is created on first access (`setIconRegistry`, the `LineIcon.registry` getter or setter, or a `<line-icon>` connect), never at module load, so `define()` stays the only module-top side effect of `./icon` and the root defines and creates nothing (§12). The event on the slot's `events` target is `line-icon-registry-change` (Law 2 prefix), because it is a cross-copy, cross-version contract (Phase 1 spec AM-010; findings L3R5-02, L3R5-03).
@@ -269,7 +274,7 @@ Because `accent` and `gray` namespaces are independent, multiple colour contexts
 ::part(clear)       /* Clear/dismiss button */
 ::part(increment)   /* Increment stepper */
 ::part(decrement)   /* Decrement stepper */
-::part(remove)      /* Remove button (e.g., chip dismiss) */
+::part(remove)      /* Remove button (e.g., dismiss of a removable item) */
 ::part(overflow)    /* Overflow indicator (e.g., avatar group +N) */
 ```
 
@@ -443,7 +448,7 @@ The Field is the orchestrator that connects labels, hints, errors, and required 
 ## 10. Component File Structure
 
 ```
-packages/components/src/dialog/
+packages/line-components/src/dialog/
 ├── dialog.ts              ← <line-dialog> root
 ├── dialog-trigger.ts      ← <line-dialog-trigger>
 ├── dialog-content.ts      ← <line-dialog-content>
@@ -636,7 +641,7 @@ packages/core/src/styles/
 
 #### `reset.common.css` — Every component
 
-The minimum shared baseline. Applies to ALL components via `LineElement`.
+The minimum shared baseline. Every component declares it; `LineElement` does not inject it (§14.6).
 
 ```css
 /* Box model */
@@ -1144,9 +1149,8 @@ protected get [INTERNALS](): ElementInternals {
 }
 
 protected reflectState(name: string, active: boolean) {
-  // Data attribute (universal)
-  if (active) this.dataset[name] = '';
-  else delete this.dataset[name];
+  // Data attribute (universal); toggleAttribute keeps a kebab-case name such as focus-visible verbatim
+  this.toggleAttribute(`data-${name}`, active);
 
   // CustomStateSet (modern)
   if (active) this.#internals.states.add(name);

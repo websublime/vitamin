@@ -1,12 +1,12 @@
 # SPEC: Phase 1 — Core Primitives
 
-**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-030 (§12)
+**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-032 (§12)
 **Author:** line://ui orchestrator (row 00-Z46)
 **Date:** 2026-10-20
 **Phase target:** line://ui v0.2.0
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.24, APPROVED; approved against v0.8.19; amended by AM-001–AM-030)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.25, APPROVED; approved against v0.8.19; amended by AM-001–AM-032)
 **Source Plan:** [`docs/plans/01-plan-core-primitives.md`](../plans/01-plan-core-primitives.md) (APPROVED, revision 00-Z45, factual corrections 00-Z46, coherence revision 00-Z48)
-**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.10; approved against v0.8.5; amended by AM-001–AM-030)
+**Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.11; approved against v0.8.5; amended by AM-001–AM-032)
 **Source Research:**
 - R1 — [`docs/research/01-research-a2ui-web-core.md`](../research/01-research-a2ui-web-core.md)
 - R2 — [`docs/research/01-research-projection-technique.md`](../research/01-research-projection-technique.md)
@@ -126,7 +126,7 @@ const ALLOWED_EDGES = Object.freeze({
 
 ## 4. Package Inventory & Exports
 
-Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`, `line-schemas` and `line-utils` keep their Phase 00 manifests except for the `version` bump (§7.2) and the build-script change of P8 for the `tsc -b` packages (§7.1). Blocks are JSONC. Comments name the task and the decision.
+Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`, `line-schemas` and `line-utils` keep their Phase 00 manifests except for the `version` bump (§7.2). P8 changes no script in the `tsc -b` packages among them (§7.1; §12 AM-032, L3R23-06). Blocks are JSONC. Comments name the task and the decision.
 
 **Ownership by file class (§12 AM-022).** The table says which supervisor edits each class of file, whatever task the change rides on. Each P, C, G, D and S owner is the accountable supervisor (the Owner lines in §6 and the owners in plan §4.0): the one who runs the task on its branch; Z rows name the main session (plan §4.0 Z row; §12 AM-026, R19-L1-03). `git-workflow-manager` opens the PR (PROCESS §4, §6). When the task touches a class that the table gives to the other supervisor, the orchestrator (main session or `sdlc`) dispatches the other supervisor, one after the other on the same task branch, for the classes the Phase 1 spec §4 table gives it. The second dispatch adds no changeset entry; the accountable supervisor writes the changeset entry last, after the other dispatch returns, and names every published package the branch changed. "infra" cites `.claude/agents/infra-supervisor.md` and "wc" cites `.claude/agents/webcomponents-supervisor.md`. Where neither definition names a class, the row says so and follows the closest stated scope.
 
@@ -142,7 +142,7 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
 | `apps/storybook` build wiring: `.storybook/main.ts`, the wiring in `.storybook/preview.ts`, `apps/storybook/package.json` | infra-supervisor | infra:104 ("Storybook build wiring") |
 | `apps/site` page content and its tests | webcomponents-supervisor | Neither definition names site content; the closest stated scope is infra:107 ("docs content → `webcomponents-supervisor`") |
 | Storybook stories and MDX | webcomponents-supervisor | wc:83 ("`apps/storybook/` # Storybook 10 + MDX docs"), :105 ("Storybook MDX docs") |
-| Package source: `packages/*/src/` (`line-core/src/styles` included), CSS, every file under a package's `__tests__/` and under `apps/storybook/__tests__/` (package tests, with their mocks and fixtures, including the P5 bundle-splitting and registration harness, the P7 axe helper, the C21 update-rate harness and the htmx integration harness), package `README.md` and other docs content under `packages/*` | webcomponents-supervisor | wc:95-104, :97 ("shadow-DOM reset sheets"), :106 ("Tests for everything above"); infra:107 ("Package source, components, tokens, themes, docs content → `webcomponents-supervisor`") |
+| Package source: `packages/*/src/` (`line-core/src/styles` included), CSS, every file under a package's `__tests__/` and under `apps/storybook/__tests__/` (package tests, with their mocks and fixtures, including the P5 bundle-splitting and registration harness, the P7 axe helper, the P11 visual helper with each C row's `.visual.ts` file and committed baselines, the C21 update-rate harness and the htmx integration harness), package `README.md` and other docs content under `packages/*` | webcomponents-supervisor | wc:95-104, :97 ("shadow-DOM reset sheets"), :106 ("Tests for everything above"); infra:107 ("Package source, components, tokens, themes, docs content → `webcomponents-supervisor`") |
 | `biome.json` | webcomponents-supervisor | wc:87 (tree), :106 ("Biome compliance"); the infra scope list (infra:96-104) does not name it |
 | Generator scripts, `scripts/emit-catalog.mjs` included | webcomponents-supervisor | wc:95-96 ("and their generator scripts"); wc:99 gives it the catalogs that `emit-catalog.mjs` writes; neither definition names `emit-catalog.mjs` |
 | `scripts/publish.mjs` and `.changeset/config.json` | infra-supervisor | infra:101 ("Changesets config and the release pipeline"), :118-119 ("stable and canary publishes run `scripts/publish.mjs`") |
@@ -160,8 +160,8 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
   "version": "0.1.0",                              // P1; seeded so a minor changeset yields 0.2.0 (§10 SD3, R9 §2.6)
   "type": "module",
   "license": "MIT",
-  "files": ["dist", "src", "custom-elements.json"],// AM-036 pattern; G4: shipped manifest (§10 SD94)
-  "repository": {                                  // AM-038: trusted publishing and provenance match this url
+  "files": ["dist", "src", "custom-elements.json"],// Phase 00 spec AM-036 pattern; G4: shipped manifest (§10 SD94)
+  "repository": {                                  // Phase 00 spec AM-038: trusted publishing and provenance match this url
     "type": "git",
     "url": "git+https://github.com/websublime/line-ui.git",
     "directory": "packages/line-genui"
@@ -268,7 +268,7 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
     "lit": "^3.3.3"                                // P9 (§10 SD2)
   },
   "devDependencies": {
-    "@websublime/line-icons": "workspace:^"        // C2 type-level check only; not a layer edge (§3.2; §12 AM-008, L2R4-02)
+    "@websublime/line-icons": "workspace:^"        // C2 tests only; not a layer edge (§3.2; §12 AM-008, L2R4-02; §12 AM-032, L3R23-11)
   },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly && bun run analyze",  // P8, P10
@@ -423,6 +423,7 @@ New and changed paths only. `+` marks a new path and `~` a changed one.
 ```
 .github/workflows/checks.yml                         ~ P1 (line 22 comment, §4.1), P5 (zero-export smoke step removed; size report step added), P10 (Storybook analyze step removed)
 .github/workflows/cdn-check.yml                       + C22 (workflow_dispatch CDN run; §6.P.6; §12 AM-016, L3R10-04; §12 AM-017, L3R11-03)
+.github/workflows/visual-baselines.yml                + P11 (workflow_dispatch run that writes the Linux visual baselines; §6.P.11; §10 SD98; §12 AM-031)
 .changeset/config.json                               ~ P3 (onlyUpdatePeerDependentsWhenOutOfRange set to true; §6.P.3; §7.2; §10 SD76; §12 AM-028)
 CODE_OF_CONDUCT.md                                   + Z1
 README.md                                            ~ Z1 (code of conduct link)
@@ -431,7 +432,7 @@ CLAUDE.md                                            ~ P8 Tech Stack
 .gitignore                                           ~ P10 (drops `customElements.json` and the `analyze` reference in the line 7 comment; §12 AM-019, R13-L1-01)
 package.json                                         ~ P5 or C22 esbuild (whichever lands first), P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack, G2 or G3 ajv and ajv-formats (whichever lands first), G3 gpt-tokenizer (§12 AM-016; §12 AM-017, L3R11-01)
 bun.lock                                             ~ every row that changes a dependency: P1, P5 or C22 (esbuild), P7, P8, P9, C2, C8, C16, C22, G2 or G3 (ajv), G3, G4, G7, S1 (`bun install --frozen-lockfile`, `.github/workflows/checks.yml:19`; §12 AM-023, L3R16-06)
-playwright.config.ts                                 ~ S1 (webServer for apps/site); C22 (testIgnore of **/*cdn.e2e.ts unless LINE_E2E_CDN is set; §6.P.6; §12 AM-016, L3R10-04; §12 AM-017, L3R11-03)
+playwright.config.ts                                 ~ S1 (webServer for apps/site); C22 (testIgnore of **/*cdn.e2e.ts unless LINE_E2E_CDN is set; §6.P.6; §12 AM-016, L3R10-04; §12 AM-017, L3R11-03); P11 (`visual` project, Chromium only; §6.P.11; §12 AM-031)
 biome.json                                           ~ P10 (files.includes drops `!**/customElements.json`; §12 AM-019, L3R13-03); G2 (files.includes excludes the vendored A2UI schema fixtures; §6.G.2; §12 AM-017, L3R11-02)
 custom-elements-manifest.config.mjs                  - P10 (removed; replaced by the package config)
 vite.config.shared.mjs                               ~ P8 (dts removed, watch keeps dist; §12 AM-008, L2R4-05), P9 (derived externals)
@@ -456,7 +457,7 @@ packages/line-core/package.json                      ~ P8
 packages/line-core/src/styles/index.ts               ~ P5 (PURE annotations)
 packages/line-core/src/internals.ts                  + C23 (INTERNALS Symbol, imports nothing; §12 AM-004, L3R2-02)
 packages/line-core/src/line-element.ts              ~ C23 (internals accessor, reflectState; §6.C.2)
-packages/line-core/src/mixins/form-associated.ts    ~ C23 (reuses the base accessor; §6.C.2)
+packages/line-core/src/mixins/form-associated.ts    ~ C23 (reuses the base accessor, drops its `reflectState` override; §6.C.2; §12 AM-032, L3R23-09)
 packages/line-core/src/index.ts                     ~ C23 (re-exports INTERNALS; §6.C.2)
 packages/line-core/src/machine/line-machine-controller.ts  ~ C21 (updateProps on every host update; §6.C.1)
 packages/line-core/src/machine/index.ts             ~ C21 (export count comment; §6.C.1)
@@ -471,12 +472,15 @@ packages/line-components/README.md                   ~ C1 (replaces the "Empty i
 packages/line-components/custom-elements-manifest.config.mjs  + P10
 packages/line-components/__tests__/bundle-splitting.test.ts   + P5
 packages/line-components/__tests__/line-element-identity.test.ts + P5 (§12 AM-020, L3R14-02)
+packages/line-components/__tests__/manifest-paths.test.ts + C1 (CEM module paths resolve in the packed tarball; §6.C.6; §7.3; §12 AM-032, L3R23-03)
 packages/line-components/src/<c>/                    + C1–C20 (ARCH §10)
 packages/line-components/src/shared/button-machine.ts + C1 (shared Button machine, C5 imports it; §12 AM-002)
 packages/line-components/src/shared/icon-registry.ts  + C2 (single icon registry; §12 AM-004, D-R)
 packages/line-components/src/index.ts               ~ C2 (exports setIconRegistry and LineIconRegistry; §12 AM-004, D-R)
 packages/line-components/__tests__/registry.types.ts  + C2 (LineIconRegistry type-level case; §12 AM-008, L2R4-02)
 packages/line-components/__tests__/a11y/*.e2e.ts     + P7 harness, one file per component from C1 on
+packages/line-components/__tests__/visual/story.ts   + P11 (opens a story on storybook-static and takes its screenshot; §6.P.11; §12 AM-031)
+packages/line-components/__tests__/visual/<c>.visual.ts and <c>.visual.ts-snapshots/  + C1–C20 (one file per component and its committed Linux baselines; §6.P.11; §12 AM-031)
 packages/line-components/__tests__/cdn.e2e.ts        + P6 (cdn-check.yml only; §6.P.6)
 packages/line-genui/                                 + P1
   package.json  tsconfig.json  vite.config.mjs  README.md  LICENSE   (package.json peerDependencies and devDependencies on line-components and line-icons at `workspace:^0.1.0 || ^0.2.0`, §10 SD76, §12 AM-028; the devDependencies give the build order, §4.1, §12 AM-016, L3R10-03; LICENSE §12 AM-020, L3R14-08; G2 adds the `emit-catalog` build step and G4 the `analyze` script and step, `customElements` field and `files` entry)
@@ -556,27 +560,28 @@ Owner of every P task is `infra-supervisor` (plan §4.0), as the accountable sup
   - The peer edges of `line-genui` MUST NOT push any package above `0.2.0` at the Phase 1 Version PR, or `line-genui` above a `0.2.0-` prerelease in a canary (§7.2).
 - **Acceptance:**
   - `verify-pack` packs `line-genui` and reports zero failures, checks (a)–(e) included.
-  - In a throwaway copy of the repo with one `minor` changeset for each of the nine packages (the §7.2 table; R9 §2.6 method), with `changelog: false` in the copy (R9 §2.6 set it for its snapshot run, `docs/research/01-research-packaging.md:291-292`) or with the changesets left uncommitted, `changeset version` yields `0.2.0` for all nine. The Verify record lists the nine versions.
-  - In the same copy, with the same nine changesets and the same changelog setting, `bun run snapshot:version` (`changeset version --snapshot`, `package.json:30`) under the repo snapshot config (`.changeset/config.json:16-19`) yields `line-genui` at a `0.2.0-` prerelease, not `1.0.0-`. The Verify record lists that version (§10 SD76; §12 AM-028).
+  - In a throwaway copy of the repo with one `minor` changeset for each of the nine packages (the §7.2 table; R9 §2.6 method), with `changelog: false` in the copy (R9 §2.6 set it for its snapshot run, `docs/research/01-research-packaging.md:291-292`) or with `GITHUB_TOKEN` set, `changeset version` yields `0.2.0` for all nine. P1's changeset is committed when P3 runs, and `@changesets/changelog-github` (`.changeset/config.json:3-8`) then fails both dry runs with the token error unless one of the two holds (lens probe 2026-10-21, `@changesets/cli` 2.31.1; §12 AM-032, L3R23-01). The Verify record lists the nine versions.
+  - In a fresh throwaway copy, or the same copy reset to its state before `changeset version`, with the same nine changesets and the same changelog setting, `bun run snapshot:version` (`changeset version --snapshot`, `package.json:30`) under the repo snapshot config (`.changeset/config.json:16-19`) yields `line-genui` at a `0.2.0-` prerelease, not `1.0.0-`. The `changeset version` run above consumes the changesets, so a second run in that copy releases nothing (lens probe 2026-10-21; §12 AM-032, L2R23-01). The Verify record lists that version (§10 SD76; §12 AM-028).
 
 #### 6.P.4 P4 — Trusted publisher bootstrap
 
 - **Owner:** infra-supervisor, with Miguel for the npmjs.com steps.
 - **Deps:** P1, P3.
 - **Changes:** none in the repository. The steps run on npmjs.com and in the GitHub `npm` environment.
-- **Contract:** P4 MUST follow path A, the AM-038 order (PRD §7.3 item 10, plan §2.6, R9 §2.5).
+- **Contract:** P4 MUST follow path A, the Phase 00 spec AM-038 order (PRD §7.3 item 10, plan §2.6, R9 §2.5).
 
 | Step | Action | Source |
 |---|---|---|
-| 1 | Create a short-lived granular token with publish access and store it as `NPM_TOKEN` in the `npm` environment | AM-038 (4), Phase 00 spec §7.2 |
+| 1 | Create a short-lived granular token with publish access and store it as `NPM_TOKEN` in the `npm` environment | Phase 00 spec AM-038 (4), Phase 00 spec §7.2 |
 | 2 | Run `snapshot-deploy.yml` on `main`. The token publishes the first `line-genui` canary, `0.2.0-<sha>-SNAPSHOT` [INFERENCE: extrapolated from R9's `0.0.0`-seed probe; the P3 snapshot dry run checks the `0.2.0-` prefix] | R9 §2.5 path A; §6.P.3; §10 SD3, SD76 |
-| 3 | Delete the token from the environment and from npmjs.com | AM-038 |
-| 4 | Add the trusted publisher for `snapshot-deploy.yml` with environment `npm` and "npm publish" ticked | AM-038 (4); R9 §2.5 |
+| 3 | Delete the token from the environment and from npmjs.com | Phase 00 spec AM-038 |
+| 4 | Add the trusted publisher for `snapshot-deploy.yml` with environment `npm` and "npm publish" ticked | Phase 00 spec AM-038 (4); R9 §2.5 |
 | 5 | Publish an OIDC canary through `snapshot-deploy.yml` within 48 hours of step 4 | R9 §2.5 (48-hour expiry) |
-| 6 | Add the trusted publisher for `release.yml` within the 48 hours before the Phase 1 Version PR merge | AM-038 (5) |
+| 6 | Add the trusted publisher for `release.yml` within the 48 hours before the Phase 1 Version PR merge | Phase 00 spec AM-038 (5) |
 | 7 | Set "Require 2FA and disallow tokens" on the package | R9 §2.5 path A |
 
-- npm points `latest` at the first canary until the first stable ships (AM-042, R9 §2.5). This effect is accepted (§10 SD3).
+- npm points `latest` at the first canary until the first stable ships (Phase 00 spec AM-042, R9 §2.5). This effect is accepted (§10 SD3).
+- Step 2 is the first `snapshot-deploy` run after P1 merges, and no other `snapshot-deploy` run happens between the P1 merge and step 2. The workflow runs only on `workflow_dispatch` (`.github/workflows/snapshot-deploy.yml:2`). From the P1 merge on, a run also uploads `line-genui`, which no npm package or trusted publisher covers until step 2. `scripts/publish.mjs` uploads in dependency order and throws at the first failed `npm publish` (`publish.mjs:170`, `:178`, `:192-195`), so such a run would stop at `line-genui` after publishing the packages before it [INFERENCE: `npm publish` without auth exits non-zero] (§12 AM-032, L3R23-02).
 - `npm trust` and staged publishing need npm ≥ 11.15.0 (R9 §2.5). Path A uses the npmjs.com settings page and needs neither [INFERENCE: R9 does not state it].
 - **Acceptance:**
   - `npm view @websublime/line-genui` returns the step 5 canary with provenance.
@@ -607,7 +612,7 @@ Owner of every P task is `infra-supervisor` (plan §4.0), as the accountable sup
 #### 6.P.6 P6 — CDN delivery check
 
 - **Owner:** infra-supervisor.
-- **Deps:** the first `0.2.0` canary of `line-core` and `line-components` that contains C1 and C2. The registry page uses an inline stub `LineIconRegistry` object, so P6 needs no `line-icons` canary. The P6 page uses no `line-icons` resolver; C22 precedes P6 only through C2 (§12 AM-008, L3R4-02, L2R4-01; §12 AM-009, L3R5-06).
+- **Deps:** P4 step 2, because from the P1 merge on only the step 2 token can upload the `line-genui` canary that every `snapshot-deploy` run includes (§6.P.4). The first `0.2.0` canary of `line-core` and `line-components` that contains C1 and C2; it may be the P4 step 2 or step 5 canary or a later one. The registry page uses an inline stub `LineIconRegistry` object, so P6 needs no `line-icons` canary. The P6 page uses no `line-icons` resolver; C22 precedes P6 only through C2 (§12 AM-008, L3R4-02, L2R4-01; §12 AM-009, L3R5-06; §12 AM-032, L3R23-02).
 - **Changes:**
   - A Playwright file `packages/line-components/__tests__/cdn.e2e.ts` that runs only on `workflow_dispatch` and before each release, never on `pull_request` [INFERENCE: it needs published versions and live CDNs, R9 §2.3] (§10 SD25).
   - The CDN gate that C22 adds (§6.C.3). C22 blocks C2 and P6 needs a canary that contains C2, so C22 always lands first (§12 AM-016, L3R10-04; §12 AM-017, L3R11-03; file classes: §4 table, §12 AM-022):
@@ -728,6 +733,25 @@ export default {
   - `apps/storybook/.storybook/preview.ts` calls `setCustomElementsManifest`, and the Storybook build passes with the `line-components` package manifest. The autodocs page of `line-button` is C1's check (§6.C.6; §12 AM-020, L3R14-03).
   - The analyser runs before the Storybook build by construction, because the root build runs packages before apps (`package.json:23`).
 
+#### 6.P.11 P11 — Visual regression tier
+
+- **Owner:** infra-supervisor (file classes: §4 table; the files under `packages/line-components/__tests__/visual/` are package tests, §12 AM-022).
+- **Deps:** spec APPROVED. Blocks C1, as P7 does (§10 SD86, SD98; plan §6). Component stories land with C1 onwards.
+- **Changes:**
+  - `playwright.config.ts` gains a fourth project, `{ name: 'visual', testMatch: 'packages/line-components/__tests__/visual/*.visual.ts', use: { ...devices['Desktop Chrome'] } }`. A project `testMatch` takes precedence over the config `testMatch` (`playwright` 1.64.0 `lib/common/index.js:599`), so the visual files run only in this project, in Chromium. The three engine projects keep `packages/**/*.e2e.ts` (`playwright.config.ts:5`), which matches no `.visual.ts` file.
+  - A shared helper `packages/line-components/__tests__/visual/story.ts` opens a story on `storybook-static` (port 4320, `playwright.config.ts:15-20`) at `/iframe.html?id=<story-id>&viewMode=story`, as the smoke tier does (`apps/storybook/__tests__/storybook-smoke.e2e.ts:69`), and calls ``expect(page).toHaveScreenshot(`${storyId}.png`)``.
+  - Each C1–C20 row adds `packages/line-components/__tests__/visual/<c>.visual.ts` over its stories and commits the baselines beside it. Under the default path template `{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-projectName}{-snapshotSuffix}{ext}` (`lib/worker/workerProcessEntry.js:1255`), whose suffix is `process.platform` (`lib/index.js:356`), a baseline is `<c>.visual.ts-snapshots/<story-id>-visual-linux.png`.
+  - `.github/workflows/visual-baselines.yml`, triggered only by `workflow_dispatch` on the branch picked at dispatch, runs on `ubuntu-latest`, as `checks.yml` does (`.github/workflows/checks.yml:9`), with `permissions: { contents: read }`. It runs `bun install --frozen-lockfile`, `bun run build` (the second web server serves the `storybook-static` the build writes, `playwright.config.ts:16-17`), `bunx playwright install --with-deps chromium` and `bunx playwright test --project=visual --update-snapshots`. It then uploads `packages/line-components/__tests__/visual/` with `actions/upload-artifact` pinned to a full commit SHA, the Phase 00 spec AM-040 pattern (`.github/workflows/deploy-site.yml:27`).
+- **Baseline procedure:** a PR that adds or changes a story dispatches `visual-baselines.yml` on its branch, downloads the artifact, and commits the `-visual-linux.png` files that changed. The PR diff shows the changed baselines to the reviewer. A run on another platform writes another suffix, and such files are not committed.
+- **Contract:**
+  - The `visual` project MUST run Chromium only (§10 SD98).
+  - Every committed baseline MUST come from a `visual-baselines.yml` run (§10 SD98).
+  - Every story of every C1–C20 component MUST have a committed baseline (PRD §5.2; §6.C.6).
+- **Acceptance:**
+  - The existing "Browser tier" step (`bun run e2e`, `.github/workflows/checks.yml:42-43`) runs the `visual` project in Chromium, and the three engine projects run no `.visual.ts` file.
+  - A throwaway `.visual.ts` file over an existing design-system story passes against a baseline from a `visual-baselines.yml` run, and fails after a style change to that story [the check is run once by hand and recorded in the Verify record].
+  - A `visual-baselines.yml` run uploads an artifact that holds the `-visual-linux.png` baseline of that file.
+
 ### 6.C Stream C — Core Primitives
 
 #### 6.C.0 Overview and order
@@ -740,7 +764,7 @@ export default {
 
 | Step | Tasks | Gate |
 |---|---|---|
-| 1 | C21, C23, P7, P8, P9, P10 | Spec APPROVED. All six land before C1 (plan §6; §10 SD19, SD86). |
+| 1 | C21, C23, P7, P8, P9, P10, P11 | Spec APPROVED. All seven land before C1 (plan §6; §10 SD19, SD86, SD98). |
 | 2 | C22 | Lands before C2 (plan §6). It fetches icons from a consumer-set base URL (§10 SD89–SD92). |
 | 3 | C1 Button, C2 Icon, C3 Stack, C4 Separator | Ship without descriptors. Stream G writes their descriptors (plan §4.3, PRD §7.3 validating set). P5 lands after C1 and before C2, because C2 makes the `line-components` root export `setIconRegistry` and the "Zero-export smoke" step that P5 removes rejects any root export (`.github/workflows/checks.yml:28-29`; §6.P.5; §12 AM-019, L3R13-01). |
 | 4 | G1–G7 | Validate on C1–C4 (plan §6). |
@@ -761,7 +785,7 @@ export default {
 - **Deps:** spec APPROVED. Blocks C1 (plan §6).
 - **Changes**
   - `packages/line-core/src/machine/line-machine-controller.ts`: the controller calls `updateProps` on every host update, and a component declares its machine props as a function of its properties (plan §5.6 D7 (a); R7 §6 OQ1 (b)).
-  - `packages/line-core/README.md:10` and `packages/line-core/src/machine/index.ts:2`: replace the "four public" count. `@zag-js/vanilla` exports five values and `line-core` leaves out `toStyleString` (AM-073). The listed names stay (plan §4.3).
+  - `packages/line-core/README.md:10` and `packages/line-core/src/machine/index.ts:2`: replace the "four public" count. `@zag-js/vanilla` exports five values and `line-core` leaves out `toStyleString` (Phase 00 spec AM-073). The listed names stay (plan §4.3).
   - An update-rate harness under `packages/line-core/__tests__/` [INFERENCE: location] that measures a fixture machine (§10 SD28; §12 AM-020, L3R14-04).
 
 **Contract**
@@ -791,8 +815,8 @@ export default {
 - **Changes**
   - `packages/line-core/src/line-element.ts`: attach internals once per element, keep them in an ES `#private` field and expose them through a Symbol-keyed accessor (§10 SD19; §12 AM-002; R8 §2.5 option (c)).
   - `packages/line-core/src/internals.ts` (+): defines `export const INTERNALS = Symbol('line.internals')` and imports nothing. `line-element.ts` and `mixins/form-associated.ts` import it, and `index.ts` re-exports it, so no import cycle forms (§10 SD19; §12 AM-002; §12 AM-004, L3R2-02).
-  - `packages/line-core/src/line-element.ts:30-32`: replace the empty `reflectState` with a body that writes `data-*` and `:state()` (R8 §2.5).
-  - `packages/line-core/src/mixins/form-associated.ts:77-82`: drop its own `attachInternals()` call and reuse the base accessor through the Symbol key (§10 SD19).
+  - `packages/line-core/src/line-element.ts:30-32`: replace the empty `reflectState` with a body that writes the host attribute with ``this.toggleAttribute(`data-${name}`, active)`` and the custom state `name` (R8 §2.5; ARCH §14.8; §12 AM-032, L3R23-09).
+  - `packages/line-core/src/mixins/form-associated.ts:77-82`: drop its own `attachInternals()` call and reuse the base accessor through the Symbol key (§10 SD19). The mixin's `reflectState` override (`form-associated.ts:125-142`), which writes through `this.dataset[name]`, and the `dataset` sentences of its doc comment (`:59-64`) are removed, so form-associated components use the `LineElement` body (§12 AM-032, L3R23-09).
   - `bun-test-preload.ts` gives happy-dom a fake `HTMLElement.prototype.attachInternals` after `GlobalRegistrator.register()`, built from `FakeInternals` in `packages/line-core/__tests__/mocks/element-internals.ts`. happy-dom has none (`packages/line-core/__tests__/mocks/element-internals.ts:3`), and without it every unit test that builds a `LineElement` subclass throws, for example `packages/line-core/__tests__/direction.test.ts:45` and `line-machine-controller.test.ts:63` (§7.8; §12 AM-020, L3R14-01).
   - `installElementInternals()` in `packages/line-core/__tests__/mocks/element-internals.ts` keeps the `attachInternals` it finds, and its `restore()` puts that function back instead of deleting it (`:39`), so the preload fake survives tests that install the mock (§12 AM-020, L3R14-01).
   - AM row to Phase 00 spec §6.F.3, whose `bun-test-preload.ts` block (`docs/specs/00-spec-design-system.md:1694-1720`) has no `attachInternals` fake (§7.8; §12 AM-021, m3).
@@ -805,6 +829,7 @@ export default {
 - `FormAssociated` MUST reuse that accessor. A second `attachInternals()` throws `NotSupportedError` (R8 §2.5, probe P1).
 - `LineElement` MUST NOT set `formAssociated`. Only §7 components opt in (MANIFESTO Law 7; ARCH §7).
 - `LineElement.reflectState` MUST reflect machine state as both `data-<state>` and `:state(<state>)`, so ARCH §14.8 holds for every component, Chip, ButtonGroup, AvatarGroup and IconButton included (§10 SD19; ARCH §14.8).
+- The attribute MUST be written with ``toggleAttribute(`data-${name}`, active)``, not through `dataset`, so a kebab-case state such as `focus-visible` (ARCH §14.8 table) keeps its name. In Chromium `dataset['focus-visible'] = ''` throws `SyntaxError`, and happy-dom does not throw, so the unit tier cannot catch it (lens probe 2026-10-21; §12 AM-032, L3R23-09).
 - `line-core` MUST NOT register internals on `globalThis` (§10 SD19). The protocol is a draft and exposes form state (R8 §2.5).
 - Interactive roles stay on inner native elements, so the internals carry state and not the role (§10 SD31; R8 §2.4).
 - C23 MUST measure the per-element cost of `attachInternals()` and report it in the PR (§10 SD19; R8 §6 Q2).
@@ -813,6 +838,7 @@ export default {
 
 - A plain `LineElement` subclass reflects `data-x` and `:state(x)` through `reflectState`.
 - A `FormAssociated(LineElement)` subclass attaches internals exactly once and keeps its form behaviour.
+- In the browser tier, in Chromium, Firefox and WebKit, a plain `LineElement` subclass and a `FormAssociated(LineElement)` subclass reflect `focus-visible` as `data-focus-visible` and `:state(focus-visible)` with no throw (ARCH §14.8; §12 AM-032, L3R23-09).
 - No `globalThis` write exists in `line-core` source.
 - A plain `LineElement` subclass instance exposes none of `_internals`, `internals` and `internals_`, as own or inherited properties, nor an own symbol with the description `internals` or `privateInternals`, and the exported Symbol reaches its internals. axe reads the three string names through `node[propName]` (R8 §2.4; axe-core 4.14.0 `_getElementInternals`; §12 AM-004, L3R2-01; §12 AM-005, L2R3-10).
 - The PR reports the measured per-element cost.
@@ -952,7 +978,7 @@ C2 implements the icon surface above and this injection rule in `<line-icon>`.
 - A `<line-icon library="phosphor" name="heart" weight="fill">` passes `weight: "fill"` to the registry and renders the `fill` file (§12 AM-004, D-W; R10 §2.3).
 - A connected `<line-icon>` in the C8 state renders its icon after `setIconRegistry(registry)` runs, and again after `LineIcon.registry` is set, including when the setter runs in another module copy that shares the global slot (§12 AM-006, L3R3-06; §12 AM-008, L3R4-01).
 - A `<line-icon mirror>` renders flipped under `dir="rtl"` and unflipped under `dir="ltr"` (§12 AM-006, L3R3-03).
-- Type-level: `const r: LineIconRegistry = new IconRegistry()` compiles under TypeScript 7 in `__tests__/registry.types.ts`, which `typecheck` runs through `tsconfig.test.json` (§4.2; §12 AM-006, L3R3-05; §12 AM-008, L2R4-02).
+- Type-level: `export const r: LineIconRegistry = new IconRegistry()` compiles under TypeScript 7 in `__tests__/registry.types.ts`, which `typecheck` runs through `tsconfig.test.json`. The `export` keeps the Biome `noUnusedVariables` rule (`biome.json:33`) from flagging `r` (§4.2; §12 AM-006, L3R3-05; §12 AM-008, L2R4-02; §12 AM-032, L3R23-11).
 - A missing or invalid icon leaves `<line-icon>` in the neutral C8 state, and nothing throws to the consumer (ARCH §17.2 C8; MANIFESTO Law 9). Today `IconRegistry.resolve` and the reference resolvers reject with a `[line-icons]` error, because each `throw` (`packages/line-icons/src/index.ts:21`; `resolvers/icon-name.ts:5`; `resolvers/phosphor.ts:13`) runs inside an `async` function; `<line-icon>` catches the rejection (§12 AM-006, L2R3-02; §12 AM-012, L2R7-01).
 - Importing the root `"."` or `./icon` from the packed tarball leaves `globalThis[Symbol.for('line.icon-registry')]` `undefined` until first access (§12 AM-010, L3R5-02; §12 AM-011, L3R6-01).
 
@@ -968,26 +994,26 @@ Column notes:
 
 | Task | Component | Deps | Spec file | Entry / tag | Tier and machine | Role placement | Form-assoc. | `agentExposed` | htmx row | The component spec still settles |
 |---|---|---|---|---|---|---|---|---|---|---|
-| C1 | Button | C21, C23, P7–P10 | `0002-button.md` | `./button` / `line-button` | Custom; press `idle → active` (§10 SD35) | Inner native `<button>`, host `aria-label` copied (§10 SD31) | Yes (ARCH §7; §10 SD36) | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Parts, slots, loading part (ARCH §13.1, §13.5); screen-reader pass of the named `generic` host (R8 §6 Q1, Q5) |
-| C2 | Icon | C21, C23, P5, P7–P10, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static; resolvers through the `LineIconRegistry` interface, `resolve(library, name, options?)`, held in `src/shared/icon-registry.ts` at a `globalThis` symbol key whose slot holds `{ registry, events }`, which the consumer alone sets through `setIconRegistry()` or the static `LineIcon.registry`; the `line-icons` `IconRegistry` satisfies it, with no layer edge added (a `line-icons` devDependency only) (§6.C.3; §12 AM-002; §12 AM-004, D-W, D-R; §12 AM-006, D-G; §12 AM-008, L3R4-01, L2R4-02) | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); implements the §6.C.3 icon surface with the `weight` and `mirror` attributes, registry hook, shared change notification, SVG injection rule and icon surface acceptance (§12 AM-006; §12 AM-008) |
-| C3 | Stack | C21, C23, P7–P10 | `0018-stack.md` | `./stack` / `line-stack` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Any `line-stack` list semantics beyond the A2UI `List` rule of §6.G.4 (R8 §6 Q11; §10 SD59) |
-| C4 | Separator | C21, C23, P7–P10 | `0011-separator.md` | `./separator` / `line-separator` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Orientation semantics (R8 §2.2) |
-| C5 | IconButton | C21, C23, P7–P10, G1, G4, G5, C1 | `0003-icon-button.md` | `./icon-button` / `line-icon-button` | Custom; same machine as Button, imported from `src/shared/button-machine.ts` (ARCH §13.1; §12 AM-002) | Inner native `<button>` (§10 SD31) | No; `type="button"` only (§10 SD36) | `true` | Spec decides (plan §2.4) | Name sources it accepts (§6.C.5) |
-| C6 | ButtonGroup | C21, C23, P7–P10, G1, G4, G5, C1 | `0004-button-group.md` | `./button-group` / `line-button-group` | Custom roving-focus `createMachine` on `@zag-js/core` 1.46.0 (§10 SD10) | `toolbar` (ARCH §13.1) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Opens with the slotted roving-focus probe (§10 SD10; R8 §6 Q6) |
-| C7 | Alert | C21, C23, P7–P10, G1, G4, G5 | `0006-alert.md` | `./alert` / `line-alert` | Static | — | No | `true` | `n/a` expected [INFERENCE] | `alert` vs `status` role (R8 §6 Q8; §10 SD37) |
-| C8 | Chip | C21, C23, P7–P10, G1, G4, G5 | `0008-chip.md` | `./chip` / `line-chip` | Pre-built `@zag-js/toggle` 1.46.0; no remove button; not compound (§10 SD11) | Inner native `<button>` (§10 SD31) | No | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Whether a binding names a value prop. If it does, `line-change` per ARCH §17.2 C3 and C9, and `line-input` only for live edits, which a toggle does not have; if not, no commit event (§12 AM-002; §12 AM-003, L3R2-07) |
-| C9 | Badge | C21, C23, P7–P10, G1, G4, G5 | `0007-badge.md` | `./badge` / `line-badge` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Count announcement [INFERENCE: R8 §2.2 covers dot-badge text, not counts] |
-| C10 | Avatar | C21, C23, P7–P10, G1, G4, G5 | `0009-avatar.md` | `./avatar` / `line-avatar` | Static (plan §2.2; ARCH §13.2; PRD §4.1) | — | No | `true` | `n/a` expected [INFERENCE] | Slot and part details within ARCH §13.2 (§10 SD37) |
-| C11 | AvatarGroup | C21, C23, P7–P10, G1, G4, G5, C10 | `0010-avatar-group.md` | `./avatar-group` / `line-avatar-group` | Custom (ARCH §13.2) | Overflow "+N" on an inner native `<button>` (§10 SD31) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Overflow popover mechanism (R7 §6 OQ5); hover and focus expansion under WCAG 1.4.13 (R8 §6 Q10); avatars arrive by slot (§10 SD4) |
-| C12 | Visually Hidden | C21, C23, P7–P10, G1, G3, G4, G5 | `0012-visually-hidden.md` | `./visually-hidden` / `line-visually-hidden` | Static | — | No | `false`: agent text that only screen readers hear (§10 SD38) | `n/a` expected [INFERENCE] | — |
-| C13 | Portal | C21, C23, P7–P10, G1, G3, G4, G5 | `0013-portal.md` | `./portal` / `line-portal` | Static | — | No | `false`: moved nodes escape surface reconciliation [INFERENCE: not in R8] and focus order follows the move (§10 SD38; R8 §2.2) | `n/a` expected [INFERENCE] | Focus and reading order after the move (R8 §2.2) |
-| C14 | Kbd / Shortcut | C21, C23, P7–P10, G1, G4, G5 | `0015-kbd.md` | `./kbd` / `line-kbd` (one tag, §10 SD12) | Static | — | No | `true` | `n/a` expected [INFERENCE] | OS-aware rendering (PRD §4.1) |
-| C15 | Skeleton | C21, C23, P7–P10, G1, G4, G5 | `0016-skeleton.md` | `./skeleton` / `line-skeleton` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Busy semantics (R8 §2.2) |
-| C16 | Presence | C21, C23, P7–P10, G1, G3, G4, G5 | `0017-presence.md` | `./presence` / `line-presence` | Pre-built `@zag-js/presence` 1.46.0 | None; emits no ARIA (R8 §2.2) | No | `false`: needs host CSS exit animations, adds no meaning (§10 SD38) | `n/a` expected [INFERENCE] | Tracked node and unmount meaning, after the R7 §6 OQ2 three-engine probe (§10 SD37; R7 §6 OQ2, OQ3) |
-| C17 | Grid | C21, C23, P7–P10, G1, G4, G5 | `0019-grid.md` | `./grid` / `line-grid` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
-| C18 | Center | C21, C23, P7–P10, G1, G4, G5 | `0020-center.md` | `./center` / `line-center` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
-| C19 | Aspect Ratio | C21, C23, P7–P10, G1, G4, G5 | `0021-aspect-ratio.md` | `./aspect-ratio` / `line-aspect-ratio` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
-| C20 | Spinner | C21, C23, P7–P10, G1, G4, G5 | `0022-spinner.md` | `./spinner` / `line-spinner` | Static, CSS-only (ARCH §13.5) | — | No | `true` | `n/a` expected [INFERENCE] | `status` vs `progressbar` vs `img`, label from the consumer (R8 §6 Q9; §10 SD37) |
+| C1 | Button | C21, C23, P7–P11 | `0002-button.md` | `./button` / `line-button` | Custom; press `idle → active` (§10 SD35) | Inner native `<button>`, host `aria-label` copied (§10 SD31) | Yes (ARCH §7; §10 SD36) | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Parts, slots, loading part (ARCH §13.1, §13.5); screen-reader pass of the named `generic` host (R8 §6 Q1, Q5) |
+| C2 | Icon | C21, C23, P5, P7–P11, C22 | `0014-icon.md` | `./icon` / `line-icon` | Static; resolvers through the `LineIconRegistry` interface, `resolve(library, name, options?)`, held in `src/shared/icon-registry.ts` at a `globalThis` symbol key whose slot holds `{ registry, events }`, which the consumer alone sets through `setIconRegistry()` or the static `LineIcon.registry`; the `line-icons` `IconRegistry` satisfies it, with no layer edge added (a `line-icons` devDependency only) (§6.C.3; §12 AM-002; §12 AM-004, D-W, D-R; §12 AM-006, D-G; §12 AM-008, L3R4-01, L2R4-02) | — (R8 §2.2) | No | `true` | `n/a` expected; not value-bearing [INFERENCE] | Decorative vs labelled semantics (R8 §2.2); implements the §6.C.3 icon surface with the `weight` and `mirror` attributes, registry hook, shared change notification, SVG injection rule and icon surface acceptance (§12 AM-006; §12 AM-008) |
+| C3 | Stack | C21, C23, P7–P11 | `0018-stack.md` | `./stack` / `line-stack` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Any `line-stack` list semantics beyond the A2UI `List` rule of §6.G.4 (R8 §6 Q11; §10 SD59) |
+| C4 | Separator | C21, C23, P7–P11 | `0011-separator.md` | `./separator` / `line-separator` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Orientation semantics (R8 §2.2) |
+| C5 | IconButton | C21, C23, P7–P11, G1, G4, G5, C1 | `0003-icon-button.md` | `./icon-button` / `line-icon-button` | Custom; same machine as Button, imported from `src/shared/button-machine.ts` (ARCH §13.1; §12 AM-002) | Inner native `<button>` (§10 SD31) | No; `type="button"` only (§10 SD36) | `true` | Spec decides (plan §2.4) | Name sources it accepts (§6.C.5) |
+| C6 | ButtonGroup | C21, C23, P7–P11, G1, G4, G5, C1 | `0004-button-group.md` | `./button-group` / `line-button-group` | Custom roving-focus `createMachine` on `@zag-js/core` 1.46.0 (§10 SD10) | `toolbar` (ARCH §13.1) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Opens with the slotted roving-focus probe (§10 SD10; R8 §6 Q6) |
+| C7 | Alert | C21, C23, P7–P11, G1, G4, G5 | `0006-alert.md` | `./alert` / `line-alert` | Static | — | No | `true` | `n/a` expected [INFERENCE] | `alert` vs `status` role (R8 §6 Q8; §10 SD37) |
+| C8 | Chip | C21, C23, P7–P11, G1, G4, G5 | `0008-chip.md` | `./chip` / `line-chip` | Pre-built `@zag-js/toggle` 1.46.0; no remove button; not compound (§10 SD11) | Inner native `<button>` (§10 SD31) | No | `true` | Spec decides; value-bearing only if a binding names a value prop (plan §2.4) | Whether a binding names a value prop. If it does, `line-change` per ARCH §17.2 C3 and C9, and `line-input` only for live edits, which a toggle does not have; if not, no commit event (§12 AM-002; §12 AM-003, L3R2-07) |
+| C9 | Badge | C21, C23, P7–P11, G1, G4, G5 | `0007-badge.md` | `./badge` / `line-badge` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Count announcement [INFERENCE: R8 §2.2 covers dot-badge text, not counts] |
+| C10 | Avatar | C21, C23, P7–P11, G1, G4, G5 | `0009-avatar.md` | `./avatar` / `line-avatar` | Static (plan §2.2; ARCH §13.2; PRD §4.1) | — | No | `true` | `n/a` expected [INFERENCE] | Slot and part details within ARCH §13.2 (§10 SD37) |
+| C11 | AvatarGroup | C21, C23, P7–P11, G1, G4, G5, C10 | `0010-avatar-group.md` | `./avatar-group` / `line-avatar-group` | Custom (ARCH §13.2) | Overflow "+N" on an inner native `<button>` (§10 SD31) | No | `true` | `n/a`; not compound (rule C9, plan §2.4) | Overflow popover mechanism (R7 §6 OQ5); hover and focus expansion under WCAG 1.4.13 (R8 §6 Q10); avatars arrive by slot (§10 SD4) |
+| C12 | Visually Hidden | C21, C23, P7–P11, G1, G3, G4, G5 | `0012-visually-hidden.md` | `./visually-hidden` / `line-visually-hidden` | Static | — | No | `false`: agent text that only screen readers hear (§10 SD38) | `n/a` expected [INFERENCE] | — |
+| C13 | Portal | C21, C23, P7–P11, G1, G3, G4, G5 | `0013-portal.md` | `./portal` / `line-portal` | Static | — | No | `false`: moved nodes escape surface reconciliation [INFERENCE: not in R8] and focus order follows the move (§10 SD38; R8 §2.2) | `n/a` expected [INFERENCE] | Focus and reading order after the move (R8 §2.2) |
+| C14 | Kbd / Shortcut | C21, C23, P7–P11, G1, G4, G5 | `0015-kbd.md` | `./kbd` / `line-kbd` (one tag, §10 SD12) | Static | — | No | `true` | `n/a` expected [INFERENCE] | OS-aware rendering (PRD §4.1) |
+| C15 | Skeleton | C21, C23, P7–P11, G1, G4, G5 | `0016-skeleton.md` | `./skeleton` / `line-skeleton` | Static | — | No | `true` | `n/a` expected [INFERENCE] | Busy semantics (R8 §2.2) |
+| C16 | Presence | C21, C23, P7–P11, G1, G3, G4, G5 | `0017-presence.md` | `./presence` / `line-presence` | Pre-built `@zag-js/presence` 1.46.0 | None; emits no ARIA (R8 §2.2) | No | `false`: needs host CSS exit animations, adds no meaning (§10 SD38) | `n/a` expected [INFERENCE] | Tracked node and unmount meaning, after the R7 §6 OQ2 three-engine probe (§10 SD37; R7 §6 OQ2, OQ3) |
+| C17 | Grid | C21, C23, P7–P11, G1, G4, G5 | `0019-grid.md` | `./grid` / `line-grid` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
+| C18 | Center | C21, C23, P7–P11, G1, G4, G5 | `0020-center.md` | `./center` / `line-center` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
+| C19 | Aspect Ratio | C21, C23, P7–P11, G1, G4, G5 | `0021-aspect-ratio.md` | `./aspect-ratio` / `line-aspect-ratio` | Static | — | No | `true` | `n/a` expected [INFERENCE] | — |
+| C20 | Spinner | C21, C23, P7–P11, G1, G4, G5 | `0022-spinner.md` | `./spinner` / `line-spinner` | Static, CSS-only (ARCH §13.5) | — | No | `true` | `n/a` expected [INFERENCE] | `status` vs `progressbar` vs `img`, label from the consumer (R8 §6 Q9; §10 SD37) |
 
 - PRD v0.8.19 (§4.1, §4.11, §7.3), ARCH v0.8.5 §13.1 and plan §2.2 read "Custom" for ButtonGroup and "Pre-built" for Chip (§10 SD10, SD11).
 - Every descriptor carries `agentExposed`, which defaults to `true`; a descriptor flagged `false` MUST carry a recorded reason (ARCH §17.3; §10 SD38).
@@ -1033,23 +1059,25 @@ Column notes:
 
 | Obligation | Source |
 |---|---|
-| Pass the PRD §5.2 8-point checklist: render, reactive props, slots, parts, custom properties, events, keyboard, axe | PRD §5.2; plan §7.1 |
+| Pass the PRD §5.2 8-point checklist: render, reactive props, slots, parts, custom properties, events, keyboard, axe. Keyboard navigation is tested in the Playwright Browser tier (§7.8; §10 SD99) | PRD §5.2; plan §7.1 |
 | Storybook docs complete | plan §4.3, §7.1 |
 | Changeset entry | plan §4.3, §7.1 |
 | CEM entry with complete JSDoc; `@fires` with typed `detail` is mandatory | ARCH §17.2 C3, C7; plan §4.3 |
-| Fill the component's row in `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` | AM-048; plan §2.3 |
+| Fill the component's row in `docs/COMPETITIVE-COMPONENT-ANALYSIS.md` | Phase 00 spec AM-048; plan §2.3 |
 | Report gzipped size against the < 5 KB soft target, not gating. P5's first run of the "Size report" step reports every row merged before it; later rows report through the step (§12 AM-020, L3R14-09) | §7.6; plan §7.1; PRD §1.7 |
 | Import no other component; compose through slots | §10 SD4; MANIFESTO Law 4; ARCH §12 |
 | Spec APPROVED with the Agent contract section filled | plan §2.3, §7.1; PRD §8.1 |
 | htmx Tests row filled, or `n/a` with a reason | plan §2.4, §7.1 |
 | Agent-exposed C5–C20 rows add the component to the `<line-a2ui-surface>` render fixture and the surface axe test | plan §7.2; §6.G.4 |
 | Machine rows (C1, C5, C6, C8, C11, C16) measure the host update rate and record it in the PR; the first row past the C21 budget adds the `line-core` `VanillaMachine` subclass, with a test that shows a flat `prop()` cost over 4,000 calls | §6.C.1; §10 SD18; §12 AM-020, L3R14-04 |
+| Add `packages/line-components/__tests__/visual/<c>.visual.ts` over the component's stories and commit their Linux baselines from a `visual-baselines.yml` run | §6.P.11; §10 SD98; PRD §5.2 |
 
 **Acceptance (stream)**
 
 - Every C1–C20 row meets every obligation above and the table in §6.C.4.
-- C21 and C23 merged before C1; C22 and P5 merged before C2 (§12 AM-019, L3R13-01).
+- C21, C23, P7 and P11 merged before C1; C22 and P5 merged before C2 (§12 AM-019, L3R13-01; §12 AM-031).
 - C1's Storybook autodocs page shows the attributes, slots, events and CSS parts of `line-button` from the shipped manifest (§6.P.10; §12 AM-020, L3R14-03).
+- C1 adds `packages/line-components/__tests__/manifest-paths.test.ts`, a `bun test` file that the "Unit tier" step runs (`.github/workflows/checks.yml:38-39`). On the packed `line-components` tarball, every module `path` of a custom-element declaration in `custom-elements.json` names a file in the tarball. Later rows keep it passing (§7.3; §12 AM-032, L3R23-03).
 
 ### 6.G Stream G — Agent-Driven UI Foundation (`@websublime/line-genui`)
 
@@ -1212,7 +1240,7 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
   - `packages/line-genui/custom-elements-manifest.config.mjs`, the `analyze` build step and the §4.1 manifest keys, so `line-genui` ships its own Custom Elements Manifest for `<line-a2ui-surface>` (§10 SD94).
   - The surface gains the property `iconMap`, typed `A2uiIconMap` through `import type` from `@websublime/line-icons/a2ui`, which takes the result of `a2uiIconMap(set, { library })` and has no default. `./a2ui` of `line-genui` has no runtime import of `line-icons` (§6.C.3; §12 AM-006, D-M; §12 AM-008, L3R4-03).
   - The surface gains the attributes `live-update-text` and `live-error-text`, reflected by the properties `liveUpdateText` and `liveErrorText`. Their defaults are the R2 spike strings "Content updated." and "Some content could not be shown." (R2 §6 Q3; `docs/research/assets/01-r2/spike/README.md:110, :116-117`; `docs/research/assets/01-r2/spike/src/surface-base.ts:7-8`; §12 AM-015, L2R9-01). The consumer localises the live region through them, because component-level strings are the consumer's responsibility via slots and attributes (MANIFESTO Out of Scope; §10 SD59; §12 AM-013, L3R7-01).
-  - The surface's JSDoc documents its attributes and properties, `iconMap`, `liveUpdateText`, `liveErrorText`, `maxNodes`, `maxDepth` and `maxDataModelSize` among them, and carries `@fires` for `line-a2ui-action` and `line-a2ui-error` (§10 SD94, SD61; §12 AM-006, D-M; §12 AM-013, L3R7-01; §12 AM-015, L3R9-05).
+  - The surface's JSDoc documents its attributes and properties, `iconMap`, `liveUpdateText`, `liveErrorText`, `maxNodes`, `maxDepth`, `maxDataModelSize`, `urlPolicy` and `markdownRenderer` among them, and carries `@fires` for `line-a2ui-action` and `line-a2ui-error` (§10 SD94, SD61; §12 AM-006, D-M; §12 AM-013, L3R7-01; §12 AM-015, L3R9-05; §12 AM-032, L3R23-04).
   - The `@websublime/line-genui/custom-elements.json` import in the P10 merge in `apps/storybook/.storybook/preview.ts`. The existing unanchored `custom-elements.json` line of `.gitignore` (`.gitignore:10`) already ignores `packages/line-genui/custom-elements.json` (§12 AM-018, L3R12-04).
   - `"@websublime/line-genui": "workspace:^"` in the `apps/storybook` devDependencies, so that Storybook resolves `@websublime/line-genui` for that import and for the surface stories. `lint-layers` reads only the `dependencies` and `peerDependencies` of an app, so the devDependency passes the guard (`scripts/lint-layers.mjs:13-14, :182-186`; §12 AM-015, L3R9-01).
   - The G4 docs show the two consumer lines for icons, `setIconRegistry(registry)` from `@websublime/line-components` with a `line-icons` `IconRegistry`, and `surface.iconMap = a2uiIconMap('phosphor', { library: 'phosphor' })` from `@websublime/line-icons/a2ui`, where `library` repeats the registered key. The session never writes the registry (§6.C.3 registry hook; §12 AM-004, D-R; §12 AM-006, D-M).
@@ -1234,6 +1262,7 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - Law 5 reading: the "Lit owns DOM" clause of Law 5 governs `line-components` components. `<line-a2ui-surface>` is a light-DOM orchestrator in `line-genui`. Its own reconciler is its rendering cycle, and no other code mutates its DOM. The rest of Law 5 still holds for the surface: it keeps no styles in TypeScript and no business logic in render. Miguel approved this reading on 2026-10-20 (MANIFESTO Law 5; ARCH §17.4; §12 AM-002; §12 AM-004, L3R2-10, L3R2-09).
 - The render root MUST be light DOM (ARCH §17.4).
 - Components MUST load lazily through each descriptor's `load()` (ARCH §17.4).
+- The session MUST register the `line` catalog under its id `https://line-ui.websublime.com/a2ui/catalogs/line/v1/catalog.json`, and that registration MUST always be on, beside the `basic` registration (§6.G.2; §10 SD42; §12 AM-032, L3R23-07).
 - The session MUST call `processMessages` once per message. A bad message then drops only itself (R1 §2.7; R2 §2.6; §10 SD51).
 - `aria-busy` MUST cover the whole transport batch (ARCH §17.4; R2 §2.8).
 - The `MessageProcessor` MUST receive `RELAXED_VALIDATION` (R1 §2.7; §10 SD52).
@@ -1263,8 +1292,10 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - The default allowlist MUST be `https:`, `http:`, `mailto:`, `tel:` (ARCH §17.4). `mailto:` and `tel:` apply to media URLs only, because `web_core` `openUrl` accepts only `http:` and `https:` (R1 §2.6; §12 AM-005, L2R3-11).
 - The default policy MUST reject `data:`. This is line policy: R5's default View CSP allows `data:` images and media (§10 SD57; §12 AM-005, L2R3-11).
 - `requiresUserActivation` MUST be honoured (ARCH §17.4).
+- The consumer MUST be able to add a URL policy through the property `urlPolicy`, typed `(url: URL, use: 'image' | 'video' | 'audio' | 'openUrl') => boolean`, with no attribute and no default. The surface calls it after the default policy with the URL resolved against the document base, and `false` keeps the URL from the DOM and from `openUrl`. A consumer policy can reject a URL the default allows and cannot admit one the default rejects (ARCH §17.4; §10 SD57; §12 AM-032, L3R23-04).
 - Text MUST render as plain text by default (ARCH §17.4).
-- Markdown MUST render only through a hook the consumer supplies. The consumer owns sanitising, and line ships no renderer (§10 SD58).
+- Markdown MUST render only through a hook the consumer supplies, the property `markdownRenderer`, typed `(markdown: string) => Node`, with no attribute and no default. When it is set, the surface passes each Text value to it and inserts the returned node; when it is unset, Text renders as plain text. The consumer owns sanitising, and line ships no renderer (§10 SD58; §12 AM-032, L3R23-04).
+- The surface calls `markdownRenderer` itself. It does not use `web_core` `setMarkdownRenderer`, which `./v0_9/basic_catalog` exports beside the basic Lit elements (R1 §2.3), because the surface loads no Lit (§12 AM-032, L3R23-04).
 - Agent theme hints MUST be ignored by default (ARCH §17.4).
 
 **Accessibility**
@@ -1314,11 +1345,15 @@ The three Phase 1 components with `agentExposed: false` and their reasons (§10 
 - With `max-nodes`, `max-depth` or `max-data-model-size` set below its default, a message that the default accepts is rejected with `line-a2ui-error` (§12 AM-015, L3R9-05).
 - Every emitted `line-a2ui-error` validates against `client_to_server.json` (R2 §2.6).
 - URLs with a disallowed scheme or `data:` do not reach the DOM.
+- With `urlPolicy` set to reject one `https:` URL, an Image with that URL, which the default policy allows, does not reach the DOM (§12 AM-032, L3R23-04).
+- With `markdownRenderer` set, a Text value renders as the node the hook returns; with it unset, the same value renders as plain text (§10 SD58; §12 AM-032, L3R23-04).
+- A message with the `line` catalog id renders its components (§10 SD42; §12 AM-032, L3R23-07).
 - A node of a fixture descriptor that marks its name required renders a placeholder and raises `line-a2ui-error` when the name is missing. The IconButton case is C5's (§6.C.5; §12 AM-020, L3R14-06).
 - A focused element keeps focus across a reorder and a reparent in Chromium, Firefox and WebKit.
 - The G4 stress test runs and its measured limits land through an AM.
 - `package.json` lists `@a2ui/web_core` as exactly `0.14.0`.
 - `verify-pack` fails when `custom-elements.json` is missing from the `line-genui` tarball (§10 SD94).
+- On the packed `line-genui` tarball, the module `path` of the `<line-a2ui-surface>` declaration in `custom-elements.json` names a file in the tarball (§7.3; §12 AM-032, L3R23-03).
 - The Storybook API table for `<line-a2ui-surface>` renders its attributes, properties and both events from the merged manifest (§10 SD94).
 
 #### 6.G.5 G5 — CEM drift and coverage tests
@@ -1574,6 +1609,7 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
 - The recipe MUST accept `application/json+a2ui` beside `application/a2ui+json` (R6 §2.2; §10 SD66).
 - The recipe MUST target A2A v1.0 with `@a2a-js/sdk` 1.3.0 (R6 §2.2; §10 SD66).
 - The recipe MUST send only `application/a2ui+json` with `[action]` (ARCH §17.5; §10 SD66).
+- Capabilities MUST travel in the message metadata (ARCH §17.5; §12 AM-032, L3R23-08).
 
 **MCP**
 
@@ -1581,12 +1617,14 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
 - `_meta.ui.resourceUri` belongs to MCP Apps `ui://` resources (R6 §2.3).
 - Capabilities MUST travel in `_meta.a2ui` per call (R6 §2.3; §10 SD67).
 - MCP SDK v2 appears in MDX only (§10 SD67).
+- The recipe MUST send an action as a `tools/call` of `a2ui_action` and an error as a `tools/call` of `a2ui_error` (ARCH §17.5; §12 AM-032, L3R23-08).
 
 **SSE**
 
 - One message travels per SSE event (ARCH §17.5).
 - The stream MUST end with a named `end` event (R6 §2.4; §10 SD67).
 - Capabilities MUST travel in the query string, because `EventSource` sends no body or header (R6 §2.4; §10 SD67).
+- The recipe MUST send actions by POST (ARCH §17.5; §12 AM-032, L3R23-08).
 
 **MCP Apps View delivery**
 
@@ -1594,6 +1632,7 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
 - The docs MUST show a CDN listed in `resourceDomains` as the alternative (R5 §2.2; §10 SD68).
 - The docs MUST tell server authors to list font origins. The default CSP has no `font-src` (R5 §2.2; §10 SD68).
 - The docs MUST import ext-apps 2.x from `./app-with-deps`. The main entry pulls Zod 4 peers into a Zod 3 app (R5 §2.1, §2.3, §4 (P7); §10 SD69).
+- The docs MUST show the app applying `hostContext.styles.variables` and `hostContext.theme` with the ext-apps calls `applyHostStyleVariables` and `applyDocumentTheme`, which set the host values on `<html>` that `mcp-apps.css` reads and set `color-scheme` (ARCH §17.6; R5 §2.3; §12 AM-032, L3R23-08).
 
 **Acceptance**
 
@@ -1602,6 +1641,7 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
 - The Bun comparison test passes on middleware 0.0.13.
 - The A2A recipe renders both the array and the single-message DataPart.
 - On the AG-UI mock, `building` and `retrying` show the recipe status line and leave `aria-busy` to the surface, `failed` sets `inert` on the surface host, and the next operations snapshot clears both (§12 AM-006, L2R3-03).
+- A Button action in the A2A, MCP and SSE recipes leaves through the outbound path above: an `[action]` DataPart with capabilities in the message metadata, a `tools/call` of `a2ui_action`, and a POST (ARCH §17.5; §12 AM-032, L3R23-08).
 
 ### 6.D Stream D — Cross-Cutting Documentation
 
@@ -1619,7 +1659,7 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
   - The guide MUST show the tool emitter with the provider argument, the 1024-character cap and the Anthropic per-request caps (§10 SD48, SD49).
   - The guide MUST state the preview status of `@websublime/line-genui/a2ui` and `@websublime/line-icons/a2ui` (ARCH §17.7; §12 AM-010, L3R5-05).
   - The guide MUST document the surface attributes `live-update-text` and `live-error-text`, their defaults "Content updated." and "Some content could not be shown.", and how the consumer localises the live region through them (§10 SD59; §12 AM-013, L3R7-01).
-  - The guide MUST describe the URL policy, the Markdown hook, the limits and the error payload (§10 SD57, SD58, SD56, SD55). It MUST document the attributes `max-nodes`, `max-depth` and `max-data-model-size` that override the limits (§12 AM-015, L3R9-05).
+  - The guide MUST describe the URL policy and the `urlPolicy` property, the Markdown hook `markdownRenderer`, the limits and the error payload (§10 SD57, SD58, SD56, SD55; §12 AM-032, L3R23-04). It MUST document the attributes `max-nodes`, `max-depth` and `max-data-model-size` that override the limits (§12 AM-015, L3R9-05).
   - The guide MUST state the template-list focus limit and its trigger (§10 SD60).
   - The guide MUST describe the MCP Apps bridge and View delivery (§10 SD62, SD68).
 - **Acceptance:** the guide builds in Storybook, and every code sample that imports `@websublime/*` compiles against the shipped exports. Each such sample is a `.ts` file in `apps/storybook/stories/agent-driven-ui-samples/`, which `apps/storybook/tsconfig.json` includes (`stories/**/*`), so the existing "Typecheck" step (`bun --filter '@websublime/*' typecheck`, `.github/workflows/checks.yml:24-25`) compiles it against the built declarations. The MDX shows each file through a Vite `?raw` import [INFERENCE: not probed]. A sample that imports a package no Phase 1 manifest declares, such as `@modelcontextprotocol/ext-apps/app-with-deps` (§10 SD69), stays an MDX code block and is not compiled (§12 AM-016, L3R10-08). A sample that imports CSS, such as the side-effect import `@websublime/line-themes/hosts/mcp-apps.css`, also stays an MDX code block and is not compiled (§12 AM-019, L3R13-05). These rules win over the first: a sample that also imports `@websublime/*` still stays MDX (§12 AM-017, L3R11-06).
@@ -1640,7 +1680,7 @@ Source: R6 §2.1, §4, §6 Q7 (a) for showing the states; the status line is AM-
 - **Contract**
   - Getting Started MUST cover installing the Phase 1 components and the opt-in `line-genui` package (plan §4.4).
   - It MUST give full subpath URLs for CDN use (§10 SD32).
-- **Acceptance:** each install and CDN snippet works as written in the P6 check pages.
+- **Acceptance:** each install snippet works as written. Each CDN snippet uses the URL form that the P6 check pages prove, and the snippets for the pages P6 covers work as written there (§6.P.6; §10 SD32; §12 AM-032, L3R23-13).
 
 ### 6.S Site
 
@@ -1689,7 +1729,7 @@ The PR that creates the Phase 1 ledger also aligns PROCESS §4 "Repo agents" (`d
   - The sweep MUST run before the last rows land (plan §7.4; retrospective lesson 9).
   - The retrospective MUST carry a hand-off section for Phase 2 (plan §7.4).
   - The Phase 2 hand-off MUST name the SD76 widening duty (§7.2; §12 AM-030).
-- **Acceptance:** the sweep's findings are recorded in the ledger, and the retrospective file exists with its hand-off section (§10 SD87).
+- **Acceptance:** the sweep's findings are recorded in the ledger, and the retrospective file exists with its hand-off section, which names the SD76 widening duty (§7.2; §10 SD87; §12 AM-032, L3R23-05).
 
 ## 7. Cross-Cutting Concerns
 
@@ -1703,7 +1743,7 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 | `vite.config.shared.mjs` | Remove the `dts` import and plugin (lines 2, 24); add `emptyOutDir: !process.argv.includes('--watch')`, shown in the §6.P.9 block | D1 (a); §10 SD7; §12 AM-008, L2R4-05 |
 | `packages/line-core/package.json` | `build` and `dev` as in §4.5 | §10 SD7; R11 §2.8 P-T (`build` only; §12 AM-006, L2R3-04) |
 | `packages/line-components/package.json` | `build` and `dev` as in §4.2 | §10 SD7 |
-| `packages/line-genui/package.json` | `build` and `dev` as in §4.1 | §10 SD7 |
+| `packages/line-genui/package.json` | No P8 change; P1 writes `build` and `dev` as in §4.1 | §10 SD7; §6.P.1 (§12 AM-032, L3R23-12) |
 | `packages/line-{schemas,utils,icons}/package.json` | No script change; `tsc -b` now runs 7.x | D1 (a) |
 | `tsconfig.base.json` | No change; `declarationMap: true` stays (line 19) | §10 SD7 |
 | `apps/storybook/types/line-css.d.ts` | `declare module` lines for the six CSS specifiers R11 §2.7 RC1 lists | R11 OQ2 (b); plan §5.6 defaults |
@@ -1742,7 +1782,7 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 - `line-genui` therefore declares both peers, and at P1 the `devDependencies` that repeat them, as `workspace:^0.1.0 || ^0.2.0` (§4.1). The Phase 1 Version PR keeps the peers and rewrites the two `devDependencies` to `workspace:^0.2.0`; a canary pins both to the snapshot version (§4.1; §12 AM-030). P3 sets `___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange: true` in `.changeset/config.json` unconditionally (§6.P.3; §10 SD76; §12 AM-028).
 - An orchestrator probe on 2026-10-21 (`@changesets/cli` 2.31.1, Bun 1.4.3; `line-genui` 0.1.0 with both peers also as `devDependencies`; one `minor` changeset per package) gave `line-genui` 0.2.0 with the two-minor range and the flag. `workspace:^` gave 1.0.0 with or without the flag, and the two-minor range without the flag gave 1.0.0.
 - Each later phase that moves `line-components` or `line-icons` to a new minor widens both peer ranges in `packages/line-genui/package.json`, for example `|| ^0.3.0`, on `main` before `changeset version` builds that phase's Version PR, in the first PR of the phase that adds a `minor` changeset for `line-components` or `line-icons` (§10 SD76). The `devDependencies` follow Changesets.
-- No script fails on a miss. A lens probe on 2026-10-21 gave `line-genui` 1.0.0 in the Version PR and a `1.0.0-<sha>-SNAPSHOT` canary. The snapshot guard accepts any `<x.y.z>-<sha>-SNAPSHOT` version, and the stable guard rejects only prerelease versions (`scripts/publish.mjs:39, :135-136, :144-145`). The Version PR reviewer therefore checks the `line-genui` version (§12 AM-030).
+- No script fails on a miss. A lens probe on 2026-10-21 gave `line-genui` 1.0.0 in the Version PR and a `1.0.0-<sha>-SNAPSHOT` canary. The snapshot guard accepts any `<x.y.z>-<sha>-SNAPSHOT` version, and the stable guard rejects only prerelease versions (`scripts/publish.mjs:39, :135-136, :144-145`). Miguel, who merges the Version PR, therefore checks the `line-genui` version (§12 AM-030; §12 AM-032, R23-L1-02).
 - P3 MUST prove the nine `0.2.0` versions and a `0.2.0-` `line-genui` canary in dry runs before the first `line-genui` release (§6.P.3).
 - R9 §2.6 ran on `@changesets/cli` 2.31.1, the repo version. npm `latest` is 3.0.3. Phase 1 stays on 2.x [INFERENCE: no decision moves it] (§10 SD77).
 
@@ -1753,7 +1793,7 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 - The analyser runs before the Storybook build, because `package.json:23` builds packages before apps (§10 SD26).
 - `line-components` ships it with a `customElements` field, a `files` entry and an `exports` key (D8; §4.2).
 - The analysis includes the `line-core` sources, because inheritance resolves by class name across the manifest (R4 §2.3).
-- Module paths of `line-components` elements MUST resolve to files inside the tarball. `files` ships `src`, so the analyser's `src/…` paths resolve [INFERENCE: R4 OQ5 notes paths may need to point at `dist`; P10 checks it on the packed tarball].
+- Module paths of `line-components` elements MUST resolve to files inside the tarball. `files` ships `src`, so the analyser's `src/…` paths resolve [INFERENCE: R4 OQ5 notes paths may need to point at `dist`]. C1 checks it on the packed `line-components` tarball, and G4 on the packed `line-genui` tarball (§6.C.6, §6.G.4; §12 AM-032, L3R23-03).
 - Tests look up each element by tag, because `modules[]` order changes per run (R4 §2.7, P9).
 
 Content rules (§10 SD61):
@@ -1838,7 +1878,8 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | Tier | Runner | Covers | Source |
 |---|---|---|---|
 | Unit | `bun test` on happy-dom (`bunfig.toml` preload). happy-dom has no `attachInternals`, so the preload installs a fake one from `packages/line-core/__tests__/mocks/element-internals.ts` (§6.C.2; §12 AM-020, L3R14-01) | Rendering, props, events, slots, machine wiring | PRD §5.2; Phase 00 spec §6.F.3 (§12 AM-020, L2R14-02) |
-| Browser | Playwright, three engines, `*.e2e.ts`; `*cdn.e2e.ts` files run only in `.github/workflows/cdn-check.yml` (§6.P.6) | Focus, keyboard, axe, layout, everything happy-dom cannot model | PRD §5.2; `playwright.config.ts:22-26` (§12 AM-005, L2R3-13; §12 AM-016, L3R10-04) |
+| Browser | Playwright, three engines, `*.e2e.ts`; `*cdn.e2e.ts` files run only in `.github/workflows/cdn-check.yml` (§6.P.6) | Focus, keyboard navigation (§10 SD99), axe, layout, everything happy-dom cannot model | PRD §5.2; `playwright.config.ts:22-26` (§12 AM-005, L2R3-13; §12 AM-016, L3R10-04; §12 AM-031) |
+| Visual | Playwright `toHaveScreenshot` in the `visual` project, Chromium only, `*.visual.ts` on `storybook-static`; baselines from `.github/workflows/visual-baselines.yml` (§6.P.11) | Unintended visual changes in every story of every component | PRD §5.2; §10 SD98 (§12 AM-031) |
 | Packaging | `bun test` on the packed tarball | §7.5 checks | §10 SD4 |
 
 - The browser tier is the source of truth where the two tiers disagree (plan §8 "happy-dom gaps" row, retrospective lesson 2; happy-dom limits in R7 §2.3).
@@ -1861,8 +1902,8 @@ The docs promise two paths and the manifests gain no CDN field (§10 SD32).
 | `line-components` inlines `line-core`, so consumers get two `LineElement` classes (R9 §2.1) | High | High | P9 derives `external` from each manifest before C1. The `instanceof` harness and the identity test run on the packed tarball (§6.P.5, §7.5; §10 SD2; §12 AM-020, L3R14-02) |
 | The icon origin is unavailable or blocked by CSP. The resolvers fetch each SVG, unpkg answers some calls with 500 and its 404 lacks CORS, and `connect-src` must list the origin (R10 round 2 §2.4, §2.6, §2.7) | Medium | Medium | `base` is required, so no third-party request happens unless the consumer sets it. The docs give a self-host recipe and the CSP note. Every failure leaves `<line-icon>` in the neutral C8 state (§6.C.3; §10 SD90, SD92) |
 | Repeated `updateProps` calls slow each machine down. One `prop()` read grew from 0.013 ms to 0.397 ms over 4,000 calls (R7 §2.3 P4) | Medium | Medium | C21 ships the update-rate harness and records a budget, and each machine row records its own rate. C21 files the upstream Zag issue. The first row past the budget adds a `line-core` `VanillaMachine` subclass that replaces the props source only for components past the budget (§6.C.1; §10 SD18; §12 AM-020, L3R14-04) |
-| Changesets bumps `line-genui` to a major when its peer `line-components` or `line-icons` moves to a new minor outside the declared range, or when the flag is unset (`@changesets/assemble-release-plan` 6.0.10 `src/determine-dependents.ts:266-269`) | Medium | High | P1 declares both peers as `workspace:^0.1.0 \|\| ^0.2.0`, and P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` unconditionally. P3 proves `0.2.0` for all nine packages and a `0.2.0-` `line-genui` canary in dry runs before the first `line-genui` release. The first PR of each later phase that adds a `minor` changeset for either peer widens the peer ranges on `main` before `changeset version` builds that phase's Version PR. No script fails on a miss, so the Version PR reviewer checks the `line-genui` version (§4.1, §6.P.3, §7.2; §10 SD76; §12 AM-028, AM-030) |
-| Shipped manifest module paths point at files the tarball lacks (R4 OQ5) | Medium | Medium | `files` ships `src`. P10 checks the module paths on the packed tarball (§6.P.10, §7.3) |
+| Changesets bumps `line-genui` to a major when its peer `line-components` or `line-icons` moves to a new minor outside the declared range, or when the flag is unset (`@changesets/assemble-release-plan` 6.0.10 `src/determine-dependents.ts:266-269`) | Medium | High | P1 declares both peers as `workspace:^0.1.0 \|\| ^0.2.0`, and P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` unconditionally. P3 proves `0.2.0` for all nine packages and a `0.2.0-` `line-genui` canary in dry runs before the first `line-genui` release. The first PR of each later phase that adds a `minor` changeset for either peer widens the peer ranges on `main` before `changeset version` builds that phase's Version PR. No script fails on a miss, so Miguel, who merges the Version PR, checks the `line-genui` version (§4.1, §6.P.3, §7.2; §10 SD76; §12 AM-028, AM-030, AM-032) |
+| Shipped manifest module paths point at files the tarball lacks (R4 OQ5) | Medium | Medium | `files` ships `src`. C1 checks the `line-components` module paths, and G4 the `line-genui` one, on the packed tarballs (§6.C.6, §6.G.4, §7.3; §12 AM-032, L3R23-03) |
 | Anthropic strict mode caps each request at 20 strict tools, 24 optional params and 16 union-typed params across all strict schemas (R3 §2.6) | Medium | Medium | Acceptance holds per tool. The docs state the per-request caps, and a live provider call before each release is recorded in the release PR (§6.G.3; §10 SD49) |
 | Catalog quality becomes the agent UX (plan §8) | High | Medium | Descriptions reach the catalog through `spec(…, {mixins})` and the `REF:` helper (§6.G.1; §10 SD41). Each component spec reviews its descriptor |
 | Accessibility of agent-built trees is under-specified upstream (plan §8) | Medium | High | The surface checks required names before render, keeps one live region and follows the D4 focus rule. P7 runs the axe tier on the surface stories (§6.G.4, §7.4; §10 SD36, SD82) |
@@ -1898,6 +1939,9 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
 - [ ] Zero axe-core violations
   - Tasks: P7, C1–C20.
   - Check: `packages/line-components/__tests__/a11y/<c>.e2e.ts` passes in three engines with the §7.4 ruleset.
+- [ ] *Every story of every component has a committed Chromium baseline, and the visual tier passes (PRD §5.2).*
+  - Tasks: P11, C1–C20.
+  - Check: the "Browser tier" step runs `packages/line-components/__tests__/visual/<c>.visual.ts` in the `visual` project, and each story has a committed `-visual-linux.png` baseline from `visual-baselines.yml` (§6.P.11; §10 SD98).
 - [ ] CEM manifest generated and verified
   - Tasks: P10, G5.
   - Check: `bun run scripts/verify-pack.mjs` fails without `custom-elements.json` in the `line-components` tarball; the G5 drift and coverage tests pass.
@@ -1985,13 +2029,13 @@ Phase 1 is complete when every item below holds. The list mirrors plan §7.1–�
   - Check: the ledger rows' status.
 - [ ] *The exit sweep runs before the last rows land, and the Phase 1 retrospective is written with a hand-off to Phase 2 (retrospective lesson 9).*
   - Task: Z3.
-  - Check: the retrospective file under `docs/retrospective/` exists with its hand-off section.
+  - Check: the retrospective file under `docs/retrospective/` exists with its hand-off section, which names the SD76 widening duty (§6.Z.2).
 
 ---
 
 ## 10. Design Decisions
 
-Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows record orchestrator defaults that Miguel confirmed when he chose "proceed as proposed" at the end of round 4. Default R5 and R6 rows record orchestrator defaults shown to Miguel with their rounds, to which he raised no objection. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft. The Question column names the session id from the 00-Z46 decision record where one exists.
+Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows record orchestrator defaults that Miguel confirmed when he chose "proceed as proposed" at the end of round 4. Default R5 and R6 rows record orchestrator defaults shown to Miguel with their rounds, to which he raised no objection. Drafting rows record choices the drafting made inside the decisions; Miguel approved them on 2026-10-20 after the draft. Decision rows record a choice Miguel made after approval, through the AM the row names. The Question column names the session id from the 00-Z46 decision record where one exists.
 
 | ID | Question | Decision | Rejected | Evidence | Origin | Status |
 |---|---|---|---|---|---|---|
@@ -2051,8 +2095,8 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD54 | Q02 (K1): How do a cycle and a pending child behave (contradiction K1)? | A cycle rejects its message; a pending child stays hidden, is replaced on arrival and raises no error; ARCH §17.4 Errors row and plan §2.1 corrected | Treating a pending child as a resolver error | R1 §2.5.2, §2.7; R2 §3 P9; `@a2ui/web_core` 0.14.0 `src/resolution/node-resolver.js` | Fork R3 | Approved 2026-10-20 |
 | SD55 | Q02c: What payload does `line-a2ui-error` carry? | The generic A2UI form `{version, error: {code, surfaceId, message, …}}` with the `web_core` code | `VALIDATION_FAILED` with a computed JSON Pointer `path`; a hybrid of both | R2 §2.6; R1 §2.1, §2.7 | Fork R3 | Approved 2026-10-20 |
 | SD56 | Q32a: What are the default limits for node count, depth and data-model size? | Finite defaults; a breach rejects the message with `line-a2ui-error`; the values come from a G4 stress test through an AM; the consumer overrides each limit through `max-nodes`, `max-depth` and `max-data-model-size` (AM-015) | `web_core` constants; unlimited unless configured | R1 §2.7, §4; ARCH §17.4; AM-015 | Default R3 | Approved 2026-10-20 |
-| SD57 | Q32b: How does the URL policy apply? | After resolution against the document base, to Image, Video and Audio URLs and `openUrl`; `mailto:` and `tel:` apply to media URLs only, because `openUrl` accepts only `http:` and `https:`; `data:` rejected as line policy | Allowing `data:` for images | R1 §2.6; R2 spike surface; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
-| SD58 | Q32c: What shape does the Markdown opt-in take? | A surface hook the consumer supplies; the consumer owns sanitising | A line-shipped renderer; plain text only | R1 §2.3; R6 §2.1; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
+| SD57 | Q32b: How does the URL policy apply? | After resolution against the document base, to Image, Video and Audio URLs and `openUrl`; `mailto:` and `tel:` apply to media URLs only, because `openUrl` accepts only `http:` and `https:`; `data:` rejected as line policy; the consumer adds a policy through `urlPolicy`, applied after the default, which can only reject (AM-032) | Allowing `data:` for images | R1 §2.6; R2 spike surface; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
+| SD58 | Q32c: What shape does the Markdown opt-in take? | A surface hook the consumer supplies, the property `markdownRenderer` (AM-032); the consumer owns sanitising | A line-shipped renderer; plain text only | R1 §2.3; R6 §2.1; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
 | SD59 | Q59: What surface rendering details apply? | Live region announces the `live-update-text` value (default "Content updated.") once per batch that changed the DOM and the `live-error-text` value (default "Some content could not be shown.") on error, both settable by the consumer; `role="list"` on `line-stack` for List, and `role="listitem"` on each item `line-stack`, or on a `<div role="listitem">` wrapper when the item is not a `line-stack`; Button text in a `<span>`; the AG-UI recipe never writes `aria-busy`, shows `building`/`retrying` in a recipe-owned status line outside the surface, sets the HTML `inert` attribute on the surface host for `failed`, and removes it on the next operations snapshot (§6.G.7) (AM-002, AM-004, AM-006, AM-013) | `<p>` for Button text | R2 §2.1, §2.8, §6 Q3, Q4, Q8; R6 §2.1, §4, §6 Q7 (a); `docs/research/assets/01-r2/spike/README.md:110, :116-117`; `docs/research/assets/01-r2/spike/src/surface-base.ts:7-8`; MANIFESTO Out of Scope | Default R3 | Approved 2026-10-20 |
 | SD60 | Q52: How does the reconciler treat template-list reorders? | Document the limit; revisit trigger a2ui#1745 | Keying by `componentId` plus data path; waiting for #1745 | R2 §2.8, §6 Q1; ARCH §17.4 | Default R3 | Approved 2026-10-20 |
 | SD61 | Q44: What content rules govern the manifest? | `@fires` mandatory; tests filter on `privacy`, `static` and `inheritedFrom`; inherited static `formAssociated`; ARIA in the descriptor; `schemaVersion` as emitted; no analyser plugin | An ARIA plugin; a `schemaVersion` 2.1.0 plugin; a member-stripping plugin | R4 §2.3, §2.4, §2.6, §6 OQ1–OQ3, OQ6–OQ8 | Default R1 | Approved 2026-10-20 |
@@ -2070,7 +2114,7 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD73 | Q41: Unupgraded state, theme CSS scope, stylesheet delivery and hand-written `<link rel="modulepreload">` on the site? | Left to the S1 implementer and recorded in the PR (AM-002) | Fixing them in the spec | R12 §2.4, §2.5, §6 Q1, Q2, Q4, Q5 | Default R1 | Approved 2026-10-20 |
 | SD74 | Which code of conduct text and contact does Z1 use? | The Contributor Covenant, latest version; Miguel supplies the reporting contact in the Z1 PR | — | PRD §10; plan §7.4 | Drafting | Approved 2026-10-20 |
 | SD75 | Do untouched packages get a changeset? | Every package gets a `minor` changeset so all nine reach `0.2.0` | Bumping only changed packages | plan §7.4 | Drafting | Approved 2026-10-20 |
-| SD76 | What if Changesets bumps `line-genui` to a major through its peers? | `line-genui` declares `line-components` and `line-icons` as `workspace:^0.1.0 \|\| ^0.2.0` in `peerDependencies` and, at P1, `devDependencies`; P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` in `.changeset/config.json` unconditionally; the first PR of each later phase that adds a `minor` changeset for either package widens the peer ranges on `main` before `changeset version` builds that phase's Version PR, for example `\|\| ^0.3.0` (AM-028, AM-030). The `^0.1.0` arm keeps `bun install` working before the Version PR: Bun 1.4.3 fails on `workspace:^0.2.0` while the workspace is at 0.1.0. The published range also admits the 0.1.x peers, which lack the Phase 1 subpaths, so it differs from `>=0.1.0` only for later minors (AM-030) | Accepting a major; the open lower bound `workspace:>=0.1.0`, which gives no npm warning on an incompatible version | R9 §2.6 method; orchestrator probe 2026-10-21 (`@changesets/cli` 2.31.1: `line-genui` 0.2.0 with the two-minor range and the flag; 1.0.0 with `workspace:^`, with or without the flag); lens probe 2026-10-21 (Bun 1.4.3 `bun install` on `workspace:^0.2.0`; AM-030); `@changesets/assemble-release-plan` 6.0.10 `src/determine-dependents.ts:266-269` | Drafting | Approved 2026-10-20 |
+| SD76 | What if Changesets bumps `line-genui` to a major through its peers? | `line-genui` declares `line-components` and `line-icons` as `workspace:^0.1.0 \|\| ^0.2.0` in `peerDependencies` and, at P1, `devDependencies`; P3 sets `onlyUpdatePeerDependentsWhenOutOfRange` in `.changeset/config.json` unconditionally; the first PR of each later phase that adds a `minor` changeset for either package widens the peer ranges on `main` before `changeset version` builds that phase's Version PR, for example `\|\| ^0.3.0` (AM-028, AM-030). The `^0.1.0` arm keeps `bun install` working before the Version PR: Bun 1.4.3 fails on `workspace:^0.2.0` while the workspace is at 0.1.0. The published range also admits the 0.1.x peers, which lack the Phase 1 subpaths, so it differs from `>=0.1.0` only for versions from 0.3.0 up, later minors and majors alike (AM-030, AM-032) | Accepting a major; the open lower bound `workspace:>=0.1.0`, which gives no npm warning on an incompatible version | R9 §2.6 method; orchestrator probe 2026-10-21 (`@changesets/cli` 2.31.1: `line-genui` 0.2.0 with the two-minor range and the flag; 1.0.0 with `workspace:^`, with or without the flag); lens probe 2026-10-21 (Bun 1.4.3 `bun install` on `workspace:^0.2.0`; AM-030); `@changesets/assemble-release-plan` 6.0.10 `src/determine-dependents.ts:266-269` | Drafting | Approved 2026-10-20 |
 | SD77 | Which `@changesets/cli` major does Phase 1 use? | Stay on 2.x (2.31.1) | Move to 3.x | R9 §2.6 | Drafting | Approved 2026-10-20 |
 | SD78 | Q21: Which runner makes zero axe violations a failing CI check? | Playwright with `@axe-core/playwright` 4.14.0 as the gate; `@storybook/addon-a11y` stays as the author panel | Storybook addon plus Vitest addon; Playwright with the addon removed | R8 §2.4; PRD §5.2 | Default R1 | Approved 2026-10-20 |
 | SD79 | R2 default: Which axe ruleset does the gate run? | WCAG 2.0 and 2.1 A and AA tags | Other tag sets | R8 §2.4, §6 Q4 | Default R2 | Approved 2026-10-20 |
@@ -2080,7 +2124,7 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD83 | How does the G6 key map break ties and settle borderline role calls? | The tie-break rule and the borderline calls B1–B11 in §6.G.6 | Mapping all 6 radii by order; the alternatives in the §6.G.6 "Borderline calls" table | R5 §2.3, §2.4b; `packages/line-themes/src/aliases.css`; `packages/line-tokens/src/` | Drafting | Approved 2026-10-20 |
 | SD84 | Which reset modules do Chip and AvatarGroup take (ARCH §14.7)? | `common` and `button`, because each renders an inner native `<button>` (§10 SD31) | `common` only | ARCH §14.7; R8 §6 Q1 | Drafting | Approved 2026-10-20 |
 | SD85 | In which order do `mcp-apps.css` and the `line-themes` CSS load? | `mcp-apps.css` loads after the `line-themes` CSS; the docs state the order; a G6 browser test checks it | Leaving the order unstated | `packages/line-themes/src/aliases.css:6-7`; §6.G.6 | Drafting | Approved 2026-10-20 |
-| SD86 | Which tasks must merge before each C1–C20 row? | The §6.C.4 Deps column. P7 lands before C1; C5 and C6 depend on C1; C11 depends on C10; C5–C20 depend on G1, G4 and G5 (AM-020); C12, C13 and C16 also depend on G3 (AM-023) | Only the plan §6 dependencies | plan §6; ARCH §13.1; §10 SD4, SD10 | Drafting | Approved 2026-10-20 |
+| SD86 | Which tasks must merge before each C1–C20 row? | The §6.C.4 Deps column. P7 and P11 land before C1 (AM-031); C5 and C6 depend on C1; C11 depends on C10; C5–C20 depend on G1, G4 and G5 (AM-020); C12, C13 and C16 also depend on G3 (AM-023) | Only the plan §6 dependencies | plan §6; ARCH §13.1; §10 SD4, SD10 | Drafting | Approved 2026-10-20 |
 | SD87 | Which task owns the exit sweep and the Phase 1 retrospective? | Task Z3, owned by the main session; the exit sweep has no row dependency and starts before the last rows land, and the retrospective depends on every other Phase 1 row (AM-009) | No task row | plan §7.4, §10 step 7 | Drafting | Approved 2026-10-20 |
 | SD88 | Q07: Decide the resolver loading mechanism now, or after more research? | R10 round 2 first (row 00-Z47); settled by SD89–SD92 | Decide now from the contract; decide now on fetch-by-URL | R10 §3 P6, §6 Q3 | Fork R1 | Approved 2026-10-20 |
 | SD89 | Q07a: Which mechanism do the reference resolvers use? | Both the Lucide and Phosphor resolvers fetch the SVG from a base URL. It is the only probed mechanism that renders in Vite, esbuild and webpack builds and on the jsDelivr `+esm` and unpkg paths, for both sets and any name of the set. The entry is about 1 KB with no map, and each icon costs one request | Lucide literal `.mjs` map for the A2UI names plus fetch for Phosphor; full Lucide `.mjs` map plus fetch for Phosphor; template `import()` with consumer fixes; `?raw` map; `import.meta.glob` | R10 round 2 §2.2, §2.3, §2.6 | Fork R5 | Approved 2026-10-20 |
@@ -2092,6 +2136,8 @@ Fork R1–R6 rows record Miguel's choice among options. Default R1–R4 rows rec
 | SD95 | Which elements and attributes pass the injection step, and what happens to an `SVGElement` result? | Strings (resolver output and `src`) pass a presentation allowlist of 9 elements (`svg`, `g`, `path`, `rect`, `circle`, `ellipse`, `line`, `polyline`, `polygon`) and 36 attributes (the 23 measured plus 10 SVG 2 presentation attributes and `aria-hidden`, `role`, `focusable`). Only SVG-namespace elements pass; the root `xmlns` declaration is accepted, and every `xmlns:*` declaration is dropped (AM-004). `href`, `xlink:href`, `style`, `on*`, any value containing `url(`, and the elements `script`, `style`, `foreignObject`, `use`, `a`, `image`, `defs`, `clipPath`, `mask`, gradients and `pattern` never pass. An `SVGElement` from a consumer's resolver is inserted as is | The narrow Lucide/Phosphor list with `SVGElement` inserted directly; every result through the narrow list | R10 round 2 §2.7, P14, addendum A1; W3C SVG 2 presentation attributes; ARCH §11 | Fork R6 | Approved 2026-10-20 |
 | SD96 | Where does the C22 matrix test live, when do its pages run, and what does it add to the root manifest? | `packages/line-icons/__tests__/consumer-matrix.e2e.ts` for the bundler pages and `consumer-matrix.cdn.e2e.ts` for the CDN-base pages (AM-016). The bundler pages run in the Browser tier on a self-hosted base. The CDN-base pages run with P6 on `workflow_dispatch` and before each release, through the same gate (as SD25). Root `devDependencies` gain `webpack ^5.112.0` | Another path; running the CDN pages on every PR | R10 round 2 §2.1, §2.2; §10 SD25 | Drafting | Approved 2026-10-20 |
 | SD97 | What happens when the `line-icon` Trusted Types policy cannot be created? | `<line-icon>` creates the policy lazily, on the first SVG string it injects, once per realm behind a guard, never at module load, so `define()` always runs. If `createPolicy` throws, because the page's `trusted-types` list omits `line-icon` or a second module copy already created it, `<line-icon>` renders the neutral C8 state and nothing reaches the consumer as an error (AM-002) | Letting the `TypeError` propagate; creating the policy at module load | R10 round 2 §2.7, P13; MANIFESTO Law 6, Law 9; ARCH §12, §17.2 C8 | Default R6 | Approved 2026-10-20 |
+| SD98 | Does Phase 1 run visual regression, and how? | Yes. P11 adds Playwright `toHaveScreenshot` over the Storybook stories on `storybook-static`, in a `visual` project that runs Chromium only inside the "Browser tier" step. Baselines are generated on the CI Linux runner by the `workflow_dispatch` workflow `visual-baselines.yml`, which uploads them as an artifact that the PR author commits. Each C1–C20 row adds its stories' screenshots (AM-031) | Deferring visual regression to Phase 2; three engines | PRD §5.2; Phase 00 spec D3 (`docs/specs/00-spec-design-system.md:2636-2642`); `playwright` 1.64.0 | Decision, Miguel 2026-10-21 (AM-031) | Approved 2026-10-21 |
+| SD99 | Which tier tests keyboard navigation? | The Playwright Browser tier in Chromium, Firefox and WebKit (§7.8). `storybook/test` play functions stay in stories as documentation of user flows; PRD §5.2 says so from v0.8.25 (AM-031) | Play functions run by the Storybook test-runner | PRD §5.2; `playwright.config.ts:22-26` | Decision, Miguel 2026-10-21 (AM-031) | Approved 2026-10-21 |
 
 ---
 
@@ -2137,5 +2183,7 @@ PROCESS §3 requires that any change to this spec after approval lands as a row 
 | AM-028 | 2026-10-21 | ledger 00-Z48 (decision: Miguel, SD76 peer range) | L3R21-01: `line-genui` declares `@websublime/line-components` and `@websublime/line-icons` as `"workspace:^0.1.0 \|\| ^0.2.0"` in `peerDependencies` and `devDependencies` (§4.1, §5, §6.P.1). P3 sets `___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH.onlyUpdatePeerDependentsWhenOutOfRange: true` in `.changeset/config.json` unconditionally (§5, §6.P.3, §7.2). Each later phase that moves either package to a new minor widens the range in the same PR, for example `\|\| ^0.3.0` (§4.1, §7.2, §8). P3 acceptance adds a snapshot dry run that yields `line-genui` at a `0.2.0-` prerelease, and P4 step 2 points to it. §7.2, §8 and SD76 drop the fallback that set the flag only after a major bump. Rejected: the open lower bound `workspace:>=0.1.0`, which gives no npm warning on an incompatible version, and accepting `line-genui` 1.0.0, which contradicts PRD §7.1 and the nine `0.2.0` versions (plan §7.4; §10 SD75) | The round-21 review found that Changesets reads `workspace:^` as `^0.1.0` and bumps `line-genui` to 1.0.0 when its peers reach 0.2.0, with or without the flag. The P3 acceptance could not pass, the SD76 fallback changed nothing, and the P4 canary would be a `1.0.0-` prerelease | agent R21LensSpecArch (L3R21-01; snapshot probe gave `line-genui` `1.0.0-<sha>-SNAPSHOT` with `workspace:^`; Bun 1.4.3 installs the range and links the workspace package); Miguel's decision of 2026-10-21; orchestrator probe 2026-10-21 (`@changesets/cli` 2.31.1, Bun 1.4.3: `workspace:^` gave 1.0.0 with and without the flag; `workspace:^0.1.0 \|\| ^0.2.0` gave 1.0.0 without the flag, with the peer rewritten to `workspace:^0.2.0`, and 0.2.0 with it; `workspace:>=0.1.0` gave 0.2.0 with it); `@changesets/assemble-release-plan` 6.0.10 `src/determine-dependents.ts:217-219, :266-269`; `@changesets/config` 3.1.4 `dist/changesets-config.cjs.js:355`; `@changesets/types` 6.1.0 `src/index.ts:120, :124`; `.changeset/config.json:14, :16-19`; `package.json:30`; `scripts/verify-pack.mjs:60-64`; PRD §7.1 ("Major 1.0.0: When all phases are complete") |
 | AM-029 | 2026-10-21 | ledger 00-Z48 (factual corrections, coherence review round 21) | Factual edits, no design change. R21-L1-01: the ledger-PR alignment list in §6.Z and plan §4.0, §4.6 and §10 step 6 adds the `sdlc` Handoffs lines `.claude/agents/sdlc.md:57-58`, aligned so the §4 file-class table decides which supervisor edits each file. R21-L1-02: the §6.C.0 row sequence and plan §4.3 put the CEM entry (step 5) before the changeset (step 6), so the changeset entry comes last. R21-L1-03: plan §5.6 D3 cites R3 §2.6, §2.7 and §5 item 3 for the self-imposed cap. The header names AM-001–AM-029 | The round-21 review found that the alignment list left out the `sdlc` Handoffs lines, which route work by area and conflict with the §4 table, that the row sequence put the changeset before a source edit, and that AM-027 fixed the R3 citation in the spec only | agent R21LensPlanPRD (R21-L1-01 to R21-L1-03); `.claude/agents/sdlc.md:14, :52, :57-58`; `docs/PROCESS.md:151`; `docs/research/01-research-descriptor-api.md:181, :220, :268` |
 | AM-030 | 2026-10-21 | ledger 00-Z48 (factual corrections, coherence review round 22) | Factual edits, no design change; corrects the facts around AM-028 and keeps its decision. R22-L1-01/L2R22-03/L3R22-02: §4.1, §7.2, §8, SD76 and plan §2.7 time the widening duty: the first PR of a later phase that adds a `minor` changeset for `line-components` or `line-icons` widens the peer ranges on `main` before `changeset version` builds that phase's Version PR. §7.2 replaces "The P3 dry run and the snapshot path catch a miss": a miss gives `line-genui` 1.0.0 and a `1.0.0-<sha>-SNAPSHOT` canary, no script fails on it, and the Version PR reviewer checks the `line-genui` version; §6.Z.2 requires the Phase 2 hand-off to name the duty. R22-L1-02/L2R22-01/L3R22-01: §4.1 and §7.2 state the ranges at P1; the Phase 1 Version PR keeps the peers and rewrites the two `devDependencies` to `workspace:^0.2.0`, and a canary pins both to the snapshot version; the widening duty covers the peers. R22-L1-03/L2R22-04: SD76 adds that the `^0.1.0` arm keeps `bun install` working before the Version PR and that the published range admits the 0.1.x peers, so it differs from `>=0.1.0` only for later minors. L2R22-02: the §6.P.3 dry runs set `changelog: false` in the copy, as R9 §2.6 did, or leave the changesets uncommitted. The header names AM-001–AM-030 | The round-22 review found that "in the same PR" named no PR, that no check catches a missed widening, that the Version PR rewrites the `devDependencies` the spec said keep the peer range, that the SD76 rationale omitted why the `^0.1.0` arm stays and what it admits, and that the dry runs fail under `@changesets/changelog-github` without a token | agent R22LensPlanPRD (R22-L1-01 to R22-L1-03); agent R22LensSpecResearch (L2R22-01 to L2R22-04); agent R22LensSpecArch (L3R22-01, L3R22-02); lens probes 2026-10-21 (`@changesets/cli` 2.31.1, Bun 1.4.3); `.changeset/config.json:13`; `@changesets/apply-release-plan` 7.1.1 `src/utils.ts:69-80`, `src/version-package.ts:109-112`; `scripts/publish.mjs:39, :135-136, :144-145`; `docs/research/01-research-packaging.md:291-292` (R9 §2.6) |
+| AM-031 | 2026-10-21 | ledger 00-Z48 (decision — Miguel chose visual regression in Phase 1, with Playwright `toHaveScreenshot` over the Storybook stories in Chromium only and baselines generated on the CI Linux runner and committed, over deferring it to Phase 2 and over three engines; and keyboard navigation tested in the Playwright Browser tier, with `storybook/test` play functions kept in stories as documentation, over play functions run by the Storybook test-runner: L3R23-10; the P11 file layout, project, workflow and baseline procedure as orchestrator defaults for Miguel's review at the 00-Z48 PR) | New task P11 (§6.P.11), owned by infra-supervisor, blocks C1 as P7 does: `playwright.config.ts` gains a `visual` project that matches `packages/line-components/__tests__/visual/*.visual.ts` in Chromium only and runs in the existing "Browser tier" step against `storybook-static` (port 4320); `__tests__/visual/story.ts` opens a story and takes its screenshot; `.github/workflows/visual-baselines.yml` runs on `workflow_dispatch` on `ubuntu-latest`, runs the project with `--update-snapshots` and uploads the baselines as an artifact that the PR author commits; each C1–C20 row adds `<c>.visual.ts` and its `-visual-linux.png` baselines. The §4 package-source row, §5, §6.C.0 step 1, the §6.C.4 Deps column (P7–P11), §6.C.6 obligations and stream acceptance, the §7.8 Visual row, the §9.1 italic criterion, SD86 and new SD98 state it. SD78 covers the axe runner only, so new SD99 records the Browser tier for keyboard navigation, and §6.C.6 and §7.8 cite it. The §10 intro names Decision rows. PRD v0.8.25 revises the §5.2 A11y and Interaction rows and lists `visual-baselines.yml` in §6.5; plan §2.6, §4.0, §4.2, §6 and §7.1 follow. ARCHITECTURE states no testing-tier rule, so AM-031 changes nothing there | The round-23 review found that PRD §5.2 put keyboard navigation in the Interaction row and listed a Visual Regression layer, while §7.8 tested keyboard in the Browser tier and had no visual tier, and that Phase 00 spec D3 had deferred visual regression to Phase 1 | agent R23LensSpecArch (L3R23-10); Miguel's decisions of 2026-10-21; PRD §5.2; `docs/specs/00-spec-design-system.md:2636-2642` (Phase 00 spec D3); `playwright.config.ts:5, :15-20, :22-26`; `playwright` 1.64.0 `lib/common/index.js:599`, `lib/worker/workerProcessEntry.js:1255`, `lib/index.js:356`; `.github/workflows/checks.yml:9, :42-43`; `.github/workflows/deploy-site.yml:27`; `apps/storybook/__tests__/storybook-smoke.e2e.ts:69`; `package.json:23, :25` |
+| AM-032 | 2026-10-21 | ledger 00-Z48 (factual corrections and orchestrator defaults, coherence review round 23; L3R23-01 to L3R23-04 as orchestrator defaults for Miguel's review at the 00-Z48 PR) | L3R23-01: the §6.P.3 dry runs set `changelog: false` in the copy or run with `GITHUB_TOKEN` set; "or with the changesets left uncommitted" is dropped, because P1's committed changeset still triggers the token error. This corrects the L2R22-02 text of AM-030. L2R23-01: the snapshot dry run runs in a fresh copy, or the copy reset to its state before `changeset version`. L3R23-02: §6.P.4 states that step 2 is the first `snapshot-deploy` run after P1 merges and that no other run happens before it; P6 Deps add P4 step 2; plan §4.2 and §6 follow. L3R23-03: the CEM module-path check, which P10 never carried, moves to C1 (`packages/line-components/__tests__/manifest-paths.test.ts`, §6.C.6) and G4 (the `line-genui` case); §5, §7.3 and §8 point to them. L3R23-04: G4 names the properties `urlPolicy`, a consumer policy applied after the default that can only reject, and `markdownRenderer`, typed `(markdown: string) => Node`, which the surface calls itself instead of `web_core` `setMarkdownRenderer`; both join the JSDoc list, two acceptance items check them, SD57 and SD58 name them, and D1 documents them. L3R23-05/R23-L1-03: Z3 acceptance and the §9.4 check require the hand-off to name the SD76 widening duty. L3R23-06: §4 says P8 changes no script in the `tsc -b` packages. L3R23-07: G4 registers the `line` catalog under the SD42 id, always on, with an acceptance item. L3R23-08: G7 adds the A2A metadata capabilities, the MCP `tools/call` and SSE POST outbound paths and an acceptance item, and the MCP Apps View block adds the `applyHostStyleVariables` and `applyDocumentTheme` docs line. L3R23-09: C23 writes the attribute with ``toggleAttribute(`data-${name}`, active)``, removes the `form-associated.ts:125-142` override and the `dataset` sentences of its doc comment (`:59-64`), and adds a three-engine `focus-visible` case; §5 names the change; ARCH v0.8.11 §14.8 matches. L3R23-11: the §4.2 comment says "C2 tests only", and the C2 type-level example exports `r`. L3R23-12: the §7.1 `line-genui` row says P1 writes the scripts and P8 changes nothing. L3R23-13: D3 acceptance checks the CDN snippets against the URL form the P6 pages prove. L3R23-14: live Phase 00 AM numbers read "Phase 00 spec AM-0nn" (§4.1, §6.C.1, §6.C.6, §6.P.4); the quoted step name "Pack verification (AM-036)" (`.github/workflows/checks.yml:26`) stays. L3R23-15: ARCH v0.8.11 corrects §5, §10 and §14.4. R23-L1-02: §7.2, §8 and plan §2.7 name Miguel, who merges the Version PR, as the one who checks the `line-genui` version. R23-L1-04/L2R23-02: SD76 says the range differs from `>=0.1.0` for every version from 0.3.0 up; the AM-030 row stays as the record. R23-L1-01 is plan only (Status). The header names AM-001–AM-032 and cites PRD v0.8.25 and ARCH v0.8.11 | The round-23 review found that uncommitted changesets do not avoid the token error, that the snapshot dry run cannot reuse a consumed copy, that `snapshot-deploy` runs before P4 step 2 would fail at `line-genui`, a module-path check owned by a task that never ran it, unnamed URL-policy and Markdown hooks, an unchecked hand-off duty, an unregistered `line` catalog, missing outbound paths, a `dataset` write that throws for `focus-visible`, an incomplete SD76 comparison, an undefined Version PR checker and stale wording | agent R23LensPlanPRD (R23-L1-01 to R23-L1-04); agent R23LensSpecResearch (L2R23-01, L2R23-02); agent R23LensSpecArch (L3R23-01 to L3R23-09, L3R23-11 to L3R23-15); lens probes 2026-10-21 (`@changesets/cli` 2.31.1 token error with a committed changeset; Chromium `dataset['focus-visible']` `SyntaxError`; Biome `noUnusedVariables`); `.changeset/config.json:3-8`; `.github/workflows/snapshot-deploy.yml:2`; `scripts/publish.mjs:170, :178, :192-195`; `packages/line-core/src/mixins/form-associated.ts:59-64, :125-142`; `packages/line-core/src/line-element.ts:12-13`; `biome.json:33`; `docs/research/01-research-a2ui-web-core.md:92` (R1 §2.3, `setMarkdownRenderer`); `docs/research/01-research-mcp-apps.md:116-117` (R5 §2.3); ARCH §5, §10, §14.4, §14.8, §17.4, §17.5, §17.6 |
 
 *End of spec.*

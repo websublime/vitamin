@@ -1,15 +1,16 @@
 # line://ui — Product Requirements Specification
 
-**Date:** 2026-10-20
+**Date:** 2026-10-21
 **Author:** Miguel Ramos
 **Status:** APPROVED
-**Version:** 0.8.24
+**Version:** 0.8.25
 **Manifesto:** [`docs/MANIFESTO.md`](./MANIFESTO.md)
 
 ---
 
 ## Revision Notes
 
+- **v0.8.25 (2026-10-21) — Keyboard navigation is tested in the Playwright Browser tier, and Phase 1 runs visual regression in Chromium.** The §5.2 Interaction row keeps `storybook/test` play functions in stories as documentation of user flows, and states that keyboard navigation is tested in the Playwright Browser tier (Phase 1 spec §10 SD99). The A11y row points keyboard navigation at that tier, where it named the Interaction row. The §6.5 workflow tree lists `visual-baselines.yml`, the manual workflow that writes the Linux baselines of the Phase 1 visual regression tier (Phase 1 spec §6.P.11, §10 SD98). Miguel chose keyboard tests in the Playwright Browser tier over play functions run by the Storybook test-runner. He chose visual regression in Phase 1, with Playwright `toHaveScreenshot` over the Storybook stories in Chromium only and baselines generated on the CI Linux runner, over deferring it to Phase 2 and over three engines (ledger row `00-Z48`, coherence review round 23, decisions by Miguel on 2026-10-21; record in Phase 1 spec AM-031). Why: the round-23 review (finding L3R23-10) found that §5.2 put keyboard navigation in the Interaction row while the Phase 1 spec tests it in the Playwright Browser tier, and that the spec had no visual regression tier, which §5.2 lists and Phase 00 spec D3 deferred to Phase 1. Sections touched: §5.2 A11y and Interaction rows; §6.5. ARCHITECTURE v0.8.11 and the Phase 1 plan are aligned in the same commit.
 - **v0.8.24 (2026-10-20) — `line-genui` never loads `line-icons` at run time, and `line-icons/a2ui` exports the icon-name type.** §6.1 states that `line-components` is a peer of `line-genui` loaded lazily through descriptor `load()`, and that `line-icons` is a peer for the `A2uiIconMap` and `A2uiIconName` types only (`import type`; the shipped `.d.ts` references `@websublime/line-icons/a2ui`), never loaded at run time; the peer stays (Phase 1 spec §10 SD9, AM-008, AM-009). §6.2 states that `./a2ui` also exports the type `A2uiIconName`, the union of the 59 A2UI v0.9.1 `Icon.name` enum values (Phase 1 spec AM-010; R10 §2.1, P2). The v0.8.23 note below now names the Appendix D "Packages and subpaths" table, where it said the tiers table. The Appendix D "Packages and subpaths" row for `@websublime/line-icons/a2ui` names the `A2uiIconName`, `A2uiIconEntry` and `A2uiIconMap` types and the `a2uiIconMap` helper, and its preview-policy bullet says "types" (Phase 1 spec AM-011; coherence review round 6, finding R6-L1-01), and the preview-policy bullet names them as ARCHITECTURE §17.7 does (Phase 1 spec AM-014; coherence review round 8, finding R8-L1-01), and that bullet cites AM-014 (Phase 1 spec AM-015; coherence review round 9, finding R9-L1-01), and the §6.5 workflow tree lists the Phase 1 `cdn-check.yml` and the existing `deploy-site.yml` and `deploy-storybook.yml` (Phase 1 spec AM-017; coherence review round 11, finding R11-L1-03). Why: the coherence review round 5 (ledger row `00-Z48`, findings L3R5-01, L3R5-04 and R5-L1-02) found that "loaded lazily" did not hold for `line-icons`, whose types `line-genui` imports with `import type` only, that the key type of `A2uiIconMap` had no named export, and that the v0.8.23 note named the wrong table. Sections touched: §6.1; §6.2; §6.5; Appendix D; Revision Notes (v0.8.23). ARCHITECTURE v0.8.10 and the Phase 1 plan are aligned in the same commit.
 - **v0.8.23 (2026-10-20) — `line-icons/a2ui` names the icon-map type and follows the preview status of the surface.** §6.2 states that `./a2ui` exports the type `A2uiIconMap` and that `a2uiIconMap(set, { library })` returns a null-prototype frozen map keyed by A2UI name (Phase 1 spec AM-008). The Appendix D "Packages and subpaths" table gains `@websublime/line-icons/a2ui` with status "Preview, with the surface", and the preview policy covers it (Phase 1 spec AM-008). Why: the coherence review round 4 (ledger row `00-Z48`) found that the map shape was unnamed, that a plain object would match inherited names such as `constructor`, and that the type and helper feed the preview property `iconMap`, so they cannot follow the §7.1 policy while the surface does not. Sections touched: §6.2; Appendix D. ARCHITECTURE v0.8.9 and the Phase 1 plan are aligned in the same commit.
 - **v0.8.22 (2026-10-20) — `<line-icon>` gains a `mirror` attribute, and `line-icons/a2ui` exports the icon-map helper the surface reads.** The §4.1 Icon row adds the boolean `mirror` attribute, which flips the glyph under `:dir(rtl)` (Phase 1 spec AM-006). §6.2 states that `./a2ui` exports `a2uiIconMap(set, { library })`, whose result the consumer passes to the `<line-a2ui-surface>` property `iconMap` (Phase 1 spec AM-006). Miguel chose a helper that returns the per-name map, keyed to the consumer's registered `library`, over a fixed `iconSet` property whose value doubles as the `library` key (ledger row `00-Z48`, coherence review round 3, decision D-M by Miguel on 2026-10-20; record in Phase 1 spec AM-006). Why: the A2UI icon map carries an RTL mirror flag per name that `<line-icon>` had no attribute for, and the surface needs the consumer's `library` key to render a mapped name. Appendix D and §7.3 do not describe the surface inputs, so they are unchanged. Sections touched: §4.1 Icon row; §6.2. ARCHITECTURE v0.8.8 and the Phase 1 plan are aligned in the same commit.
@@ -509,9 +510,9 @@ Storybook
 |-------|------|---------------|
 | Unit | Bun test + `@open-wc/testing-helpers` | Pure logic, helpers, utilities |
 | Component | Bun test + `@open-wc/testing-helpers` | Rendering, props, events, slots |
-| A11y | Playwright with `@axe-core/playwright` (CI gate, three engines); `@storybook/addon-a11y` as the author panel | ARIA compliance (automated rules). Keyboard navigation is covered by the Interaction row (Phase 1 spec §10 SD78) |
+| A11y | Playwright with `@axe-core/playwright` (CI gate, three engines); `@storybook/addon-a11y` as the author panel | ARIA compliance (automated rules). Keyboard navigation is tested in the Playwright Browser tier (Phase 1 spec §10 SD99) |
 | Visual Regression | Playwright screenshots in CI | Detect unintended visual changes |
-| Interaction | `storybook/test` (play functions) | Simulate user flows within stories, including keyboard navigation |
+| Interaction | `storybook/test` (play functions) in stories, as documentation; Playwright Browser tier (three engines) for keyboard navigation | User flows within stories; keyboard navigation (Phase 1 spec §10 SD99) |
 
 **Minimum test coverage per component:**
 
@@ -773,7 +774,8 @@ Workflows:
 ├── deploy-storybook.yml    ← main: deploy Storybook; PRs: preview under pr-<number>
 ├── release.yml             ← main: Changesets publish + deploy
 ├── snapshot-deploy.yml     ← Canary (RC) publish from main, manual dispatch
-└── snapshot-version.yml    ← Snapshot versioning
+├── snapshot-version.yml    ← Snapshot versioning
+└── visual-baselines.yml    ← Chromium visual baselines for a PR branch, manual dispatch (Phase 1 spec §6.P.11)
 ```
 
 **PR checks:**
