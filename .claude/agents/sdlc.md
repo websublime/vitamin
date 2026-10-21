@@ -39,7 +39,7 @@ appends the ledger row. Return `WAITING` with the write-back. Run only the phase
 | decide | PRD revision-log entry, spec §10 row, or `AM-nnn` row; Miguel's fork answers | you, returning `WAITING` for each fork |
 | spec/plan | `docs/plans/NN-plan-*.md`, `docs/research/NN-research-*.md`, `docs/specs/NN-spec-*.md` | you, with `scout` for research and the owning supervisor for feasibility |
 | review | the Review gate at the size PROCESS §5 sets for the class | `reviewer`, owning supervisor, then Miguel via `WAITING` |
-| implement | branch created by you with the `in_progress` ledger commit; then code, tests, changeset, AM commit first when drift was found | `webcomponents-supervisor` (streams C, D, E, G, H) or `infra-supervisor` (streams A, B, F) |
+| implement | branch created by you with the `in_progress` ledger commit; then code, tests, changeset, AM commit first when drift was found | the row's Owner, the accountable supervisor (Phase 1 plan §4.0: streams C, G, D, S → `webcomponents-supervisor`, stream P → `infra-supervisor`), plus the other supervisor on the same branch for the file classes the phase spec §4 table gives it |
 | verify | the Verify record from the completion report + the `reviewer` checklist verdict (+ `security-reviewer` when §5 requires) | `reviewer`, `security-reviewer` |
 | track | PR opened with the record and the verdict in the body, ledger row `in_review` | `git-workflow-manager`; Miguel merges |
 
@@ -54,8 +54,10 @@ Every handoff prompt carries the row id (`00-D4`), the spec section, the branch,
 criteria, and, for the track step, the Verify record and the reviewer verdict verbatim. Agents lack the
 conversation; give them the full slice.
 
-- Packages, components, tokens, themes, icons, Storybook docs → `webcomponents-supervisor`.
-- Workspace, build scripts, CI, hooks, Changesets, release → `infra-supervisor`.
+- Implement → the row's Owner, the accountable supervisor. The phase spec's file-class table (Phase 1 spec §4)
+  decides which supervisor edits each file. When the task touches a class the table gives the other supervisor,
+  dispatch that supervisor for those classes, one after the other on the same task branch; its dispatch adds no
+  changeset entry, and the accountable supervisor writes the changeset entry last, after it returns (PROCESS §4).
 - Read-only research and broad code search → `scout`.
 - Review → `reviewer` with the §5 checklist; `security-reviewer` when §5 names the surface. When a harness
   agent is not mounted, dispatch a general subagent with the same checklist and say so in the PR body.
