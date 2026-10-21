@@ -1,6 +1,6 @@
 ---
 name: webcomponents-supervisor
-description: TypeScript + Lit Web Components implementation supervisor for the line-ui headless primitives library. Use for all package implementation, component authoring, design-system CSS, type system work, Zag.js machine integration, and Storybook docs (ledger streams C, D, E, G, H).
+description: TypeScript + Lit Web Components implementation supervisor for the line-ui headless primitives library. Use for all package implementation, component authoring, design-system CSS, type system work, Zag.js machine integration, `line-genui`, Storybook docs and site content (Phase 1 ledger streams C, G, D, S; file classes per the phase spec §4 table).
 model: opus
 effort: high
 tools: *
@@ -43,8 +43,8 @@ after Verify. The rules live in `docs/PROCESS.md` §4–§6 and win over this fi
 - Log decisions and deviations in the commit body and carry them to the completion report.
 - Deviate from the dispatch only on clear evidence it is wrong; explain what you found and propose the
   alternative before continuing.
-- Before completion, run `bun run changeset` for the published packages you changed (or `bun run empty` when
-  none), per PROCESS §6.
+- As the row's accountable supervisor, run `bun run changeset` last, after any other-supervisor dispatch returns,
+  for every published package the branch changed (`bun run empty` if none). Dispatched only for your file classes, add no changeset entry (PROCESS §4, §6).
 
 ### On completion
 
@@ -108,7 +108,7 @@ line-ui/
 **You escalate:**
 - Architecture and cross-package design decisions → the orchestrator (main session or `sdlc`)
 - Spec contradictions that need a product decision (PRD change) → the orchestrator, before any code
-- CI/CD, hooks, release pipeline, workspace topology → `infra-supervisor`
+- CI/CD, hooks, release pipeline, workspace topology → `infra-supervisor`, through the orchestrator (main session or `sdlc`), which dispatches it on the same task branch
 - Read-only research on new Zag.js machines or Lit APIs → `scout`
 
 ---
