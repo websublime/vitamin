@@ -370,6 +370,58 @@ directory was deleted afterwards. Exit codes are 0 unless stated.
 7. **Which bundler floor does the documentation state?** (b) with `?raw` needs a text loader in esbuild and a rule or
    `futureDefaults` in webpack, plus a Phosphor alias (§2.5). (c) needs webpack ≥ 5.109. (b′) and (d) need nothing.
 
+## Addendum A1 (2026-10-20, row 00-Z48)
+
+This addendum records the element and attribute inventory of the locked icon files. Spec §6.C.3 cites it for the
+measured attribute allowlist.
+
+### A1.1 Inventory
+
+`bun.lock` locks `lucide-static` 1.56.0 and `@phosphor-icons/core` 2.1.1 (`bun.lock:1206`, `bun.lock:636`). The counts
+give the number of files that use each name at least once (A1-P1).
+
+| Set | Files | Elements (files) | Attributes (files) |
+|---|---|---|---|
+| `lucide-static` 1.56.0, `icons/*.svg` | 2143 | `svg` 2143, `path` 2063, `circle` 474, `rect` 422, `line` 78, `ellipse` 15, `polyline` 3, `polygon` 2 | `class` 2143, `fill` 2143, `height` 2143, `stroke` 2143, `stroke-linecap` 2143, `stroke-linejoin` 2143, `stroke-width` 2143, `viewBox` 2143, `width` 2143, `xmlns` 2143, `d` 2063, `cx` 488, `cy` 488, `r` 474, `rx` 428, `x` 422, `y` 422, `x1` 78, `x2` 78, `y1` 78, `y2` 78, `ry` 64, `points` 5 |
+| `@phosphor-icons/core` 2.1.1, `assets/**/*.svg` | 9072 | `svg` 9072, `path` 9072 | `d` 9072, `fill` 9072, `viewBox` 9072, `xmlns` 9072, `opacity` 1510 |
+
+- Lucide uses 23 attribute names, and Phosphor uses 5. Both sets use `xmlns`.
+- Without `xmlns`, Lucide uses 22 names and Phosphor 4. The union is 23 names. Phosphor adds `opacity` alone.
+- The two sets use 8 element names in all. Neither set uses `g`.
+
+### A1.2 Comparison with the spec
+
+- The 23 measured attributes of spec §6.C.3 equal the union above without `xmlns`.
+- The spec does not list `xmlns`. Every file of both sets carries it on the root `svg`. `xmlns` is a namespace
+  declaration rather than a presentation attribute (Namespaces in XML 1.0, §3).
+- The 8 elements found match the spec's element allowlist except `g`, which the spec marks as a choice beyond the probe.
+
+### A1.3 Probe
+
+The probe ran on 2026-10-20 from the repo root with a script in `/tmp`. It read `node_modules` and wrote nothing to the
+repo.
+
+| # | Command | Exit | Observed |
+|---|---|---|---|
+| A1-P1 | `bun /tmp/inv.ts` (bun 1.4.3), script below | 0 | Counts as in A1.1 |
+
+```ts
+import { Glob } from "bun";
+const roots = [["lucide-static","node_modules/lucide-static/icons","*.svg"],["@phosphor-icons/core","node_modules/@phosphor-icons/core/assets","**/*.svg"]];
+for (const [name, dir, pat] of roots) {
+  const els = new Map(), atts = new Map(); let n = 0;
+  for await (const f of new Glob(pat).scan(dir)) {
+    n++; const t = await Bun.file(`${dir}/${f}`).text();
+    const se = new Set(), sa = new Set();
+    for (const m of t.matchAll(/<([a-zA-Z][\w:-]*)([^>]*)>/g)) { se.add(m[1]); for (const a of m[2].matchAll(/([a-zA-Z_:][\w:.-]*)\s*=/g)) sa.add(a[1]); }
+    se.forEach(e => els.set(e, (els.get(e)||0)+1)); sa.forEach(a => atts.set(a, (atts.get(a)||0)+1));
+  }
+  console.log(name, require(`${process.cwd()}/node_modules/${name}/package.json`).version, "files", n);
+  console.log(" elements", [...els].sort().map(([k,v])=>`${k}:${v}`).join(" "));
+  console.log(" attributes", [...atts].sort().map(([k,v])=>`${k}:${v}`).join(" "));
+}
+```
+
 ## 7. Sources
 
 All retrieved 2026-10-20.

@@ -292,6 +292,115 @@ These are not contradictions, because the statements hold under conditions the t
 - **Q6. Delivery recipe.** Options are one inlined file (`vite-plugin-singlefile`, `codeSplitting: false`), a CDN in `resourceDomains` (jsDelivr verified in P6), or both. The evidence is R9 on CDN delivery and a build of a View with a `line-genui` lazy `load()` under both.
 - **Q7. Fonts.** Should the docs tell server authors to list the host font origins in `resourceDomains`, given that the default CSP has no `font-src`? The evidence is a capture of the `styles.css.fonts` value that real hosts send (not captured here).
 
+## Addendum A1 (2026-10-20, row 00-Z48)
+
+This addendum records the values the reference host sends for the 76 standard keys. The Phase 1 spec §6.G.6 key map reads them.
+
+### A1.1 Source
+
+- The file is `examples/basic-host/src/host-styles.ts` in `modelcontextprotocol/ext-apps`, branch `main`, commit `82221c0c8ce7661efa6771c9d461511b1650495f`, read on 2026-10-20 (A1-P1).
+- The file exports `HOST_STYLE_VARIABLES`, typed `McpUiStyles`. It sends all 76 standard keys of §2.3. No key is missing (A1-P1).
+- The colours use `light-dark(<light>, <dark>)`. The table gives the light value first.
+- The npm tarball of `@modelcontextprotocol/ext-apps` 2.0.3 lists 47 files. None of them is under `examples/`, so the file does not ship in the package (A1-P2).
+
+### A1.2 Values
+
+| Key | Value sent |
+|---|---|
+| `--color-background-primary` | `light-dark(#ffffff, #1a1a1a)` |
+| `--color-background-secondary` | `light-dark(#f5f5f5, #2d2d2d)` |
+| `--color-background-tertiary` | `light-dark(#e5e5e5, #404040)` |
+| `--color-background-inverse` | `light-dark(#1a1a1a, #ffffff)` |
+| `--color-background-ghost` | `light-dark(rgba(255,255,255,0), rgba(26,26,26,0))` |
+| `--color-background-info` | `light-dark(#eff6ff, #1e3a5f)` |
+| `--color-background-danger` | `light-dark(#fef2f2, #7f1d1d)` |
+| `--color-background-success` | `light-dark(#f0fdf4, #14532d)` |
+| `--color-background-warning` | `light-dark(#fefce8, #713f12)` |
+| `--color-background-disabled` | `light-dark(rgba(255,255,255,0.5), rgba(26,26,26,0.5))` |
+| `--color-text-primary` | `light-dark(#1f2937, #f3f4f6)` |
+| `--color-text-secondary` | `light-dark(#6b7280, #9ca3af)` |
+| `--color-text-tertiary` | `light-dark(#9ca3af, #6b7280)` |
+| `--color-text-inverse` | `light-dark(#f3f4f6, #1f2937)` |
+| `--color-text-ghost` | `light-dark(rgba(107,114,128,0.5), rgba(156,163,175,0.5))` |
+| `--color-text-info` | `light-dark(#1d4ed8, #60a5fa)` |
+| `--color-text-danger` | `light-dark(#b91c1c, #f87171)` |
+| `--color-text-success` | `light-dark(#15803d, #4ade80)` |
+| `--color-text-warning` | `light-dark(#a16207, #fbbf24)` |
+| `--color-text-disabled` | `light-dark(rgba(31,41,55,0.5), rgba(243,244,246,0.5))` |
+| `--color-border-primary` | `light-dark(#e5e7eb, #404040)` |
+| `--color-border-secondary` | `light-dark(#d1d5db, #525252)` |
+| `--color-border-tertiary` | `light-dark(#f3f4f6, #374151)` |
+| `--color-border-inverse` | `light-dark(rgba(255,255,255,0.3), rgba(0,0,0,0.3))` |
+| `--color-border-ghost` | `light-dark(rgba(229,231,235,0), rgba(64,64,64,0))` |
+| `--color-border-info` | `light-dark(#93c5fd, #1e40af)` |
+| `--color-border-danger` | `light-dark(#fca5a5, #991b1b)` |
+| `--color-border-success` | `light-dark(#86efac, #166534)` |
+| `--color-border-warning` | `light-dark(#fde047, #854d0e)` |
+| `--color-border-disabled` | `light-dark(rgba(229,231,235,0.5), rgba(64,64,64,0.5))` |
+| `--color-ring-primary` | `light-dark(#3b82f6, #60a5fa)` |
+| `--color-ring-secondary` | `light-dark(#6b7280, #9ca3af)` |
+| `--color-ring-inverse` | `light-dark(#ffffff, #1f2937)` |
+| `--color-ring-info` | `light-dark(#2563eb, #3b82f6)` |
+| `--color-ring-danger` | `light-dark(#dc2626, #ef4444)` |
+| `--color-ring-success` | `light-dark(#16a34a, #22c55e)` |
+| `--color-ring-warning` | `light-dark(#ca8a04, #eab308)` |
+| `--font-sans` | `system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif` |
+| `--font-mono` | `ui-monospace, 'SF Mono', Monaco, 'Cascadia Code', monospace` |
+| `--font-weight-normal` | `400` |
+| `--font-weight-medium` | `500` |
+| `--font-weight-semibold` | `600` |
+| `--font-weight-bold` | `700` |
+| `--font-text-xs-size` | `0.75rem` |
+| `--font-text-sm-size` | `0.875rem` |
+| `--font-text-md-size` | `1rem` |
+| `--font-text-lg-size` | `1.125rem` |
+| `--font-heading-xs-size` | `0.75rem` |
+| `--font-heading-sm-size` | `0.875rem` |
+| `--font-heading-md-size` | `1rem` |
+| `--font-heading-lg-size` | `1.25rem` |
+| `--font-heading-xl-size` | `1.5rem` |
+| `--font-heading-2xl-size` | `1.875rem` |
+| `--font-heading-3xl-size` | `2.25rem` |
+| `--font-text-xs-line-height` | `1.4` |
+| `--font-text-sm-line-height` | `1.4` |
+| `--font-text-md-line-height` | `1.5` |
+| `--font-text-lg-line-height` | `1.5` |
+| `--font-heading-xs-line-height` | `1.4` |
+| `--font-heading-sm-line-height` | `1.4` |
+| `--font-heading-md-line-height` | `1.4` |
+| `--font-heading-lg-line-height` | `1.3` |
+| `--font-heading-xl-line-height` | `1.25` |
+| `--font-heading-2xl-line-height` | `1.2` |
+| `--font-heading-3xl-line-height` | `1.1` |
+| `--border-radius-xs` | `2px` |
+| `--border-radius-sm` | `4px` |
+| `--border-radius-md` | `6px` |
+| `--border-radius-lg` | `8px` |
+| `--border-radius-xl` | `12px` |
+| `--border-radius-full` | `9999px` |
+| `--border-width-regular` | `1px` |
+| `--shadow-hairline` | `0 1px 2px 0 rgba(0, 0, 0, 0.05)` |
+| `--shadow-sm` | `0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)` |
+| `--shadow-md` | `0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1)` |
+| `--shadow-lg` | `0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1)` |
+
+The groups hold 37 colour keys, 28 font keys, 6 radii, 1 border width and 4 shadows, 76 in all.
+
+### A1.3 Comparison with the spec
+
+- Every host value that the "Rule" or "Reason" column of spec §6.G.6 quotes matches the value above. The two columns quote 4 weights, 8 sizes, 6 line heights and 5 radii (A1-P1; ledger row `00-Z48`, coherence review round 2, finding L2R2-10).
+- The "Rule" column quotes no colour, family, border-width or shadow value, so nothing there can differ.
+- The spec places the file on `main`, read 2026-10-20. The commit above pins that read.
+
+### A1.4 Probes
+
+Both probes ran on 2026-10-20 in `/tmp`. Neither wrote to the repo.
+
+| # | Command | Exit | Observed |
+|---|---|---|---|
+| A1-P1 | `git ls-remote https://github.com/modelcontextprotocol/ext-apps refs/heads/main`; `curl -sL https://raw.githubusercontent.com/modelcontextprotocol/ext-apps/main/examples/basic-host/src/host-styles.ts` | 0, 0 | `main` at `82221c0c8ce7661efa6771c9d461511b1650495f`; 113 lines; values as in A1.2 |
+| A1-P2 | `npm pack @modelcontextprotocol/ext-apps@2.0.3 --dry-run --json` | 0 | 47 file paths, all under `dist/` or package metadata; no `examples/` path |
+
 ## 7. Sources
 
 All retrieved on 2026-10-19.
