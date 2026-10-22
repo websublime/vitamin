@@ -23,6 +23,13 @@ export default defineConfig({
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
+    // Visual tier: Chromium only (SD98); off-pair files run only under LINE_VISUAL_OFF_PAIRS (AM-033).
+    {
+      name: 'visual',
+      testMatch: 'packages/line-components/__tests__/visual/*.visual.ts',
+      testIgnore: process.env.LINE_VISUAL_OFF_PAIRS ? [] : '**/*.off-pairs.visual.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   reporter: [['html', { open: 'never' }], ['github']],
 });
