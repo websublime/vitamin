@@ -22,7 +22,7 @@ event has happened (PROCESS §6).
 | ID | Stream | Task | Owner | Deps | Status | Branch | PR | AM |
 |---|---|---|---|---|---|---|---|---|
 | P1 | P | Scaffold `packages/line-genui` with `exports`, `files` and `repository` (spec §6.P.1, §4.1) | infra-supervisor | P2 | todo | — | — | — |
-| P2 | P | Layer edges: the Phase 1 spec §3.2 edge table in `ALLOWED_EDGES` (`scripts/lint-layers.mjs`) (spec §6.P.2, §3.3) | infra-supervisor | — | in_progress | chore/01-p2-layer-edges | — | — |
+| P2 | P | Layer edges: the Phase 1 spec §3.2 edge table in `ALLOWED_EDGES` (`scripts/lint-layers.mjs`) (spec §6.P.2, §3.3) | infra-supervisor | — | in_review | chore/01-p2-layer-edges | #286 | — |
 | P3 | P | Publish, `verify-pack` and Changesets coverage of the 9th package (spec §6.P.3) | infra-supervisor | P1 | todo | — | — | — |
 | P4 | P | Trusted publisher bootstrap, spec §6.P.4 steps 1–6, with Miguel for the npmjs.com steps. The PR adds `docs/context/01-p4.md` with the evidence (spec §6.P.4) | infra-supervisor | P1, P3 | todo | — | — | — |
 | P5 | P | Bundle-splitting verification: removes the "Zero-export smoke" step before C2, adds the undeclared-specifier scan and the one-`LineElement` identity test (spec §6.P.5, §7.5) | infra-supervisor | P1, P9, C1 | todo | — | — | — |
