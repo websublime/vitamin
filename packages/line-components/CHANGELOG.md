@@ -1,5 +1,14 @@
 # @websublime/line-components
 
+## 0.1.2
+
+### Patch Changes
+
+- [#285](https://github.com/websublime/line-ui/pull/285) [`97f32c0`](https://github.com/websublime/line-ui/commit/97f32c056af2a072278790508a8a9568e45d8591) Thanks [@miguelramos](https://github.com/miguelramos)! - The library builds keep every declared dependency external, and `@websublime/line-components` now declares `lit` and `@zag-js/core` and no longer sets `sideEffects`.
+
+- Updated dependencies [[`97f32c0`](https://github.com/websublime/line-ui/commit/97f32c056af2a072278790508a8a9568e45d8591)]:
+  - @websublime/line-core@0.1.3
+
 ## 0.1.1
 
 ### Patch Changes
