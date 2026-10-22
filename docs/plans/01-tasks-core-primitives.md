@@ -22,7 +22,7 @@ event has happened (PROCESS §6).
 | ID | Stream | Task | Owner | Deps | Status | Branch | PR | AM |
 |---|---|---|---|---|---|---|---|---|
 | P1 | P | Scaffold `packages/line-genui` with `exports`, `files` and `repository` (spec §6.P.1, §4.1) | infra-supervisor | P2 | todo | — | — | — |
-| P2 | P | Layer edges: the Phase 1 spec §3.2 edge table in `ALLOWED_EDGES` (`scripts/lint-layers.mjs`) (spec §6.P.2, §3.3) | infra-supervisor | — | todo | — | — | — |
+| P2 | P | Layer edges: the Phase 1 spec §3.2 edge table in `ALLOWED_EDGES` (`scripts/lint-layers.mjs`) (spec §6.P.2, §3.3) | infra-supervisor | — | in_review | chore/01-p2-layer-edges | #286 | — |
 | P3 | P | Publish, `verify-pack` and Changesets coverage of the 9th package (spec §6.P.3) | infra-supervisor | P1 | todo | — | — | — |
 | P4 | P | Trusted publisher bootstrap, spec §6.P.4 steps 1–6, with Miguel for the npmjs.com steps. The PR adds `docs/context/01-p4.md` with the evidence (spec §6.P.4) | infra-supervisor | P1, P3 | todo | — | — | — |
 | P5 | P | Bundle-splitting verification: removes the "Zero-export smoke" step before C2, adds the undeclared-specifier scan and the one-`LineElement` identity test (spec §6.P.5, §7.5) | infra-supervisor | P1, P9, C1 | todo | — | — | — |
@@ -98,3 +98,4 @@ CEM entry and the changeset; C5–C20 also ship their descriptor (spec §6.C.0, 
 |---|---|---|---|---|---|---|---|---|
 | Z1 | Z | Code of conduct `CODE_OF_CONDUCT.md` (Contributor Covenant, latest version), linked from `README.md`; Miguel supplies the reporting contact (spec §6.Z.1) | main session | — | todo | — | — | — |
 | Z3 | Z | Phase 1 retrospective `docs/retrospective/01-<slug>.md` with the Phase 2 hand-off. The main session runs the exit sweep before the last rows land and files each finding as a new row, which joins these Deps (spec §6.Z.2) | main session | every other Phase 1 row | todo | — | — | — |
+| Z4 | Z | Stale line locators around `scripts/lint-layers.mjs`. (1) The script's comments and error messages cite Phase 00 spec line numbers that no longer match the spec (for example `§6.B lines 462-465`, `§6.B line 569`, `§9.1 line 1644`), and the "not in the allowed-edges table" error names only Phase 00 spec §6.B, though Phase 1 spec §3.2 also governs the edge table. (2) Every Phase 1 spec locator into the script past its line 32 (for example `:181-205` in §3.1 and `:187-190` in §3.3) sits three lines low after P2; the fix is a Phase 1 spec AM. Found during the 01-P2 understand and Verify; P2 rewrites only the header lines spec §3.3 names | main session | P2, P9 | todo | — | — | — |
