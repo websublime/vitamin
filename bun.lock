@@ -76,6 +76,8 @@
         "@websublime/line-themes": "workspace:^",
         "@websublime/line-tokens": "workspace:^",
         "@websublime/line-utils": "workspace:^",
+        "@zag-js/core": "^1.46.0",
+        "lit": "^3.3.3",
       },
     },
     "packages/line-core": {

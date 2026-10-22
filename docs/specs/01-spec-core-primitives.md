@@ -1,6 +1,6 @@
 # SPEC: Phase 1 — Core Primitives
 
-**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-045 (§12)
+**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-046 (§12)
 **Author:** line://ui orchestrator (row 00-Z46)
 **Date:** 2026-10-20
 **Phase target:** line://ui v0.2.0
@@ -221,7 +221,7 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
 ```jsonc
 {
   "name": "@websublime/line-components",
-  "version": "0.1.0",                              // released at 0.2.0 by the Phase 1 minor changeset (§7.2)
+  "version": "0.1.1",                              // released at 0.2.0 by the Phase 1 minor changeset (§7.2)
   "type": "module",
   "license": "MIT",
   "files": ["dist", "src", "custom-elements.json"],// P10: shipped manifest (D8)
@@ -1820,8 +1820,8 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 | `line-schemas` | 0.1.1 | `minor` | 0.2.0 | plan §7.4 |
 | `line-themes` | 0.1.2 | `minor` | 0.2.0 | plan §7.4 |
 | `line-utils` | 0.1.0 | `minor` | 0.2.0 | plan §7.4 |
-| `line-core` | 0.1.1 | `minor` | 0.2.0 | plan §7.4 |
-| `line-components` | 0.1.0 | `minor` | 0.2.0 | plan §7.4 |
+| `line-core` | 0.1.2 | `minor` | 0.2.0 | plan §7.4 |
+| `line-components` | 0.1.1 | `minor` | 0.2.0 | plan §7.4 |
 | `line-icons` | 0.1.0 | `minor` | 0.2.0 | plan §7.4 |
 | `line-genui` | 0.1.0 (seeded by P1) | `minor` | 0.2.0 | §10 SD3; R9 §2.6 |
 
@@ -2251,5 +2251,6 @@ PROCESS §3 requires that any change to this spec after approval lands as a row 
 | AM-043 | 2026-10-21 | ledger 00-Z48 (factual corrections, coherence review round 33, diff-focused) | R33-L1-01: the plan Status round-31 note lists every finding that changed the plan, other lenses' IDs included. R33-L1-02: one "and" in that note's list. | Round 33 was clean on all three lenses; these are its minors. No decision change. | Agent R33LensPlanPRD; spec §12 AM-041 |
 | AM-044 | 2026-10-21 | ledger 00-Z48 (factual correction, coherence review round 34, diff-focused) | R34-L1-01: the plan Status round-33 sentence names the round-31 note and both of its corrections. | Round 34 was clean on all three lenses; this is its only minor. Rounds 32, 33 and 34 are three consecutive clean rounds. No decision change. | Agent R34LensPlanPRD |
 | AM-045 | 2026-10-21 | ledger 00-Z49 (factual correction, Phase 1 ledger PR) | §6.P.4 Changes and §6.P.11 Timing cite the PROCESS lines as they stand after the 00-Z49 alignment: "No record, no PR" at `docs/PROCESS.md:122` (was `:116`), the §6 status and row-flip bullets at `:136-147` (was `:130-140`) and `:140-147` (was `:134-140`), and the one-PR-per-row bullet at `:167` (was `:159`). | Row 00-Z49 aligned PROCESS §4 and §6 as §6.Z requires (stream owners, one accountable implementer per task, the `blocked → todo` flip owner, the changeset step), which moved the cited lines. No rule and no design choice changes. The supervisor lines that §4 cites keep their numbers. | `docs/PROCESS.md:122`, `:136-147`, `:167` after commit "docs(process): 00-Z49 — Phase 1 stream owners, accountable implementer, blocked flips"; §6.Z |
+| AM-046 | 2026-10-22 | ledger 01-P9 (factual correction) | Three edits. (1) §7.2 table, "Version today" column: `line-core` 0.1.1 → 0.1.2 and `line-components` 0.1.0 → 0.1.1; the "Version at phase exit" column stays 0.2.0. (2) §4.2 manifest block: `"version": "0.1.0"` → `"version": "0.1.1"`. (3) The Status line names AM-001–AM-046. | Version PR #284 bumped both packages through the 01-P8 patch changeset after the spec was written. No rule and no design choice changes, and the phase-exit 0.2.0 target is unchanged. | `packages/line-core/package.json:3`, `packages/line-components/package.json:3`; commit `e03ffcb` |
 
 *End of spec.*
