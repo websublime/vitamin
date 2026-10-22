@@ -18,6 +18,9 @@ custom-elements.json
 # Playwright artifacts (traces, HTML report)
 test-results/
 playwright-report/
+# Local visual screenshots; Linux baselines come from visual-baselines.yml (AM-034)
+**/*.visual.ts-snapshots/*-visual-darwin.png
+**/*.visual.ts-snapshots/*-visual-win32.png
 
 # local env files
 .env.local
