@@ -1,6 +1,6 @@
 # SPEC: Phase 1 — Core Primitives
 
-**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-046 (§12)
+**Status:** APPROVED — Miguel on 2026-10-20, with every §10 row approved; amended by AM-001–AM-047 (§12)
 **Author:** line://ui orchestrator (row 00-Z46)
 **Date:** 2026-10-20
 **Phase target:** line://ui v0.2.0
@@ -221,7 +221,7 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
 ```jsonc
 {
   "name": "@websublime/line-components",
-  "version": "0.1.1",                              // released at 0.2.0 by the Phase 1 minor changeset (§7.2)
+  "version": "0.1.2",                              // released at 0.2.0 by the Phase 1 minor changeset (§7.2)
   "type": "module",
   "license": "MIT",
   "files": ["dist", "src", "custom-elements.json"],// P10: shipped manifest (D8)
@@ -268,7 +268,8 @@ Only manifests that change in Phase 1 appear here. `line-tokens`, `line-colors`,
     "lit": "^3.3.3"                                // P9 (§10 SD2)
   },
   "devDependencies": {
-    "@websublime/line-icons": "workspace:^"        // C2 tests only; not a layer edge (§3.2; §12 AM-008, L2R4-02; §12 AM-032, L3R23-11)
+    "@websublime/line-icons": "workspace:^",       // C2 tests only; not a layer edge (§3.2; §12 AM-008, L2R4-02; §12 AM-032, L3R23-11)
+    "@websublime/line-schemas": "workspace:^"      // P12 Roles visual tests only; not a layer edge (§3.2; §12 AM-047)
   },
   "scripts": {
     "build": "vite build && tsc -p tsconfig.json --noEmit false --emitDeclarationOnly && bun run analyze",  // P8, P10
@@ -311,6 +312,7 @@ Entrypoints and tags (plan §2.2, §10 SD12, ARCH §12):
 - `src/shared/` holds code that is not a component. Its modules are `src/shared/button-machine.ts`, the Button machine that C1 and C5 import, and `src/shared/icon-registry.ts`, the icon registry that `setIconRegistry()` and `LineIcon.registry` share through one `globalThis` symbol key, whose slot holds `{ registry, events }` (§6.C.3). Law 4 does not apply to them, and their code lands in a shared chunk (§12 AM-002, D-L3-06; §12 AM-004, D-R; §12 AM-006, D-G; §12 AM-008, L3R4-01; ARCH §13.1 for the Button machine; ARCH §11 for the icon registry; §12 AM-005, L2R3-12).
 - The `dependencies` list MUST equal the set of bare specifiers that `dist/` imports, apart from `@websublime/*` packages already listed (§10 SD2). The list above is the expected phase-exit set. `@zag-js/vanilla` is absent because components reach it through `@websublime/line-core/machine` (`packages/line-core/src` imports, R7 §2.1), and the Biome `noRestrictedImports` rule rejects a direct import outside `line-core` (`biome.json:44-48`; §10 SD13; §12 AM-005, L2R3-13).
 - C2 adds `"@websublime/line-icons": "workspace:^"` to `devDependencies`, `packages/line-components/__tests__/registry.types.ts` and `packages/line-components/tsconfig.test.json`, which the `typecheck` script runs, so the C2 type-level case compiles against the real `IconRegistry`. `devDependencies` are not layer edges (`scripts/lint-layers.mjs:12-16`; §3.2; §12 AM-008, L2R4-02).
+- P12 adds `"@websublime/line-schemas": "workspace:^"` to `devDependencies`, so the Roles visual files import `ACCENT_HUES` and `GRAY_HUES` by package name. Bun installs workspaces in isolated mode and resolves no undeclared workspace package from `packages/line-components/__tests__/`. `devDependencies` are not layer edges (`scripts/lint-layers.mjs:13-16`; §3.2; §6.P.12; §12 AM-047).
 
 ### 4.3 `@websublime/line-icons`
 
@@ -432,7 +434,7 @@ CLAUDE.md                                            ~ P8 Tech Stack
 .claude/agents/webcomponents-supervisor.md           ~ P8 (lines 15, 72)
 .gitignore                                           ~ P10 (drops `customElements.json` and the `analyze` reference in the line 7 comment; §12 AM-019, R13-L1-01); P11 (ignores `-visual-darwin.png` and `-visual-win32.png` under `*.visual.ts-snapshots/`; §6.P.11; §12 AM-034)
 package.json                                         ~ P5 or C22 esbuild (whichever lands first), P7 @axe-core/playwright, P8 typescript 7.x, vite-plugin-dts removed, C22 webpack, G2 or G3 ajv and ajv-formats (whichever lands first), G3 gpt-tokenizer (§12 AM-016; §12 AM-017, L3R11-01)
-bun.lock                                             ~ every row that changes a dependency: P1, P5 or C22 (esbuild), P7, P8, P9, C2, C8, C16, C22, G2 or G3 (ajv), G3, G4, G7, S1 (`bun install --frozen-lockfile`, `.github/workflows/checks.yml:19`; §12 AM-023, L3R16-06)
+bun.lock                                             ~ every row that changes a dependency: P1, P5 or C22 (esbuild), P7, P8, P9, P12, C2, C8, C16, C22, G2 or G3 (ajv), G3, G4, G7, S1 (`bun install --frozen-lockfile`, `.github/workflows/checks.yml:19`; §12 AM-023, L3R16-06)
 playwright.config.ts                                 ~ S1 (webServer for apps/site); C22 (testIgnore of **/*cdn.e2e.ts unless LINE_E2E_CDN is set; §6.P.6; §12 AM-016, L3R10-04; §12 AM-017, L3R11-03); P11 (`visual` project, Chromium only, testIgnore of **/*.off-pairs.visual.ts unless LINE_VISUAL_OFF_PAIRS is set; §6.P.11; §12 AM-031, AM-033)
 biome.json                                           ~ P10 (files.includes drops `!**/customElements.json`; §12 AM-019, L3R13-03); G2 (files.includes excludes the vendored A2UI schema fixtures; §6.G.2; §12 AM-017, L3R11-02)
 custom-elements-manifest.config.mjs                  - P10 (removed; replaced by the package config)
@@ -470,7 +472,7 @@ packages/line-core/src/machine/                      ~ the first machine row pas
 packages/line-core/README.md                        ~ C21 (export count; §6.C.1)
 packages/line-core/__tests__/                       + C21 (update-rate harness with a fixture machine; §10 SD28; §12 AM-020, L3R14-04)
 packages/line-core/__tests__/mocks/element-internals.ts  ~ C23 (`restore()` puts back the previous `attachInternals`; §7.8; §12 AM-020, L3R14-01)
-packages/line-components/package.json                ~ P8, P9, P10, C1–C20, C2 (line-icons devDependency, typecheck; §12 AM-008, L2R4-02)
+packages/line-components/package.json                ~ P8, P9, P10, P12 (line-schemas devDependency; §6.P.12; §12 AM-047), C1–C20, C2 (line-icons devDependency, typecheck; §12 AM-008, L2R4-02)
 packages/line-components/tsconfig.test.json          + C2 (type-level tests; §12 AM-008, L2R4-02)
 packages/line-components/vite.config.mjs             ~ P5 (drops the Phase 00 zero-export comment at lines 3-4; §12 AM-020, L3R14-12), P9 (root: import.meta.dirname; src/shared/* to dist/shared/[name].js), C1–C20 (one entry each)
 packages/line-components/README.md                   ~ C1 (replaces the "Empty in Phase 00" sentence at line 3; §12 AM-020, L3R14-12)
@@ -770,9 +772,11 @@ export default {
 - **Changes:** `packages/line-components/__tests__/visual/roles.visual.ts` and `roles.off-pairs.visual.ts` over the `Design System/Roles` story `Toolbar` (`design-system-roles--toolbar`), with their baselines from a `visual-baselines.yml` run on the PR branch (§10 SD98; §12 AM-033). PRD §5.2.1 requires a baseline for every supported `(accent, gray, mode)` combination:
   - `roles.visual.ts` holds the default pairs: each of the 31 `ACCENT_HUES` with the auto-paired gray, in light and dark, 62 screenshots at `&globals=accent:<hue>&args=mode:<mode>`. It runs in the "Browser tier" step and gates the merge.
   - `roles.off-pairs.visual.ts` holds the off pairs: each accent with each of the five `GRAY_HUES` that are not its auto pair, set explicitly, in light and dark, 310 screenshots at `&globals=accent:<hue>;gray:<gray>&args=mode:<mode>`. It runs only in `visual-off-pairs.yml` and does not gate a PR. PRD §5.2.1 defines an off pair as "a non-auto-paired gray with a given accent" (`docs/PRD.md:548`); each auto pair is one of the six `GRAY_HUES` (`packages/line-themes/src/defaults.css`), so the default pair is not repeated (§12 AM-035).
+  - Both files import `ACCENT_HUES` and `GRAY_HUES` from `@websublime/line-schemas`, which `line-components` declares as a devDependency (§4.2; §12 AM-047).
+  - `roles.off-pairs.visual.ts` declares all 372 `(accent, gray, mode)` tests, 31 accents by six grays by two modes, with the gray set explicitly. A worker-scoped Playwright fixture finds each accent's auto pair in Chromium from the computed cascade. It opens the story with only the accent global and reads `--line-gray-1` to `--line-gray-12` on `<html>`. It compares them with `--line-<gray>-1` to `--line-<gray>-12` of each gray and requires exactly one match; any other count fails the run. The test of the auto pair calls `test.skip` with the reason "default pair, covered by roles.visual.ts". 310 tests take a screenshot and 62 skip. The built `packages/line-themes/dist/defaults.css` is minified, so the fixture reads no CSS text (§12 AM-047).
   - Each call passes `story.ts` the `name` `` `toolbar-${accent}-${gray ?? 'auto'}-${mode}.png` ``, so under the §6.P.11 path template each combination has its own baseline, for example `roles.visual.ts-snapshots/toolbar-indigo-auto-dark-visual-linux.png` and `roles.off-pairs.visual.ts-snapshots/toolbar-indigo-sand-dark-visual-linux.png`; the default name `` `${storyId}.png` `` would give every combination one file (§12 AM-035).
   - The `accent` and `gray` globals set `data-accent` and `data-gray` on `<html>` (`apps/storybook/.storybook/preview.ts:19-29`); an unset `gray` global leaves the auto pair. Light or dark is the story's `mode` arg (`apps/storybook/stories/design-system/roles.stories.ts:63-66`), which sets `color-scheme` on the page (`:57-58`). On `storybook-static` (Storybook 10.6.2), `&globals=accent:indigo;gray:sand` set both attributes, `&args=mode:dark` set `color-scheme: dark`, and `&globals=accent:crimson` changed the `Toolbar` screenshot (orchestrator probe 2026-10-21; §12 AM-033).
-- **Timing:** P12 opens after P11 merges, so `visual-baselines.yml` and `visual-off-pairs.yml` are on `main` and can be dispatched on a branch (§6.P.11 Timing). Before the P12 PR opens, the checks that need a dispatch run on a throwaway branch made from `main`, and the P12 PR Verify record (PROCESS §5) records them. P12 commits `roles.visual.ts`, `roles.off-pairs.visual.ts` and their baselines together, so no `.visual.ts` file lands without its baselines and the gate is never vacuous (§12 AM-034, AM-035).
+- **Timing:** P12 opens after P11 merges, so `visual-baselines.yml` and `visual-off-pairs.yml` are on `main` and can be dispatched on a branch (§6.P.11 Timing). Before the P12 PR opens, the checks that need a dispatch run on a throwaway branch made from `main`, and the P12 PR Verify record (PROCESS §5) records them. `visual-baselines.yml` checks out the remote branch, so P12 commits and pushes `roles.visual.ts` and `roles.off-pairs.visual.ts` before the run. Their baselines arrive in a later commit, before the PR opens. The squash merge lands the files and their baselines on `main` in one commit, so no `.visual.ts` file lands on `main` without its baselines and the gate is never vacuous (§12 AM-034, AM-035, AM-047).
 - **Contract:**
   - Every supported `(accent, gray, mode)` combination MUST have a committed baseline of `design-system-roles--toolbar`; the default pairs gate every PR, and the off pairs run before each release (PRD §5.2.1; §10 SD98; §12 AM-033).
 - **Acceptance:**
@@ -1820,8 +1824,8 @@ Task P8 carries every change in this section (plan §2.9, D1, §10 SD7).
 | `line-schemas` | 0.1.1 | `minor` | 0.2.0 | plan §7.4 |
 | `line-themes` | 0.1.2 | `minor` | 0.2.0 | plan §7.4 |
 | `line-utils` | 0.1.0 | `minor` | 0.2.0 | plan §7.4 |
-| `line-core` | 0.1.2 | `minor` | 0.2.0 | plan §7.4 |
-| `line-components` | 0.1.1 | `minor` | 0.2.0 | plan §7.4 |
+| `line-core` | 0.1.3 | `minor` | 0.2.0 | plan §7.4 |
+| `line-components` | 0.1.2 | `minor` | 0.2.0 | plan §7.4 |
 | `line-icons` | 0.1.0 | `minor` | 0.2.0 | plan §7.4 |
 | `line-genui` | 0.1.0 (seeded by P1) | `minor` | 0.2.0 | §10 SD3; R9 §2.6 |
 
@@ -2252,5 +2256,6 @@ PROCESS §3 requires that any change to this spec after approval lands as a row 
 | AM-044 | 2026-10-21 | ledger 00-Z48 (factual correction, coherence review round 34, diff-focused) | R34-L1-01: the plan Status round-33 sentence names the round-31 note and both of its corrections. | Round 34 was clean on all three lenses; this is its only minor. Rounds 32, 33 and 34 are three consecutive clean rounds. No decision change. | Agent R34LensPlanPRD |
 | AM-045 | 2026-10-21 | ledger 00-Z49 (factual correction, Phase 1 ledger PR) | §6.P.4 Changes and §6.P.11 Timing cite the PROCESS lines as they stand after the 00-Z49 alignment: "No record, no PR" at `docs/PROCESS.md:122` (was `:116`), the §6 status and row-flip bullets at `:136-147` (was `:130-140`) and `:140-147` (was `:134-140`), and the one-PR-per-row bullet at `:167` (was `:159`). | Row 00-Z49 aligned PROCESS §4 and §6 as §6.Z requires (stream owners, one accountable implementer per task, the `blocked → todo` flip owner, the changeset step), which moved the cited lines. No rule and no design choice changes. The supervisor lines that §4 cites keep their numbers. | `docs/PROCESS.md:122`, `:136-147`, `:167` after commit "docs(process): 00-Z49 — Phase 1 stream owners, accountable implementer, blocked flips"; §6.Z |
 | AM-046 | 2026-10-22 | ledger 01-P9 (factual correction) | Three edits. (1) §7.2 table, "Version today" column: `line-core` 0.1.1 → 0.1.2 and `line-components` 0.1.0 → 0.1.1; the "Version at phase exit" column stays 0.2.0. (2) §4.2 manifest block: `"version": "0.1.0"` → `"version": "0.1.1"`. (3) The Status line names AM-001–AM-046. | Version PR #284 bumped both packages through the 01-P8 patch changeset after the spec was written. No rule and no design choice changes, and the phase-exit 0.2.0 target is unchanged. | `packages/line-core/package.json:3`, `packages/line-components/package.json:3`; commit `e03ffcb` |
+| AM-047 | 2026-10-22 | ledger 01-P12 (factual corrections; decision — Miguel chose a line-schemas devDependency of line-components over reading the hue lists from line-themes files by relative path, 2026-10-22) | Seven edits. (1) The Status line names AM-001–AM-047. (2) §7.2 table, "Version today" column: `line-core` 0.1.2 → 0.1.3 and `line-components` 0.1.1 → 0.1.2; the "Version at phase exit" column stays 0.2.0. (3) §4.2 manifest block: `"version": "0.1.1"` → `"version": "0.1.2"`, and `devDependencies` gains `"@websublime/line-schemas": "workspace:^"`, with a bullet on why. (4) §5 layout: the `packages/line-components/package.json` and `bun.lock` rows name P12. (5) §6.P.12 Changes: both Roles visual files import `ACCENT_HUES` and `GRAY_HUES` from `@websublime/line-schemas`. (6) §6.P.12 Changes: `roles.off-pairs.visual.ts` declares 372 tests, a worker-scoped fixture finds each auto pair from the computed cascade in Chromium and requires exactly one match, and the auto-pair test skips with the reason "default pair, covered by roles.visual.ts"; 310 screenshots run and 62 skip. (7) §6.P.12 Timing: the visual files are committed and pushed before the `visual-baselines.yml` run, their baselines arrive in a later commit before the PR opens, and the squash merge lands them together on `main`. | Bun installs workspaces in isolated mode, and `line-components` did not declare `@websublime/line-schemas`, so it did not resolve from `packages/line-components/__tests__/visual/`. Relative paths into another package are banned. The built `defaults.css` is minified (`[data-accent=amber]` without quotes), so the fixture reads the computed cascade and parses no CSS. `visual-baselines.yml` checks out the remote branch, so the visual files must be pushed before their baselines exist. Version PR #287 bumped `line-core` and `line-components` after the spec was written, the same drift as AM-046. The phase-exit 0.2.0 target is unchanged. | Probe 2026-10-22: `import.meta.resolve('@websublime/line-schemas')` from `packages/line-components/__tests__/visual/` gave ERR_MODULE_NOT_FOUND in Node and Bun; `packages/line-components/package.json:24-31` (no line-schemas); commit `57866e5` (#287); `packages/line-themes/dist/defaults.css`; `.github/workflows/visual-baselines.yml` (checkout of the branch) |
 
 *End of spec.*
