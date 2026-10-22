@@ -30,7 +30,8 @@
  *      `var(--line-{hue}-{step})`. Missing files are skipped (Stream C C2 owns them).
  *
  * Source of truth for the allowed-edges table:
- *   docs/specs/00-spec-design-system.md §6.B lines 449-460 (post-AM-004 alignment).
+ *   Phase 00 spec §6.B and Phase 1 spec §3.2
+ *   (docs/specs/00-spec-design-system.md, docs/specs/01-spec-core-primitives.md).
  *   Any spec amendment to those rows REQUIRES a matching edit to ALLOWED_EDGES
  *   below.
  */
@@ -44,17 +45,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '..');
 
 /* --------------------------------------------------------------------------
- * Allowed edges (downward only). Verbatim from
- * docs/specs/00-spec-design-system.md §6.B lines 449-460 (post-AM-004).
+ * Allowed edges (downward only). Source of truth: Phase 00 spec §6.B and
+ * Phase 1 spec §3.2. `dependencies` and `peerDependencies` both count.
  *
  *   line-tokens    : leaf
  *   line-colors    : leaf
  *   line-schemas   : leaf
  *   line-themes    : line-colors, line-schemas
  *   line-utils     : line-schemas
- *   line-core      : (no @websublime/* deps in Phase 00; lit + @zag-js/* are externals)
+ *   line-core      : (no @websublime/* deps; lit + @zag-js/* are externals)
  *   line-components: line-core, line-tokens, line-themes, line-utils
  *   line-icons     : line-tokens
+ *   line-genui     : line-core (dependencies); line-components, line-icons (peerDependencies)
  * ------------------------------------------------------------------------*/
 const ALLOWED_EDGES = Object.freeze({
   'line-tokens': new Set(),
@@ -65,6 +67,7 @@ const ALLOWED_EDGES = Object.freeze({
   'line-core': new Set(),
   'line-components': new Set(['line-core', 'line-tokens', 'line-themes', 'line-utils']),
   'line-icons': new Set(['line-tokens']),
+  'line-genui': new Set(['line-core', 'line-components', 'line-icons']),
 });
 
 // Packages where CSS custom-property prefix audit applies (§9.1 line 1644 (a)).
