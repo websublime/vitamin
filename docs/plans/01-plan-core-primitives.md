@@ -4,7 +4,7 @@
 **Author:** line://ui orchestrator (row 00-Z27)
 **Date:** 2026-10-20
 **Phase Version Target:** `line://ui` v0.2.0 (also called "Phase 1" in the PRD)
-**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.26)
+**Source PRD:** [`docs/PRD.md`](../PRD.md) (v0.8.27)
 **Source Architecture:** [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md) (v0.8.12)
 
 > **What this document is.** A phase plan (PROCESS §1–§2, the lifecycle and gate rules). It sets scope, streams, dependencies, research targets, acceptance criteria and risks for Phase 1 (PRD §7.3, the Core Primitives phase).
@@ -47,7 +47,7 @@ PRD §7.3 lists what the phase validates.
 | Retrospective hand-off item 2 (htmx rule, harness, guide) | Done | Row `00-Z17` (#252), Phase 00 spec AM-063 (the htmx rule C9 amendment) |
 | Agent contract section with rules C1–C9 and every descriptor field | In the component spec template | Row `00-G4` (#231), Phase 00 spec AM-043 (the agent contract template amendment); C9 added by `00-Z17` |
 | htmx Tests row | In the component spec template | [`COMPONENT-SPEC-TEMPLATE.md`](../specs/COMPONENT-SPEC-TEMPLATE.md) |
-| htmx harness | Exists | `packages/line-core/__tests__/integration/htmx/` |
+| htmx harness | Exists | `packages/line-core/__tests__/integration/htmx/`; row `01-Z5` moves the harness module to the private package `@websublime/line-testing` (`packages/line-testing/src/htmx.ts`), and its self-test, probes and fixture page stay in `line-core` (spec §6.Z.3, AM-048) |
 | htmx guide | Exists | `apps/storybook/stories/htmx.mdx` |
 | `LineElement`, mixins, `LineMachineController`, reset sheets | Exist | `line-core` |
 | Icon resolvers | Exist; verified under Bun only. Vite 8 and esbuild production builds render no icon and leave a bare `?raw` specifier, and webpack does not build them without a `?raw` rule, while the Phosphor resolver also needs an alias (R10 P6; R10 round 2 §2.2), so C22 fixes them before C2 | `line-icons` |
@@ -252,7 +252,7 @@ ARCHITECTURE §17.3 maps these basic catalog types in Phase 1.
 | C | Core primitives (20 components, spec + implementation + descriptor + stories + changeset) | webcomponents-supervisor (file classes: spec §4 table, AM-022) |
 | D | Cross-cutting documentation (agent-driven UI guide, recipes index, Getting Started updates) | webcomponents-supervisor |
 | S | Site landing page (dogfoods the Phase 1 components; exit criterion per O3 (b)) | webcomponents-supervisor (file classes: spec §4 table, AM-022; spec §6.S.1, §10 SD71) |
-| Z | Repo-wide (code of conduct, retrospective; the main session runs the exit sweep); process alignment lands in the ledger PR (§4.6) | Main session / per row |
+| Z | Repo-wide (code of conduct, workspace resolution in tests, retrospective; the main session runs the exit sweep); process alignment lands in the ledger PR (§4.6) | Main session / per row |
 
 Each P, C, G, D and S owner is the accountable supervisor, who runs the task on its branch; Z rows name the main session (the Z row above). `git-workflow-manager` opens the PR (PROCESS §4, §6). The spec §4 table says which supervisor edits each class of file; when a task touches a class the table gives to the other supervisor, the orchestrator (main session or `sdlc`) dispatches the other supervisor, one after the other on the same task branch, for the classes the Phase 1 spec §4 table gives it. The second dispatch adds no changeset entry; the accountable supervisor writes the changeset entry last, after the other dispatch returns, and names every published package the branch changed (spec AM-022, AM-025, AM-026, AM-027).
 
@@ -325,6 +325,7 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 - Z1 adds the code of conduct (PRD §10).
 - No Z2 task remains, and spec AM-002 removes it. Row 00-Z49, the PR that created the Phase 1 ledger, made the process alignment that §4.0 describes, with the Phase 1 streams in the `CLAUDE.md` ledger pointer (§10 step 6).
 - Z3 writes the Phase 1 retrospective and depends on every other Phase 1 row. The main session runs the exit sweep before the last rows land; the sweep is not a row, and each finding becomes a new row, as the Phase 00 sweep filed row C18 (spec §6.Z.2, §10 SD87, AM-036).
+- Z5 makes every test reach another workspace package through its package name and a declared dependency, and its own shipped files through its own `exports` (PRD §5.2). It adds the private package `@websublime/line-testing`, which holds the htmx harness, moves the `line-tokens` shadow check into `line-themes`, and replaces the auto-pair string test with a browser test of all 31 accents (PRD §5.2.1). It lands before C1–C20 (spec §6.Z.3, AM-048).
 - The O4 items are Phase 00 ledger rows `00-Z28` (O4.a, class `decision`), `00-Z29` (O4.b, `blocked` until the Biome release) and `00-Z30` (O4.c, class `amendment`).
 - These rows do not wait for the Phase 1 ledger.
 
@@ -530,6 +531,7 @@ P4, C1, C2 ───────────────────────
 P7 axe tier ─────────────────────────► C1 (spec §10 SD86); evidence for the zero-axe criteria
 P11 visual regression tier ──────────► C1 (spec §10 SD86, SD98, AM-031)
 P11 visual regression tier ──────────► P12 Roles visual baselines ──► C1 (spec §6.P.12, AM-035, AM-036)
+Z5 workspace resolution in tests ────► C1–C20 (spec §6.Z.3, §10 SD86, AM-048)
 ```
 
 The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds the research outcomes.
@@ -537,7 +539,7 @@ The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds
 1. Research (R1–R12). Delivered (§5.1–§5.2).
 2. Plan and PRD revision 00-Z45 (§5.6). Done: Miguel approved it on 2026-10-20.
 3. Spec, which answers §5.5. Done: APPROVED 2026-10-20 (row 00-Z46).
-4. P1 scaffold, P2 edges, P7 axe tier (spec §10 SD86), P8 TypeScript 7, P9 externals, P10 CEM wiring and packaging, P11 visual regression tier (spec §10 SD98), C21 controller change, C23 `LineElement` internals, and P12 Roles visual baselines after P11 (spec §6.P.12).
+4. P1 scaffold, P2 edges, P7 axe tier (spec §10 SD86), P8 TypeScript 7, P9 externals, P10 CEM wiring and packaging, P11 visual regression tier (spec §10 SD98), C21 controller change, C23 `LineElement` internals, P12 Roles visual baselines after P11 (spec §6.P.12), and Z5 workspace resolution in tests (spec §6.Z.3).
 5. C1–C4 (Button, Icon, Stack, Separator), without descriptors; C22 and P5 land before C2, and P5 after C1 (spec §6.C.0).
 6. Stream G (G1–G7), including the descriptors of C1–C4.
 7. C5–C20, each with its descriptor in the same PR, after G1, G4 and G5; C12, C13 and C16 also after G3 (spec §6.C.0).
@@ -547,6 +549,7 @@ The plan gate chose this sequence (O2.a (b), O2.c (a)), and revision 00-Z45 adds
 - D3 and Z3 land after the Phase 1 Version PR merges; Z3 depends on D3 (spec §6.D.3, §6.Z.2, AM-038).
 - P6 runs after P4, C1 and C2, against a canary that contains C1 and C2 (spec §6.P.6, AM-036).
 - P7, P11 and P12 land before C1, and P12 after P11, so the default pairs gate every PR from C1 on (spec §10 SD86, SD98; spec §6.P.11, §6.P.12, AM-036).
+- Z5 lands before C1–C20, so every component suite follows the PRD §5.2 resolution rule from C1 on (spec §6.Z.3, §10 SD86, AM-048).
 - P9 and P10 land after P8 (spec §6.C.0, AM-040).
 
 ---
