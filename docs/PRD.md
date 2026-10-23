@@ -523,7 +523,7 @@ Storybook
 3. Relative paths stay for a package's own `src/` and its own `__tests__/` files.
 4. Test helpers that more than one package uses live in the private package `@websublime/line-testing` (§6.1), which each user declares as a devDependency.
 5. A test-only devDependency between design-system packages points down the layer order (MANIFESTO Law 10). A test that needs a higher layer lives in that layer's package.
-6. Third-party packages that tests use come from the root `devDependencies`, the shared test tooling (Phase 1 spec §6.G.2). A package declares a third-party package that its own non-test code resolves: `line-testing` declares `htmx2` and `htmx4` for the harness in its `src/`, and `line-core` declares them for its `__experimental__/htmx` spike server.
+6. Third-party packages that tests use come from the root `devDependencies`, the shared test tooling (Phase 1 spec §6.G.2). A package declares a third-party package that its own non-test code resolves, as `line-testing` does with `htmx2` and `htmx4` for the harness in its `src/` and `line-core` does for its `__experimental__/htmx` spike server.
 
 **Minimum test coverage per component:**
 

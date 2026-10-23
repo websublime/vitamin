@@ -79,7 +79,8 @@ Biome, `bun test` on happy-dom, Playwright, Storybook 10, Changesets
 
 ```
 line-ui/
-├── packages/         # @websublime/line-* (tokens, colors, schemas, themes, utils, core, icons, components; genui from Phase 1)
+├── packages/         # @websublime/line-* (tokens, colors, schemas, themes, utils, core, icons, components; genui from Phase 1);
+│                     # testing (private, never published: test helpers shared across packages, htmx harness; row 01-Z5)
 ├── apps/storybook/   # Storybook 10 + MDX docs
 ├── scripts/          # generate-palettes, generate-role-maps, validate-contrast, verify-palettes-fresh, lint-layers
 ├── docs/             # MANIFESTO, PRD, ARCHITECTURE, PROCESS, plans/, research/, specs/
