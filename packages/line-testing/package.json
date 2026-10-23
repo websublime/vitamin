@@ -12,5 +12,8 @@
   },
   "peerDependencies": {
     "playwright": "^1.64.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
   }
 }
