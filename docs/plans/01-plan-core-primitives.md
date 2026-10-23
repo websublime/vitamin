@@ -325,7 +325,7 @@ Stream G also writes the descriptors of Button, Icon, Stack and Separator.
 - Z1 adds the code of conduct (PRD §10).
 - No Z2 task remains, and spec AM-002 removes it. Row 00-Z49, the PR that created the Phase 1 ledger, made the process alignment that §4.0 describes, with the Phase 1 streams in the `CLAUDE.md` ledger pointer (§10 step 6).
 - Z3 writes the Phase 1 retrospective and depends on every other Phase 1 row. The main session runs the exit sweep before the last rows land; the sweep is not a row, and each finding becomes a new row, as the Phase 00 sweep filed row C18 (spec §6.Z.2, §10 SD87, AM-036).
-- Z5 makes every test reach another workspace package through its package name and a declared dependency, and its own shipped files through its own `exports` (PRD §5.2). It adds the private package `@websublime/line-testing`, which holds the htmx harness, moves the `line-tokens` shadow check into `line-themes`, and replaces the auto-pair string test with a browser test of all 31 accents (PRD §5.2.1). It lands before C1–C20 (spec §6.Z.3, AM-048).
+- Z5 makes every test reach another workspace package through its package name and a declared dependency, and its own package's build output through its own `exports` (PRD §5.2). It adds the private package `@websublime/line-testing`, which holds the htmx harness, moves the `line-tokens` shadow check into `line-themes`, and replaces the auto-pair string test with a browser test of all 31 accents (PRD §5.2.1). It lands before C1–C20 (spec §6.Z.3, AM-048).
 - The O4 items are Phase 00 ledger rows `00-Z28` (O4.a, class `decision`), `00-Z29` (O4.b, `blocked` until the Biome release) and `00-Z30` (O4.c, class `amendment`).
 - These rows do not wait for the Phase 1 ledger.
 
