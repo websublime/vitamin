@@ -79,6 +79,9 @@
         "@zag-js/core": "^1.46.0",
         "lit": "^3.3.3",
       },
+      "devDependencies": {
+        "@websublime/line-schemas": "workspace:^",
+      },
     },
     "packages/line-core": {
       "name": "@websublime/line-core",
